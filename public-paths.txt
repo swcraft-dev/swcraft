@@ -9,6 +9,7 @@
 # no file, only a submodule) and an entry that is not a canonical relative POSIX path.
 
 # Folders (whole)
+.github/readme/
 .github/workflows/
 constraints/
 docs/guide/
