@@ -1,0 +1,134 @@
+[
+  {
+    "records": [
+      {
+        "kind": "name",
+        "phrase": "Mcu"
+      }
+    ],
+    "text": "the name Mcu is in the text"
+  },
+  {
+    "records": [
+      {
+        "examples": [],
+        "kind": "neighbours",
+        "of": 1,
+        "seeded": 1,
+        "share": 1
+      }
+    ],
+    "text": "1 of the 1 linked requirement of this document link here"
+  },
+  {
+    "records": [
+      {
+        "examples": [
+          "BRK-1",
+          "BRK-2"
+        ],
+        "kind": "neighbours",
+        "of": 4,
+        "seeded": 2,
+        "share": {
+          "d": 2,
+          "n": 1
+        }
+      }
+    ],
+    "text": "2 of the 4 linked requirements of this document link here (e.g. BRK-1, BRK-2)"
+  },
+  {
+    "records": [
+      {
+        "examples": [
+          "BODY-1"
+        ],
+        "kind": "neighbours",
+        "of": 1,
+        "seeded": 1,
+        "share": 1
+      }
+    ],
+    "text": "1 of the 1 linked requirement of this document link here (e.g. BODY-1)"
+  },
+  {
+    "records": [
+      {
+        "count": 4,
+        "examples": [],
+        "kind": "similar",
+        "score": {
+          "d": 1000000,
+          "n": 250000
+        }
+      }
+    ],
+    "text": "similar to 4 linked requirements"
+  },
+  {
+    "records": [
+      {
+        "count": 2,
+        "examples": [
+          "BRK-1",
+          "BRK-2"
+        ],
+        "kind": "similar",
+        "score": {
+          "d": 1000000,
+          "n": 1000000
+        }
+      }
+    ],
+    "text": "similar to 2 linked requirements (e.g. BRK-1, BRK-2)"
+  },
+  {
+    "records": [
+      {
+        "count": 1,
+        "examples": [
+          "BRK-1"
+        ],
+        "kind": "similar",
+        "score": {
+          "d": 1000000,
+          "n": 1000000
+        }
+      }
+    ],
+    "text": "similar to 1 linked requirement (e.g. BRK-1)"
+  },
+  {
+    "records": [
+      {
+        "kind": "text",
+        "terms": [
+          "lamps",
+          "exterior"
+        ]
+      }
+    ],
+    "text": "shares the terms lamps, exterior"
+  },
+  {
+    "records": [
+      {
+        "kind": "name",
+        "phrase": "Mcu"
+      },
+      {
+        "kind": "text",
+        "terms": [
+          "lamps",
+          "exterior"
+        ]
+      }
+    ],
+    "text": "the name Mcu is in the text; shares the terms lamps, exterior"
+  },
+  {
+    "records": [],
+    "text": "no evidence"
+  }
+]

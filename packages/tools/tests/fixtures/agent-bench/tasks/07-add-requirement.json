@@ -1,0 +1,35 @@
+{
+  "id": "07-add-requirement",
+  "task": 7,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Add requirement SWR-BRK-013, 'Derated brake request': the brake controller shall limit the brake request while the permitted brake action is DERATED. BrakeController's port rPermittedBrakeAction satisfies it.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "requirements",
+        "name": "SWR-BRK-013",
+        "has": {
+          "title": "Derated brake request",
+          "version": 1
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "BrakeController",
+        "has": {
+          "ports": [
+            {
+              "name": "rPermittedBrakeAction",
+              "satisfies": [
+                "SWR-BRK-013@1"
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "06-rename-data-element",
+  "task": 6,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Rename the data element D1 of If0001abcdefghij to deShared.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "interfaces",
+        "name": "If0001abcdefghij",
+        "has": {
+          "data_elements": [
+            {
+              "name": "deShared"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "interfaces",
+        "name": "If0001abcdefghij",
+        "lacks": {
+          "data_elements": [
+            {
+              "name": "D1"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "note": "If0001abcdefghij is the bench's most-used interface (112 ports name it). The runnables of 11 components read or write D1 through its ports (Swc004abcdefghij, Swc134abcdefghi, Swc135abcdefghi, Swc136abcdefghi, Swc137abcdefghi, Swc138abcdefghi, Swc139abcdefghi, Swc140abcdefghi, Swc141abcdefghi, Swc142abcdefghi, Swc143abcdefghi) and no port carries a com spec for it, so the rename moves those accesses with the interface; an agent that checks the users first meets the widest impact answer of the bench."
+}

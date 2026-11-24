@@ -1,0 +1,8 @@
+id: SYS_REQ[12]
+title: Wheel slip detection
+description: The system shall detect wheel slip during braking.
+req_type: req
+version: 1
+source: external
+asil: B
+baseline: SYS-2.1

@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  External stub fixture (contract 7.5.0): every role an absent target may be
+  imported as a stub in, beside the shapes that must NOT mint one.
+
+  Nothing under /Remote or /Partner is declared here: those are the targets
+  another file of the same delivery would declare.
+
+  Minted: the interface stubs of a client-server, a sender-receiver and a
+  mode-switch port (SWC and composition boundary), the type stubs of a data
+  element, of two arguments of two operations naming one path, and of a
+  reference type's base. Two absent interface paths share the last segment
+  "IRemote", and one absent type path has the last segment of a DECLARED type,
+  "Clash".
+
+  Not minted: an argument whose DEST is an application type (a DEST the role
+  does not admit), a data element of an interface a later element abandons
+  (the occurrence never reaches the mapped model), and a port onto a
+  mode-switch interface this file DOES declare (declared but not imported).
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Types</SHORT-NAME>
+          <ELEMENTS>
+            <SW-BASE-TYPE>
+              <SHORT-NAME>Octet</SHORT-NAME>
+              <CATEGORY>FIXED_LENGTH</CATEGORY>
+              <BASE-TYPE-SIZE>8</BASE-TYPE-SIZE>
+              <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+              <NATIVE-DECLARATION>uint8</NATIVE-DECLARATION>
+            </SW-BASE-TYPE>
+            <IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>Level</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Types/Octet</BASE-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE>
+            <IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>Clash</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Types/Octet</BASE-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE>
+            <IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>LocalAlias</SHORT-NAME>
+              <CATEGORY>TYPE_REFERENCE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/Remote/Types/RemoteBase</IMPLEMENTATION-DATA-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Constants</SHORT-NAME>
+          <ELEMENTS>
+            <CONSTANT-SPECIFICATION>
+              <SHORT-NAME>CZero</SHORT-NAME>
+              <VALUE-SPEC>
+                <NUMERICAL-VALUE-SPECIFICATION>
+                  <VALUE>0</VALUE>
+                </NUMERICAL-VALUE-SPECIFICATION>
+              </VALUE-SPEC>
+            </CONSTANT-SPECIFICATION>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Interfaces</SHORT-NAME>
+          <ELEMENTS>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>IStatus</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>value</SHORT-NAME>
+                  <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Remote/Types/RemoteValue</TYPE-TREF>
+                  <INIT-VALUE>
+                    <CONSTANT-REFERENCE>
+                      <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/Acme/Constants/CZero</CONSTANT-REF>
+                    </CONSTANT-REFERENCE>
+                  </INIT-VALUE>
+                </VARIABLE-DATA-PROTOTYPE>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>level</SHORT-NAME>
+                  <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Types/Level</TYPE-TREF>
+                </VARIABLE-DATA-PROTOTYPE>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>aliased</SHORT-NAME>
+                  <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Types/LocalAlias</TYPE-TREF>
+                </VARIABLE-DATA-PROTOTYPE>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>clashing</SHORT-NAME>
+                  <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Types/Clash</TYPE-TREF>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+            <CLIENT-SERVER-INTERFACE>
+              <SHORT-NAME>IService</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <OPERATIONS>
+                <CLIENT-SERVER-OPERATION>
+                  <SHORT-NAME>Run</SHORT-NAME>
+                  <ARGUMENTS>
+                    <ARGUMENT-DATA-PROTOTYPE>
+                      <SHORT-NAME>request</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Remote/Types/RemoteArg</TYPE-TREF>
+                      <DIRECTION>IN</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                    <ARGUMENT-DATA-PROTOTYPE>
+                      <SHORT-NAME>clash</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Remote/Types/Clash</TYPE-TREF>
+                      <DIRECTION>OUT</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                  </ARGUMENTS>
+                </CLIENT-SERVER-OPERATION>
+                <CLIENT-SERVER-OPERATION>
+                  <SHORT-NAME>Stop</SHORT-NAME>
+                  <ARGUMENTS>
+                    <ARGUMENT-DATA-PROTOTYPE>
+                      <SHORT-NAME>request</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Remote/Types/RemoteArg</TYPE-TREF>
+                      <DIRECTION>IN</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                  </ARGUMENTS>
+                </CLIENT-SERVER-OPERATION>
+                <CLIENT-SERVER-OPERATION>
+                  <SHORT-NAME>Measure</SHORT-NAME>
+                  <ARGUMENTS>
+                    <ARGUMENT-DATA-PROTOTYPE>
+                      <SHORT-NAME>phys</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Remote/AppTypes/RemotePhys</TYPE-TREF>
+                      <DIRECTION>OUT</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                  </ARGUMENTS>
+                </CLIENT-SERVER-OPERATION>
+              </OPERATIONS>
+            </CLIENT-SERVER-INTERFACE>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>IAbandoned</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>first</SHORT-NAME>
+                  <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Remote/Types/OnlyAbandoned</TYPE-TREF>
+                </VARIABLE-DATA-PROTOTYPE>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>second</SHORT-NAME>
+                  <TYPE-TREF DEST="SW-BASE-TYPE">/Acme/Types/Octet</TYPE-TREF>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+            <MODE-SWITCH-INTERFACE>
+              <SHORT-NAME>IDeclaredMode</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+            </MODE-SWITCH-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Controller</SHORT-NAME>
+              <PORTS>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rCs</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Remote/PortInterfaces/IRemote</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rSr</SHORT-NAME>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/Remote/PortInterfaces/IRemoteSr/signal</DATA-ELEMENT-REF>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/Acme/Constants/CZero</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Remote/PortInterfaces/IRemoteSr</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rMode</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="MODE-SWITCH-INTERFACE">/Remote/ModeInterfaces/IRemoteMode</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rPartner</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Partner/PortInterfaces/IRemote</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>pStatus</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Interfaces/IStatus</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>pService</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Acme/Interfaces/IService</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rDeclaredMode</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="MODE-SWITCH-INTERFACE">/Acme/Interfaces/IDeclaredMode</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR>
+                  <SHORT-NAME>ControllerBehavior</SHORT-NAME>
+                  <HANDLE-TERMINATION-AND-RESTART>NO-SUPPORT</HANDLE-TERMINATION-AND-RESTART>
+                  <RUNNABLES>
+                    <RUNNABLE-ENTITY>
+                      <SHORT-NAME>Step</SHORT-NAME>
+                      <MINIMUM-START-INTERVAL>0</MINIMUM-START-INTERVAL>
+                      <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                      <DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                        <VARIABLE-ACCESS>
+                          <SHORT-NAME>readSignal</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/Acme/Components/Controller/rSr</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/Remote/PortInterfaces/IRemoteSr/signal</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                      </DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                      <SERVER-CALL-POINTS>
+                        <SYNCHRONOUS-SERVER-CALL-POINT>
+                          <SHORT-NAME>callRun</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/Acme/Components/Controller/rCs</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/Remote/PortInterfaces/IRemote/Run</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                          <TIMEOUT>0</TIMEOUT>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                      </SERVER-CALL-POINTS>
+                      <SYMBOL>Step</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                  </RUNNABLES>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Compositions</SHORT-NAME>
+          <ELEMENTS>
+            <COMPOSITION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Top</SHORT-NAME>
+              <PORTS>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rOuterCs</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Remote/PortInterfaces/IRemote</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>pOuterOnly</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Remote/PortInterfaces/IBoundaryOnly</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+              <COMPONENTS>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>ctl</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Acme/Components/Controller</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+              </COMPONENTS>
+            </COMPOSITION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

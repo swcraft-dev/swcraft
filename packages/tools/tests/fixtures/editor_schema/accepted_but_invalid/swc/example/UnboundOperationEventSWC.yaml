@@ -1,0 +1,16 @@
+name: UnboundOperationEventSWC
+type: application
+description: A runnable started by an operation of a port the component never declares
+ports:
+  - name: pDiag
+    direction: provide
+    interface: IDiagnosticService
+runnables:
+  - name: ServeDiag
+    events:
+      - type: operation
+        port: pMissing
+        operation: ReadDtc
+memory:
+  RAM: 16
+handle_termination_and_restart: no_support

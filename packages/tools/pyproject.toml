@@ -1,0 +1,233 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "swcraft-tools"
+dynamic = ["version"]
+description = "SWCraft tools: Python API for YAML model operations and ARXML, diagram and Sphinx-Needs JSON generation."
+requires-python = ">=3.11"
+license = "Apache-2.0 AND EPL-2.0"
+dependencies = [
+    # No `autosar` (cogu): the ARXML writer is first-party (`swcraft_tools.writer`).
+    "lxml>=5.0",
+    # `scipy.optimize.milp` (HiGHS): the allocation experiment's solver, imported lazily inside
+    # `allocation.solve_curve`, so no other command loads it. A plain dependency, not an extra: the
+    # workstation archive installs no extras. The floor is the release whose Windows binaries need
+    # nothing beyond the Universal C runtime.
+    "scipy>=1.17.1",
+    "python-dotenv>=1.0",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    # `schema.py` imports `TypeAliasType` from it to spell the recursive `InitValue` alias: PEP 695's
+    # `type` statement needs Python 3.12 and the floor above is 3.11. The floor is the release that
+    # introduced `TypeAliasType`.
+    "typing-extensions>=4.6",
+    "xmlschema>=3.0",
+]
+
+[dependency-groups]
+# Development only: no wheel's runtime requirements and no dist/wheelhouse/ closure carry this group.
+dev = [
+    # The PEP 517 frontend scripts/build_artifacts.py drives (`python -m build`).
+    "build>=1.0",
+    # Test-time only: tests/test_editing_protocol_contracts.py validates the editing-protocol
+    # contracts with it. The MCP stack installs it transitively, but every direct use is declared directly.
+    "jsonschema>=4.18",
+    # Imported directly by the same module for the two-file schema registry that resolves the
+    # cross-file $ref; declared directly for the same reason.
+    "referencing>=0.30",
+    # The user guide's site build (`python scripts/dev.py docs`). Capped at the next major,
+    # unlike the other dev pins, because the release build fails when the site build does and
+    # MkDocs 2.0 is announced as backward-incompatible with no migration path.
+    "mkdocs>=1.6,<2",
+    "mkdocs-material>=9.5,<10",
+    # python-markdown, imported directly by tests/test_guide_reference_rules.py to render guide pages
+    # with mkdocs.yml's extension list; the floor is the one mkdocs 1.6 requires.
+    "markdown>=3.3.6",
+    # Below 9.2: pytest 9.2.0 dropped `Node._nodeid`, which pytest-benchmark 5.3.0's fixture still
+    # reads (`BenchmarkFixture.__init__`), so every test taking `benchmark` errors at setup.
+    # Lifted when a pytest-benchmark release reads `nodeid`.
+    "pytest>=8.0,<9.2",
+    "pytest-cov>=5.0",
+    "pytest-benchmark>=4.0",
+    # The fast gate's parallel runner (`dev.py test` passes `-n auto --dist loadgroup`), declared
+    # directly by each project that runs under it. `--dist loadgroup` and the `xdist_group` mark
+    # date from 2.5.0; the floor is the first release after pytest 8.0. The marker-gated stages
+    # never pass `-n`: they share dist/ and real archives.
+    "pytest-xdist>=3.6",
+    # The per-test timeout: the `timeout` ceiling in [tool.pytest.ini_options] below for every stage,
+    # and `dev.py test`'s `--timeout=720` for the fast gate, so a hang is a named failure in minutes.
+    # Declared directly by each project, as pytest-xdist is.
+    "pytest-timeout>=2.3",
+    "ruff>=0.6",
+    # `lint`'s import-graph gate (`lint-imports` in packages/tools/, the [tool.importlinter]
+    # contracts below): no import cycle between sibling modules of `swcraft_tools`, and
+    # no `guide_reference`, `query` or `cli` submodule taking a name from its own package. The
+    # floor is the release whose TOML keys the contracts use (2.16, with grimp 3.20).
+    "import-linter>=2.16",
+    # `lint`'s quality ratchet (scripts/quality_ratchet.py): each function's length and
+    # cyclomatic complexity, read with radon's `cc_visit`.
+    "radon>=6.0.1",
+    # `lint`'s type check (the [tool.mypy] table below, run by scripts/run_python_lint.py) and the
+    # ratchet's mypy count; `types-PyYAML` types the `yaml` this package imports.
+    "mypy>=1.10,<2",
+    "types-PyYAML>=6.0,<7",
+    # The tests' floor, above the runtime one in `dependencies`: three diagram tests import
+    # `get_protocol_members`, which the backport has from 4.7, while the runtime
+    # floor stays the release that introduced `TypeAliasType`.
+    "typing-extensions>=4.7",
+]
+
+[project.scripts]
+swcraft = "swcraft_tools.entry:main"
+swcraft-generate-arxml = "swcraft_tools.writer:generate_arxml_cli"
+
+# Single source of truth for the version: src/swcraft_tools/_version.py.
+[tool.hatch.version]
+path = "src/swcraft_tools/_version.py"
+
+# The vehicle-architecture template (src/swcraft_tools/templates/) ships as package data, read at run time
+# through `importlib.resources.files("swcraft_tools") / "templates"` and never through a path into a checkout;
+# hatchling ships every file under `packages`, dotfiles and dot-directories included.
+#
+# The rendered user guide (src/swcraft_tools/guide_site/) and the elkjs payload
+# (src/swcraft_tools/writer/diagrams/elkjs/) ride the same `packages` entry. Both are gitignored at the
+# repository root, but hatchling reads the ignore file at the project root (packages/tools/, which has none), so
+# both ship in the wheel and the sdist. Should that change, the fallback is
+# `artifacts = ["swcraft_tools/guide_site/**"]` on this table.
+#
+# The `exclude` keeps the payload installers' sidecars out of both archives: their cleanup of a superseded tree
+# is best-effort, and a leftover sidecar would otherwise ship. It sits on the shared table because one setting
+# covers the wheel and the sdist; a leading-dot name would not help, since dot-directories ship.
+[tool.hatch.build]
+exclude = [
+    "/src/swcraft_tools/guide_site.incoming",
+    "/src/swcraft_tools/guide_site.outgoing",
+    "/src/swcraft_tools/writer/diagrams/elkjs.incoming",
+    "/src/swcraft_tools/writer/diagrams/elkjs.previous",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/swcraft_tools"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# The helper modules the tests import by their top-level names (`xsd_support`,
+# `editing_vector_fixtures`, ...) live in tests/support/, out of the test root; pytest's
+# declared `pythonpath` makes them importable.
+pythonpath = ["tests/support"]
+# pytest-timeout's stage ceiling, in seconds, for every invocation that passes no
+# `--timeout` of its own (the marker stages, test-xsd, coverage, benchmark, a hand run).
+# The fast gate passes `--timeout=720` (scripts/dev.py FAST_TEST_TIMEOUT).
+timeout = 1200
+# Without the plugin the `timeout` key above is only a PytestConfigWarning and every
+# stage would run with no timeout; `required_plugins` makes a `.venv` that lacks it (or
+# carries one below the `dev` group's floor) a usage error for every pytest run of this project.
+required_plugins = ["pytest-timeout>=2.3"]
+markers = [
+    "slow: marks a suite that is minutes rather than seconds, or that needs a machine-local input the fast gate may not have (here: the import benchmark on real tool exports the maintainer holds privately, skipped when SWCRAFT_RHAPSODY_EXPORT is unset; the suites checked against them are closed and run under 'dev.py test-internal'). Deselected from the fast 'dev.py test' gate, executed only by 'dev.py test-slow'; deselect explicitly with '-m not slow'. tests/test_slow_marker_inventory.py derives the marked modules -- never restate the list here",
+    "benchmark: marks pytest-benchmark performance/memory baseline tests (report-only; deselected from the default 'test' run with '-m not benchmark', run explicitly via 'python scripts/dev.py benchmark' -- includes the reference-model clean full rebuild)",
+    "artifact: marks tests that build wheels/.vsix or create a venv (deselected from the fast test run, executed only by 'dev.py test-artifacts', which 'dev.py verify' invokes)",
+    "integration: marks tests that invoke moon against a scaffolded standalone architecture project (deselected from the fast test run, executed only by 'dev.py test-model-integration', which 'dev.py verify' invokes and which FAILS — never skips — when moon is unresolvable)",
+]
+
+# `lint`'s import-graph gate, run as `lint-imports` in packages/tools/ (scripts/dev.py's `plan_lint`).
+# grimp counts every import, a function-level one included, and leaves out the ones under
+# `if TYPE_CHECKING:`. What it does not reach: an import spelled through `importlib` or
+# `__import__`, and a cycle between modules that are not siblings under one package.
+[tool.importlinter]
+root_package = "swcraft_tools"
+exclude_type_checking_imports = true
+
+# No two sibling modules (or sibling subpackages, taken whole) of any package under
+# `swcraft_tools` import each other, directly or through a chain.
+[[tool.importlinter.contracts]]
+name = "No import cycle between siblings"
+type = "acyclic_siblings"
+ancestors = ["swcraft_tools"]
+
+# The generator package's shape: its `__init__` imports its submodules (to re-export the
+# catalogue), so no submodule may import a name from the package itself -- it imports its
+# siblings by module path. `source_modules` is a hand list; test_import_leaves.py holds it
+# to the package's files, so a new submodule cannot be left off it.
+[[tool.importlinter.contracts]]
+name = "guide_reference submodules import their siblings, never the package"
+type = "forbidden"
+source_modules = [
+    "swcraft_tools.guide_reference.__main__",
+    "swcraft_tools.guide_reference.catalogue",
+    "swcraft_tools.guide_reference.cli",
+    "swcraft_tools.guide_reference.interchange",
+    "swcraft_tools.guide_reference.model",
+    "swcraft_tools.guide_reference.passport",
+    "swcraft_tools.guide_reference.render",
+    "swcraft_tools.guide_reference.rules",
+]
+forbidden_modules = ["swcraft_tools.guide_reference"]
+as_packages = false
+
+# The same shape for the query package: its `__init__` is the facade that re-exports the submodules'
+# names, so a submodule imports its siblings by module path and never the package. test_import_leaves.py
+# holds `source_modules` to the package's files.
+[[tool.importlinter.contracts]]
+name = "query submodules import their siblings, never the package"
+type = "forbidden"
+source_modules = [
+    "swcraft_tools.query.answer",
+    "swcraft_tools.query.edges",
+    "swcraft_tools.query.formatting",
+    "swcraft_tools.query.projection",
+    "swcraft_tools.query.request",
+    "swcraft_tools.query.rows",
+    "swcraft_tools.query.slicing",
+]
+forbidden_modules = ["swcraft_tools.query"]
+as_packages = false
+
+# The same shape for the cli package: its `__init__` is the facade, and `__main__` runs `cli.dispatch.main`,
+# so a submodule imports its siblings by module path and never the package. test_import_leaves.py holds
+# `source_modules` to the package's files.
+[[tool.importlinter.contracts]]
+name = "cli submodules import their siblings, never the package"
+type = "forbidden"
+source_modules = [
+    "swcraft_tools.cli.__main__",
+    "swcraft_tools.cli.build_commands",
+    "swcraft_tools.cli.dispatch",
+    "swcraft_tools.cli.docs_command",
+    "swcraft_tools.cli.experiment_command",
+    "swcraft_tools.cli.guard_command",
+    "swcraft_tools.cli.handover",
+    "swcraft_tools.cli.import_commands",
+    "swcraft_tools.cli.init_command",
+    "swcraft_tools.cli.messages",
+    "swcraft_tools.cli.passport_command",
+    "swcraft_tools.cli.project_args",
+    "swcraft_tools.cli.query_command",
+    "swcraft_tools.cli.read_commands",
+    "swcraft_tools.cli.report_files",
+]
+forbidden_modules = ["swcraft_tools.cli"]
+as_packages = false
+
+# `lint`'s type check: scripts/run_python_lint.py runs `python -m mypy` in this directory because this
+# table exists, and mypy reads everything from it. The three integrity flags keep a zero from being
+# reached by suppression: an unneeded `# type: ignore` or cast is an error, and every ignore names its
+# code. `platform` is fixed so the Linux and the Windows runner, and a Mac, check the same branches
+# (quality_ratchet.py counts under the same platform).
+[tool.mypy]
+python_version = "3.11"
+platform = "linux"
+files = ["src/swcraft_tools"]
+mypy_path = "src"
+warn_unused_ignores = true
+warn_redundant_casts = true
+enable_error_code = ["ignore-without-code"]
+
+# Third parties that ship no type information, by name, so an unresolved import of one of our own
+# modules is still an error. `markdown` is not here: its one import carries its own coded ignore
+# (guide_corpus.py), which quality_ratchet.py's configuration-free run needs as well.
+[[tool.mypy.overrides]]
+module = ["lxml", "lxml.*", "scipy", "scipy.*"]
+ignore_missing_imports = true

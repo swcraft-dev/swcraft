@@ -1,0 +1,3 @@
+name: uint32
+kind: value_type
+base: uint32_base

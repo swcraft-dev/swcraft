@@ -1,0 +1,5 @@
+name: int64_base
+kind: base_type
+size: 64
+encoding: 2C
+native_declaration: int64_t

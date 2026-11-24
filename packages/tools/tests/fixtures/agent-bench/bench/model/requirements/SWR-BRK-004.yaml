@@ -1,0 +1,10 @@
+id: SWR-BRK-004
+title: Rear brake temperature use
+description: The brake controller shall read the rear brake temperature before each
+  brake request is processed.
+req_type: req
+version: 1
+source: external
+document: SRS Brake Control
+baseline: '1.0'
+revision: '1'

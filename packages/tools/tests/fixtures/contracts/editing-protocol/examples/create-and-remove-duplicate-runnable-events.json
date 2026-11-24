@@ -1,0 +1,325 @@
+{
+  "name": "create-and-remove-duplicate-runnable-events",
+  "description": "A `whole_value` list is a MULTISET, and the protocol counts occurrences. `Runnable.events` imposes no uniqueness rule, so the same timing event may legitimately be recorded twice; clearing it takes one `remove` per occurrence, a `create` adds one occurrence, and the duplicate is never reported as `identity-conflict` — neither in the baseline nor in the staged result. Without this rule a duplicate would look like an identity collision, because in a `whole_value` collection the member's value IS its identity.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with two hand-edits to `ExampleSWC.ExampleRun`, whose declared `events` hold a single 10 ms trigger: that event is recorded TWICE (a copy-paste the model does not forbid), and a 20 ms timing event stands beside it. Both edits are legal — `schema.py` declares `events: list[TimingEvent | InitEvent]` with no uniqueness rule, `check-model` has none either, and `differ.py` keys the collection by value (`_value_key`). So the baseline holds three events: 0.01, 0.01 and 0.02. `ExampleRun` is mapped to no task, so retiming it binds no task-period rule; `Task_10ms` maps `ExampleConsumerSWC.ExampleConsumerRun`, not this runnable.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          },
+          {
+            "field": "events"
+          },
+          {
+            "member": {
+              "type": "timing",
+              "period": 0.01
+            }
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          },
+          {
+            "field": "events"
+          },
+          {
+            "member": {
+              "type": "timing",
+              "period": 0.02
+            }
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "timing",
+                  "period": 0.01
+                }
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "timing",
+                  "period": 0.02
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "One scope entry covers both removals: coverage is stated over an address, and in a multiset the two occurrences share one. The approval prompt therefore has to say how many occurrences go — which is what the delta below carries, one entry per occurrence."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Retire both recorded occurrences of ExampleRun's 10 ms trigger, and record a second occurrence of the 20 ms trigger it already carries.",
+    "operations": [
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "timing",
+                "period": 0.01
+              }
+            }
+          ]
+        }
+      },
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "timing",
+                "period": 0.01
+              }
+            }
+          ]
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "timing",
+                "period": 0.02
+              }
+            }
+          ]
+        },
+        "value": {
+          "type": "timing",
+          "period": 0.02
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "timing",
+                  "period": 0.01
+                }
+              }
+            ]
+          },
+          "before": {
+            "type": "timing",
+            "period": 0.01,
+            "disabled_modes": [],
+            "name": null
+          },
+          "summary": "swc/ExampleSWC: - runnables[ExampleRun].events[{type: timing, period: 0.01}]"
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "timing",
+                  "period": 0.01
+                }
+              }
+            ]
+          },
+          "before": {
+            "type": "timing",
+            "period": 0.01,
+            "disabled_modes": [],
+            "name": null
+          },
+          "summary": "swc/ExampleSWC: - runnables[ExampleRun].events[{type: timing, period: 0.01}]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "timing",
+                  "period": 0.02
+                }
+              }
+            ]
+          },
+          "after": {
+            "type": "timing",
+            "period": 0.02,
+            "disabled_modes": [],
+            "name": null
+          },
+          "summary": "swc/ExampleSWC: + runnables[ExampleRun].events[{type: timing, period: 0.02}]"
+        }
+      ]
+    },
+    "notes": "Three multiset rules in one exchange. (1) The duplicate in the baseline is LEGAL: `existing_elements` names the member address once because an address cannot say `twice`, and the summary says how many occurrences stand behind it — nothing here is an `identity-conflict`, because in a `whole_value` collection the member IS its identity and the collection counts rather than keys. (2) `remove` removes ONE occurrence, which is why the change set carries two of them; a single `remove` would have been accepted too and would have left one 10 ms trigger behind, with one delta entry instead of two. (3) `create` adds ONE occurrence, at the end of the list — and the created value is one the baseline ALREADY holds, which is the half of the rule a repeated `remove` cannot demonstrate. `existing_elements` names that member address, the `create` still succeeds, and `ExampleRun` ends with the 20 ms trigger recorded twice. At a uniquely identified address this would be an `identity-conflict`; in a multiset it is one more occurrence, so the delta carries one `create` rather than a collision. The delta counts the same way the collection does: one entry per occurrence added or removed, each at the member's own address, so two entries share an address and are not a repetition. What this vector is deliberately NOT: the same-identity replacement the protocol bans. A `remove` and a `create` of the same value in a multiset are one occurrence out and one occurrence in, and the ban's subject is uniquely identified elements and members — see `negative/identity-conflict-same-identity-group-move.json`. A `whole_value` MAP is the other side of that line: `SWComponent.memory`'s key is unique by construction, so a `create` at a key the baseline holds IS an `identity-conflict`."
+  }
+}

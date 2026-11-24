@@ -1,0 +1,44 @@
+{
+  "id": "08-interface-change-impact",
+  "task": 8,
+  "group": "question",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "What does a change of IVehicleOperatingState affect?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "mentions_all": [
+        "BrakeThermalProtection",
+        "VehicleStateManager",
+        "BrakeSubsystem",
+        "Chassis"
+      ]
+    }
+  },
+  "reference": {
+    "direct": [
+      "swc BrakeThermalProtection (port rOperatingState)",
+      "swc VehicleStateManager (port pOperatingState)",
+      "composition BrakeSubsystem (port rOperatingState)",
+      "composition Chassis (port rOperatingState)"
+    ],
+    "transitive": [
+      "composition VehicleControl",
+      "connector ChassisToCluster",
+      "connector ChassisToDiagnostics",
+      "connector ControllerToSubsystem",
+      "connector RearSensorToController",
+      "connector SensorToProtection",
+      "connector StateToChassis",
+      "connector SubsystemToController",
+      "task Task_100ms",
+      "task Task_50ms",
+      "sequence brake_thermal_cycle",
+      "sequence thermal_protection_fast_path",
+      "sequence thermal_status_display"
+    ],
+    "computed_by": "swcraft impact IVehicleOperatingState [--depth 1] --format json"
+  },
+  "note": "A right answer names the four direct users; the transitive rest is recorded for a reviewer and not required, because how far 'affect' reaches is the architect's call."
+}

@@ -1,0 +1,9 @@
+id: SWR-THP-010
+title: Cooling estimate
+description: The cooling of the brake disc shall be estimated from vehicle speed.
+req_type: req
+version: 1
+source: external
+document: SRS Thermal Protection
+baseline: '1.0'
+revision: '1'

@@ -1,0 +1,3 @@
+name: Status_T
+kind: value_type
+base: uint16_base

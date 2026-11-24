@@ -1,0 +1,41 @@
+{
+  "name": "immutable-field-memory-kind-discriminator",
+  "description": "A write to a field discovery declares immutable: the `kind` discriminator of a `hardware` element. `update_resource` expressed the same rule by not offering the parameter; the protocol declares it and refuses the write, so a client learns the rule before it asks and gets a reason when it does.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `RAM0` is the 256 KiB memory both components budget against, and `hardware/` discriminates its four element kinds on `kind` (three until contract `9.0.0` declared the partition). Discovery publishes `kind` as `immutable: true` — a memory that becomes a core is a different element, not an edit of this one.",
+    "existing_elements": [
+      { "layer": "hardware", "element": "RAM0" },
+      { "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "memory" }, { "key": "RAM0" }] }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": { "layer": "hardware", "element": "RAM0", "path": [{ "field": "kind" }] }
+        }
+      ],
+      "notes": "The scope covers the address, so the refusal is the immutability rule and not the authorization boundary. An approved scope can never make an immutable field writable."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Reclassify RAM0 as a core.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": { "layer": "hardware", "element": "RAM0", "path": [{ "field": "kind" }] },
+        "value": "core"
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "immutable-field",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [{ "layer": "hardware", "element": "RAM0", "path": [{ "field": "kind" }] }],
+    "notes": "The immutable set is a registry property, not a per-operation exception list: the layer identity fields (`name`, `id`), the identity of every nested collection member (a port's or runnable's `name`, the `(swc, instance, runnable)` composite of a task mapping, and every field of a `whole_value` member such as a timing event), the kind discriminators of all five kind-discriminated layers (`interfaces.kind`, `application_types.kind`, `implementation_types.kind`, `hardware.kind`, `compu_methods.kind`), and the SWC placement field `group`. `examples/discover-project-all-layers-present.json` publishes the whole set from the discovery side. Changing an IDENTITY is a `remove` plus a `create` at the NEW identity with the reference updates, reviewed as that delta. No immutable field has such a path: keeping the identity and rewriting what it is would be a `remove` and a `create` at the SAME identity, which the protocol bans globally and pass B refuses as `identity-conflict` (`negative/identity-conflict-same-identity-group-move.json`). That is why this vector's `kind` — like `group`, like the other two `kind` discriminators, like a rename in place — has no protocol path at all and stays a user act on the user's own files."
+  }
+}

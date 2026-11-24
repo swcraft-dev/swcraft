@@ -1,0 +1,10 @@
+{
+  "id": "13-unconnected-ports",
+  "task": 13,
+  "group": "search-and-statistics",
+  "kind": "question",
+  "binding": "unconnected_component_ports",
+  "oracle": "structural",
+  "prompt": "Which component ports are unconnected?",
+  "note": "Every component port no connector end and no delegation reaches, the product's unconnected value, each with its component: a port name two components share is asked once per component, and a reply that gives a port to another component fails. The prompt says component ports, so the count the long-list rule asks for is theirs; composition ports are not asked, unlike the committed task 13. Above twenty ports a reply may state the number and give the first twenty, each with its component, in the order a query of the unconnected ports answers."
+}

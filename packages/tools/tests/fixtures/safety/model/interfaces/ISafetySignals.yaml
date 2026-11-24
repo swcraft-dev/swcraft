@@ -1,0 +1,12 @@
+name: ISafetySignals
+kind: sender_receiver
+description: A rated element, a lower-rated one and an unrated one on ONE interface.
+data_elements:
+- name: torque
+  implementation_type: uint8
+  asil: D
+- name: speed
+  implementation_type: uint8
+  asil: B
+- name: raw
+  implementation_type: uint8

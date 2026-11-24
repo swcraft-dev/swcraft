@@ -1,0 +1,50 @@
+{
+  "id": "22-candidates-for-a-requirement",
+  "task": 22,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which elements could realise REQ_BTP_CORE_LOAD? Give the best candidates with the reason.",
+  "note": "The bench mirrors showcase 4fdc642.",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "candidates": {
+        "top": [
+          "P_Brake",
+          "RAM",
+          "P_Vehicle"
+        ],
+        "terms": {
+          "P_Brake": [
+            "processor",
+            "core"
+          ],
+          "RAM": [
+            "budget"
+          ],
+          "P_Vehicle": [
+            "core"
+          ]
+        }
+      }
+    }
+  },
+  "reference": {
+    "rule": "N = 3: the reply names the three top groups (place 1-3) of the deterministic trace search with its default configuration, in any order, and for each at least one term the search says it shares; already-linked elements the search leaves out may be named beside them.",
+    "search": [
+      "1. partition P_Brake 0.834691, shares processor, core",
+      "2. memory RAM 0.521566, shares budget",
+      "3. partition P_Vehicle 0.424239, shares core"
+    ],
+    "linked": [
+      "task Task_100ms",
+      "task Task_100ms_Low",
+      "task Task_50ms",
+      "hardware Core0",
+      "hardware Core1",
+      "hardware CPU"
+    ],
+    "computed_by": "swcraft experiment trace --format json (default configuration) on a copy of the bench, the requirement's candidates by place"
+  }
+}

@@ -1,0 +1,12 @@
+name: Task_50ms
+period: 0.05
+priority: 10
+partition: Partition0
+wcet: 8000us
+runnables:
+- swc: BrakeTemperatureSensor
+  runnable: PublishBrakeTemperature
+- swc: BrakeController
+  runnable: ProcessBrakeRequest
+- swc: VehicleStateManager
+  runnable: PublishOperatingState

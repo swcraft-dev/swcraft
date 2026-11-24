@@ -1,0 +1,6 @@
+name: ISignal
+kind: sender_receiver
+description: The interface both boundary ports of the hierarchy carry.
+data_elements:
+  - name: value
+    implementation_type: uint8

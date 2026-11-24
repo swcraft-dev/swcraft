@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: two duplicate groups whose verdicts depend on each
+  other through a reference cycle.
+
+  Upper and Lower are each declared in /Acme/Left/Compositions and
+  /Acme/Right/Compositions. Each Upper places a prototype of its OWN tree's
+  Lower, and each Lower places a prototype of its OWN tree's Upper. Nothing
+  about either pair differs except the reference text, so neither group can be
+  refused on its own properties — and neither can be PROVED merged, because
+  proving Upper needs Lower's verdict and proving Lower needs Upper's.
+
+  A composition that contains itself transitively is a malformed export (the
+  standard forbids the containment, not the file), and this is exactly where
+  the fixpoint has no least solution. The decision is fail-closed: a group in
+  a cycle is CONFLICTING and its line says "cyclic". The standard defines no
+  equality of definition at all, so a cycle is not an invitation to invent one.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Left</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Compositions</SHORT-NAME>
+              <ELEMENTS>
+                <COMPOSITION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>Upper</SHORT-NAME>
+                  <COMPONENTS>
+                    <SW-COMPONENT-PROTOTYPE>
+                      <SHORT-NAME>LowerPart</SHORT-NAME>
+                      <TYPE-TREF DEST="COMPOSITION-SW-COMPONENT-TYPE">/Acme/Left/Compositions/Lower</TYPE-TREF>
+                    </SW-COMPONENT-PROTOTYPE>
+                  </COMPONENTS>
+                </COMPOSITION-SW-COMPONENT-TYPE>
+                <COMPOSITION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>Lower</SHORT-NAME>
+                  <COMPONENTS>
+                    <SW-COMPONENT-PROTOTYPE>
+                      <SHORT-NAME>UpperPart</SHORT-NAME>
+                      <TYPE-TREF DEST="COMPOSITION-SW-COMPONENT-TYPE">/Acme/Left/Compositions/Upper</TYPE-TREF>
+                    </SW-COMPONENT-PROTOTYPE>
+                  </COMPONENTS>
+                </COMPOSITION-SW-COMPONENT-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Right</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Compositions</SHORT-NAME>
+              <ELEMENTS>
+                <COMPOSITION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>Upper</SHORT-NAME>
+                  <COMPONENTS>
+                    <SW-COMPONENT-PROTOTYPE>
+                      <SHORT-NAME>LowerPart</SHORT-NAME>
+                      <TYPE-TREF DEST="COMPOSITION-SW-COMPONENT-TYPE">/Acme/Right/Compositions/Lower</TYPE-TREF>
+                    </SW-COMPONENT-PROTOTYPE>
+                  </COMPONENTS>
+                </COMPOSITION-SW-COMPONENT-TYPE>
+                <COMPOSITION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>Lower</SHORT-NAME>
+                  <COMPONENTS>
+                    <SW-COMPONENT-PROTOTYPE>
+                      <SHORT-NAME>UpperPart</SHORT-NAME>
+                      <TYPE-TREF DEST="COMPOSITION-SW-COMPONENT-TYPE">/Acme/Right/Compositions/Upper</TYPE-TREF>
+                    </SW-COMPONENT-PROTOTYPE>
+                  </COMPONENTS>
+                </COMPOSITION-SW-COMPONENT-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

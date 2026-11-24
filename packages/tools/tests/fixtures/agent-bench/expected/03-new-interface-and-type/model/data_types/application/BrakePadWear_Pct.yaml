@@ -1,0 +1,8 @@
+name: BrakePadWear_Pct
+kind: application_type
+unit: percent
+range:
+  min: 0
+  max: 100
+description: Remaining brake pad thickness in percent.
+package: Brake

@@ -1,0 +1,4 @@
+name: ProbeSpeedCompu
+kind: linear
+unit: ProbeKmh
+factor: 0.1

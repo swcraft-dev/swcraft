@@ -1,0 +1,10 @@
+{
+  "id": "19-unallocated-requirements",
+  "task": 19,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "binding": "unallocated_requirements",
+  "oracle": "product-rule",
+  "prompt": "Which requirements are not satisfied by any element?",
+  "note": "Every requirement validator.requirement_allocated answers false for, in row order, and up to four allocated ones the reply must not name; a stub is neither required nor refused."
+}

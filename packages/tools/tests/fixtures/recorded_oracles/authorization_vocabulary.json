@@ -1,0 +1,189 @@
+{
+  "LAYER_NAMES": [
+    "systems",
+    "containers",
+    "swcs",
+    "interfaces",
+    "data_types",
+    "connectors",
+    "requirements",
+    "tasks",
+    "sequences",
+    "resources"
+  ],
+  "_LAYER_MODELS": {
+    "systems": {
+      "form": "class",
+      "discriminator": null,
+      "members": [
+        "swcraft_tools.schema.SystemElement"
+      ]
+    },
+    "containers": {
+      "form": "class",
+      "discriminator": null,
+      "members": [
+        "swcraft_tools.schema.ContainerElement"
+      ]
+    },
+    "swcs": {
+      "form": "class",
+      "discriminator": null,
+      "members": [
+        "swcraft_tools.schema.SWComponent"
+      ]
+    },
+    "interfaces": {
+      "form": "discriminated_union",
+      "discriminator": "kind",
+      "members": [
+        "swcraft_tools.schema.SRInterface",
+        "swcraft_tools.schema.CSInterface",
+        "swcraft_tools.schema.ExternalInterface"
+      ]
+    },
+    "data_types": {
+      "form": "discriminated_union",
+      "discriminator": "kind",
+      "members": [
+        "swcraft_tools.schema.BaseDataType",
+        "swcraft_tools.schema.ValueDataType",
+        "swcraft_tools.schema.ReferenceDataType",
+        "swcraft_tools.schema.EnumDataType",
+        "swcraft_tools.schema.RecordDataType",
+        "swcraft_tools.schema.ArrayDataType",
+        "swcraft_tools.schema.ApplicationDataType",
+        "swcraft_tools.schema.ExternalDataType",
+        "swcraft_tools.schema.ImplementationRecordDataType",
+        "swcraft_tools.schema.ImplementationArrayDataType",
+        "swcraft_tools.schema.PointerDataType"
+      ]
+    },
+    "connectors": {
+      "form": "class",
+      "discriminator": null,
+      "members": [
+        "swcraft_tools.schema.Connector"
+      ]
+    },
+    "requirements": {
+      "form": "class",
+      "discriminator": null,
+      "members": [
+        "swcraft_tools.schema.Requirement"
+      ]
+    },
+    "tasks": {
+      "form": "class",
+      "discriminator": null,
+      "members": [
+        "swcraft_tools.schema.Task"
+      ]
+    },
+    "sequences": {
+      "form": "class",
+      "discriminator": null,
+      "members": [
+        "swcraft_tools.schema.Sequence"
+      ]
+    },
+    "resources": {
+      "form": "discriminated_union",
+      "discriminator": "kind",
+      "members": [
+        "swcraft_tools.schema.CpuCoreResource",
+        "swcraft_tools.schema.MemoryResource"
+      ]
+    }
+  },
+  "LAYER_IDENTITY_FIELDS": {
+    "systems": "name",
+    "containers": "name",
+    "swcs": "name",
+    "interfaces": "name",
+    "data_types": "name",
+    "connectors": "name",
+    "requirements": "id",
+    "tasks": "name",
+    "sequences": "name",
+    "resources": "name"
+  },
+  "LAYER_FIELDS": {
+    "systems": [
+      "description",
+      "title"
+    ],
+    "containers": [
+      "description",
+      "system",
+      "title"
+    ],
+    "swcs": [
+      "description",
+      "memory",
+      "ports",
+      "runnables",
+      "type"
+    ],
+    "interfaces": [
+      "data_elements",
+      "description",
+      "kind",
+      "operations"
+    ],
+    "data_types": [
+      "base",
+      "description",
+      "element_type",
+      "encoding",
+      "fields",
+      "kind",
+      "length",
+      "literals",
+      "native_declaration",
+      "size",
+      "unit",
+      "value_max",
+      "value_min"
+    ],
+    "connectors": [
+      "description",
+      "from",
+      "to"
+    ],
+    "requirements": [
+      "description",
+      "links",
+      "req_type",
+      "status",
+      "title"
+    ],
+    "tasks": [
+      "description",
+      "partition",
+      "period",
+      "priority",
+      "runnables",
+      "wcet"
+    ],
+    "sequences": [
+      "steps",
+      "task",
+      "title"
+    ],
+    "resources": [
+      "core",
+      "description",
+      "enforcement",
+      "kind",
+      "size",
+      "threshold"
+    ]
+  },
+  "DELETE_ELEMENT_LAYERS": {
+    "swc": "swcs",
+    "requirement": "requirements",
+    "connector": "connectors",
+    "resource": "resources"
+  }
+}

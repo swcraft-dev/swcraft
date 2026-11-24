@@ -1,0 +1,128 @@
+{
+  "name": "read-swc-ports-unconnected-of-one-element",
+  "description": "One component's unconnected ports in one request: the member read of `ports` with `derived: [\"unconnected\"]`, joined on `element` to the `swc` layer's one row of that component (`where` on `name`), so only that component's own ports answer. The join is an inner join on equal values, so a port of any other component finds no match and has no row; the computed value is the layer read's own, so a connected port has no row either. The same request with `form: \"count\"` answers the number of those ports, and with `limit` it pages them.",
+  "kind": "example",
+  "context": {
+    "summary": "The base model, where every port is connected, with two ports that nothing connects: `ExampleSWC`'s require port `rSpare` and the require port `rIdle` of a third component, `UnplacedSWC`, both on `IExample`. So the layer's unconnected ports are two, one of each component, and the join keeps `ExampleSWC`'s.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "UnplacedSWC"
+      }
+    ],
+    "baseline_state": "current",
+    "notes": "A read takes no scope and writes no audit record."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "form": "index",
+    "members": "ports",
+    "derived": [
+      "unconnected"
+    ],
+    "join": [
+      {
+        "with": {
+          "address": {
+            "layer": "swc"
+          },
+          "where": [
+            {
+              "field": "name",
+              "equals": "ExampleSWC"
+            }
+          ]
+        },
+        "on": [
+          {
+            "left": "element",
+            "right": "element"
+          }
+        ],
+        "as": "owner"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "swc"
+      },
+      "form": "index",
+      "members": "ports",
+      "derived": [
+        "unconnected"
+      ],
+      "join": [
+        {
+          "with": {
+            "address": {
+              "layer": "swc"
+            },
+            "where": [
+              {
+                "field": "name",
+                "equals": "ExampleSWC"
+              }
+            ]
+          },
+          "on": [
+            {
+              "left": "element",
+              "right": "element"
+            }
+          ],
+          "as": "owner"
+        }
+      ],
+      "value": {
+        "count": 1,
+        "identities": [
+          {
+            "element": "ExampleSWC",
+            "member": "rSpare",
+            "derived": {
+              "unconnected": {
+                "direction": "require",
+                "interface": "IExample"
+              }
+            },
+            "owner": {
+              "element": "ExampleSWC"
+            }
+          }
+        ]
+      }
+    },
+    "notes": "`UnplacedSWC`'s `rIdle` has no row: the joined read answers `ExampleSWC`'s row alone, and the inner join drops a port with no match. Each row is the port's row, then the match under its alias (`owner`), which carries the component's identity. Without the `join` the same read answers both ports."
+  }
+}

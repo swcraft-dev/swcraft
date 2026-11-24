@@ -1,0 +1,60 @@
+{
+  "name": "unknown-field-in-update-payload",
+  "description": "An undeclared field in the PAYLOAD of an `update`, not in its address. `unknown-field-swc-safety-level` puts the undeclared name in the address, where an address step has to resolve against the registry to be taken at all; here every step resolves and the offending name rides inside the replacement value, one level down, where Pydantic's `extra=\"ignore\"` would drop it and the change set would report success with an empty delta.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` carries one port `pOut`, and the registry declares `port` with exactly `name`, `direction`, `interface` and `description` — `safety_level` is a plausible name none of them is.",
+    "existing_elements": [
+      { "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "ports" }, { "member": "pOut" }] }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [{ "field": "ports" }, { "member": "pOut" }]
+          }
+        }
+      ],
+      "notes": "The scope covers the requested address exactly, so the refusal is about the payload and not about authorization. That is the whole point of the vector: gate 1 and gate 2 both pass, and only the binding of the payload against the registry can find this."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Record the ASIL level of the pOut port.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [{ "field": "ports" }, { "member": "pOut" }]
+        },
+        "value": {
+          "name": "pOut",
+          "direction": "provide",
+          "interface": "IExample",
+          "description": "Example output port providing data",
+          "safety_level": "ASIL_B"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "unknown-field",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [{ "field": "ports" }, { "member": "pOut" }, { "field": "safety_level" }]
+      }
+    ],
+    "notes": "`unknown-field` is a field the REGISTRY does not declare, with no restriction to an address step, and the detection order lists it among pass B's codes. So an `update`'s replacement value is bound exactly as a `create`'s payload is, at every depth and under every verb: the same request written as a whole-collection `update` at `[ports]`, or as a `create` of the element with this port inside it, is refused with the same code at the same address. The address the violation names is the field's own — where the client wrote it — and not the address the operation carried. The model stays byte-identical."
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "name": "unknown-field-swc-safety-level",
+  "description": "An `update` at a field the registry does not declare. The request is a well-formed protocol envelope — the protocol schema deliberately does not restate `schema.py` — so only the registry can tell that `swc` has no `safety_level` field.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` exists; `safety_level` is a plausible field name that `schema.py` does not declare on any element kind.",
+    "existing_elements": [{ "layer": "swc", "element": "ExampleSWC" }],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [{ "field": "safety_level" }]
+          }
+        }
+      ],
+      "notes": "The scope covers the requested address, so the refusal is about the field and not about authorization."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Record the ASIL level of ExampleSWC.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [{ "field": "safety_level" }]
+        },
+        "value": "ASIL_B"
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "unknown-field",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [{ "field": "safety_level" }]
+      }
+    ],
+    "notes": "`unknown-field` is also the code for an undeclared layer or element kind, and for an address step into a field that does not exist — which is why no tenth code is needed for 'not found'. The model stays byte-identical."
+  }
+}

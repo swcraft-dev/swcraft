@@ -1,0 +1,9 @@
+id: SWR-DRV-002
+title: Thermal status update
+description: The instrument cluster shall update the thermal status within 100 ms.
+req_type: req
+version: 1
+source: external
+document: SRS Driver Information
+baseline: '1.0'
+revision: '1'

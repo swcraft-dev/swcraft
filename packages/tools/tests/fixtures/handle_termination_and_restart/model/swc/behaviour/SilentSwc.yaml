@@ -1,0 +1,11 @@
+name: SilentSwc
+type: application
+ports:
+- name: rSignal
+  direction: require
+  interface: ISignal
+runnables:
+- name: SilentRun
+  events:
+  - type: timing
+    period: 0.02

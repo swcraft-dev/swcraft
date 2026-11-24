@@ -1,0 +1,12 @@
+name: NoSupportSwc
+type: application
+ports:
+- name: pSignal
+  direction: provide
+  interface: ISignal
+runnables:
+- name: NoSupportRun
+  events:
+  - type: timing
+    period: 0.01
+handle_termination_and_restart: no_support

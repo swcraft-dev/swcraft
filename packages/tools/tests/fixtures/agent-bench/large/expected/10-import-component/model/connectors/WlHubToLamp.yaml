@@ -1,0 +1,7 @@
+name: WlHubToLamp
+from:
+  swc: Swc001abcdefghij
+  port: P1
+to:
+  swc: WlLampController
+  port: rLamp

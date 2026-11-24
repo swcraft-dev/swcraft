@@ -1,0 +1,8 @@
+name: Task_100ms
+period: 0.1
+priority: 4
+partition: PARTITION0
+wcet: 2ms
+runnables:
+- swc: SpeedEstimator
+  runnable: MonitorSpeed

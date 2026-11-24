@@ -1,0 +1,259 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swcraft.dev/contracts/requirements-interchange/requirements-interchange.schema.json",
+  "title": "SWCraft requirements interchange file",
+  "description": "A Sphinx-Needs needs.json (format 1), as 'swcraft import requirements --source FILE' reads it with no --mapping: SWCraft's own names, and Sphinx-Needs' own keys allowed beside them. current_version selects one of versions; its name is the baseline (the empty name states none), and its needs are imported. This schema judges every version alike; SWCraft's reader validates the selected version alone, and checks every other one only to be an object whose needs is an object. Seven rules are checked by SWCraft's reader alone: a need's id equals the key it is filed under, needs_amount equals the number of needs, a non-empty current_version names a key of versions, no JSON object repeats a key, a need's id, each parent id and current_version hold no lone surrogate, a key ending in _back mirrors a key that is read or allowed, and each parent id follows the requirement id rule. Under a --mapping, this schema does not judge the file.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "current_version",
+    "versions"
+  ],
+  "properties": {
+    "current_version": {
+      "description": "The name of the version to import; it becomes each imported requirement's baseline. The empty name is the Sphinx-Needs builder's for a project with no version, and states no baseline.",
+      "type": "string"
+    },
+    "versions": {
+      "description": "The version objects, by name.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/version"
+      }
+    },
+    "created": {
+      "type": "string"
+    },
+    "project": {
+      "type": "string"
+    },
+    "format_version": {
+      "description": "The needs.json format: 1 when present.",
+      "enum": [
+        1
+      ]
+    }
+  },
+  "if": {
+    "required": [
+      "current_version"
+    ],
+    "properties": {
+      "current_version": {
+        "const": ""
+      }
+    }
+  },
+  "then": {
+    "properties": {
+      "versions": {
+        "required": [
+          ""
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "requirementId": {
+      "description": "A requirement id: not blank (the whitespace class is spelled out as in text), no '@' (a link's version separator), no ':' (an element reference), no '/', no '\\' and no '..'.",
+      "type": "string",
+      "pattern": "^(?![\\s\\S]*\\.\\.)[^@:\\\\/]*[^@:\\\\\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000/][^@:\\\\/]*$"
+    },
+    "text": {
+      "description": "Not blank: at least one character outside the whitespace class, which is spelled out code point by code point because Python's and ECMA-262's '\\s' differ.",
+      "type": "string",
+      "pattern": "[^\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "version": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "needs"
+      ],
+      "properties": {
+        "needs": {
+          "description": "The needs of this version, each filed under its own id.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/need"
+          }
+        },
+        "created": {
+          "type": "string"
+        },
+        "creator": {
+          "description": "Not read.",
+          "type": "object"
+        },
+        "needs_amount": {
+          "description": "The number of needs, when stated.",
+          "$ref": "#/$defs/count"
+        },
+        "filters": {
+          "description": "Not read.",
+          "type": "object"
+        },
+        "filters_amount": {
+          "$ref": "#/$defs/count"
+        },
+        "needs_schema": {
+          "description": "Not validated. SWCraft reads one fact of it: whether the derived_from property carries field_type \"links\", which makes each parent follow Sphinx-Needs' link grammar (the part and the condition dropped).",
+          "type": "object"
+        },
+        "needs_defaults_removed": {
+          "description": "Only false: a file written with its defaults removed cannot tell an omitted key from an absent one.",
+          "const": false
+        }
+      }
+    },
+    "need": {
+      "description": "A need: the keys SWCraft reads, typed; every key Sphinx-Needs 9.2.0 writes itself and any key ending in _back allowed with any value; any other key refused.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "content",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/requirementId"
+        },
+        "title": {
+          "$ref": "#/$defs/text"
+        },
+        "content": {
+          "description": "The requirement's text as written: Sphinx-Needs' raw directive body, markup included; it becomes the description.",
+          "$ref": "#/$defs/text"
+        },
+        "type": {
+          "enum": [
+            "req",
+            "spec"
+          ]
+        },
+        "status": {
+          "description": "Read and not stored; exactly \"rejected\" removes the requirement.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "asil": {
+          "description": "The level allocated to the requirement; null, \"\" or absent allocates none.",
+          "enum": [
+            "QM",
+            "A",
+            "B",
+            "C",
+            "D",
+            "QM(A)",
+            "QM(B)",
+            "QM(C)",
+            "QM(D)",
+            "A(B)",
+            "A(C)",
+            "A(D)",
+            "B(B)",
+            "B(C)",
+            "B(D)",
+            "C(C)",
+            "C(D)",
+            "D(D)",
+            "",
+            null
+          ]
+        },
+        "document": {
+          "description": "The source document, as written; null, \"\" or absent states none.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "revision": {
+          "description": "The source tool's own revision, as written; never read as a number; null, \"\" or absent states none.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "derived_from": {
+          "description": "The parent requirements, each a non-blank string; a parent listed twice is one. Taken whole, unless the version's needs_schema labels derived_from as links: then a part (.p1) and a condition ([...]) are dropped. SWCraft's reader judges each resulting id by the requirement id rule.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "docname": true,
+        "lineno": true,
+        "lineno_content": true,
+        "tags": true,
+        "collapse": true,
+        "hide": true,
+        "layout": true,
+        "style": true,
+        "arch": true,
+        "is_import": true,
+        "is_external": true,
+        "external_url": true,
+        "external_css": true,
+        "type_name": true,
+        "type_prefix": true,
+        "type_color": true,
+        "type_style": true,
+        "is_modified": true,
+        "modifications": true,
+        "is_need": true,
+        "is_part": true,
+        "parts": true,
+        "id_parent": true,
+        "id_complete": true,
+        "jinja_content": true,
+        "template": true,
+        "pre_template": true,
+        "post_template": true,
+        "pre_content": true,
+        "post_content": true,
+        "has_dead_links": true,
+        "has_forbidden_dead_links": true,
+        "constraints": true,
+        "constraints_results": true,
+        "constraints_passed": true,
+        "constraints_error": true,
+        "doctype": true,
+        "sections": true,
+        "section_name": true,
+        "signature": true,
+        "parent_need": true,
+        "links": true,
+        "parent_needs": true,
+        "duration": true,
+        "completion": true,
+        "url": true,
+        "user": true,
+        "avatar": true,
+        "service": true,
+        "created_at": true,
+        "updated_at": true,
+        "closed_at": true,
+        "query": true,
+        "specific": true,
+        "max_amount": true,
+        "max_content_lines": true,
+        "id_prefix": true
+      },
+      "patternProperties": {
+        "_back$": true
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+name: Ts30abcde
+period: 0.05
+priority: 8
+partition: Pa4ab
+wcet: 1us
+runnables:
+- swc: Swc146abcdefghi
+  runnable: R1
+- swc: Swc147abcdefghi
+  runnable: R1
+- swc: Swc148abcdefghi
+  runnable: R1
+- swc: Swc149abcdefghi
+  runnable: R1
+- swc: Swc150abcdefghi
+  runnable: R1
+- swc: WlDataLogger
+  runnable: LogSnapshot

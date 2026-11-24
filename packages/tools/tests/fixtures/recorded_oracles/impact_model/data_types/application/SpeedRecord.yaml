@@ -1,0 +1,8 @@
+name: SpeedRecord
+kind: record
+fields:
+  - name: value
+    type: SpeedPhys
+  - name: quality
+    type: Quality
+description: reference `data_types.record_field.type` -> SpeedPhys and Quality.

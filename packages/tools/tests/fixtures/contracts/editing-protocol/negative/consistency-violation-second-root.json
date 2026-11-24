@@ -1,0 +1,41 @@
+{
+  "name": "consistency-violation-second-root",
+  "description": "A `create` of a second composition declaring `root: true`. Every field is admissible — the payload is exactly what `discover` declares for the kind — and every reference resolves (the composition names no member and no delegation); what the assembled staged result breaks is `check-model`'s cardinality over the whole `compositions/` layer, `composition.multiple-roots`: exactly one composition is the top of the emitted hierarchy. The case the tenth code, `consistency-violation`, exists for.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, whose `compositions/` layer declares exactly one root, `Root`. The change set adds `Root2` beside it with `root: true`, a `title` (a required field) and nothing else.",
+    "existing_elements": [{ "layer": "compositions", "element": "Root" }],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [{ "operation": "create", "address": { "layer": "compositions", "element": "Root2" } }],
+      "notes": "The scope covers the create exactly, so the refusal is the model rule and not the authorization boundary."
+    },
+    "notes": "The payload carries the required `title` and no members, so the ONLY thing wrong with the staged result is the second root: `check-model` over the staged result reports `composition.multiple-roots` and nothing else (probed on a copy of `examples/basic` on 2026-10-16, before this vector was recorded from the live engine). A member naming an undeclared component, or a missing `title`, would be answered one pass earlier and the vector would not isolate the code it exists to pin."
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Add a second root composition.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": { "layer": "compositions", "element": "Root2" },
+        "value": {
+          "name": "Root2",
+          "title": "A second root",
+          "root": true
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      { "layer": "compositions", "element": "Root" },
+      { "layer": "compositions", "element": "Root2" }
+    ],
+    "notes": "BOTH compositions are named, and neither is called the offender: the rule is that exactly one declares `root: true`, and choosing which of the two keeps it is a decision the rule does not make and the model cannot make for the architect — the same shape as `negative/consistency-violation-second-processor.json`, where the layer holds one processor. A client repairs this by removing either address, or by clearing one `root` flag, in a change set of its own. This is NOT `broken-reference`: nothing dangles. Nor is it `schema-violation`: the payload is exactly what `discover` declares, and no single-document check can see the rule, because \"exactly one file declares the root\" is a statement about every file at once."
+  }
+}

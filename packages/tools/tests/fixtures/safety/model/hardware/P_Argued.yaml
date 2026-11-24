@@ -1,0 +1,6 @@
+name: P_Argued
+kind: partition
+core: CORE0
+asil: D
+coexistence: The partition's components are placed in separate memory regions under memory protection; the argument is recorded in the item's safety case.
+description: Task_Argued's partition, rated D on CORE0 (capability B), carrying a memory-mixing argument.

@@ -1,0 +1,8 @@
+name: ISpeed
+kind: sender_receiver
+data_elements:
+  - name: value
+    implementation_type: Speed
+description: reference `interfaces.data_element.type` -> Speed.
+satisfies:
+- REQ_SPEED_001@1

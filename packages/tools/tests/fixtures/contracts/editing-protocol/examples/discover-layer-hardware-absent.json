@@ -1,0 +1,478 @@
+{
+  "name": "discover-layer-hardware-absent",
+  "description": "The same layer-narrowed `discover` over a project whose `hardware/` directory is not there: `present: false` — and no `optional` key, which in this default `summary` form means `false` — with the complete inventory published anyway. `present` is a probe's answer and not a declared default, so its `false` stays on the wire. The pair is the distinction an empty element list cannot express — no hardware declared at all, as against a layer whose elements happen to be zero — and since contract `2.0.0` the absent half is a project DEFECT: `check-model` reports it as `hardware.layer-absent`.",
+  "kind": "example",
+  "context": {
+    "summary": "A project migrated from an earlier release, whose model has every other layer and no `hardware/` directory. It does not pass `check-model`; that is the state this exchange describes.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current",
+    "notes": "The baseline token differs from the present vector's because it describes a different model; tokens are opaque and content-derived, and equality is the only operation a client may perform on one."
+  },
+  "input": {
+    "operation": "discover",
+    "layer": "hardware"
+  },
+  "expected": {
+    "response": {
+      "response": "discover",
+      "project": {
+        "name": "swcraft-migrated-project",
+        "arxml_version": "4.2.2",
+        "swcraft_version": "0.24.0"
+      },
+      "baseline": "rev1:7c31d5a80be92f46",
+      "reads": {
+        "forms": [
+          "summary",
+          "full",
+          "index"
+        ],
+        "default_form": {
+          "layer": "summary",
+          "collection": "summary",
+          "element": "full",
+          "field": "full"
+        },
+        "budget_wire_bytes": 80000,
+        "hint_page_size": 50,
+        "discover": {
+          "forms": [
+            "summary",
+            "full",
+            "baseline"
+          ],
+          "default_form": "summary"
+        },
+        "derived": [
+          {
+            "name": "connection_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string"
+              }
+            }
+          },
+          {
+            "name": "base_type",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "runnables.reads",
+                "runnables.writes"
+              ]
+            },
+            "rows": "one",
+            "shape": {
+              "implementation": "string|null",
+              "base": "string|null"
+            }
+          },
+          {
+            "name": "effective_level",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one",
+            "shape": {
+              "level": "string",
+              "rating": "string"
+            }
+          },
+          {
+            "name": "partitions",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one per value",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "crossing_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              }
+            }
+          },
+          {
+            "name": "unconnected",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "ports"
+              ]
+            },
+            "rows": "one per value",
+            "shape": {
+              "direction": "string",
+              "interface": "string|null"
+            }
+          },
+          {
+            "name": "core",
+            "at": {
+              "layer": "tasks"
+            },
+            "rows": "one",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "realised_by",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null"
+            }
+          },
+          {
+            "name": "allocation",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one",
+            "shape": {
+              "sites": "integer",
+              "elements": "integer",
+              "allocated": "boolean|null"
+            }
+          },
+          {
+            "name": "stale_links",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null",
+              "current": "integer"
+            }
+          }
+        ],
+        "join": {
+          "row_ceiling": 50000,
+          "max_entries": 8
+        }
+      },
+      "form": "summary",
+      "layers": [
+        {
+          "layer": "hardware",
+          "present": false,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "processor",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "processor"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "core",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "core"
+                  ]
+                },
+                {
+                  "name": "threshold",
+                  "type": "number",
+                  "required": true,
+                  "unit": "fraction"
+                },
+                {
+                  "name": "enforcement",
+                  "type": "string",
+                  "enum": [
+                    "strict",
+                    "advisory"
+                  ]
+                },
+                {
+                  "name": "asil_capability",
+                  "type": "string",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ]
+                },
+                {
+                  "name": "hw_id",
+                  "type": "integer"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "memory",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "memory"
+                  ]
+                },
+                {
+                  "name": "type",
+                  "type": "string",
+                  "required": true,
+                  "enum": [
+                    "RAM",
+                    "ROM",
+                    "EEPROM",
+                    "Flash"
+                  ]
+                },
+                {
+                  "name": "size",
+                  "type": "integer",
+                  "required": true,
+                  "unit": "bytes"
+                },
+                {
+                  "name": "accessible",
+                  "type": "list[string]",
+                  "required": true,
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                },
+                {
+                  "name": "threshold",
+                  "type": "number",
+                  "required": true,
+                  "unit": "fraction"
+                },
+                {
+                  "name": "enforcement",
+                  "type": "string",
+                  "enum": [
+                    "strict",
+                    "advisory"
+                  ]
+                },
+                {
+                  "name": "asil_capability",
+                  "type": "string",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "partition",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "partition"
+                  ]
+                },
+                {
+                  "name": "core",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "hardware",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "asil",
+                  "type": "string",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "QM(A)",
+                    "QM(B)",
+                    "QM(C)",
+                    "QM(D)",
+                    "A(B)",
+                    "A(C)",
+                    "A(D)",
+                    "B(B)",
+                    "B(C)",
+                    "B(D)",
+                    "C(C)",
+                    "C(D)",
+                    "D(D)"
+                  ]
+                },
+                {
+                  "name": "trust",
+                  "type": "string",
+                  "enum": [
+                    "non_trusted",
+                    "trusted_with_protection",
+                    "trusted"
+                  ]
+                },
+                {
+                  "name": "coexistence",
+                  "type": "string"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "notes": "The inventory is a registry fact rather than project state, so it is published in full and is byte-equal to the present project's: a client can author the processor and its first core without a second round trip, and the `create` materializes the directory as a registry-internal side effect. What the absent state does NOT do any more is change what validation runs: `hardware/` is mandatory, so its absence is one finding rather than a whole rule set switched off."
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "id": "metrics-tool-figures",
+  "function": "MCP `architecture_metrics`",
+  "tier": "generated-small",
+  "specimen": "scenario-impact-summary-bounded",
+  "class": "normal",
+  "thresholds": {
+    "list_cap": {
+      "value": 10,
+      "because": "every list of the tool's answer that grows with the model stops at ten names and counts the rest (metrics_render.ANSWER_LIST_CAP)"
+    },
+    "none_more": {
+      "value": 0,
+      "because": "nothing past the first ten: the precondition is that some name is past them"
+    }
+  },
+  "steps": [
+    {
+      "id": "metrics",
+      "mcp": "architecture_metrics",
+      "arguments": {}
+    }
+  ],
+  "expectations": [
+    {
+      "step": "metrics",
+      "at": "state.size.components",
+      "count_equals": {
+        "locator": "model_components"
+      },
+      "because": "the components that are not external stubs, counted off the files by the locator"
+    },
+    {
+      "step": "metrics",
+      "at": "state.size.compositions",
+      "count_equals": {
+        "locator": "model_compositions"
+      }
+    },
+    {
+      "step": "metrics",
+      "at": "state.size.component_ports",
+      "count_equals": {
+        "locator": "model_component_ports"
+      }
+    },
+    {
+      "step": "metrics",
+      "at": "state.size.connectors",
+      "count_equals": {
+        "locator": "model_connectors"
+      }
+    },
+    {
+      "step": "metrics",
+      "at": "state.size.runnables",
+      "count_equals": {
+        "locator": "model_runnables"
+      }
+    },
+    {
+      "step": "metrics",
+      "at": "state.coupling.dependencies",
+      "count_equals": {
+        "locator": "model_dependencies"
+      },
+      "because": "the directed dependencies, each pair once: the specimen's connectors outnumber its pairs, so a count of connectors fails"
+    },
+    {
+      "step": "metrics",
+      "at": "state.integrity.unconnected.more",
+      "count_above": "none_more",
+      "because": "the precondition: the specimen's unconnected ports are more than one list holds, so the cap is a check the answer can fail"
+    },
+    {
+      "step": "metrics",
+      "at": "state.integrity.unconnected.first",
+      "rows_at_most": "list_cap",
+      "because": "a list that grows with the model is capped, so the answer's size does not follow the model"
+    },
+    {
+      "step": "metrics",
+      "at": "state.integrity.unconnected.*",
+      "count_equals": {
+        "passport": "components.unconnected.total"
+      },
+      "because": "the names listed and the count of the rest add up to every unconnected port the specimen holds: a capped list drops nothing silently"
+    },
+    {
+      "step": "metrics",
+      "at": "state.components",
+      "absent": true,
+      "because": "the tool carries no per-component row; those are the CLI's"
+    },
+    {
+      "step": "metrics",
+      "at": "state.composition_tables",
+      "absent": true,
+      "because": "the tool carries no table per composition, whose size is not bounded by a constant; the count stays in size"
+    }
+  ]
+}

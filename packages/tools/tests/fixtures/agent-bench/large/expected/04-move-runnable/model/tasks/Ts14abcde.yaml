@@ -1,0 +1,18 @@
+name: Ts14abcde
+period: 0.04
+priority: 11
+partition: Pa2ab
+wcet: 1us
+runnables:
+- swc: Swc066abcdefghij
+  runnable: R1
+- swc: Swc067abcdefghij
+  runnable: R1
+- swc: Swc068abcdefghij
+  runnable: R1
+- swc: Swc069abcdefghij
+  runnable: R1
+- swc: Swc070abcdefghij
+  runnable: R1
+- swc: Swc044abcdefghij
+  runnable: R1

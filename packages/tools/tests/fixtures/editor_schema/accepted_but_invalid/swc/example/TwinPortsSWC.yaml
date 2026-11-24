@@ -1,0 +1,13 @@
+name: TwinPortsSWC
+type: application
+description: Two sibling ports with the same name inside one file
+ports:
+  - name: pOut
+    direction: provide
+    interface: IExample
+  - name: pOut
+    direction: provide
+    interface: IExample
+memory:
+  RAM: 16
+handle_termination_and_restart: no_support

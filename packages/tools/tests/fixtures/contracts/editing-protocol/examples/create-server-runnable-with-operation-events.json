@@ -1,0 +1,243 @@
+{
+  "name": "create-server-runnable-with-operation-events",
+  "description": "A server runnable, started by client calls of two operations through the component's own provide port and declared `concurrent`, authored with no new tool and no new addressing: the port and the runnable are `create`s, and each operation event is a `create` at its own `whole_value` member address, `{member: {type: operation, port, operation}}` (contract `7.7.0`). The delta folds the two event creates into the runnable's, because the runnable is new — one reviewed unit per element the change set adds.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `IDiagnosticService` is the client-server interface declaring `ReadDtc` and `ClearDtc`, whose two signatures are the same (`uint16` in, `uint8` out), so one runnable may serve both: `check-model`'s partial `[constr_2000]` finds nothing to report. `ExampleSWC` provides no port on it yet. No component declares an ASIL, and the safety rules read no event and no `concurrent`, so the change set asks no safety question.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IDiagnosticService"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "pDiag"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ServeDiagnostics"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope names the two entries the delta reports. The event creates are inside the runnable create's `after`, so the runnable's approval covers what the reviewer is shown about them."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Serve ReadDtc and ClearDtc from ExampleSWC through a new provide port, allowing concurrent calls.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "ports"
+            },
+            {
+              "member": "pDiag"
+            }
+          ]
+        },
+        "value": {
+          "name": "pDiag",
+          "direction": "provide",
+          "interface": "IDiagnosticService"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ServeDiagnostics"
+            }
+          ]
+        },
+        "value": {
+          "name": "ServeDiagnostics",
+          "concurrent": true
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ServeDiagnostics"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "operation",
+                "port": "pDiag",
+                "operation": "ReadDtc"
+              }
+            }
+          ]
+        },
+        "value": {
+          "type": "operation",
+          "port": "pDiag",
+          "operation": "ReadDtc"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ServeDiagnostics"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "operation",
+                "port": "pDiag",
+                "operation": "ClearDtc"
+              }
+            }
+          ]
+        },
+        "value": {
+          "type": "operation",
+          "port": "pDiag",
+          "operation": "ClearDtc"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "pDiag"
+              }
+            ]
+          },
+          "after": {
+            "name": "pDiag",
+            "direction": "provide",
+            "interface": "IDiagnosticService",
+            "observed_interface": null,
+            "description": "",
+            "measures": {},
+            "com_specs": [],
+            "satisfies": []
+          },
+          "summary": "swc/ExampleSWC: + ports[pDiag]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ServeDiagnostics"
+              }
+            ]
+          },
+          "after": {
+            "name": "ServeDiagnostics",
+            "min_start_interval": 0.0,
+            "concurrent": true,
+            "events": [
+              {
+                "type": "operation",
+                "port": "pDiag",
+                "operation": "ReadDtc",
+                "name": null
+              },
+              {
+                "type": "operation",
+                "port": "pDiag",
+                "operation": "ClearDtc",
+                "name": null
+              }
+            ],
+            "reads": [],
+            "writes": [],
+            "calls": [],
+            "reads_variables": [],
+            "writes_variables": [],
+            "can_enter": [],
+            "runs_inside": [],
+            "description": "",
+            "symbol": null,
+            "wcet": null,
+            "wcet_type": null,
+            "satisfies": []
+          },
+          "summary": "swc/ExampleSWC: + runnables[ServeDiagnostics]"
+        }
+      ]
+    },
+    "notes": "An operation event has no identity field, so it is addressed by its whole value, like a timing event — `(type, port, operation)` is what makes it one event, and two events naming one pair are one `duplicate-binding` finding, never an identity conflict. `concurrent` is the runnable's own field (AUTOSAR's `canBeInvokedConcurrently`), written only when `true`, so the file this commits carries `concurrent: true` between the runnable's name and its events. The runnable is started by operation events alone; one that also carried a timing event would be accepted as written, because SWCraft does not judge mixed event kinds."
+  }
+}

@@ -1,0 +1,6 @@
+name: WheelSpeedIf
+kind: sender_receiver
+description: The wheel speed a wheel sensor sends.
+data_elements:
+- name: speed
+  implementation_type: uint16

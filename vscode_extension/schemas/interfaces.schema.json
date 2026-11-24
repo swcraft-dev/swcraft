@@ -1,0 +1,343 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://swcraft.dev/schemas/interfaces.schema.json",
+  "title": "Interfaces",
+  "$comment": "Port interfaces. Three element kinds discriminated by `kind`: `sender_receiver` (typed data elements), `client_server` (operations with typed, directional arguments) and `external_interface` (a stub for an interface declared outside the project, carrying the reference the source made to it).",
+  "oneOf": [
+    {
+      "description": "A sender-receiver interface: the set of typed data elements exchanged over a port. Discriminated from `client_server` by `kind: sender_receiver`; it must declare at least one data element.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The interface's identity; the file is named from it (`interfaces/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across every interface kind, must not be blank, and immutable.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The discriminator that selects this interface kind; always `sender_receiver`.",
+          "type": "string",
+          "const": "sender_receiver"
+        },
+        "data_elements": {
+          "description": "The typed data elements exchanged over the interface, addressed by `name`, which must be unique inside the interface. Must not be empty.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/data_element"
+          }
+        },
+        "description": {
+          "description": "Free text about the interface. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "package": {
+          "description": "The one sub-package of `/PortInterfaces` this sender-receiver interface is emitted in, a single SHORT-NAME segment: the sender-receiver interface and the forms generated from it and every reference to it take `/PortInterfaces/{package}/`. Absent means `/PortInterfaces` itself. SWCraft's importers record it for an element whose source path is exactly `/PortInterfaces/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/PortInterfaces` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "is_service": {
+          "description": "Whether the interface is a service interface, AUTOSAR's `isService`: one meant for communication with basic software services rather than between application components. Written into the generated ARXML as the interface's `IS-SERVICE`, which states `false` when the model is silent, and left out of the file while it is `false`. A composition may not declare a boundary port typed by a service interface, and the two ends of a connector or a delegation must agree on it.",
+          "type": "boolean",
+          "default": false
+        },
+        "satisfies": {
+          "description": "The requirements this interface satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. A link here does not justify the components using the interface. It allocates no ASIL to anything.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "data_elements"
+      ]
+    },
+    {
+      "description": "A client-server interface: the set of operations a server port offers and a client port calls, each with its typed, directional arguments. Discriminated by `kind: client_server`; it must declare at least one operation.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The interface's identity; the file is named from it (`interfaces/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across every interface kind, must not be blank, and immutable.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The discriminator that selects this interface kind; always `client_server`.",
+          "type": "string",
+          "const": "client_server"
+        },
+        "operations": {
+          "description": "The operations a server port offers and a client port calls, addressed by `name`, which must be unique inside the interface. Must not be empty.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/operation"
+          }
+        },
+        "description": {
+          "description": "Free text about the interface. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "package": {
+          "description": "The one sub-package of `/PortInterfaces` this client-server interface is emitted in, a single SHORT-NAME segment: the client-server interface and every reference to it take `/PortInterfaces/{package}/`. Absent means `/PortInterfaces` itself. SWCraft's importers record it for an element whose source path is exactly `/PortInterfaces/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/PortInterfaces` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "is_service": {
+          "description": "Whether the interface is a service interface, AUTOSAR's `isService`: one meant for communication with basic software services rather than between application components. Written into the generated ARXML as the interface's `IS-SERVICE`, which states `false` when the model is silent, and left out of the file while it is `false`. A composition may not declare a boundary port typed by a service interface, and the two ends of a connector or a delegation must agree on it.",
+          "type": "boolean",
+          "default": false
+        },
+        "satisfies": {
+          "description": "The requirements this interface satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. A link here does not justify the components using the interface. It allocates no ASIL to anything.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "operations"
+      ]
+    },
+    {
+      "description": "A stub for a port interface declared outside the project: an ARXML export referenced it and declared it nowhere. It carries that reference, `external_ref` and `external_dest`, verbatim, and the names of the members the project's ports use — `operations` on a client-server stub, `data_elements` on a sender-receiver one — and nothing of their content. A port naming it is emitted with that reference, and no interface is generated for it. Discriminated by `kind: external_interface`.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The stub's identity; the file is named from it (`interfaces/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across every interface kind, must not be blank, and immutable. It is the name a port's `interface` gives; the reference the port is emitted with is `external_ref`.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The discriminator that selects this interface kind; always `external_interface`.",
+          "type": "string",
+          "const": "external_interface"
+        },
+        "external_ref": {
+          "description": "The AUTOSAR path the source's interface reference carried, verbatim: the interface's full path in the file that declares it. Written back unchanged into every port that names the stub. `check-model` reports a blank or malformed one.",
+          "type": "string",
+          "default": ""
+        },
+        "external_dest": {
+          "description": "The `DEST` the source's interface reference carried, verbatim: one of the eight port interface values the AUTOSAR schema enumerates, `CLIENT-SERVER-INTERFACE`, `SENDER-RECEIVER-INTERFACE`, `MODE-SWITCH-INTERFACE`, `NV-DATA-INTERFACE`, `PARAMETER-INTERFACE`, `TRIGGER-INTERFACE` or the abstract `DATA-INTERFACE` and `PORT-INTERFACE`. A concrete value names the interface's kind, which a connector or a delegation is checked against; an abstract one does not. `check-model` reports any other value.",
+          "type": "string",
+          "default": ""
+        },
+        "operations": {
+          "description": "The names of the operations of the external interface that the project's ports use, each the last segment of a member path directly under `external_ref`. Names only: nothing of a member's content is held. Listed only on a stub whose `external_dest` is `CLIENT-SERVER-INTERFACE`; a name listed twice, ignoring case, or a blank one is refused. A member a port's runnable, event or com-spec entry names must be listed here. An empty list is left out of the file.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "data_elements": {
+          "description": "The names of the data elements of the external interface that the project's ports use, each the last segment of a member path directly under `external_ref`. Names only: nothing of a member's content is held. Listed only on a stub whose `external_dest` is `SENDER-RECEIVER-INTERFACE`; a name listed twice, ignoring case, or a blank one is refused. A member a port's runnable, event or com-spec entry names must be listed here. An empty list is left out of the file.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "description": {
+          "description": "Free text about the stub. An external stub emits no element, so it reaches no generated artifact.",
+          "type": "string",
+          "default": ""
+        },
+        "satisfies": {
+          "description": "The requirements this interface stub satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. A link here does not justify the components using the interface. It allocates no ASIL to anything.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "name",
+        "kind"
+      ]
+    }
+  ],
+  "definitions": {
+    "data_element": {
+      "description": "One data element of a sender-receiver interface: a name, the declared data type it carries (`application_type` for an application data type, `implementation_type` for an implementation data type), an optional `init` value it starts from, and an optional `asil` for the safety integrity level of the information it carries.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The data element's identity inside its interface; unique among the interface's data elements and immutable.",
+          "type": "string"
+        },
+        "application_type": {
+          "description": "The name of the declared application data type this data element carries, an element of the `application_types` layer: an application type, an enumeration, a record or an array. Exactly one of `application_type` and `implementation_type` is set.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "implementation_type": {
+          "description": "The name of the declared implementation data type this data element carries, an element of the `implementation_types` layer: a value type, a reference type, an implementation record, an implementation array, a pointer or an external data type stub. Exactly one of `application_type` and `implementation_type` is set.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "init": {
+          "description": "The value this data element starts from, where the design fixes one. Optional, and its shape follows the element's own declared type: a plain scalar for an application type, for a value type or for a reference type (judged against the type at the end of its chain), the literal's own name for an enumeration, the name of one of the table's entries for a value type or a reference type that references a table (itself or along its chain), a map keyed by exactly the declared field or element names for a record or an implementation record, and a list of exactly the declared length for an array or an implementation array. A pointer takes none. A value the declared type cannot hold is reported as a model error rather than converted. A port of a component may state a value of its own for the element in its `com_specs`, which takes precedence on that port.",
+          "type": [
+            "boolean",
+            "integer",
+            "number",
+            "string",
+            "array",
+            "object",
+            "null"
+          ]
+        },
+        "asil": {
+          "description": "The safety integrity level of the information this element carries: `QM`, `A`, `B`, `C` or `D`, or a decomposed `X(Y)` such as `B(D)` — the thirteen spellings the AUTOSAR Safety Extensions list — where `Y` is the level before decomposition. Every rule ranks by `X`; one rule, `trace.decomposition-context-mismatch`, compares a requirement's `(Y)` with the level its parent requirement had before decomposition. The level sits on the element rather than on the interface or on the type, so one interface may carry a rated element beside an unrated one. Absent when none is allocated; a written `QM`, `QM(Y)` included, declares that none is — ISO 26262-1 calls QM not an ASIL, so it is not the lowest level — and is read as a declaration rather than as an absence. A component providing an element rated above its own level is reported, and so is one requiring an element rated below its own level unless the port declares a measure for that element.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "QM",
+            "A",
+            "B",
+            "C",
+            "D",
+            "QM(A)",
+            "QM(B)",
+            "QM(C)",
+            "QM(D)",
+            "A(B)",
+            "A(C)",
+            "A(D)",
+            "B(B)",
+            "B(C)",
+            "B(D)",
+            "C(C)",
+            "C(D)",
+            "D(D)",
+            null
+          ]
+        },
+        "description": {
+          "description": "Free text about the data element. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "sw_impl_policy": {
+          "description": "AUTOSAR's `swImplPolicy` for this element: `standard`, or `queued` for an element whose values the receiver queues rather than overwrites. Absent means `standard`, and nothing is written for it; a stated value is written into the generated ARXML as the element's `SW-IMPL-POLICY`. A queued element is sent and received through queued com-specs, a `require` port reading one names its `queue_length` in `com_specs`, and a by-value read may not take one.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "standard",
+            "queued",
+            null
+          ]
+        },
+        "sw_calibration_access": {
+          "description": "AUTOSAR's `swCalibrationAccess` for this element: how a measurement and calibration tool may reach it, `not_accessible`, `read_only` or `read_write`. Absent means `not_accessible`, and nothing is written for it; a stated value is written into the generated ARXML as the element's `SW-CALIBRATION-ACCESS`. An element whose `sw_impl_policy` is `queued` supports `not_accessible` only.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "not_accessible",
+            "read_only",
+            "read_write",
+            null
+          ]
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "operation": {
+      "description": "One operation of a client-server interface: a name and its ordered, typed, directional arguments; an operation may take no arguments at all.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The operation's identity inside its interface; unique among the interface's operations and immutable.",
+          "type": "string"
+        },
+        "arguments": {
+          "description": "The operation's ordered arguments, addressed by `name`, which must be unique inside the operation. May be empty.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/argument"
+          },
+          "default": []
+        },
+        "description": {
+          "description": "Free text about the operation. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "argument": {
+      "description": "One argument of a client-server operation: its name, the direction data flows through it, and the declared data type it carries (`application_type` for an application data type, `implementation_type` for an implementation data type).",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The argument's identity inside its operation; unique among the operation's arguments and immutable.",
+          "type": "string"
+        },
+        "direction": {
+          "description": "The direction data flows through the argument: `in` from client to server, `out` from server to client, `inout` both ways.",
+          "type": "string",
+          "enum": [
+            "in",
+            "out",
+            "inout"
+          ]
+        },
+        "application_type": {
+          "description": "The name of the declared application data type this argument carries, an element of the `application_types` layer: an application type, an enumeration, a record or an array. Exactly one of `application_type` and `implementation_type` is set.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "implementation_type": {
+          "description": "The name of the declared implementation data type this argument carries, an element of the `implementation_types` layer: a value type, a reference type, an implementation record, an implementation array, a pointer or an external data type stub. Exactly one of `application_type` and `implementation_type` is set.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "description": "Free text about the argument. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "required": [
+        "name",
+        "direction"
+      ]
+    }
+  }
+}

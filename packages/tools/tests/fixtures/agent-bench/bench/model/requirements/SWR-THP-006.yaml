@@ -1,0 +1,10 @@
+id: SWR-THP-006
+title: Brake temperature publication
+description: The brake temperature sensor shall publish the brake temperature every
+  50 ms.
+req_type: req
+version: 1
+source: external
+document: SRS Thermal Protection
+baseline: '1.0'
+revision: '1'

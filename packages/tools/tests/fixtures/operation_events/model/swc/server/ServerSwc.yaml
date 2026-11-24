@@ -1,0 +1,18 @@
+name: ServerSwc
+type: application
+description: One component whose one runnable is started by a timing event and by a call of ReadRecord.
+ports:
+- name: pRecords
+  direction: provide
+  interface: IRecords
+runnables:
+- name: ServeAndTick
+  events:
+  - type: timing
+    period: 0.01
+  - type: operation
+    port: pRecords
+    operation: ReadRecord
+handle_termination_and_restart: no_support
+satisfies:
+- REQ-OPE-001@1

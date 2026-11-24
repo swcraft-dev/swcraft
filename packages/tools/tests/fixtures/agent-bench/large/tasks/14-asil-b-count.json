@@ -1,0 +1,51 @@
+{
+  "id": "14-asil-b-count",
+  "task": 14,
+  "group": "search-and-statistics",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "How many components are ASIL B?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "number": 24
+    }
+  },
+  "reference": {
+    "counts": {
+      "A": 34,
+      "B": 24,
+      "C": 8,
+      "D": 8,
+      "QM": 76
+    },
+    "B": [
+      "Swc017abcdefghij",
+      "Swc018abcdefghij",
+      "Swc019abcdefghij",
+      "Swc020abcdefghij",
+      "Swc021abcdefghij",
+      "Swc022abcdefghij",
+      "Swc023abcdefghij",
+      "Swc024abcdefghij",
+      "Swc025abcdefghij",
+      "Swc026abcdefghij",
+      "Swc027abcdefghij",
+      "Swc028abcdefghij",
+      "Swc029abcdefghij",
+      "Swc030abcdefghij",
+      "Swc031abcdefghij",
+      "Swc032abcdefghij",
+      "Swc033abcdefghij",
+      "Swc034abcdefghij",
+      "Swc035abcdefghij",
+      "Swc036abcdefghij",
+      "Swc037abcdefghij",
+      "Swc038abcdefghij",
+      "Swc039abcdefghij",
+      "Swc040abcdefghij"
+    ],
+    "computed_by": "swcraft query --request {address: {layer: swc}, form: index, derived: [effective_level]}"
+  },
+  "note": "Every component declares its level and no data element is rated, so the effective level is the declared one here."
+}

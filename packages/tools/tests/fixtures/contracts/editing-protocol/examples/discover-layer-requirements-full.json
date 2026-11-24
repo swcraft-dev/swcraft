@@ -1,0 +1,345 @@
+{
+  "name": "discover-layer-requirements-full",
+  "description": "The `requirements` layer's descriptor at `form: \"full\"` — the one form that carries the descriptor PROSE, asked for one layer at a time because the project-wide `full` discovery is REFUSED with `over-budget` on every project (`negative/discover-project-full-over-budget.json`), and the refusal's second step is exactly this request. Together the fifteen per-layer `full` vectors replay every layer, kind and field annotation the model contract ships, verbatim, which is where the shipped-prose oracle (`packages/tools/tests/test_model_contract_conformance.py`) rides: rewording an annotation in the contract is a protocol-output change, and this is the output it changes. Of this layer: the one layer identified by `id` rather than `name`; since contract `11.0.0` the requirement names no element (the elements name it, in `satisfies`), carries a `version` and a `source`, and may list what it is `derived_from`, a `whole_value` list whose identity is the value itself. Compare it with the same descriptor inside `examples/discover-project-all-layers-present.json`, which is this document with every `description` dropped and the three descriptor booleans (`optional`, `required`, `immutable`) omitted where they are `false`.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` shape of a SWCraft project: fifteen scaffolded layers, `hardware/` among them. Nothing about the response depends on which elements are in the layer: the inventory is derived from the model contract through the registry, not from the files.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "discover",
+    "layer": "requirements",
+    "form": "full"
+  },
+  "expected": {
+    "response": {
+      "response": "discover",
+      "project": {
+        "name": "swcraft-basic-example",
+        "arxml_version": "4.2.2",
+        "swcraft_version": "0.24.0"
+      },
+      "baseline": "rev1:kk7N755-pYf2txfvyVl9Kw",
+      "reads": {
+        "forms": [
+          "summary",
+          "full",
+          "index"
+        ],
+        "default_form": {
+          "layer": "summary",
+          "collection": "summary",
+          "element": "full",
+          "field": "full"
+        },
+        "budget_wire_bytes": 80000,
+        "hint_page_size": 50,
+        "discover": {
+          "forms": [
+            "summary",
+            "full",
+            "baseline"
+          ],
+          "default_form": "summary"
+        },
+        "derived": [
+          {
+            "name": "connection_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string"
+              }
+            }
+          },
+          {
+            "name": "base_type",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "runnables.reads",
+                "runnables.writes"
+              ]
+            },
+            "rows": "one",
+            "shape": {
+              "implementation": "string|null",
+              "base": "string|null"
+            }
+          },
+          {
+            "name": "effective_level",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one",
+            "shape": {
+              "level": "string",
+              "rating": "string"
+            }
+          },
+          {
+            "name": "partitions",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one per value",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "crossing_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              }
+            }
+          },
+          {
+            "name": "unconnected",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "ports"
+              ]
+            },
+            "rows": "one per value",
+            "shape": {
+              "direction": "string",
+              "interface": "string|null"
+            }
+          },
+          {
+            "name": "core",
+            "at": {
+              "layer": "tasks"
+            },
+            "rows": "one",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "realised_by",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null"
+            }
+          },
+          {
+            "name": "allocation",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one",
+            "shape": {
+              "sites": "integer",
+              "elements": "integer",
+              "allocated": "boolean|null"
+            }
+          },
+          {
+            "name": "stale_links",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null",
+              "current": "integer"
+            }
+          }
+        ],
+        "join": {
+          "row_ceiling": 50000,
+          "max_entries": 8
+        }
+      },
+      "form": "full",
+      "layers": [
+        {
+          "layer": "requirements",
+          "optional": false,
+          "present": true,
+          "identity_field": "id",
+          "description": "Requirements and specification items, identified by `id` rather than `name`; the architecture elements that realize one name it in their own `satisfies`. An architecture requirement is published in the generated `needs.json` as a need of its own; an imported one is never published, only named by its id in the links that reach it.",
+          "element_kinds": [
+            {
+              "kind": "requirement",
+              "description": "One requirement or specification item. Identified by `id` rather than `name`, and its file is named from the `id`; the elements that realize it name it in their `satisfies` as `<id>@<version>`, so the requirement file names no element and an imported one can be overwritten by a re-import without losing a link, or removed by one when the delivery no longer holds it. `document`, `baseline` and `revision` record where an external requirement came from. An architecture requirement is published in the generated `needs.json` as a need of its own; an imported one is never published, only named by its id in the links that reach it.",
+              "fields": [
+                {
+                  "name": "id",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The requirement's identity; the file is named from it (`requirements/{id}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the layer, must not be empty, and immutable. It is the need's id in the generated `needs.json`, as written, and the id a link to the requirement names there. It may not contain `@` or `:`, the separators of a link's version and of an element reference."
+                },
+                {
+                  "name": "title",
+                  "type": "string",
+                  "required": true,
+                  "immutable": false,
+                  "description": "The requirement's one-line title; an architecture requirement's published need carries it as its title."
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": true,
+                  "immutable": false,
+                  "description": "The requirement's statement; an architecture requirement's published need carries it as its content. Required: a requirement without a statement is not one."
+                },
+                {
+                  "name": "req_type",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "`req` for a requirement, `spec` for a specification item; an architecture requirement is published as the need type `arch_req` or `arch_spec`.",
+                  "enum": [
+                    "req",
+                    "spec"
+                  ]
+                },
+                {
+                  "name": "version",
+                  "type": "integer",
+                  "required": true,
+                  "immutable": false,
+                  "description": "SWCraft's own change counter for this requirement, a positive integer: 1 when the requirement is first written, unless a link the requirements import leaves in the model as it was already names its id at a version, when the import writes it above every such version, so no link made before reads as confirmed against its text. The requirements import raises it by one when an external requirement's text, level, type or parents change; for an architecture requirement the author raises it, and no SWCraft edit raises it. A link `REQ-12@3` is confirmed for version 3; a link naming another version is reported as needing confirmation, and a bare `REQ-12` as a version not stated. It is never the source tool's revision, which is `revision`."
+                },
+                {
+                  "name": "source",
+                  "type": "string",
+                  "required": true,
+                  "immutable": false,
+                  "description": "Who owns the file: `external`, a requirement an importer writes from a requirements tool, which a re-import overwrites, and removes when the delivery no longer holds it; or `architecture`, a requirement authored in the architecture model. No default: provenance is stated, never assumed. Nothing refuses an edit of an external requirement; the importer's workflow is what keeps it read-only.",
+                  "enum": [
+                    "external",
+                    "architecture"
+                  ]
+                },
+                {
+                  "name": "derived_from",
+                  "type": "list[string]",
+                  "required": false,
+                  "immutable": false,
+                  "description": "What this requirement is derived from: a requirement, as `<id>@<version>` exactly as in `satisfies`, or a top-level architecture element, as `<token>:<name>` with the token of the `swc`, `interfaces`, `compositions`, `tasks` or `hardware` layer (`hardware:Core0`, `swc:SpeedCtrlSWC`). A member is an element reference when its text before the first `:` is one of those five tokens; a requirement `id` never contains `:`. Only the requirement form is a member of the relation; an element reference is resolved by `check-model` alone. Omitted while empty.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                },
+                {
+                  "name": "asil",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The safety integrity level allocated to this requirement: `QM`, `A`, `B`, `C` or `D`, or a decomposed `X(Y)` such as `B(D)` — the thirteen spellings the AUTOSAR Safety Extensions list — where `Y` is the level before decomposition. Every rule ranks by `X`; one rule, `trace.decomposition-context-mismatch`, compares a requirement's `(Y)` with the level its parent requirement had before decomposition. Absent when none is allocated. A written `QM`, `QM(Y)` included, declares that none is — ISO 26262-1 calls QM not an ASIL, so it is not the lowest level — and is read as a declaration rather than as an absence. A component that declares no level of its own takes the highest level of the requirements its own `satisfies`, its ports' and its runnables' name.",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "QM(A)",
+                    "QM(B)",
+                    "QM(C)",
+                    "QM(D)",
+                    "A(B)",
+                    "A(C)",
+                    "A(D)",
+                    "B(B)",
+                    "B(C)",
+                    "B(D)",
+                    "C(C)",
+                    "C(D)",
+                    "D(D)"
+                  ]
+                },
+                {
+                  "name": "document",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The source document this requirement was taken from, as the requirements tool names it (a document name, number or module). Provenance only: no check reads it, and a change of it never moves `version`. Absent when unknown."
+                },
+                {
+                  "name": "baseline",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The version of the requirements delivery this requirement was last imported from — the requirements team's baseline or commit, given to the import or taken from the file's version. Provenance only: no check reads it, and a change of it never moves `version`. Absent on an architecture requirement and on a stub."
+                },
+                {
+                  "name": "revision",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The source tool's own revision of this requirement, exactly as the tool writes it (`7`, `1.3`, `B`). It is the revision a reader outside SWCraft sees; `version` is SWCraft's own change counter and is never shown in its place. Provenance only: no check reads it, and a change of it never moves `version`. Absent when unknown."
+                },
+                {
+                  "name": "stub",
+                  "type": "boolean",
+                  "required": false,
+                  "immutable": false,
+                  "description": "True for a placeholder the import created for a parent requirement that `derived_from` names but that neither the import file nor the model holds. Every other field is still required: its title and description are placeholders the import writes, not the parent's requirement text, and it is replaced when an import brings the parent, and removed when nothing in the model names it any longer; every stub is reported as a warning. Only a YAML boolean loads, and YAML itself reads an unquoted `yes`, `on`, `no` or `off` as one; a quoted `'true'` or a `1` is refused. Absent on every real requirement."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "notes": "The same document the default form answers with `description` restored on the layer, on every kind and on every field that declares one, and with the three descriptor booleans spelled out where the default form omits them at `false` — `optional` on the layer, `required` and `immutable` on every field. Nothing else is restored, because nothing else is left out. `baseline` is the stand-in token every vector carries; a harness replaces it with the project's own."
+  }
+}

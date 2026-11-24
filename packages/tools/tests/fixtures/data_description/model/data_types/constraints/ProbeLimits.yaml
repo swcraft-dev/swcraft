@@ -1,0 +1,5 @@
+name: ProbeLimits
+min: 0
+max: 250
+level: 0
+description: Both limits and a level.

@@ -1,0 +1,13 @@
+name: VehicleTop
+title: The root composition
+root: true
+description: >-
+  reference `compositions.composition_member.composition` -> Powertrain and
+  Diagnostics, the one edge that stays inside the compositions layer. It is
+  also the composition the composition-typed connector is drawn inside.
+
+members:
+  - name: powertrain
+    composition: Powertrain
+  - name: diag
+    composition: Diagnostics

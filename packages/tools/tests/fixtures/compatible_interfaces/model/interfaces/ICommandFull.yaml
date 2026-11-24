@@ -1,0 +1,13 @@
+name: ICommandFull
+kind: client_server
+description: >-
+  The wider client-server interface: three operations, of which the narrower one
+  asks for two, and `Reset`'s one argument written in `Count`.
+operations:
+  - name: Start
+  - name: Stop
+  - name: Reset
+    arguments:
+      - name: code
+        direction: in
+        implementation_type: Count

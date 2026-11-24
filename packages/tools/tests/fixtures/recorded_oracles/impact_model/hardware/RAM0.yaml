@@ -1,0 +1,12 @@
+name: RAM0
+kind: memory
+type: RAM
+size: 262144
+accessible:
+  - CORE0
+  - CORE1
+threshold: 0.8
+enforcement: strict
+description: The declared memory; `ScratchPad` deliberately is not one.
+satisfies:
+- REQ_SPEED_001@1

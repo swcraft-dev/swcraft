@@ -1,0 +1,7 @@
+name: Count
+kind: value_type
+base: u8_base
+description: >-
+  The type the wider interface of each pair is written in. `Tally` is the same
+  structure under another name, which is what makes every pair here compatible
+  by `[constr_1050]` and incomparable by name.

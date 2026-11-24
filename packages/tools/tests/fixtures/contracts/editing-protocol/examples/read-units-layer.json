@@ -1,0 +1,60 @@
+{
+  "name": "read-units-layer",
+  "description": "A layer-granularity `read` of `units`, one of the three layers contract `8.0.0` added for the forms a type names by reference, stored in `data_types/units/`. It answers the one unit the model declares — by its `name` alone, since a summary leaves out the optional `display_name` — and nothing of the two elements that name it: a reference is a field of its referrer, not a member of the layer it targets. One of three layer reads of one model, one per element layer.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model plus contract `8.0.0`'s data description elements: the unit `ProbeNewtonMetre` (`data_types/units/`), the linear compu method `ProbeTorqueScale` naming it and the texttable `ProbeGearTable` with two entries (`data_types/compu_methods/`), and the data constraint `ProbeTorqueLimits` (`data_types/constraints/`); the application type `ProbeTorque` names the unit, the method and the constraint, and the enumeration `ProbeGear` and the value type `ProbeGearRaw` (over the base's `uint8_base`) share the table.",
+    "existing_elements": [
+      {
+        "layer": "units",
+        "element": "ProbeNewtonMetre"
+      },
+      {
+        "layer": "compu_methods",
+        "element": "ProbeTorqueScale"
+      },
+      {
+        "layer": "compu_methods",
+        "element": "ProbeGearTable"
+      },
+      {
+        "layer": "data_constraints",
+        "element": "ProbeTorqueLimits"
+      },
+      {
+        "layer": "application_types",
+        "element": "ProbeTorque"
+      },
+      {
+        "layer": "application_types",
+        "element": "ProbeGear"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "ProbeGearRaw"
+      }
+    ],
+    "notes": "No `form` is stated, so a layer address answers its default, `summary`. The same model is read at the other two element layers by `read-compu-methods-layer` and `read-data-constraints-layer`, and one of its compu methods by `read-compu-methods-texttable-element`."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "units"
+    }
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "units"
+      },
+      "form": "summary",
+      "value": [
+        {
+          "name": "ProbeNewtonMetre"
+        }
+      ]
+    },
+    "notes": "A unit is named by an application type's `unit_ref` and by a linear compu method's `unit`; both resolve in this layer alone."
+  }
+}

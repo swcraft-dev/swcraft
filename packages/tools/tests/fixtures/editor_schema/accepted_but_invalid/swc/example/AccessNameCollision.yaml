@@ -1,0 +1,23 @@
+name: AccessNameCollision
+type: application
+description: Two access entries of one runnable deriving one access point SHORT-NAME
+ports:
+  - name: pA_B
+    direction: require
+    interface: IExample
+  - name: pA
+    direction: require
+    interface: IExample
+runnables:
+  - name: CollidingRun
+    events:
+      - type: timing
+        period: 0.01
+    reads:
+      - port: pA_B
+        element: value
+      - port: pA
+        element: B_value
+memory:
+  RAM0: 16
+handle_termination_and_restart: no_support

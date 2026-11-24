@@ -1,0 +1,12 @@
+name: Task_Homogeneous
+period: 0.05
+priority: 1
+partition: P_Homogeneous
+wcet: 400us
+description: Two runnables of ONE component, so one level and no finding — and it carries an argument anyway, which is legal and reports nothing.
+coexistence: Written ahead of a re-rating; nothing reads it while the task is homogeneous.
+runnables:
+- swc: TorqueLimiter
+  runnable: Calibrate
+- swc: TorqueLimiter
+  runnable: SelfTest

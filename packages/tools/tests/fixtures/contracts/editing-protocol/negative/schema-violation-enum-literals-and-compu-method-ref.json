@@ -1,0 +1,64 @@
+{
+  "name": "schema-violation-enum-literals-and-compu-method-ref",
+  "description": "An enumeration that states its values BOTH as `literals` and by naming a texttable (`compu_method_ref`). Since contract `8.0.0` an enumeration states exactly one of the two (`rule:application_types.enum.literals-form`), and the table named here is declared — so the payload's shape refuses, not the reference.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model plus the texttable `ProbeGearTable`. The change set creates an enumeration stating its values both ways.",
+    "existing_elements": [
+      {
+        "layer": "compu_methods",
+        "element": "ProbeGearTable"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "ProbeGear"
+          }
+        }
+      ],
+      "notes": "The scope covers every operation exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Declare the probe gear with its values.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "application_types",
+          "element": "ProbeGear"
+        },
+        "value": {
+          "name": "ProbeGear",
+          "kind": "enum",
+          "literals": [
+            {
+              "name": "ProbePark",
+              "value": 0
+            }
+          ],
+          "compu_method_ref": "ProbeGearTable"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "application_types",
+        "element": "ProbeGear"
+      }
+    ],
+    "notes": "Refused when the payload is bound, at the element the payload creates. Unlike an application type's three pairs, where at most one is set, an enumeration must state one of the two: neither is refused by the same rule."
+  }
+}

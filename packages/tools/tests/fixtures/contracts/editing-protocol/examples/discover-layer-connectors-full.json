@@ -1,0 +1,316 @@
+{
+  "name": "discover-layer-connectors-full",
+  "description": "The `connectors` layer's descriptor at `form: \"full\"` — the one form that carries the descriptor PROSE, asked for one layer at a time because the project-wide `full` discovery is REFUSED with `over-budget` on every project (`negative/discover-project-full-over-budget.json`), and the refusal's second step is exactly this request. Together the fifteen per-layer `full` vectors replay every layer, kind and field annotation the model contract ships, verbatim, which is where the shipped-prose oracle (`packages/tools/tests/test_model_contract_conformance.py`) rides: rewording an annotation in the contract is a protocol-output change, and this is the output it changes. Of this layer: the one layer whose field spelling differs from its attribute (`from`), and the `connector.from` description the shipped-prose oracle reads verbatim. Compare it with the same descriptor inside `examples/discover-project-all-layers-present.json`, which is this document with every `description` dropped and the three descriptor booleans (`optional`, `required`, `immutable`) omitted where they are `false`.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` shape of a SWCraft project: fifteen scaffolded layers, `hardware/` among them. Nothing about the response depends on which elements are in the layer: the inventory is derived from the model contract through the registry, not from the files.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "discover",
+    "layer": "connectors",
+    "form": "full"
+  },
+  "expected": {
+    "response": {
+      "response": "discover",
+      "project": {
+        "name": "swcraft-basic-example",
+        "arxml_version": "4.2.2",
+        "swcraft_version": "0.24.0"
+      },
+      "baseline": "rev1:kk7N755-pYf2txfvyVl9Kw",
+      "reads": {
+        "forms": [
+          "summary",
+          "full",
+          "index"
+        ],
+        "default_form": {
+          "layer": "summary",
+          "collection": "summary",
+          "element": "full",
+          "field": "full"
+        },
+        "budget_wire_bytes": 80000,
+        "hint_page_size": 50,
+        "discover": {
+          "forms": [
+            "summary",
+            "full",
+            "baseline"
+          ],
+          "default_form": "summary"
+        },
+        "derived": [
+          {
+            "name": "connection_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string"
+              }
+            }
+          },
+          {
+            "name": "base_type",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "runnables.reads",
+                "runnables.writes"
+              ]
+            },
+            "rows": "one",
+            "shape": {
+              "implementation": "string|null",
+              "base": "string|null"
+            }
+          },
+          {
+            "name": "effective_level",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one",
+            "shape": {
+              "level": "string",
+              "rating": "string"
+            }
+          },
+          {
+            "name": "partitions",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one per value",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "crossing_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              }
+            }
+          },
+          {
+            "name": "unconnected",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "ports"
+              ]
+            },
+            "rows": "one per value",
+            "shape": {
+              "direction": "string",
+              "interface": "string|null"
+            }
+          },
+          {
+            "name": "core",
+            "at": {
+              "layer": "tasks"
+            },
+            "rows": "one",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "realised_by",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null"
+            }
+          },
+          {
+            "name": "allocation",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one",
+            "shape": {
+              "sites": "integer",
+              "elements": "integer",
+              "allocated": "boolean|null"
+            }
+          },
+          {
+            "name": "stale_links",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null",
+              "current": "integer"
+            }
+          }
+        ],
+        "join": {
+          "row_ceiling": 50000,
+          "max_entries": 8
+        }
+      },
+      "form": "full",
+      "layers": [
+        {
+          "layer": "connectors",
+          "optional": false,
+          "present": true,
+          "identity_field": "name",
+          "description": "Assembly connectors, each joining one component's `provide` port to another component's `require` port over a compatible interface.",
+          "element_kinds": [
+            {
+              "kind": "connector",
+              "description": "One assembly connector: it links the `from` endpoint, which must be a `provide` port, to the `to` endpoint, which must be a `require` port, and the `to` port's interface must be satisfied by the `from` port's. Connector names are unique across the layer, and so is each `(from, to)` link.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The connector's identity; the file is named from it (`connectors/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the layer, must not be empty, and immutable."
+                },
+                {
+                  "name": "from",
+                  "type": "connector_endpoint",
+                  "required": true,
+                  "immutable": false,
+                  "description": "The providing endpoint: the component and the `provide` port the connector starts from. Its port's interface must satisfy the `to` port's, which the same interface always does.",
+                  "element_kind": "connector_endpoint"
+                },
+                {
+                  "name": "to",
+                  "type": "connector_endpoint",
+                  "required": true,
+                  "immutable": false,
+                  "description": "The requiring endpoint: the component and the `require` port the connector delivers to. Its port's interface must be satisfied by the `from` port's, which the same interface always does.",
+                  "element_kind": "connector_endpoint"
+                },
+                {
+                  "name": "composition",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The name of the declared composition this connector belongs to. Absent means the root composition: the root's name is a property of the model rather than a constant, so it is resolved where the model is in hand — in the writer, in the rules and in the importer — and never written into the file as a default.",
+                  "reference": {
+                    "layer": "compositions",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the connector. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none."
+                }
+              ]
+            },
+            {
+              "kind": "connector_endpoint",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "connector",
+                  "field": "from"
+                },
+                {
+                  "kind": "connector",
+                  "field": "to"
+                }
+              ],
+              "description": "One end of an assembly connector: the component or composition type that owns the port, and the port. A nested object rather than a list member, so it has no identity of its own and every field of it may change. It names the TYPE either way; the writer resolves that type to the member of it inside the connector's own composition, which is why a type may stand only once per composition.",
+              "fields": [
+                {
+                  "name": "swc",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The name of the declared software component that owns the endpoint's port. Exactly one of `swc` and `composition` is set; this one is the endpoint of an ordinary component.",
+                  "reference": {
+                    "layer": "swc",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "composition",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The name of the declared composition that owns the endpoint's port, where the endpoint is a sub-composition's boundary port. Exactly one of `swc` and `composition` is set; an endpoint declaring neither, or both, is refused.",
+                  "reference": {
+                    "layer": "compositions",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "port",
+                  "type": "string",
+                  "required": true,
+                  "immutable": false,
+                  "description": "The name of a port of that component. Must not be empty; the port's existence and its direction are checked against the component."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "notes": "The same document the default form answers with `description` restored on the layer, on every kind and on every field that declares one, and with the three descriptor booleans spelled out where the default form omits them at `false` — `optional` on the layer, `required` and `immutable` on every field. Nothing else is restored, because nothing else is left out. `baseline` is the stand-in token every vector carries; a harness replaces it with the project's own."
+  }
+}

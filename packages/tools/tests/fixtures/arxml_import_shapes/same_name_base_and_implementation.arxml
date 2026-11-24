@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: a SW-BASE-TYPE and an IMPLEMENTATION-DATA-TYPE that declare
+  exactly one SHORT-NAME.
+
+  They are elements of two layers, so both are written under the name
+  "Sample". It is deliberately NOT a duplicate group — the merge verdict is
+  keyed on (layer, KIND, name) and never judges across kinds, so the external
+  oracle reports no group here at all. The variant differing only in case is
+  a different shape.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Chassis</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>BaseTypes</SHORT-NAME>
+              <ELEMENTS>
+                <SW-BASE-TYPE>
+                  <SHORT-NAME>Sample</SHORT-NAME>
+                  <CATEGORY>FIXED_LENGTH</CATEGORY>
+                  <BASE-TYPE-SIZE>16</BASE-TYPE-SIZE>
+                  <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                  <NATIVE-DECLARATION>uint16</NATIVE-DECLARATION>
+                </SW-BASE-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>ImplTypes</SHORT-NAME>
+              <ELEMENTS>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>Sample</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/BaseTypes/Sample</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

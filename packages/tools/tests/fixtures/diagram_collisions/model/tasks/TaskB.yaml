@@ -1,0 +1,8 @@
+name: TaskB
+period: 0.02
+priority: 4
+partition: PARTITION0
+wcet: 2000us
+runnables:
+  - swc: SensorA
+    runnable: Run

@@ -1,0 +1,23 @@
+name: ExampleSWC
+type: application
+description: Example software component for testing and demonstration
+
+ports:
+  - name: pOut
+    direction: provide
+    interface: IExample
+    description: Example output port providing data
+
+runnables:
+  - name: ExampleRun
+    min_start_interval: 0.01
+    events:
+      - type: timing
+        period: 0.01
+
+memory:
+  RAM0: 2048
+
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_EXAMPLE_001@1

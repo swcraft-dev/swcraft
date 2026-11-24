@@ -1,0 +1,21 @@
+{
+  "purpose": "The dispositions a partial consumer DELIBERATELY gets for the synthetic layer, merged over the shipped coverage declarations in the test process only (`model_contract_fixtures.merged_coverage`). Without this file the expected gap would be the uninteresting 'every partial consumer, every synthetic entry'; with it the expectation is a specific asserted list, and the test can show that the checker names gaps consumer by consumer and entry by entry rather than counting them. `diagrams` is given both synthetic entries and must therefore contribute NO gap; `validator` is given only the layer entry and must contribute exactly the one remaining kind gap. The eight other partial consumers are given nothing and must contribute both. Every reason below is true as written: it states a fact about the fixture, not a claim about production behaviour — the synthetic layer exists only inside the test process, so no consumer reads it and none could.",
+  "dispositions": {
+    "diagrams": {
+      "layer:synthetic": {
+        "status": "not-applicable",
+        "reason": "A fixture row, not a statement about `writer/diagrams/graph.py`: the synthetic layer is merged into the contract in the test process only and exists on no project on disk, so no reader loads it and nothing about it can reach a generated view. The row exists so that this consumer contributes no gap and the expected gap list is a specific asserted set rather than 'all partial consumers'."
+      },
+      "kind:synthetic.synthetic": {
+        "status": "not-applicable",
+        "reason": "A fixture row, not a statement about `writer/diagrams/graph.py`: the synthetic layer's one element kind exists only inside the test process. Paired with the layer row above so that this consumer is fully disposed of at both populated granularities and contributes no gap at all."
+      }
+    },
+    "validator": {
+      "layer:synthetic": {
+        "status": "not-applicable",
+        "reason": "A fixture row, not a statement about `validator.py`: the synthetic layer is merged in-process and exists on no project on disk, so no check resolves anything in it. Deliberately NOT paired with a `kind:synthetic.synthetic` row — this consumer is the one that must be reported with exactly one remaining gap, which is what shows the checker names the missing entry rather than the missing consumer."
+      }
+    }
+  }
+}

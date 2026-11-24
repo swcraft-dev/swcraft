@@ -1,0 +1,8 @@
+name: Root
+title: Root composition
+root: true
+members:
+- name: ProbeSender
+  type: ProbeSender
+- name: ProbeReceiver
+  type: ProbeReceiver

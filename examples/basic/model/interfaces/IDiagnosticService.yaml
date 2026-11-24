@@ -1,0 +1,19 @@
+name: IDiagnosticService
+kind: client_server
+operations:
+  - name: ReadDtc
+    arguments:
+      - name: dtc_id
+        direction: in
+        implementation_type: uint16
+      - name: status
+        direction: out
+        implementation_type: uint8
+  - name: ClearDtc
+    arguments:
+      - name: dtc_id
+        direction: in
+        implementation_type: uint16
+      - name: result
+        direction: out
+        implementation_type: uint8

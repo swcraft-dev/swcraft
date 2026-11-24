@@ -1,0 +1,6 @@
+name: task10ms_consumer_cycle
+task: Task_10ms
+title: Consumer task execution cycle
+steps:
+- swc: ExampleConsumerSWC
+  runnable: ExampleConsumerRun

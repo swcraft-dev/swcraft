@@ -1,0 +1,13 @@
+name: Root
+title: Root composition
+root: true
+description: The root every project owes; each of the four components stands in it once.
+members:
+- name: TorqueLimiter
+  type: TorqueLimiter
+- name: SpeedSensor
+  type: SpeedSensor
+- name: DiagnosticsAgent
+  type: DiagnosticsAgent
+- name: PlainWorker
+  type: PlainWorker

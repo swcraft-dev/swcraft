@@ -1,0 +1,74 @@
+{
+  "name": "additional-violations-unknown-field-and-immutable-field",
+  "description": "One change set carrying three independent violations, all found by pass B. It is the vector that makes `errorResult.additional` a contract rather than an unused field: the response reports the first violation in pass order as the primary and the other two alongside it, so a client fixes the whole change set in one round trip instead of learning about one violation per attempt.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` exists and has no `safety_level` field; `CORE0` is a hardware `core` whose `kind` discriminator discovery declares immutable; `uint16_base` is already declared in `data_types/base/`. The three operations are unrelated to each other, which is the point — none of them is a consequence of another.",
+    "existing_elements": [
+      { "layer": "swc", "element": "ExampleSWC" },
+      { "layer": "hardware", "element": "CORE0" },
+      { "layer": "base_types", "element": "uint16_base" }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": { "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "safety_level" }] }
+        },
+        {
+          "operation": "update",
+          "address": { "layer": "hardware", "element": "CORE0", "path": [{ "field": "kind" }] }
+        },
+        { "operation": "create", "address": { "layer": "base_types", "element": "uint16_base" } }
+      ],
+      "notes": "Every requested address is covered, so the change set clears gate 1 and the three refusals are all about the operations themselves."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Record an ASIL level, turn CORE0 into a memory and add a 16-bit base type.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": { "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "safety_level" }] },
+        "value": "ASIL_B"
+      },
+      {
+        "operation": "update",
+        "address": { "layer": "hardware", "element": "CORE0", "path": [{ "field": "kind" }] },
+        "value": "memory"
+      },
+      {
+        "operation": "create",
+        "address": { "layer": "base_types", "element": "uint16_base" },
+        "value": {
+          "name": "uint16_base",
+          "kind": "base_type",
+          "size": 16,
+          "encoding": "NONE"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "unknown-field",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [{ "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "safety_level" }] }],
+    "additional": [
+      {
+        "expected_error": "immutable-field",
+        "failure_class": "invalid",
+        "addresses": [{ "layer": "hardware", "element": "CORE0", "path": [{ "field": "kind" }] }]
+      },
+      {
+        "expected_error": "identity-conflict",
+        "failure_class": "invalid",
+        "addresses": [{ "layer": "base_types", "element": "uint16_base" }]
+      }
+    ],
+    "notes": "The primary is the FIRST violation the pass order reaches, and pass B walks the operations in the order given — so the primary is the first operation's, and `additional` carries the other two in operation order. Nothing in `additional` repeats the primary. All three are pass-B codes here, but the rule is wider: a violation found in a LATER pass that still ran is reported too, in the detection order, and only a pass that could not run at all reports nothing. `failure_class` on the result is the primary's class; every code involved is `invalid`, and every one of the four classes leaves the real model byte-identical anyway."
+  }
+}

@@ -1,0 +1,4 @@
+name: CORE0
+kind: core
+threshold: 0.7
+description: The one core a model must declare.

@@ -1,0 +1,10 @@
+{
+  "id": "11-ports-of-a-component",
+  "task": 11,
+  "group": "search-and-statistics",
+  "kind": "question",
+  "binding": "ports_of_the_largest_component",
+  "oracle": "structural",
+  "prompt": "How many ports does {{component}} have, and which?",
+  "note": "The component with the most ports: its port count and every port name, in port order; over twenty the long-list rule applies."
+}

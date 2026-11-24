@@ -1,0 +1,57 @@
+{
+  "name": "schema-violation-external-interface-member-of-wrong-kind",
+  "description": "An external interface stub listing members of the kind its `external_dest` does not admit. Since contract `8.0.0` a stub lists the members its ports use by name -- `operations` only on a `CLIENT-SERVER-INTERFACE`, `data_elements` only on a `SENDER-RECEIVER-INTERFACE`, nothing on a `MODE-SWITCH-INTERFACE` (`rule:interfaces.external_interface.member-kind`) -- and this sender-receiver stub lists an operation, so what refuses is the shape of the payload.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. The change set creates a sender-receiver stub that lists an operation.",
+    "existing_elements": [],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IForeignSpeed"
+          }
+        }
+      ],
+      "notes": "The scope covers the create exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Carry the speed interface another file declares.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "IForeignSpeed"
+        },
+        "value": {
+          "name": "IForeignSpeed",
+          "kind": "external_interface",
+          "external_ref": "/Foreign/PortInterfaces/IForeignSpeed",
+          "external_dest": "SENDER-RECEIVER-INTERFACE",
+          "operations": [
+            "ReadSpeed"
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "interfaces",
+        "element": "IForeignSpeed"
+      }
+    ],
+    "notes": "Refused when the payload is bound, at the element the payload creates. The repair is the field the stub's `external_dest` admits -- `data_elements` on this sender-receiver stub -- or the `external_dest` of the interface the other file really declares."
+  }
+}

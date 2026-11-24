@@ -1,0 +1,7 @@
+name: CORE0
+kind: core
+threshold: 0.7
+enforcement: strict
+description: reference `hardware.partition.core` -> PARTITION0; relation `hardware.memory.accessible` -> RAM0.
+satisfies:
+- REQ_SPEED_001@1

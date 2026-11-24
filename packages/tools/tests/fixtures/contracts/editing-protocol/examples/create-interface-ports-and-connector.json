@@ -1,0 +1,290 @@
+{
+  "name": "create-interface-ports-and-connector",
+  "description": "One change set spanning three layers: a sender-receiver interface with two data elements, a nested port create on each of two existing components, and the connector between them. Every reference it introduces resolves only against the staged result, which is what makes the four operations one reviewable unit.",
+  "kind": "example",
+  "context": {
+    "summary": "A model holding `SpeedSensorSWC` and `ExampleConsumerSWC`, and the data types `VehicleSpeed_kph` and `bool`. Neither component has a speed port yet and the interface does not exist.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "SpeedSensorSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "VehicleSpeed_kph"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "bool"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IVehicleSpeed"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "SpeedSensorSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "pSpeed"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rSpeed"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "connectors",
+            "element": "SpeedSensor_to_Consumer"
+          }
+        }
+      ]
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:7ad3e69c1b524f80",
+    "intent": "Publish the vehicle speed from SpeedSensorSWC to ExampleConsumerSWC.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "IVehicleSpeed"
+        },
+        "value": {
+          "name": "IVehicleSpeed",
+          "kind": "sender_receiver",
+          "data_elements": [
+            {
+              "name": "speed_kph",
+              "implementation_type": "VehicleSpeed_kph"
+            },
+            {
+              "name": "speed_valid",
+              "implementation_type": "bool"
+            }
+          ],
+          "description": "Vehicle speed with its validity flag"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "SpeedSensorSWC",
+          "path": [
+            {
+              "field": "ports"
+            },
+            {
+              "member": "pSpeed"
+            }
+          ]
+        },
+        "value": {
+          "name": "pSpeed",
+          "direction": "provide",
+          "interface": "IVehicleSpeed",
+          "description": "Publishes the measured vehicle speed",
+          "measures": {}
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "ports"
+            },
+            {
+              "member": "rSpeed"
+            }
+          ]
+        },
+        "value": {
+          "name": "rSpeed",
+          "direction": "require",
+          "interface": "IVehicleSpeed",
+          "description": "Consumes the vehicle speed",
+          "measures": {}
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "connectors",
+          "element": "SpeedSensor_to_Consumer"
+        },
+        "value": {
+          "name": "SpeedSensor_to_Consumer",
+          "from": {
+            "swc": "SpeedSensorSWC",
+            "port": "pSpeed"
+          },
+          "to": {
+            "swc": "ExampleConsumerSWC",
+            "port": "rSpeed"
+          },
+          "description": "SpeedSensorSWC provides IVehicleSpeed data to ExampleConsumerSWC"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:7ad3e69c1b524f80",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rSpeed"
+              }
+            ]
+          },
+          "after": {
+            "name": "rSpeed",
+            "direction": "require",
+            "interface": "IVehicleSpeed",
+            "observed_interface": null,
+            "description": "Consumes the vehicle speed",
+            "measures": {},
+            "com_specs": [],
+            "satisfies": []
+          },
+          "summary": "swc/ExampleConsumerSWC: + ports[rSpeed]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "SpeedSensorSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "pSpeed"
+              }
+            ]
+          },
+          "after": {
+            "name": "pSpeed",
+            "direction": "provide",
+            "interface": "IVehicleSpeed",
+            "observed_interface": null,
+            "description": "Publishes the measured vehicle speed",
+            "measures": {},
+            "com_specs": [],
+            "satisfies": []
+          },
+          "summary": "swc/SpeedSensorSWC: + ports[pSpeed]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IVehicleSpeed"
+          },
+          "after": {
+            "name": "IVehicleSpeed",
+            "kind": "sender_receiver",
+            "data_elements": [
+              {
+                "name": "speed_kph",
+                "application_type": null,
+                "implementation_type": "VehicleSpeed_kph",
+                "init": null,
+                "asil": null,
+                "description": "",
+                "sw_impl_policy": null,
+                "sw_calibration_access": null
+              },
+              {
+                "name": "speed_valid",
+                "application_type": null,
+                "implementation_type": "bool",
+                "init": null,
+                "asil": null,
+                "description": "",
+                "sw_impl_policy": null,
+                "sw_calibration_access": null
+              }
+            ],
+            "description": "Vehicle speed with its validity flag",
+            "package": null,
+            "is_service": false,
+            "satisfies": []
+          },
+          "summary": "interfaces: + IVehicleSpeed"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "connectors",
+            "element": "SpeedSensor_to_Consumer"
+          },
+          "after": {
+            "name": "SpeedSensor_to_Consumer",
+            "from": {
+              "swc": "SpeedSensorSWC",
+              "composition": null,
+              "port": "pSpeed"
+            },
+            "to": {
+              "swc": "ExampleConsumerSWC",
+              "composition": null,
+              "port": "rSpeed"
+            },
+            "composition": null,
+            "description": "SpeedSensorSWC provides IVehicleSpeed data to ExampleConsumerSWC"
+          },
+          "summary": "connectors: + SpeedSensor_to_Consumer"
+        }
+      ]
+    },
+    "notes": "The ports reference an interface created by the first operation and the connector references ports created by the second and third; none of them resolves against the current model, and all of them resolve against the staged result — the protocol's ordering-independence. The interface carries two data elements, which the `add_interface` wrapper's signature could not express. The connector's `from` is the alias the model file uses, so the change set speaks the vocabulary discovery declared."
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "name": "create-interface-stub-listing-operations-with-a-call",
+  "description": "Contract `8.0.0`'s stub members through the generic change set: an `external_interface` stub of a client-server interface another file declares lists, by name, the one operation the project's ports use, a component requires the stub on a new port, and its runnable calls the listed operation through it, the call stating its own `name`. The member resolves against the stub's list; the writer references it as the stub's path plus the name and derives the port's client com-spec from the list.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. Neither the stub nor the port exists; `ExampleConsumerSWC`'s runnable `ExampleConsumerRun` calls nothing yet.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleConsumerRun"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IForeignCalibration"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rCalib"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleConsumerRun"
+              },
+              {
+                "field": "calls"
+              },
+              {
+                "member": {
+                  "port": "rCalib",
+                  "operation": "ReadOffset"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The three exact addresses the delta reports, in two layers. No component or interface here carries a level, so the safety guard has nothing to ask."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Call the calibration offset another file of the delivery serves.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "IForeignCalibration"
+        },
+        "value": {
+          "name": "IForeignCalibration",
+          "kind": "external_interface",
+          "external_ref": "/Foreign/PortInterfaces/IForeignCalibration",
+          "external_dest": "CLIENT-SERVER-INTERFACE",
+          "operations": [
+            "ReadOffset"
+          ],
+          "description": "Declared by another file of the same delivery"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "ports"
+            },
+            {
+              "member": "rCalib"
+            }
+          ]
+        },
+        "value": {
+          "name": "rCalib",
+          "direction": "require",
+          "interface": "IForeignCalibration"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleConsumerRun"
+            },
+            {
+              "field": "calls"
+            },
+            {
+              "member": {
+                "port": "rCalib",
+                "operation": "ReadOffset"
+              }
+            }
+          ]
+        },
+        "value": {
+          "port": "rCalib",
+          "operation": "ReadOffset",
+          "name": "ReadForeignOffset"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rCalib"
+              }
+            ]
+          },
+          "after": {
+            "name": "rCalib",
+            "direction": "require",
+            "interface": "IForeignCalibration",
+            "observed_interface": null,
+            "description": "",
+            "measures": {},
+            "com_specs": [],
+            "satisfies": []
+          },
+          "summary": "swc/ExampleConsumerSWC: + ports[rCalib]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleConsumerRun"
+              },
+              {
+                "field": "calls"
+              },
+              {
+                "member": {
+                  "port": "rCalib",
+                  "operation": "ReadOffset"
+                }
+              }
+            ]
+          },
+          "after": {
+            "port": "rCalib",
+            "operation": "ReadOffset",
+            "asynchronous": false,
+            "poll": false,
+            "result": null,
+            "timeout": null,
+            "name": "ReadForeignOffset"
+          },
+          "summary": "swc/ExampleConsumerSWC: + runnables[ExampleConsumerRun].calls[{port: rCalib, operation: ReadOffset}]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IForeignCalibration"
+          },
+          "after": {
+            "name": "IForeignCalibration",
+            "kind": "external_interface",
+            "external_ref": "/Foreign/PortInterfaces/IForeignCalibration",
+            "external_dest": "CLIENT-SERVER-INTERFACE",
+            "operations": [
+              "ReadOffset"
+            ],
+            "data_elements": [],
+            "description": "Declared by another file of the same delivery",
+            "satisfies": []
+          },
+          "summary": "interfaces: + IForeignCalibration"
+        }
+      ]
+    },
+    "notes": "The stub holds the operation's name and nothing of its content -- no argument, no type -- so the call is resolved against the list and no signature is judged. The call's composite identity is `(port, operation)`; its stated `name` is no identity field. A member the stub does not list, or a list of the kind its `external_dest` does not admit, is refused (`negative/schema-violation-external-interface-member-of-wrong-kind.json`)."
+  }
+}

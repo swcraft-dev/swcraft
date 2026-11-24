@@ -1,0 +1,6 @@
+id: REQ-EXCH-001
+title: Vehicle speed exchange
+description: SensorSwc publishes the vehicle speed that ActuatorSwc consumes.
+req_type: req
+version: 1
+source: architecture

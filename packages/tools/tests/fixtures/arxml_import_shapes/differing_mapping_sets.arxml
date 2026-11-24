@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: one DATA-TYPE-MAPPING-SET name declared in two
+  packages, with maps that resolve to two DIFFERENT implementation types.
+
+  The conflicting half of the duplicate verdict on mapping sets. Both sets map one
+  application type, and the two implementation types they name are two
+  elements — two names, two declarations, no group between them. The sets
+  therefore differ in the one property the written element carries, and a
+  conflicting group imports NEITHER member while the name stays claimed.
+
+  The application type is a singleton, so nothing about it is in question: what
+  the two declarations disagree about is which implementation type stores it,
+  and that disagreement is the set's own.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Types</SHORT-NAME>
+          <ELEMENTS>
+            <SW-BASE-TYPE>
+              <SHORT-NAME>Word</SHORT-NAME>
+              <CATEGORY>FIXED_LENGTH</CATEGORY>
+              <BASE-TYPE-SIZE>16</BASE-TYPE-SIZE>
+              <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+              <NATIVE-DECLARATION>uint16</NATIVE-DECLARATION>
+            </SW-BASE-TYPE>
+            <IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>RawNarrow</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Types/Word</BASE-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE>
+            <IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>RawWide</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Types/Word</BASE-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE>
+            <APPLICATION-PRIMITIVE-DATA-TYPE>
+              <SHORT-NAME>Flow</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+            </APPLICATION-PRIMITIVE-DATA-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Left</SHORT-NAME>
+          <ELEMENTS>
+            <DATA-TYPE-MAPPING-SET>
+              <SHORT-NAME>Maps</SHORT-NAME>
+              <DATA-TYPE-MAPS>
+                <DATA-TYPE-MAP>
+                  <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Types/Flow</APPLICATION-DATA-TYPE-REF>
+                  <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Types/RawNarrow</IMPLEMENTATION-DATA-TYPE-REF>
+                </DATA-TYPE-MAP>
+              </DATA-TYPE-MAPS>
+            </DATA-TYPE-MAPPING-SET>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Right</SHORT-NAME>
+          <ELEMENTS>
+            <DATA-TYPE-MAPPING-SET>
+              <SHORT-NAME>Maps</SHORT-NAME>
+              <DATA-TYPE-MAPS>
+                <DATA-TYPE-MAP>
+                  <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Types/Flow</APPLICATION-DATA-TYPE-REF>
+                  <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Types/RawWide</IMPLEMENTATION-DATA-TYPE-REF>
+                </DATA-TYPE-MAP>
+              </DATA-TYPE-MAPS>
+            </DATA-TYPE-MAPPING-SET>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>App</SHORT-NAME>
+          <ELEMENTS>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>IFlow</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>flow</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Types/Flow</TYPE-TREF>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>FlowSwc</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>pFlow</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/App/IFlow</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR>
+                  <SHORT-NAME>FlowSwcBehavior</SHORT-NAME>
+                  <DATA-TYPE-MAPPING-REFS>
+                    <DATA-TYPE-MAPPING-REF DEST="DATA-TYPE-MAPPING-SET">/Acme/Left/Maps</DATA-TYPE-MAPPING-REF>
+                  </DATA-TYPE-MAPPING-REFS>
+                  <HANDLE-TERMINATION-AND-RESTART>NO-SUPPORT</HANDLE-TERMINATION-AND-RESTART>
+                  <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <COMPOSITION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Root</SHORT-NAME>
+              <COMPONENTS>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>flowSwc</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Acme/App/FlowSwc</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+              </COMPONENTS>
+            </COMPOSITION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

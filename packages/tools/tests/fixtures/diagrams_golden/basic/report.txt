@@ -1,0 +1,14 @@
+Diagrams report: swcraft-basic-example
+
+Views: 5
+  ibd-Root                          682.24 x 205 px  3995 bytes
+  overview-Root                     650.34 x 175 px  3265 bytes
+  nesting                           350 x 114 px  1497 bytes
+  deployment                        290 x 228 px  2134 bytes
+  sequence-task10ms_consumer_cycle  440.44 x 172 px  3497 bytes
+
+Not drawn: 1 in 1 kind
+  not-run: 1
+    deployment  ExampleSWC: no task runs a runnable of it
+
+Drawn as a loop: none

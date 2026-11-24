@@ -1,0 +1,5 @@
+name: Task_Core2_10ms
+period: 0.01
+priority: 5
+partition: PARTITION2
+wcet: 100us

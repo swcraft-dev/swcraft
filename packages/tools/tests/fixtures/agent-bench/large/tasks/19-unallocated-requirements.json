@@ -1,0 +1,34 @@
+{
+  "id": "19-unallocated-requirements",
+  "task": 19,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which requirements are not satisfied by any element?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "mentions_all": [
+        "Rq16abcdef",
+        "Rq17abcdef",
+        "Rq18abcdef",
+        "Rq19abcdef"
+      ],
+      "mentions_none": [
+        "Rq04abcdef",
+        "Rq03abcdef",
+        "Rq01abcdefghijk",
+        "Rq20abcdef"
+      ]
+    }
+  },
+  "reference": {
+    "unallocated": [
+      "Rq16abcdef",
+      "Rq17abcdef",
+      "Rq18abcdef",
+      "Rq19abcdef"
+    ],
+    "computed_by": "swcraft check-model --format json, the findings trace.requirement-unallocated"
+  }
+}

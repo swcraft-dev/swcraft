@@ -1,0 +1,7 @@
+name: probeLink
+from:
+  swc: ProbeSender
+  port: pSignals
+to:
+  swc: ProbeReceiver
+  port: rSignals

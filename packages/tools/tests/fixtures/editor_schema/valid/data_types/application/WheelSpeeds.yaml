@@ -1,0 +1,8 @@
+name: WheelSpeeds
+kind: record
+fields:
+  - name: front_left
+    type: VehicleSpeed_Kph
+  - name: front_right
+    type: VehicleSpeed_Kph
+description: Hand-built record fixture — the corpus ships only primitives

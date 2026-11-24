@@ -1,0 +1,5 @@
+name: ProbeSpeedPhys
+kind: application_type
+unit_ref: ProbeKmh
+compu_method_ref: ProbeSpeedCompu
+data_constr_ref: ProbeSpeedLimits

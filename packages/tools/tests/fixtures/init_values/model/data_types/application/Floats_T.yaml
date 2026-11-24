@@ -1,0 +1,4 @@
+name: Floats_T
+kind: array
+element_type: Sample_T
+length: 4

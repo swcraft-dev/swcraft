@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: a TEXTTABLE application primitive twinned with an
+  implementation type of exactly its own name.
+
+  The TEXTTABLE check runs BEFORE the twin collapse: the enum is imported
+  with its literals and the implementation twin keeps the name in its own
+  layer, so nothing is renamed. Collapsed first, the shape would import as
+  the implementation type alone and lose every literal of the enum.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>BaseTypes</SHORT-NAME>
+          <ELEMENTS>
+            <SW-BASE-TYPE>
+              <SHORT-NAME>Byte</SHORT-NAME>
+              <CATEGORY>FIXED_LENGTH</CATEGORY>
+              <BASE-TYPE-SIZE>8</BASE-TYPE-SIZE>
+              <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+              <NATIVE-DECLARATION>uint8</NATIVE-DECLARATION>
+            </SW-BASE-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>ImplTypes</SHORT-NAME>
+          <ELEMENTS>
+            <IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>DriveMode</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/BaseTypes/Byte</BASE-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>AppTypes</SHORT-NAME>
+          <ELEMENTS>
+            <COMPU-METHOD>
+              <SHORT-NAME>DriveModeCompu</SHORT-NAME>
+              <CATEGORY>TEXTTABLE</CATEGORY>
+              <COMPU-INTERNAL-TO-PHYS>
+                <COMPU-SCALES>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>OFF</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>ECO</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">2</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>SPORT</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                </COMPU-SCALES>
+              </COMPU-INTERNAL-TO-PHYS>
+            </COMPU-METHOD>
+            <APPLICATION-PRIMITIVE-DATA-TYPE>
+              <SHORT-NAME>DriveMode</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <COMPU-METHOD-REF DEST="COMPU-METHOD">/Acme/AppTypes/DriveModeCompu</COMPU-METHOD-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </APPLICATION-PRIMITIVE-DATA-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Mappings</SHORT-NAME>
+          <ELEMENTS>
+            <DATA-TYPE-MAPPING-SET>
+              <SHORT-NAME>TypeMaps</SHORT-NAME>
+              <DATA-TYPE-MAPS>
+                <DATA-TYPE-MAP>
+                  <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/AppTypes/DriveMode</APPLICATION-DATA-TYPE-REF>
+                  <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/ImplTypes/DriveMode</IMPLEMENTATION-DATA-TYPE-REF>
+                </DATA-TYPE-MAP>
+              </DATA-TYPE-MAPS>
+            </DATA-TYPE-MAPPING-SET>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Interfaces</SHORT-NAME>
+          <ELEMENTS>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>IDriveMode</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>mode</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/AppTypes/DriveMode</TYPE-TREF>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>DriveModeSwc</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>pMode</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Interfaces/IDriveMode</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

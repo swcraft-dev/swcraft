@@ -1,0 +1,5 @@
+name: uint16_base
+kind: base_type
+size: 16
+encoding: NONE
+native_declaration: uint16

@@ -1,0 +1,10 @@
+name: Root
+title: Root composition
+root: true
+description: The root every project owes; both budgeted components stand in it once.
+
+members:
+  - name: Alpha
+    type: Alpha
+  - name: Beta
+    type: Beta

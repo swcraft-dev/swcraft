@@ -1,0 +1,72 @@
+# Root ruff configuration shared by every Python project in this repository. `python
+# scripts/dev.py lint` runs `scripts/run_python_lint.py` (`ruff check` and `ruff format --check`)
+# from each project's directory and once over `scripts/`; ruff finds this file by walking up.
+target-version = "py311"
+# 120, not the default 88: docstrings and assertion messages routinely run 100-130 characters.
+line-length = 120
+
+extend-exclude = [
+    "dist",
+    "views",
+    "out",
+    "node_modules",
+    "*.egg-info",
+    ".venv",
+    # The requirements interchange's two Sphinx `conf.py` files are test data kept byte for byte (the
+    # consumer's marked region is held to the user guide's block), not code of this repository.
+    "packages/tools/tests/fixtures/contracts/requirements-interchange/output/consumer/conf.py",
+    "packages/tools/tests/fixtures/contracts/requirements-interchange/sphinx-build/conf.py",
+]
+
+[lint]
+# E/W: pycodestyle, F: pyflakes, I: isort, UP: pyupgrade (for the py311 target).
+# D205/D400 (pydocstyle): a docstring's summary is one line ending with a period, then a blank
+# line (PEP 257); internal/ is ignored below.
+select = ["E", "F", "I", "UP", "W", "PLC0415", "BLE", "D205", "D400"]
+# PLC0415 (import-outside-top-level): an import belongs at the top of its
+# module (PEP 8). A function-level import in packages/tools/src carries
+# `# noqa: PLC0415 -- <category>: <reason>`, the category one of start-up
+# (an entry point keeping one command's imports off another's), optional (a
+# heavy third-party dependency only some commands need) or platform (a module
+# only one OS has). The other trees are ignored below: their function-level
+# imports have not been brought under the rule.
+# BLE001 (blind-except): a broad `except Exception` in packages/*/src is
+# narrowed, or carries `# noqa: BLE001 -- <category>: <reason>`, the category
+# one of entry (a command's handler: an Error: line and an exit status),
+# deferred (a preliminary step the command's own read reports), secondary (a
+# report file whose failure is a warning), hook (the guard answers every call),
+# protocol (an MCP reply, elicitation, session probe or progress notification),
+# thread (handed to the waiting thread, or a best-effort shutdown), batch (one
+# item's failure in the report, the others continuing) or fallback (a
+# documented, reported degraded mode). A `contextlib.suppress(Exception)` keeps
+# its form and its comment begins with its category (cleanup). The tests and
+# scripts/ are ignored below, as for PLC0415.
+
+[lint.per-file-ignores]
+# Long lines here are ARXML fixture content in string constants; wrapping them would change
+# the fixture bytes.
+"packages/tools/tests/test_arxml_import_cli.py" = ["E501"]
+# The same for the input-vs-output oracle's comparator suite: each case is a pair of
+# hand-built ARXML fragments.
+"internal/tests/test_io_oracle_comparator.py" = ["E501"]
+# PLC0415 is enabled for packages/tools/src alone (see `select`).
+"packages/mcp/**" = ["PLC0415"]
+"packages/agent/**" = ["PLC0415"]
+"packages/specimens/**" = ["PLC0415"]
+"scripts/**" = ["PLC0415", "BLE001"]
+# The agent benchmark's method scripts keep the rules of scripts/; the other scripts beside
+# them keep the full selection.
+"internal/scripts/agent_client_check.py" = ["PLC0415", "BLE001"]
+"internal/scripts/agent_task_review_hook.py" = ["PLC0415", "BLE001"]
+"internal/scripts/agent_task_run.py" = ["PLC0415", "BLE001"]
+"internal/scripts/compare_baseline.py" = ["PLC0415", "BLE001"]
+"internal/scripts/measure_guide_rankers.py" = ["PLC0415", "BLE001"]
+"internal/scripts/measure_model_load.py" = ["PLC0415", "BLE001"]
+"internal/scripts/probe_moon_stderr.py" = ["PLC0415", "BLE001"]
+"**/tests/**" = ["PLC0415", "BLE001"]
+# The closed tree keeps its docstrings as they are.
+"internal/**" = ["D205", "D400"]
+
+[format]
+quote-style = "double"
+indent-style = "space"

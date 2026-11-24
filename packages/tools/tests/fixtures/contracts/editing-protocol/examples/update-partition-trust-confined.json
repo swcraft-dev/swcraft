@@ -1,0 +1,82 @@
+{
+  "name": "update-partition-trust-confined",
+  "description": "A non-trusted partition declared `trusted_with_protection`: both classes are confined for memory, neither is read by a trust rule, and the movement does not cross `trusted`, so the safety guard asks nothing and the change set commits on the delta answer alone.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model as it stands: `PARTITION0` is the one partition, unrated and `non_trusted` by default, on the unrated `CORE0`. The change set declares it `trusted_with_protection`.",
+    "existing_elements": [
+      {
+        "layer": "hardware",
+        "element": "PARTITION0"
+      },
+      {
+        "layer": "hardware",
+        "element": "CORE0"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "hardware",
+            "element": "PARTITION0",
+            "path": [
+              {
+                "field": "trust"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly, and it is the whole of the authorization: a movement between the two confined classes is neither a weakening nor a widening, so no second question is asked and the delta answer alone commits it."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:ZE1FUHgU4Xb86rkzK_zNuA",
+    "intent": "Declare PARTITION0 trusted with protection.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "hardware",
+          "element": "PARTITION0",
+          "path": [
+            {
+              "field": "trust"
+            }
+          ]
+        },
+        "value": "trusted_with_protection"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:2-ek80-MttYu7I3LtrZKRQ",
+      "delta": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "hardware",
+            "element": "PARTITION0",
+            "path": [
+              {
+                "field": "trust"
+              }
+            ]
+          },
+          "before": "non_trusted",
+          "after": "trusted_with_protection",
+          "summary": "hardware/PARTITION0: ~ trust non_trusted -> trusted_with_protection"
+        }
+      ],
+      "audit_ref": "cs-20261010T073157Z-a02662"
+    },
+    "notes": "`committed` on the delta answer alone. `non_trusted` and `trusted_with_protection` are both confined for memory; only a movement into or out of `trusted` is a question for the guard."
+  }
+}

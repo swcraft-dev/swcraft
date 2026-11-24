@@ -1,0 +1,10 @@
+{
+  "id": "16-tasks-on-a-core",
+  "task": 16,
+  "group": "relations-and-containment",
+  "kind": "question",
+  "binding": "tasks_on_the_busiest_core",
+  "oracle": "structural",
+  "prompt": "Which tasks run on {{core}}?",
+  "note": "The core whose partitions hold the most tasks: every task on it, in row order, a task with no runnable mapped included, and up to three tasks on other cores that the reply must not name."
+}

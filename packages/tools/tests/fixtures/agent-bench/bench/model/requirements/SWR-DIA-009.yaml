@@ -1,0 +1,9 @@
+id: SWR-DIA-009
+title: DTC clearing
+description: Stored trouble codes shall be cleared only by a tester request.
+req_type: req
+version: 1
+source: external
+document: SRS Diagnostics
+baseline: '1.0'
+revision: '1'

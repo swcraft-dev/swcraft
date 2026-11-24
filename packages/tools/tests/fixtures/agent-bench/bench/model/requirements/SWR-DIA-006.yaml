@@ -1,0 +1,9 @@
+id: SWR-DIA-006
+title: NvM write retry
+description: A failed non-volatile storage write shall be retried once.
+req_type: req
+version: 1
+source: external
+document: SRS Diagnostics
+baseline: '1.0'
+revision: '1'

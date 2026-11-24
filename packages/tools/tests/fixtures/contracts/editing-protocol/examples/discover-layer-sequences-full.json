@@ -1,0 +1,318 @@
+{
+  "name": "discover-layer-sequences-full",
+  "description": "The `sequences` layer's descriptor at `form: \"full\"` — the one form that carries the descriptor PROSE, asked for one layer at a time because the project-wide `full` discovery is REFUSED with `over-budget` on every project (`negative/discover-project-full-over-budget.json`), and the refusal's second step is exactly this request. Together the fifteen per-layer `full` vectors replay every layer, kind and field annotation the model contract ships, verbatim, which is where the shipped-prose oracle (`packages/tools/tests/test_model_contract_conformance.py`) rides: rewording an annotation in the contract is a protocol-output change, and this is the output it changes. Of this layer: the `sequence.steps` collection, the other `(swc, runnable)` composite. Compare it with the same descriptor inside `examples/discover-project-all-layers-present.json`, which is this document with every `description` dropped and the three descriptor booleans (`optional`, `required`, `immutable`) omitted where they are `false`.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` shape of a SWCraft project: fifteen scaffolded layers, `hardware/` among them. Nothing about the response depends on which elements are in the layer: the inventory is derived from the model contract through the registry, not from the files.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "discover",
+    "layer": "sequences",
+    "form": "full"
+  },
+  "expected": {
+    "response": {
+      "response": "discover",
+      "project": {
+        "name": "swcraft-basic-example",
+        "arxml_version": "4.2.2",
+        "swcraft_version": "0.24.0"
+      },
+      "baseline": "rev1:kk7N755-pYf2txfvyVl9Kw",
+      "reads": {
+        "forms": [
+          "summary",
+          "full",
+          "index"
+        ],
+        "default_form": {
+          "layer": "summary",
+          "collection": "summary",
+          "element": "full",
+          "field": "full"
+        },
+        "budget_wire_bytes": 80000,
+        "hint_page_size": 50,
+        "discover": {
+          "forms": [
+            "summary",
+            "full",
+            "baseline"
+          ],
+          "default_form": "summary"
+        },
+        "derived": [
+          {
+            "name": "connection_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string"
+              }
+            }
+          },
+          {
+            "name": "base_type",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "runnables.reads",
+                "runnables.writes"
+              ]
+            },
+            "rows": "one",
+            "shape": {
+              "implementation": "string|null",
+              "base": "string|null"
+            }
+          },
+          {
+            "name": "effective_level",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one",
+            "shape": {
+              "level": "string",
+              "rating": "string"
+            }
+          },
+          {
+            "name": "partitions",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one per value",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "crossing_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              }
+            }
+          },
+          {
+            "name": "unconnected",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "ports"
+              ]
+            },
+            "rows": "one per value",
+            "shape": {
+              "direction": "string",
+              "interface": "string|null"
+            }
+          },
+          {
+            "name": "core",
+            "at": {
+              "layer": "tasks"
+            },
+            "rows": "one",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "realised_by",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null"
+            }
+          },
+          {
+            "name": "allocation",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one",
+            "shape": {
+              "sites": "integer",
+              "elements": "integer",
+              "allocated": "boolean|null"
+            }
+          },
+          {
+            "name": "stale_links",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null",
+              "current": "integer"
+            }
+          }
+        ],
+        "join": {
+          "row_ceiling": 50000,
+          "max_entries": 8
+        }
+      },
+      "form": "full",
+      "layers": [
+        {
+          "layer": "sequences",
+          "optional": false,
+          "present": true,
+          "identity_field": "name",
+          "description": "Sequence scenarios, one task each; each is drawn as a sequence diagram whose files are named from the scenario's name.",
+          "element_kinds": [
+            {
+              "kind": "sequence",
+              "description": "One sequence scenario: an ordered walk through some of the runnables of exactly one task, drawn as a sequence diagram. The steps must follow the task's own runnable order.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The scenario's identity, which also names its sequence diagram's files. Must match ^[A-Za-z_][A-Za-z0-9_]*$ — a rule of this layer alone, deliberately not the AUTOSAR `Identifier` rule."
+                },
+                {
+                  "name": "task",
+                  "type": "string",
+                  "required": true,
+                  "immutable": false,
+                  "description": "The name of the declared task this scenario walks; exactly one per scenario, and every step must be mapped to it.",
+                  "reference": {
+                    "layer": "tasks",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "title",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The scenario's human-readable title, shown after its name in the heading of its sequence diagram (`sd {name} — {title}`). When empty, the heading is the name alone."
+                },
+                {
+                  "name": "steps",
+                  "type": "list[sequence_step]",
+                  "required": true,
+                  "immutable": false,
+                  "description": "The steps of the scenario, in order. Must not be empty and must be an ordered subsequence of the referenced task's runnables.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "composite",
+                    "identity_fields": [
+                      "swc",
+                      "instance",
+                      "runnable"
+                    ],
+                    "member_kinds": [
+                      "sequence_step"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "sequence_step",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "sequence",
+                  "field": "steps"
+                }
+              ],
+              "description": "One step of a sequence scenario: the runnable it shows, its component named by exactly one of `swc` and `instance`, with an optional note. The `(swc, instance, runnable)` triple, the absent selector as `null`, is the step's identity; the step must be mapped to the scenario's task, and a step written the same way appears at most once per scenario.",
+              "fields": [
+                {
+                  "name": "swc",
+                  "type": "string",
+                  "required": false,
+                  "immutable": true,
+                  "description": "The name of the declared software component the step runs in; exactly one of `swc` and `instance` is set. Part of the step's composite identity, and so immutable.",
+                  "reference": {
+                    "layer": "swc",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "instance",
+                  "type": "string",
+                  "required": false,
+                  "immutable": true,
+                  "description": "The occurrence of a component below the root composition the step runs in, as a `/`-joined path of composition member names from the root composition down — a member of the root is its member name alone, a nested one `outer/inner` — never starting with the root composition's own name; exactly one of `swc` and `instance` is set. Part of the step's composite identity, and so immutable."
+                },
+                {
+                  "name": "runnable",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The name of a runnable of that component, which must be mapped to the scenario's task. Part of the composite identity, and so immutable."
+                },
+                {
+                  "name": "note",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text shown beside the step on its sequence diagram; when non-empty the step's activation is labelled `{runnable} — {note}`."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "notes": "The same document the default form answers with `description` restored on the layer, on every kind and on every field that declares one, and with the three descriptor booleans spelled out where the default form omits them at `false` — `optional` on the layer, `required` and `immutable` on every field. Nothing else is restored, because nothing else is left out. `baseline` is the stand-in token every vector carries; a harness replaces it with the project's own."
+  }
+}

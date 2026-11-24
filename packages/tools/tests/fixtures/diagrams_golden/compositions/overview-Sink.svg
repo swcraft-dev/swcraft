@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420.84" height="175" viewBox="0 0 420.84 175" font-family="Helvetica, Arial, sans-serif" data-view="overview-Sink">
+<title>Sink — overview</title>
+<defs><marker id="swcraft-arrow" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 8 4 L 0 8 z" fill="#555555"/></marker><marker id="swcraft-arrow-lit" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 8 4 L 0 8 z" fill="#1a5fb4"/></marker></defs>
+<rect class="background" width="100%" height="100%" fill="white"/>
+<g class="frame">
+<g class="frame" data-role="frame" data-name="Sink" data-parents="Root#Sink"><title>composition Sink
+Consuming sub-composition
+One boundary port, one member and the third delegation.</title><rect x="12" y="12" width="396.84" height="151" rx="4" fill="#fafafa" stroke="#333333" stroke-width="1.5"/></g>
+</g>
+<g class="edges">
+</g>
+<g class="members">
+<g id="m1" class="member component" data-role="member" data-name="Consumer" data-type="Consumer" data-kind="component"><title>Consumer (component)
+The only member of `Sink`; the target of its one delegation.</title><rect x="138.84" y="73" width="180" height="50" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+</g>
+<g class="labels">
+<g class="frame-up"><title>up to Root</title><text class="frame-label" x="19" y="28.6" font-size="12" data-kind="composition" font-weight="bold">↑ Sink — Consuming sub-composition</text></g>
+<text class="member-label" x="201.72" y="101.6" font-size="12" data-kind="component" font-weight="600">Consumer</text>
+</g>
+</svg>

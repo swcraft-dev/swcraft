@@ -1,0 +1,21 @@
+name: BrakeLightController
+type: application
+description: Switches the brake light warning on while the permitted brake action
+  is reduced.
+ports:
+- name: rPermittedBrakeAction
+  direction: require
+  interface: IPermittedBrakeAction
+runnables:
+- name: UpdateBrakeLight
+  events:
+  - type: timing
+    period: 0.05
+  reads:
+  - port: rPermittedBrakeAction
+    element: permittedAction
+memory:
+  RAM: 512
+handle_termination_and_restart: no_support
+data_type_mappings:
+- BrakeThermalMappings

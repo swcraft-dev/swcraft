@@ -1,0 +1,7 @@
+name: If0002abcdefghij
+kind: sender_receiver
+data_elements:
+- name: D1
+  implementation_type: Vt002abcde
+satisfies:
+- Rq02abcdef@2

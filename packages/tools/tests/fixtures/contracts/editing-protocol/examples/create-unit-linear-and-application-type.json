@@ -1,0 +1,183 @@
+{
+  "name": "create-unit-linear-and-application-type",
+  "description": "One change set declares a unit, a linear compu method naming it (`unit`), a data constraint, and an application type naming all three by reference (`unit_ref`, `compu_method_ref`, `data_constr_ref`) — contract `8.0.0`'s data description elements, each an element of its own layer. The type states none of the three inline: each reference field is exclusive with its inline form, and a type that names an element generates no private form of its own.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, whose `units`, `compu_methods` and `data_constraints` layers are empty. No application type of the name the change set creates exists.",
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "units",
+            "element": "ProbeNewtonMetre"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "compu_methods",
+            "element": "ProbeTorqueScale"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "data_constraints",
+            "element": "ProbeTorqueLimits"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "ProbeTorque"
+          }
+        }
+      ],
+      "notes": "The scope covers every operation exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Declare the probe torque's unit, scale and limits as elements and a type naming them.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "units",
+          "element": "ProbeNewtonMetre"
+        },
+        "value": {
+          "name": "ProbeNewtonMetre",
+          "display_name": "Nm",
+          "description": "Probe torque unit"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "compu_methods",
+          "element": "ProbeTorqueScale"
+        },
+        "value": {
+          "name": "ProbeTorqueScale",
+          "kind": "linear",
+          "unit": "ProbeNewtonMetre",
+          "factor": 0.5,
+          "offset": -100.0,
+          "description": "Probe torque scale: physical = internal x 0.5 - 100"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "data_constraints",
+          "element": "ProbeTorqueLimits"
+        },
+        "value": {
+          "name": "ProbeTorqueLimits",
+          "min": -500.0,
+          "max": 500.0,
+          "level": 0,
+          "description": "Probe torque limits"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "application_types",
+          "element": "ProbeTorque"
+        },
+        "value": {
+          "name": "ProbeTorque",
+          "kind": "application_type",
+          "unit_ref": "ProbeNewtonMetre",
+          "compu_method_ref": "ProbeTorqueScale",
+          "data_constr_ref": "ProbeTorqueLimits",
+          "description": "Probe torque, every property by reference"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "ProbeTorque"
+          },
+          "after": {
+            "name": "ProbeTorque",
+            "kind": "application_type",
+            "unit": "",
+            "conversion": null,
+            "range": null,
+            "unit_ref": "ProbeNewtonMetre",
+            "compu_method_ref": "ProbeTorqueScale",
+            "data_constr_ref": "ProbeTorqueLimits",
+            "description": "Probe torque, every property by reference",
+            "package": null
+          },
+          "summary": "application_types: + ProbeTorque"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "units",
+            "element": "ProbeNewtonMetre"
+          },
+          "after": {
+            "name": "ProbeNewtonMetre",
+            "display_name": "Nm",
+            "description": "Probe torque unit",
+            "package": null
+          },
+          "summary": "units: + ProbeNewtonMetre"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "compu_methods",
+            "element": "ProbeTorqueScale"
+          },
+          "after": {
+            "name": "ProbeTorqueScale",
+            "kind": "linear",
+            "unit": "ProbeNewtonMetre",
+            "factor": 0.5,
+            "offset": -100.0,
+            "limits": null,
+            "description": "Probe torque scale: physical = internal x 0.5 - 100",
+            "package": null
+          },
+          "summary": "compu_methods: + ProbeTorqueScale"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "data_constraints",
+            "element": "ProbeTorqueLimits"
+          },
+          "after": {
+            "name": "ProbeTorqueLimits",
+            "min": -500.0,
+            "max": 500.0,
+            "level": 0,
+            "description": "Probe torque limits",
+            "package": null
+          },
+          "summary": "data_constraints: + ProbeTorqueLimits"
+        }
+      ]
+    },
+    "notes": "The delta is compared as a set; it is displayed in the contract's layer order, so the application type the change set creates last is listed first and the three element layers, which follow the mapping sets, after it. The type's `after` carries its three inline fields unset beside the three references: the delta publishes every declared field."
+  }
+}

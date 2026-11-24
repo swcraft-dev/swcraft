@@ -1,0 +1,10 @@
+{
+  "id": "08-interface-change-impact",
+  "task": 8,
+  "group": "question",
+  "kind": "question",
+  "binding": "users_of_the_heaviest_interface",
+  "oracle": "structural",
+  "prompt": "What does a change of {{interface}} affect?",
+  "note": "The interface the most component ports name. A right answer names its direct users: the components owning a port that names it and the compositions whose own ports name it, impact's first level; the transitive rest is not required, because how far 'affect' reaches is the architect's call."
+}

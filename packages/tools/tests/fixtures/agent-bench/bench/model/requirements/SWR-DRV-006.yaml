@@ -1,0 +1,9 @@
+id: SWR-DRV-006
+title: Display brightness
+description: Display brightness shall follow the ambient light sensor.
+req_type: req
+version: 1
+source: external
+document: SRS Driver Information
+baseline: '1.0'
+revision: '1'

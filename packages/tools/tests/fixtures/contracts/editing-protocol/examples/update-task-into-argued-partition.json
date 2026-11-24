@@ -1,0 +1,86 @@
+{
+  "name": "update-task-into-argued-partition",
+  "description": "A task re-pointed into a partition whose argument already stood. The argument answered nothing while the partition ran one level; the move makes it mixed, so the standing text starts answering `safety.component-below-partition` without a single edit to it — the argument GOING LIVE, asked about as a declaration is.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with `ExampleSWC` declaring D and `ExampleConsumerSWC` deriving `QM`, `Task_10ms` running both with its own execution-time argument in the unrated `PARTITION0`, and `PARTITION1` on `CORE0` rated D, argued and running nothing; the baseline reports nothing. The change set moves the task into `PARTITION1`.",
+    "existing_elements": [
+      {
+        "layer": "hardware",
+        "element": "PARTITION1"
+      },
+      {
+        "layer": "tasks",
+        "element": "Task_10ms"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "tasks",
+            "element": "Task_10ms",
+            "path": [
+              {
+                "field": "partition"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly, and it is a TASK's field: the delta touches no hardware element at all. The guard compares the two models, sees `PARTITION1` become mixed under a text that already stood, and asks `declare_partition_coexistence` once, which is why the status is `committed`."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:r_JbPb9OqoonX0lD-FgA2w",
+    "intent": "Run the mixed task in PARTITION1.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "tasks",
+          "element": "Task_10ms",
+          "path": [
+            {
+              "field": "partition"
+            }
+          ]
+        },
+        "value": "PARTITION1"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:v1Vi2AO2pSfUnm-ilvAT2A",
+      "delta": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "tasks",
+            "element": "Task_10ms",
+            "path": [
+              {
+                "field": "partition"
+              }
+            ]
+          },
+          "before": "PARTITION0",
+          "after": "PARTITION1",
+          "summary": "tasks/Task_10ms: ~ partition PARTITION0 -> PARTITION1"
+        }
+      ],
+      "audit_ref": "cs-20261009T115138Z-4dc818"
+    },
+    "notes": "`committed` after the second question. Re-pointing a task is otherwise a placement change pass D re-judges and the guard does not ask about; it asks here because the move made a standing argument answer a finding, which is the one condition the rule can see."
+  }
+}

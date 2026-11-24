@@ -1,0 +1,3 @@
+name: CPU
+kind: processor
+description: The showcase processor — one application core and one RAM pool.

@@ -1,0 +1,104 @@
+{
+  "name": "consistency-violation-memory-below-component",
+  "description": "A component at ASIL D given a real budget on a memory declared able to host only B. The budget was `0` in the baseline, and `0` declares no use — the decision `hardware.unreachable-memory` already made, and for its reason: a missing entry is a finding under `enforcement: strict`, so zero is how a model says a component uses none — so the baseline is valid and the change set creates `safety.memory-below-component`.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model with `ExampleSWC` declaring ASIL D and a budget of `0` on `RAM0`, and `RAM0` declaring `asil_capability: B`. `REQ_EXAMPLE_001` allocates nothing, so `ExampleConsumerSWC` derives `QM` and its own non-zero budget on `RAM0` is below the capability. The change set gives `ExampleSWC` a budget of 2048 bytes.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "hardware",
+        "element": "RAM0"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "memory"
+              },
+              {
+                "key": "RAM0"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly — a map entry, addressed by its key — so the refusal is the model rule and not the authorization boundary. A budget figure is ordinary model content and never a safety act; pass D refuses the staged result before the guard is reached."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:V-VjjKtm36Oz76gXfP8j6w",
+    "intent": "Budget ExampleSWC's use of RAM0.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "memory"
+            },
+            {
+              "key": "RAM0"
+            }
+          ]
+        },
+        "value": 2048
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "asil"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "memory"
+          },
+          {
+            "key": "RAM0"
+          }
+        ]
+      },
+      {
+        "layer": "hardware",
+        "element": "RAM0",
+        "path": [
+          {
+            "field": "asil_capability"
+          }
+        ]
+      }
+    ],
+    "notes": "Three addresses, and they are the legal repairs: lower the component's level, take the budget back to zero, or raise the memory's declared capability. No requirement address comes back, because this component declares its own level and no allocation is behind it to repair. The rule reads the component's own map, so it reaches a component no task runs, where the core rule does not. What the refusal does NOT reach is the linker script: it compares two declarations, and nothing in the model says which memory a symbol really lands in, or whether the memory's partitioning is what its capability assumes."
+  }
+}

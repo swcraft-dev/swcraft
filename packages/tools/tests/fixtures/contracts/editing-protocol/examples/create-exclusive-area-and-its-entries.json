@@ -1,0 +1,239 @@
+{
+  "name": "create-exclusive-area-and-its-entries",
+  "description": "An exclusive area and a runnable's two entries naming it, authored with no new tool and no new addressing (contract `12.2.0`): the area is a `create` at its `field`-identified member address under the component's `exclusive_areas`, `{member: <name>}`, and each entry a `create` at its own member address under the runnable's `can_enter` or `runs_inside`, identified by the `area` it names. The runnable exists already, so the delta reports each of the three creates as its own reviewed entry.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` declares no exclusive area, and its one runnable, `ExampleRun`, names none. One area in both roles on one runnable is a shape `check-model` does not judge (no constraint of the standard restricts it), and the safety rules read no area, so the change set asks no safety question.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "exclusive_areas"
+              },
+              {
+                "member": "ExampleGuard"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "can_enter"
+              },
+              {
+                "member": "ExampleGuard"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "runs_inside"
+              },
+              {
+                "member": "ExampleGuard"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope names the three entries the delta reports, one per member the change set adds."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Guard ExampleRun's state with an exclusive area it runs inside and can enter.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "exclusive_areas"
+            },
+            {
+              "member": "ExampleGuard"
+            }
+          ]
+        },
+        "value": {
+          "name": "ExampleGuard",
+          "description": "Guards the state ExampleRun keeps between its runs."
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "can_enter"
+            },
+            {
+              "member": "ExampleGuard"
+            }
+          ]
+        },
+        "value": {
+          "area": "ExampleGuard"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "runs_inside"
+            },
+            {
+              "member": "ExampleGuard"
+            }
+          ]
+        },
+        "value": {
+          "area": "ExampleGuard"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "can_enter"
+              },
+              {
+                "member": "ExampleGuard"
+              }
+            ]
+          },
+          "after": {
+            "area": "ExampleGuard"
+          },
+          "summary": "swc/ExampleSWC: + runnables[ExampleRun].can_enter[ExampleGuard]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "runs_inside"
+              },
+              {
+                "member": "ExampleGuard"
+              }
+            ]
+          },
+          "after": {
+            "area": "ExampleGuard"
+          },
+          "summary": "swc/ExampleSWC: + runnables[ExampleRun].runs_inside[ExampleGuard]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "exclusive_areas"
+              },
+              {
+                "member": "ExampleGuard"
+              }
+            ]
+          },
+          "after": {
+            "name": "ExampleGuard",
+            "description": "Guards the state ExampleRun keeps between its runs."
+          },
+          "summary": "swc/ExampleSWC: + exclusive_areas[ExampleGuard]"
+        }
+      ]
+    },
+    "notes": "An area is identified by its `name` and an entry by its `area`, so an area renamed in place is `immutable-field` and a rename is a remove and a create, with every entry naming it removed and created again in the same change set; an entry holds nothing but its identity, so it has no update at all and a retarget is a remove and a create too. The area's `description` is an ordinary field `update`. Each list is written only while non-empty, so the file this commits gains `exclusive_areas` after `runnables` and the two lists after the runnable's events, `can_enter` first, and a component without them reads exactly as before."
+  }
+}

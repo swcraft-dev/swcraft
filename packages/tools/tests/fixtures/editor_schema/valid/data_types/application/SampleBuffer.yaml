@@ -1,0 +1,5 @@
+name: SampleBuffer
+kind: array
+element_type: VehicleSpeed_Kph
+length: 16
+description: Hand-built array fixture — the corpus ships only primitives

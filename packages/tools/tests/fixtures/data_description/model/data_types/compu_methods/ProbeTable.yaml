@@ -1,0 +1,9 @@
+name: ProbeTable
+kind: texttable
+entries:
+- name: ProbeOff
+  value: 0
+  description: The first entry.
+- name: ProbeOn
+  value: 1
+description: A table an enumeration, a value type and a reference type all name.

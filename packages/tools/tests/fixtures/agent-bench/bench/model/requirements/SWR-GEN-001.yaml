@@ -1,0 +1,8 @@
+id: SWR-GEN-001
+title: Brake temperature resolution
+description: The brake temperature shall have a resolution of 0.1 degC.
+req_type: req
+version: 1
+source: external
+baseline: '1.0'
+revision: '1'

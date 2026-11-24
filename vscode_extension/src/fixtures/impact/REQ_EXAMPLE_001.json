@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 3,
+  "name": "REQ_EXAMPLE_001",
+  "direction": "dependents",
+  "depth": null,
+  "matched": {
+    "requirement": [
+      {
+        "layer": "swc",
+        "name": "ExampleConsumerSWC",
+        "detail": "",
+        "details": []
+      },
+      {
+        "layer": "swc",
+        "name": "ExampleSWC",
+        "detail": "",
+        "details": []
+      },
+      {
+        "layer": "connector",
+        "name": "Example_to_Consumer",
+        "detail": "via ports ExampleSWC.pOut, ExampleConsumerSWC.rIn",
+        "details": [
+          {
+            "kind": "endpoint",
+            "value": "ExampleSWC.pOut"
+          },
+          {
+            "kind": "endpoint",
+            "value": "ExampleConsumerSWC.rIn"
+          }
+        ]
+      },
+      {
+        "layer": "composition",
+        "name": "Root",
+        "detail": "members ExampleSWC, ExampleConsumerSWC",
+        "details": [
+          {
+            "kind": "member",
+            "value": "ExampleSWC"
+          },
+          {
+            "kind": "member",
+            "value": "ExampleConsumerSWC"
+          }
+        ]
+      },
+      {
+        "layer": "task",
+        "name": "Task_10ms",
+        "detail": "runnable ExampleConsumerRun",
+        "details": [
+          {
+            "kind": "runnable",
+            "value": "ExampleConsumerRun"
+          }
+        ]
+      },
+      {
+        "layer": "sequence",
+        "name": "task10ms_consumer_cycle",
+        "detail": "step: ExampleConsumerRun",
+        "details": [
+          {
+            "kind": "step",
+            "value": "ExampleConsumerRun"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+id: SWR-DRV-004
+title: Odometer display
+description: The instrument cluster shall display the odometer.
+req_type: req
+version: 1
+source: external
+document: SRS Driver Information
+baseline: '1.0'
+revision: '1'

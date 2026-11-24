@@ -1,0 +1,60 @@
+{
+  "name": "read-data-constraints-layer",
+  "description": "A layer-granularity `read` of `data_constraints`, stored in `data_types/constraints/`: the one data constraint the model declares, by its `name` alone: its physical limits and its `level` (the rule's `CONSTR-LEVEL`) are optional fields, which a summary leaves out.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model plus contract `8.0.0`'s data description elements: the unit `ProbeNewtonMetre` (`data_types/units/`), the linear compu method `ProbeTorqueScale` naming it and the texttable `ProbeGearTable` with two entries (`data_types/compu_methods/`), and the data constraint `ProbeTorqueLimits` (`data_types/constraints/`); the application type `ProbeTorque` names the unit, the method and the constraint, and the enumeration `ProbeGear` and the value type `ProbeGearRaw` (over the base's `uint8_base`) share the table.",
+    "existing_elements": [
+      {
+        "layer": "units",
+        "element": "ProbeNewtonMetre"
+      },
+      {
+        "layer": "compu_methods",
+        "element": "ProbeTorqueScale"
+      },
+      {
+        "layer": "compu_methods",
+        "element": "ProbeGearTable"
+      },
+      {
+        "layer": "data_constraints",
+        "element": "ProbeTorqueLimits"
+      },
+      {
+        "layer": "application_types",
+        "element": "ProbeTorque"
+      },
+      {
+        "layer": "application_types",
+        "element": "ProbeGear"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "ProbeGearRaw"
+      }
+    ],
+    "notes": "No `form` is stated, so the layer answers `summary`; `form: \"full\"` asks for the limits by name."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "data_constraints"
+    }
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "data_constraints"
+      },
+      "form": "summary",
+      "value": [
+        {
+          "name": "ProbeTorqueLimits"
+        }
+      ]
+    },
+    "notes": "A constraint holds physical limits; an application type names one by `data_constr_ref`, exclusive with its inline `range`."
+  }
+}

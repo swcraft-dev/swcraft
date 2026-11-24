@@ -1,0 +1,56 @@
+{
+  "name": "unknown-field-members-path-step",
+  "description": "A member path whose SECOND step no kind at that step declares. `runnables` resolves — a collection of the `swc` layer's top-level kinds — and `writez` is then looked up among the fields of the member kind `runnables` holds, where nothing declares it. The refusal is `unknown-field`, the answer a one-step slice naming an undeclared collection has always had: the request is well formed, and the name is outside the vocabulary `discover` published for that step.",
+  "kind": "negative",
+  "context": {
+    "summary": "The seed of `examples/read-swc-members-path-runnable-writes.json`, whose `swc` layer holds runnables that write and read; the refusal does not depend on any of it, because the path is resolved against the registry before any element is read.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "notes": "A read takes no scope and writes no audit record, refused or not."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "members": "runnables.writez"
+  },
+  "expected": {
+    "expected_error": "unknown-field",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc"
+      }
+    ],
+    "notes": "The address echoed back is the one the client sent: `members` is a request key and not a path step, so no address names the collection. The message names the step that failed and what it was resolved against, and is not contract. An EMPTY step (`\"runnables.\"`, `\".ports\"`, `\".\"`) never reaches the registry: the envelope's pattern refuses it as `schema-violation`, while a name with no dot that is merely undeclared (`\"foo-bar\"`) stays `unknown-field`."
+  }
+}

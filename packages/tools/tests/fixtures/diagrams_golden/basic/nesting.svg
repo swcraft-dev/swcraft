@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="350" height="114" viewBox="0 0 350 114" font-family="Helvetica, Arial, sans-serif" data-view="nesting">
+<title>Root — nesting</title>
+<rect class="background" width="100%" height="100%" fill="white"/>
+<g class="frame">
+<g class="frame" data-role="frame" data-name="Root" data-type="Root" data-kind="composition"><title>composition Root
+Root composition</title><rect x="20" y="20" width="310" height="74" rx="4" fill="#fafafa" stroke="#333333" stroke-width="1.5"/></g>
+</g>
+<g class="members">
+<g class="member component" data-role="member" data-name="ExampleSWC" data-type="ExampleSWC" data-kind="component"><title>ExampleSWC (component)</title><rect x="32" y="46" width="120" height="36" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="ExampleConsumerSWC" data-type="ExampleConsumerSWC" data-kind="component"><title>ExampleConsumerSWC (component)</title><rect x="164" y="46" width="154" height="36" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+</g>
+<g class="labels">
+<text class="frame-label" x="32" y="37" font-size="12" data-kind="composition" font-weight="bold">Root — Root composition</text>
+<text class="member-label" x="92" y="68.2" font-size="12" data-kind="component" text-anchor="middle">ExampleSWC</text>
+<text class="member-label" x="241" y="68.2" font-size="12" data-kind="component" text-anchor="middle">ExampleConsumerSWC</text>
+</g>
+</svg>

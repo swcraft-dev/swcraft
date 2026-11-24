@@ -1,0 +1,1364 @@
+{
+  "KIND_NAMES": [
+    {
+      "model": "swcraft_tools.schema.SWComponent",
+      "kind": "swc"
+    },
+    {
+      "model": "swcraft_tools.schema.Port",
+      "kind": "port"
+    },
+    {
+      "model": "swcraft_tools.schema.Runnable",
+      "kind": "runnable"
+    },
+    {
+      "model": "swcraft_tools.schema.TimingEvent",
+      "kind": "timing_event"
+    },
+    {
+      "model": "swcraft_tools.schema.InitEvent",
+      "kind": "init_event"
+    },
+    {
+      "model": "swcraft_tools.schema.SRInterface",
+      "kind": "sender_receiver"
+    },
+    {
+      "model": "swcraft_tools.schema.CSInterface",
+      "kind": "client_server"
+    },
+    {
+      "model": "swcraft_tools.schema.DataElement",
+      "kind": "data_element"
+    },
+    {
+      "model": "swcraft_tools.schema.CSOperation",
+      "kind": "operation"
+    },
+    {
+      "model": "swcraft_tools.schema.CSArgument",
+      "kind": "argument"
+    },
+    {
+      "model": "swcraft_tools.schema.Connector",
+      "kind": "connector"
+    },
+    {
+      "model": "swcraft_tools.schema.ConnectorEndpoint",
+      "kind": "connector_endpoint"
+    },
+    {
+      "model": "swcraft_tools.schema.EnumDataType",
+      "kind": "enum"
+    },
+    {
+      "model": "swcraft_tools.schema.RecordDataType",
+      "kind": "record"
+    },
+    {
+      "model": "swcraft_tools.schema.ArrayDataType",
+      "kind": "array"
+    },
+    {
+      "model": "swcraft_tools.schema.EnumLiteral",
+      "kind": "enum_literal"
+    },
+    {
+      "model": "swcraft_tools.schema.RecordField",
+      "kind": "record_field"
+    },
+    {
+      "model": "swcraft_tools.schema.ValueDataType",
+      "kind": "value_type"
+    },
+    {
+      "model": "swcraft_tools.schema.BaseDataType",
+      "kind": "base_type"
+    },
+    {
+      "model": "swcraft_tools.schema.Requirement",
+      "kind": "requirement"
+    },
+    {
+      "model": "swcraft_tools.schema.SystemElement",
+      "kind": "system"
+    },
+    {
+      "model": "swcraft_tools.schema.ContainerElement",
+      "kind": "container"
+    },
+    {
+      "model": "swcraft_tools.schema.Task",
+      "kind": "task"
+    },
+    {
+      "model": "swcraft_tools.schema.TaskRunnableRef",
+      "kind": "task_runnable_ref"
+    },
+    {
+      "model": "swcraft_tools.schema.Sequence",
+      "kind": "sequence"
+    },
+    {
+      "model": "swcraft_tools.schema.SequenceStep",
+      "kind": "sequence_step"
+    },
+    {
+      "model": "swcraft_tools.schema.CpuCoreResource",
+      "kind": "cpu_core"
+    },
+    {
+      "model": "swcraft_tools.schema.MemoryResource",
+      "kind": "memory"
+    }
+  ],
+  "LAYER_SPECS": [
+    {
+      "name": "swc",
+      "annotation": {
+        "form": "class",
+        "discriminator": null,
+        "members": [
+          "swcraft_tools.schema.SWComponent"
+        ]
+      },
+      "identity_field": "name",
+      "snapshot_attribute": "swcs",
+      "storage": {
+        "directory": "swc",
+        "nesting": "group",
+        "file_suffix": ".yaml",
+        "filename_from": "name"
+      },
+      "optional": false,
+      "description": "Software components, one file each under `swc/{group}/`; the group is the file's directory, not a key inside the file.",
+      "absent_description": null
+    },
+    {
+      "name": "interfaces",
+      "annotation": {
+        "form": "discriminated_union",
+        "discriminator": "kind",
+        "members": [
+          "swcraft_tools.schema.SRInterface",
+          "swcraft_tools.schema.CSInterface",
+          "swcraft_tools.schema.ExternalInterface"
+        ]
+      },
+      "identity_field": "name",
+      "snapshot_attribute": "interfaces",
+      "storage": {
+        "directory": "interfaces",
+        "nesting": "flat",
+        "file_suffix": ".yaml",
+        "filename_from": "name"
+      },
+      "optional": false,
+      "description": "Port interfaces. Three element kinds discriminated by `kind`: `sender_receiver` (typed data elements), `client_server` (operations with typed, directional arguments) and `external_interface` (a stub for an interface declared outside the project, carrying the reference the source made to it).",
+      "absent_description": null
+    },
+    {
+      "name": "connectors",
+      "annotation": {
+        "form": "class",
+        "discriminator": null,
+        "members": [
+          "swcraft_tools.schema.Connector"
+        ]
+      },
+      "identity_field": "name",
+      "snapshot_attribute": "connectors",
+      "storage": {
+        "directory": "connectors",
+        "nesting": "flat",
+        "file_suffix": ".yaml",
+        "filename_from": "name"
+      },
+      "optional": false,
+      "description": "Assembly connectors, each joining one component's `provide` port to another component's `require` port over a compatible interface.",
+      "absent_description": null
+    },
+    {
+      "name": "implementation_types",
+      "annotation": {
+        "form": "discriminated_union",
+        "discriminator": "kind",
+        "members": [
+          "swcraft_tools.schema.ValueDataType",
+          "swcraft_tools.schema.ReferenceDataType",
+          "swcraft_tools.schema.ExternalDataType",
+          "swcraft_tools.schema.ImplementationRecordDataType",
+          "swcraft_tools.schema.ImplementationArrayDataType",
+          "swcraft_tools.schema.PointerDataType"
+        ]
+      },
+      "identity_field": "name",
+      "snapshot_attribute": "implementation_types",
+      "storage": {
+        "directory": "data_types/implementation",
+        "nesting": "flat",
+        "file_suffix": ".yaml",
+        "filename_from": "name"
+      },
+      "optional": false,
+      "description": "Implementation data types, one file each under `data_types/implementation/`: how the platform stores the data a model exchanges. Six element kinds discriminated by `kind` (`value_type`, `reference_type`, `external_type`, `implementation_record`, `implementation_array`, `pointer`), plus one nested member kind (`implementation_element`). A `value_type` is the implementation type that rests on a base type, an element of the `base_types` layer, a `reference_type` rests on another implementation type, and `implementation_record`, `implementation_array` and `pointer` are the implementation structure, array and pointer; a mapping set pairs each application type, an element of the `application_types` layer, with the implementation type that stores it. An `external_type` is a stub for an implementation type declared outside the project. An implementation type and an application type may carry one name. The directory is mandatory and may be empty.",
+      "absent_description": null
+    },
+    {
+      "name": "requirements",
+      "annotation": {
+        "form": "class",
+        "discriminator": null,
+        "members": [
+          "swcraft_tools.schema.Requirement"
+        ]
+      },
+      "identity_field": "id",
+      "snapshot_attribute": "requirements",
+      "storage": {
+        "directory": "requirements",
+        "nesting": "flat",
+        "file_suffix": ".yaml",
+        "filename_from": "id"
+      },
+      "optional": false,
+      "description": "Requirements and specification items, identified by `id` rather than `name`; the architecture elements that realize one name it in their own `satisfies`. An architecture requirement is published in the generated `needs.json` as a need of its own; an imported one is never published, only named by its id in the links that reach it.",
+      "absent_description": null
+    },
+    {
+      "name": "systems",
+      "annotation": {
+        "form": "class",
+        "discriminator": null,
+        "members": [
+          "swcraft_tools.schema.SystemElement"
+        ]
+      },
+      "identity_field": "name",
+      "snapshot_attribute": "systems",
+      "storage": {
+        "directory": "systems",
+        "nesting": "flat",
+        "file_suffix": ".yaml",
+        "filename_from": "name"
+      },
+      "optional": false,
+      "description": "Top-level systems of the architecture layer.",
+      "absent_description": null
+    },
+    {
+      "name": "containers",
+      "annotation": {
+        "form": "class",
+        "discriminator": null,
+        "members": [
+          "swcraft_tools.schema.ContainerElement"
+        ]
+      },
+      "identity_field": "name",
+      "snapshot_attribute": "containers",
+      "storage": {
+        "directory": "containers",
+        "nesting": "flat",
+        "file_suffix": ".yaml",
+        "filename_from": "name"
+      },
+      "optional": false,
+      "description": "Containers, each referencing the system it belongs to.",
+      "absent_description": null
+    },
+    {
+      "name": "tasks",
+      "annotation": {
+        "form": "class",
+        "discriminator": null,
+        "members": [
+          "swcraft_tools.schema.Task"
+        ]
+      },
+      "identity_field": "name",
+      "snapshot_attribute": "tasks",
+      "storage": {
+        "directory": "tasks",
+        "nesting": "flat",
+        "file_suffix": ".yaml",
+        "filename_from": "name"
+      },
+      "optional": false,
+      "description": "OS tasks and the runnables each one executes. `period` is in seconds; a budget, `wcet`, carries its own unit.",
+      "absent_description": null
+    },
+    {
+      "name": "sequences",
+      "annotation": {
+        "form": "class",
+        "discriminator": null,
+        "members": [
+          "swcraft_tools.schema.Sequence"
+        ]
+      },
+      "identity_field": "name",
+      "snapshot_attribute": "sequences",
+      "storage": {
+        "directory": "sequences",
+        "nesting": "flat",
+        "file_suffix": ".yaml",
+        "filename_from": "name"
+      },
+      "optional": false,
+      "description": "Sequence scenarios, one task each; each is drawn as a sequence diagram whose files are named from the scenario's name.",
+      "absent_description": null
+    },
+    {
+      "name": "resources",
+      "annotation": {
+        "form": "discriminated_union",
+        "discriminator": "kind",
+        "members": [
+          "swcraft_tools.schema.CpuCoreResource",
+          "swcraft_tools.schema.MemoryResource"
+        ]
+      },
+      "identity_field": "name",
+      "snapshot_attribute": "resources",
+      "storage": {
+        "directory": "resources",
+        "nesting": "flat",
+        "file_suffix": ".yaml",
+        "filename_from": "name"
+      },
+      "optional": true,
+      "description": "The one optional layer, and the only one whose checks a project turns on by having it: where it is present, every `Task.core` must resolve to a `cpu_core`, and every SWC is a consumer of every declared memory pool.",
+      "absent_description": "The one optional layer, ABSENT in this project — so no resource rule runs at all. Its inventory is a registry fact rather than project state, so it is published in full: a client can author the first `cpu_core` or `memory` budget without a second round trip, and the `create` materializes the directory as a registry-internal side effect (ADR 011 decision 1)."
+    }
+  ],
+  "PLACEMENT_FIELDS": [
+    {
+      "layer": "swc",
+      "kind": "swc",
+      "name": "group",
+      "type": "string",
+      "description": "Placement metadata: the value is the element's directory rather than a key in its file. Validated as a single path segment, never as an AUTOSAR identifier, and immutable — nothing moves an element between groups, so a change of group is a remove and a create."
+    }
+  ],
+  "KIND_DESCRIPTIONS": {
+    "swc": "One software component: its ports, its runnable entities, the inter-runnable variables those runnables share and the exclusive areas that keep them from preempting each other.",
+    "port": "One port of a software component: a named, directed endpoint typed by an interface. A `provide` port offers the interface, a `require` port consumes it, and an assembly connector joins one of each. A port of an external stub carries its name and direction only: the source states no interface for it. `kind:compositions.composition_port` declares the same four fields for a composition's boundary port; the two are duplicated rather than shared because a bare kind name is unique across the whole contract and `memberOf` is derived per layer.",
+    "runnable": "One runnable entity of a software component: a schedulable function with its timing constraint, the events that trigger it — periodic, at start-up, a client's call of an operation the component provides, the reception of a data element on one of its require ports, or the return of an asynchronous call of its component — whether it may be started again while it runs, the C symbol its entry point is generated under, and the data it touches through the component's own ports — the data elements it `reads` and `writes`, explicitly or implicitly, and the operations it `calls`, synchronously or asynchronously, each entry naming a port and a member of that port's interface — the variables of its own component it reads and writes without a port, in `reads_variables` and `writes_variables`, and the exclusive areas of its own component it enters by API, in `can_enter`, or runs inside as a whole, in `runs_inside`. A runnable is mapped to an OS task through the task's `runnables` list, by its component — the type by `swc` or the occurrence by `instance` — and the runnable's `name`, and the runnable of one occurrence to at most one task.",
+    "timing_event": "A periodic trigger: the runnable is invoked every `period` seconds, except in the modes `disabled_modes` names. Every field is part of the event's identity, so a changed period is one event removed and another added, never an edit in place; a field still at its default is left out of the identity, so an event that disables no mode is addressed by its `type` and `period` alone.",
+    "init_event": "An initialization event: the runnable runs once at start-up. It carries its `type` and, when stated, its `name`, so a runnable either has it or does not.",
+    "sender_receiver": "A sender-receiver interface: the set of typed data elements exchanged over a port. Discriminated from `client_server` by `kind: sender_receiver`; it must declare at least one data element.",
+    "client_server": "A client-server interface: the set of operations a server port offers and a client port calls, each with its typed, directional arguments. Discriminated by `kind: client_server`; it must declare at least one operation.",
+    "data_element": "One data element of a sender-receiver interface: a name, the declared data type it carries (`application_type` for an application data type, `implementation_type` for an implementation data type), an optional `init` value it starts from, and an optional `asil` for the safety integrity level of the information it carries.",
+    "operation": "One operation of a client-server interface: a name and its ordered, typed, directional arguments; an operation may take no arguments at all.",
+    "argument": "One argument of a client-server operation: its name, the direction data flows through it, and the declared data type it carries (`application_type` for an application data type, `implementation_type` for an implementation data type).",
+    "connector": "One assembly connector: it links the `from` endpoint, which must be a `provide` port, to the `to` endpoint, which must be a `require` port, and the `to` port's interface must be satisfied by the `from` port's. Connector names are unique across the layer, and so is each `(from, to)` link.",
+    "connector_endpoint": "One end of an assembly connector: the component or composition type that owns the port, and the port. A nested object rather than a list member, so it has no identity of its own and every field of it may change. It names the TYPE either way; the writer resolves that type to the member of it inside the connector's own composition, which is why a type may stand only once per composition.",
+    "enum": "An enumeration type: a set of named values, each with an integer value. Emitted as an `APPLICATION-PRIMITIVE-DATA-TYPE` of category `VALUE`. Its values are stated in one of two forms: inline as `literals`, from which a `{name}_CompuMethod` of category `TEXTTABLE` is generated that maps each literal to its value, or by `compu_method_ref`, naming a `texttable` element of the `compu_methods` layer, which generates no form.",
+    "record": "A record (structure) type: an ordered list of named, typed fields. Field names are unique inside the record, and a field's type must name a declared data type that does not, directly or through other records and arrays, contain this record again.",
+    "array": "A fixed-length array type: `length` elements of one declared `element_type`. The element type must name a declared data type and must not close a cycle back to this array.",
+    "enum_literal": "One named value of an `enum` type: a member of its `literals` collection, never a standalone element, so it has no file and no layer-level address.",
+    "record_field": "A member of a `record` type's `fields` collection; like `enum_literal` it has no file and no layer-level address.",
+    "value_type": "An implementation data type of category `VALUE`, emitted as an `IMPLEMENTATION-DATA-TYPE` whose `BASE-TYPE-REF` points at its `base`, which must name a declared base type. It is what a data element or an argument names as its type, and what a mapping set pairs with the application type it stores; a record field and an array element name the application view instead. A declared `value_min` or `value_max` is written as the type's own `{name}_Range` `DATA-CONSTR`, one rule of `INTERNAL-CONSTRS` with each declared bound as a `CLOSED` limit, referenced by a `DATA-CONSTR-REF`; `unit` reaches no ARXML element.",
+    "base_type": "A base type: how the platform stores a value — its size in bits, its encoding and its C declaration — emitted as a `SW-BASE-TYPE`. A base type is never what a data prototype is typed by (AUTOSAR's `AutosarDataPrototype.type`): no data element, argument, record field or array element may name one. A base type is an element of its own layer, `base_types`, so it may share its name with a type of another layer. A `value_type` names it as its `base`, and the data prototypes name the `value_type`.",
+    "requirement": "One requirement or specification item. Identified by `id` rather than `name`, and its file is named from the `id`; the elements that realize it name it in their `satisfies` as `<id>@<version>`, so the requirement file names no element and an imported one can be overwritten by a re-import without losing a link, or removed by one when the delivery no longer holds it. `document`, `baseline` and `revision` record where an external requirement came from. An architecture requirement is published in the generated `needs.json` as a need of its own; an imported one is never published, only named by its id in the links that reach it.",
+    "system": "One top-level system of the architecture view: a C4 context-level element that names a boundary of the architecture. It is what the landscape view draws when this layer is populated, and it reaches the LikeC4 model and no ARXML element.",
+    "container": "One container of the architecture view: a C4 container-level element that belongs to exactly one declared system. It reaches the LikeC4 model and no ARXML element.",
+    "task": "One OS task: a periodic schedulable unit with a priority, a partition assignment, an optional worst-case execution budget and the ordered list of runnables it executes. A task's period must be a divisor of every timing period among the runnables it maps.",
+    "task_runnable_ref": "One entry of a task's `runnables` list: a runnable of a software component, the component named by exactly one of `swc` (a component type placed at most once below the root composition, or not at all) and `instance` (one occurrence of a component below the root composition). The `(swc, instance, runnable)` triple, the absent selector as `null`, is the member's identity, because runnable names are unique only inside their own component.",
+    "sequence": "One sequence scenario: an ordered walk through some of the runnables of exactly one task, drawn as a sequence diagram. The steps must follow the task's own runnable order.",
+    "sequence_step": "One step of a sequence scenario: the runnable it shows, its component named by exactly one of `swc` and `instance`, with an optional note. The `(swc, instance, runnable)` triple, the absent selector as `null`, is the step's identity; the step must be mapped to the scenario's task, and a step written the same way appears at most once per scenario.",
+    "cpu_core": "A CPU-load budget for one core, referenced from `Task.core` by its `core` number. Once any `cpu_core` resource exists, every task's core must have one; `advisory` enforcement is the per-resource opt-out.",
+    "memory": "A memory-pool budget, referenced by the keys of `SWComponent.memory`. Every software component is a consumer of every declared pool: under `strict` enforcement each must declare a budget for it, under `advisory` a missing budget counts as zero and a breach is reported as information."
+  },
+  "FIELD_ANNOTATIONS": [
+    {
+      "kind": "swc",
+      "field": "name",
+      "description": "The component's identity; the file is named from it (`swc/{group}/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across all software components, must not be empty, and immutable — renaming is a remove and a create.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "swc",
+      "field": "type",
+      "description": "The AUTOSAR component category. Only `application` is emitted today — the ARXML writer refuses a `service` or `ecu_abstraction` component — so the default is the one value that generates.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "swc",
+      "field": "description",
+      "description": "Free text about the component, shown on the component's box in the diagrams when non-empty, and written into the generated ARXML as the component type's `DESC`, exactly as held; the empty default writes none. An external component emits no element, so its text reaches the diagrams only.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "swc",
+      "field": "ports",
+      "description": "The component's ports, addressed by `name`, which must be unique inside the component. Each port is typed by a declared interface and joined to another component by an assembly connector; an external stub's port declares no interface.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "swc",
+      "field": "runnables",
+      "description": "The component's runnable entities, addressed by `name`, which must be unique inside the component — and only there, which is why a task or a sequence names a runnable by its component — the type by `swc` or the occurrence by `instance` — and the runnable's `name`.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "swc",
+      "field": "memory",
+      "description": "Memory-pool budgets, in bytes, keyed by the name of a declared `memory` resource. Checked by the resource analysis once the project declares any resource; `resources/` is an optional layer, and in a project without one an unknown key is reported by no check.",
+      "unit": "bytes",
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "port",
+      "field": "name",
+      "description": "The port's identity inside its component; unique among the component's ports and immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "port",
+      "field": "direction",
+      "description": "Whether the port offers the interface (`provide`) or consumes it (`require`). An assembly connector runs from a `provide` port to a `require` port, never between two of the same direction.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "port",
+      "field": "interface",
+      "description": "The name of the declared interface this port is typed by. The two ends of a connector need not name the same interface: the required port's interface must be satisfied by the provided port's. Absent on an external stub's port, which never carries one; a port of any other component without one is reported.",
+      "unit": null,
+      "reference": {
+        "layer": "interfaces",
+        "identity_field": "name"
+      },
+      "immutable": null
+    },
+    {
+      "kind": "port",
+      "field": "description",
+      "description": "Free text about the port. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "runnable",
+      "field": "name",
+      "description": "The runnable's identity inside its component; unique among the component's runnables and immutable. It is prefixed `TMT_` and `IT_` for the generated event names.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "runnable",
+      "field": "min_start_interval",
+      "description": "The minimum interval, in seconds, between two starts of the runnable (0 means no minimum). Must be >= 0; neither this field nor any other float accepts NaN or ±Infinity.",
+      "unit": "seconds",
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "runnable",
+      "field": "events",
+      "description": "The events that trigger the runnable: periodic `timing` events, the start-up `init` event, `operation` events, each naming an operation a client calls through one of the component's own `provide` ports, `data` events, each naming a data element whose reception through one of the component's own `require` ports starts it, and `call_returned` events, each naming an operation a runnable of the component calls asynchronously, whose return starts it and whose result it fetches. A union-typed collection whose members carry no identity field: a member IS its value, so a changed period, port, operation or element is one event removed and one added.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "timing_event",
+      "field": "type",
+      "description": "The discriminator of a timing event; always `timing`.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "timing_event",
+      "field": "period",
+      "description": "The period of the trigger, in seconds. Must be > 0.",
+      "unit": "seconds",
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "init_event",
+      "field": "type",
+      "description": "The discriminator of an initialization event; always `init`.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "sender_receiver",
+      "field": "name",
+      "description": "The interface's identity; the file is named from it (`interfaces/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across every interface kind, must not be blank, and immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "sender_receiver",
+      "field": "kind",
+      "description": "The discriminator that selects this interface kind; always `sender_receiver`.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "sender_receiver",
+      "field": "data_elements",
+      "description": "The typed data elements exchanged over the interface, addressed by `name`, which must be unique inside the interface. Must not be empty.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "sender_receiver",
+      "field": "description",
+      "description": "Free text about the interface. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "client_server",
+      "field": "name",
+      "description": "The interface's identity; the file is named from it (`interfaces/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across every interface kind, must not be blank, and immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "client_server",
+      "field": "kind",
+      "description": "The discriminator that selects this interface kind; always `client_server`.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "client_server",
+      "field": "operations",
+      "description": "The operations a server port offers and a client port calls, addressed by `name`, which must be unique inside the interface. Must not be empty.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "client_server",
+      "field": "description",
+      "description": "Free text about the interface. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "data_element",
+      "field": "name",
+      "description": "The data element's identity inside its interface; unique among the interface's data elements and immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "data_element",
+      "field": "implementation_type",
+      "description": "The name of the declared implementation data type this data element carries, an element of the `implementation_types` layer: a value type, a reference type, an implementation record, an implementation array, a pointer or an external data type stub. Exactly one of `application_type` and `implementation_type` is set.",
+      "unit": null,
+      "reference": {
+        "layer": "implementation_types",
+        "identity_field": "name"
+      },
+      "immutable": null
+    },
+    {
+      "kind": "data_element",
+      "field": "init",
+      "description": "The value this data element starts from, where the design fixes one. Optional, and its shape follows the element's own declared type: a plain scalar for an application type, for a value type or for a reference type (judged against the type at the end of its chain), the literal's own name for an enumeration, the name of one of the table's entries for a value type or a reference type that references a table (itself or along its chain), a map keyed by exactly the declared field or element names for a record or an implementation record, and a list of exactly the declared length for an array or an implementation array. A pointer takes none. A value the declared type cannot hold is reported as a model error rather than converted. A port of a component may state a value of its own for the element in its `com_specs`, which takes precedence on that port.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "operation",
+      "field": "name",
+      "description": "The operation's identity inside its interface; unique among the interface's operations and immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "operation",
+      "field": "arguments",
+      "description": "The operation's ordered arguments, addressed by `name`, which must be unique inside the operation. May be empty.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "argument",
+      "field": "name",
+      "description": "The argument's identity inside its operation; unique among the operation's arguments and immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "argument",
+      "field": "direction",
+      "description": "The direction data flows through the argument: `in` from client to server, `out` from server to client, `inout` both ways.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "argument",
+      "field": "implementation_type",
+      "description": "The name of the declared implementation data type this argument carries, an element of the `implementation_types` layer: a value type, a reference type, an implementation record, an implementation array, a pointer or an external data type stub. Exactly one of `application_type` and `implementation_type` is set.",
+      "unit": null,
+      "reference": {
+        "layer": "implementation_types",
+        "identity_field": "name"
+      },
+      "immutable": null
+    },
+    {
+      "kind": "connector",
+      "field": "name",
+      "description": "The connector's identity; the file is named from it (`connectors/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the layer, must not be empty, and immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "connector",
+      "field": "from",
+      "description": "The providing endpoint: the component and the `provide` port the connector starts from. Its port's interface must satisfy the `to` port's, which the same interface always does.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "connector",
+      "field": "to",
+      "description": "The requiring endpoint: the component and the `require` port the connector delivers to. Its port's interface must be satisfied by the `from` port's, which the same interface always does.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "connector",
+      "field": "description",
+      "description": "Free text about the connector. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "connector_endpoint",
+      "field": "swc",
+      "description": "The name of the declared software component that owns the endpoint's port. Exactly one of `swc` and `composition` is set; this one is the endpoint of an ordinary component.",
+      "unit": null,
+      "reference": {
+        "layer": "swc",
+        "identity_field": "name"
+      },
+      "immutable": null
+    },
+    {
+      "kind": "connector_endpoint",
+      "field": "port",
+      "description": "The name of a port of that component. Must not be empty; the port's existence and its direction are checked against the component.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "enum",
+      "field": "name",
+      "description": "The type's identity; the file is named from it (`data_types/application/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the application types, must not be blank, and immutable; an implementation type may carry the same name. Where the enumeration states `literals`, it is suffixed `_CompuMethod` for the generated computation method.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "enum",
+      "field": "kind",
+      "description": "The discriminator that selects this data type kind; always `enum`.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "enum",
+      "field": "literals",
+      "description": "The enumeration's named literals, addressed by `name`: the inline form of its values, from which the `{name}_CompuMethod` is generated. Absent where the enumeration names a `texttable` by its `compu_method_ref` instead; it states exactly one of the two, and stated literals must not be empty.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "enum",
+      "field": "description",
+      "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "record",
+      "field": "name",
+      "description": "The type's identity; the file is named from it (`data_types/application/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the application types, must not be blank, and immutable; an implementation type may carry the same name.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "record",
+      "field": "kind",
+      "description": "The discriminator that selects this data type kind; always `record`.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "record",
+      "field": "fields",
+      "description": "The record's named, typed fields in declaration order, addressed by `name`. Must not be empty.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "record",
+      "field": "description",
+      "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "array",
+      "field": "name",
+      "description": "The type's identity; the file is named from it (`data_types/application/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the application types, must not be blank, and immutable; an implementation type may carry the same name.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "array",
+      "field": "kind",
+      "description": "The discriminator that selects this data type kind; always `array`.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "array",
+      "field": "element_type",
+      "description": "The name of the declared data type of every element: an application type, an enumeration, a record or an array, an element of the `application_types` layer — a composite's members are typed by the physical view. It may not be this array itself, nor a type that contains this array.",
+      "unit": null,
+      "reference": {
+        "layer": "application_types",
+        "identity_field": "name"
+      },
+      "immutable": null
+    },
+    {
+      "kind": "array",
+      "field": "length",
+      "description": "The number of elements in the array. Must be > 0.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "array",
+      "field": "description",
+      "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "enum_literal",
+      "field": "name",
+      "description": "The literal's identity inside its enumeration; unique among the enumeration's literals and immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "enum_literal",
+      "field": "value",
+      "description": "The integer the literal stands for. Unique among the enumeration's literals; emitted as the literal's `LOWER-LIMIT`/`UPPER-LIMIT` in the computation method.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "record_field",
+      "field": "name",
+      "description": "The field's identity inside its record; unique among the record's fields and immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "record_field",
+      "field": "type",
+      "description": "The name of the declared data type the field carries: an application type, an enumeration, a record or an array, an element of the `application_types` layer — a composite's members are typed by the physical view. It may not close a cycle back to the record.",
+      "unit": null,
+      "reference": {
+        "layer": "application_types",
+        "identity_field": "name"
+      },
+      "immutable": null
+    },
+    {
+      "kind": "value_type",
+      "field": "name",
+      "description": "The type's identity; the file is named from it (`data_types/implementation/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the implementation types, must not be blank, and immutable; an application type may carry the same name.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "value_type",
+      "field": "kind",
+      "description": "The discriminator that selects this data type kind; always `value_type`.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "value_type",
+      "field": "base",
+      "description": "Must name a declared base type, an element of the `base_types` layer. A base type is resolved in that layer alone, so it may carry the value type's own name.",
+      "unit": null,
+      "reference": {
+        "layer": "base_types",
+        "identity_field": "name"
+      },
+      "immutable": null
+    },
+    {
+      "kind": "value_type",
+      "field": "unit",
+      "description": "The physical unit of the value, as free text (for example `km/h`). Documentation only; it reaches no ARXML element: Table 5.18 of the software component template gives an implementation data type's `unit` no place in any category, and `[constr_1009]` makes the table binding.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "value_type",
+      "field": "value_min",
+      "description": "The lower bound of the value; omitted or `null` when there is none. Must be <= `value_max` when both are given; neither accepts NaN or ±Infinity.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "value_type",
+      "field": "value_max",
+      "description": "The upper bound of the value; omitted or `null` when there is none. Must be >= `value_min` when both are given; neither accepts NaN or ±Infinity.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "value_type",
+      "field": "description",
+      "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "base_type",
+      "field": "name",
+      "description": "The type's identity; the file is named from it (`data_types/base/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the base types, must not be blank, and immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "base_type",
+      "field": "kind",
+      "description": "Always `base_type`. The layer holds one kind and is not discriminated; the field is an ordinary literal, kept, immutable as it was, so a base type file reads as it did when base types were a kind of the data types layer.",
+      "unit": null,
+      "reference": null,
+      "immutable": true
+    },
+    {
+      "kind": "base_type",
+      "field": "size",
+      "description": "The size of the base type, in bits. Must be > 0.",
+      "unit": "bits",
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "base_type",
+      "field": "encoding",
+      "description": "A required AUTOSAR BASE-TYPE-ENCODING token (NONE, 2C, IEEE754, ...); must not be blank, because a blank one is not round-trippable through the ARXML importer.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "base_type",
+      "field": "native_declaration",
+      "description": "The C type name the generated code declares for this base type (for example `uint8_t`), emitted exactly as written as its `NATIVE-DECLARATION`. Required by check-model: SWCraft never derives one, so a base type without it still loads, but check-model reports it and ARXML generation refuses it until it is filled in.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "base_type",
+      "field": "description",
+      "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "requirement",
+      "field": "id",
+      "description": "The requirement's identity; the file is named from it (`requirements/{id}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the layer, must not be empty, and immutable. It is the need's id in the generated `needs.json`, as written, and the id a link to the requirement names there. It may not contain `@` or `:`, the separators of a link's version and of an element reference.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "requirement",
+      "field": "title",
+      "description": "The requirement's one-line title; an architecture requirement's published need carries it as its title.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "requirement",
+      "field": "description",
+      "description": "The requirement's statement; an architecture requirement's published need carries it as its content. Required: a requirement without a statement is not one.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "requirement",
+      "field": "req_type",
+      "description": "`req` for a requirement, `spec` for a specification item; an architecture requirement is published as the need type `arch_req` or `arch_spec`.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "system",
+      "field": "name",
+      "description": "The system's identity; the file is named from it (`systems/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the layer, must not be empty, and immutable; it becomes the LikeC4 element name.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "system",
+      "field": "title",
+      "description": "The human-readable title shown on the C4 diagram.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "system",
+      "field": "description",
+      "description": "Free text about the system, rendered into the LikeC4 diagram when non-empty.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "container",
+      "field": "name",
+      "description": "The container's identity and its filename: `containers/{name}.yaml`. Unique across the layer, must not be empty, and immutable; it becomes the LikeC4 element name.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "container",
+      "field": "title",
+      "description": "The human-readable title shown on the C4 diagram.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "container",
+      "field": "system",
+      "description": "The name of the declared system this container belongs to; a container belongs to exactly one.",
+      "unit": null,
+      "reference": {
+        "layer": "systems",
+        "identity_field": "name"
+      },
+      "immutable": null
+    },
+    {
+      "kind": "container",
+      "field": "description",
+      "description": "Free text about the container, rendered into the LikeC4 diagram when non-empty.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "task",
+      "field": "name",
+      "description": "The task's identity; the file is named from it (`tasks/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the layer, must not be empty, and immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "task",
+      "field": "period",
+      "description": "The task's activation period, in seconds (a budget, `wcet`, carries its own unit). Must be > 0.",
+      "unit": "seconds",
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "task",
+      "field": "priority",
+      "description": "Must be >= 0; higher is more urgent.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "task",
+      "field": "core",
+      "description": "Must be >= 0. Once any `cpu_core` resource exists, every task's core must resolve to one.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "task",
+      "field": "wcet",
+      "description": "The task's execution-time budget: what the architect allots to the task, an upper bound the model is checked against and never a measurement. Written as a whole number followed by its unit, one of `ns`, `us`, `ms` or `s` — `1200us`, `2ms` — with no space, no leading zero, no decimal point and at most 18 digits; omitted or `null` when no budget is declared, greater than zero when present, and a `strict` core budget requires one on every task of that core. Analysis input only: the standard's execution-time constraint names an executable entity, and an OS task is none, so no ARXML output carries it. A file still spelling `wcet_us` is refused with the new spelling.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "task",
+      "field": "description",
+      "description": "Free text about the task. Carried in the model; it reaches no generated artifact.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "task",
+      "field": "runnables",
+      "description": "The runnables the task executes, in order, each naming its component by exactly one of `swc` and `instance`, and its `runnable`; an entry written the same way appears at most once in a task.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "task_runnable_ref",
+      "field": "swc",
+      "description": "The name of the declared software component that owns the runnable; exactly one of `swc` and `instance` is set. Part of the member's composite identity, and so immutable.",
+      "unit": null,
+      "reference": {
+        "layer": "swc",
+        "identity_field": "name"
+      },
+      "immutable": null
+    },
+    {
+      "kind": "task_runnable_ref",
+      "field": "runnable",
+      "description": "The name of a runnable of that component. Part of the composite identity, and so immutable; a runnable of one resolved component is mapped to at most one task across the model.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "sequence",
+      "field": "name",
+      "description": "The scenario's identity, which also names its sequence diagram's files. Must match ^[A-Za-z_][A-Za-z0-9_]*$ — a rule of this layer alone, deliberately not the AUTOSAR `Identifier` rule.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "sequence",
+      "field": "task",
+      "description": "The name of the declared task this scenario walks; exactly one per scenario, and every step must be mapped to it.",
+      "unit": null,
+      "reference": {
+        "layer": "tasks",
+        "identity_field": "name"
+      },
+      "immutable": null
+    },
+    {
+      "kind": "sequence",
+      "field": "title",
+      "description": "The scenario's human-readable title, shown after its name in the heading of its sequence diagram (`sd {name} — {title}`). When empty, the heading is the name alone.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "sequence",
+      "field": "steps",
+      "description": "The steps of the scenario, in order. Must not be empty and must be an ordered subsequence of the referenced task's runnables.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "sequence_step",
+      "field": "swc",
+      "description": "The name of the declared software component the step runs in; exactly one of `swc` and `instance` is set. Part of the step's composite identity, and so immutable.",
+      "unit": null,
+      "reference": {
+        "layer": "swc",
+        "identity_field": "name"
+      },
+      "immutable": null
+    },
+    {
+      "kind": "sequence_step",
+      "field": "runnable",
+      "description": "The name of a runnable of that component, which must be mapped to the scenario's task. Part of the composite identity, and so immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "sequence_step",
+      "field": "note",
+      "description": "Free text shown beside the step on its sequence diagram; when non-empty the step's activation is labelled `{runnable} — {note}`.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "cpu_core",
+      "field": "name",
+      "description": "The resource's identity and its filename: `resources/{name}.yaml`. Unique across both resource kinds and immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "cpu_core",
+      "field": "kind",
+      "description": "The discriminator that selects this resource kind; always `cpu_core`.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "cpu_core",
+      "field": "core",
+      "description": "Must be >= 0, and matches `Task.core`. Immutable: a different core is a different budget, not an edit of this one.",
+      "unit": null,
+      "reference": null,
+      "immutable": true
+    },
+    {
+      "kind": "cpu_core",
+      "field": "threshold",
+      "description": "A finite fraction in (0, 1]. RAISING it weakens the check, which is a safety act the server classifies from the staged before/after values, whatever the scope says.",
+      "unit": "fraction",
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "cpu_core",
+      "field": "enforcement",
+      "description": "How a breach of this budget is reported. `strict` (the default): every task on the core must declare `wcet` and an over-threshold load is an error. `advisory`: a missing budget counts as zero and a breach is an information line.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "cpu_core",
+      "field": "description",
+      "description": "Free text about the budget. Carried in the model; it reaches no generated artifact.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "memory",
+      "field": "name",
+      "description": "The resource's identity and its filename: `resources/{name}.yaml`, and the pool name a component's `memory` map keys. Unique across both resource kinds and immutable.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "memory",
+      "field": "kind",
+      "description": "The discriminator that selects this resource kind; always `memory`.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "memory",
+      "field": "size",
+      "description": "Must be > 0. ENLARGING it weakens the check, so it is a safety act.",
+      "unit": "bytes",
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "memory",
+      "field": "threshold",
+      "description": "The share of the pool the components' budgets may total before the budget is breached: a finite fraction in (0, 1].",
+      "unit": "fraction",
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "memory",
+      "field": "enforcement",
+      "description": "How a breach of this budget is reported. `strict` (the default): every component must declare a budget for the pool and an over-threshold total is an error. `advisory`: a missing budget counts as zero and a breach is an information line.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    },
+    {
+      "kind": "memory",
+      "field": "description",
+      "description": "Free text about the budget. Carried in the model; it reaches no generated artifact.",
+      "unit": null,
+      "reference": null,
+      "immutable": null
+    }
+  ],
+  "COLLECTION_SPECS": [
+    {
+      "kind": "swc",
+      "field": "ports",
+      "member_identity": "field",
+      "identity_field": "name",
+      "identity_fields": [],
+      "description": null
+    },
+    {
+      "kind": "swc",
+      "field": "runnables",
+      "member_identity": "field",
+      "identity_field": "name",
+      "identity_fields": [],
+      "description": null
+    },
+    {
+      "kind": "swc",
+      "field": "memory",
+      "member_identity": "whole_value",
+      "identity_field": null,
+      "identity_fields": [],
+      "description": null
+    },
+    {
+      "kind": "sender_receiver",
+      "field": "data_elements",
+      "member_identity": "field",
+      "identity_field": "name",
+      "identity_fields": [],
+      "description": null
+    },
+    {
+      "kind": "client_server",
+      "field": "operations",
+      "member_identity": "field",
+      "identity_field": "name",
+      "identity_fields": [],
+      "description": null
+    },
+    {
+      "kind": "operation",
+      "field": "arguments",
+      "member_identity": "field",
+      "identity_field": "name",
+      "identity_fields": [],
+      "description": null
+    },
+    {
+      "kind": "enum",
+      "field": "literals",
+      "member_identity": "field",
+      "identity_field": "name",
+      "identity_fields": [],
+      "description": null
+    },
+    {
+      "kind": "record",
+      "field": "fields",
+      "member_identity": "field",
+      "identity_field": "name",
+      "identity_fields": [],
+      "description": null
+    },
+    {
+      "kind": "task",
+      "field": "runnables",
+      "member_identity": "composite",
+      "identity_field": null,
+      "identity_fields": [
+        "swc",
+        "instance",
+        "runnable"
+      ],
+      "description": null
+    },
+    {
+      "kind": "sequence",
+      "field": "steps",
+      "member_identity": "composite",
+      "identity_field": null,
+      "identity_fields": [
+        "swc",
+        "instance",
+        "runnable"
+      ],
+      "description": null
+    },
+    {
+      "kind": "runnable",
+      "field": "events",
+      "member_identity": "whole_value",
+      "identity_field": null,
+      "identity_fields": [],
+      "description": null
+    }
+  ]
+}

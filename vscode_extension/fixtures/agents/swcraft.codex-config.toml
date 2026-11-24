@@ -1,0 +1,11 @@
+# Written by SWCraft's Onboard Project. Edit freely: once this line is gone, Onboard Project keeps the file.
+
+# Codex reads only the first 32 KiB of AGENTS.md by default; SWCraft's is larger.
+project_doc_max_bytes = 131072
+
+[mcp_servers.swcraft]
+command = "swcraft"
+args = ["mcp-serve", "--project", "swcraft.yaml"]
+env = { SWCRAFT_REVIEW = "panel" }
+tool_timeout_sec = 86400
+default_tools_approval_mode = "approve"

@@ -1,0 +1,13 @@
+{
+  "session_id": "s",
+  "hook_event_name": "PreToolUse",
+  "cwd": "/project",
+  "tool_name": "execute_bash",
+  "tool_input": {
+    "command": "echo \"# probe\" >> model/hardware/CORE0.yaml",
+    "description": null,
+    "cwd": "/project",
+    "run_in_background": false,
+    "timeout": null
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "passport_version": "1.0.0",
+  "contract_version": "12.0.0",
+  "layers": {
+    "swc": 100,
+    "interfaces": 51,
+    "application_types": 3,
+    "implementation_types": 2,
+    "base_types": 1,
+    "requirements": 1,
+    "tasks": 4
+  },
+  "components": {
+    "hubs": [],
+    "unconnected": {
+      "total": 0,
+      "max_on_one": 0
+    }
+  },
+  "interfaces": {
+    "sender_receiver": 50,
+    "client_server": 1,
+    "fan_out": {
+      "max": 2
+    }
+  },
+  "connectors": {
+    "links": 0
+  },
+  "hardware": {
+    "cores": 4,
+    "partitions": 4,
+    "memories": 4,
+    "rated_partitions": 4
+  },
+  "tasks": {
+    "idle": 0
+  },
+  "requirements": {
+    "on_all_site_kinds": 0,
+    "on_one_port": 0,
+    "unallocated": 0,
+    "stale_links": 0
+  },
+  "identifiers": {
+    "max_length": 64
+  }
+}

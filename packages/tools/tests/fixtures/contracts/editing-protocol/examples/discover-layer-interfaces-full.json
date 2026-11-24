@@ -1,0 +1,652 @@
+{
+  "name": "discover-layer-interfaces-full",
+  "description": "The `interfaces` layer's descriptor at `form: \"full\"` — the one form that carries the descriptor PROSE, asked for one layer at a time because the project-wide `full` discovery is REFUSED with `over-budget` on every project (`negative/discover-project-full-over-budget.json`), and the refusal's second step is exactly this request. Together the fifteen per-layer `full` vectors replay every layer, kind and field annotation the model contract ships, verbatim, which is where the shipped-prose oracle (`packages/tools/tests/test_model_contract_conformance.py`) rides: rewording an annotation in the contract is a protocol-output change, and this is the output it changes. Of this layer: three top-level kinds in one identity namespace — `external_interface` a stub carrying only the source's reference — and the member kinds an access entry resolves against — a `data_element` for a read or write, an `operation` for a call. Compare it with the same descriptor inside `examples/discover-project-all-layers-present.json`, which is this document with every `description` dropped and the three descriptor booleans (`optional`, `required`, `immutable`) omitted where they are `false`.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` shape of a SWCraft project: fifteen scaffolded layers, `hardware/` among them. Nothing about the response depends on which elements are in the layer: the inventory is derived from the model contract through the registry, not from the files.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "discover",
+    "layer": "interfaces",
+    "form": "full"
+  },
+  "expected": {
+    "response": {
+      "response": "discover",
+      "project": {
+        "name": "swcraft-basic-example",
+        "arxml_version": "4.2.2",
+        "swcraft_version": "0.24.0"
+      },
+      "baseline": "rev1:kk7N755-pYf2txfvyVl9Kw",
+      "reads": {
+        "forms": [
+          "summary",
+          "full",
+          "index"
+        ],
+        "default_form": {
+          "layer": "summary",
+          "collection": "summary",
+          "element": "full",
+          "field": "full"
+        },
+        "budget_wire_bytes": 80000,
+        "hint_page_size": 50,
+        "discover": {
+          "forms": [
+            "summary",
+            "full",
+            "baseline"
+          ],
+          "default_form": "summary"
+        },
+        "derived": [
+          {
+            "name": "connection_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string"
+              }
+            }
+          },
+          {
+            "name": "base_type",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "runnables.reads",
+                "runnables.writes"
+              ]
+            },
+            "rows": "one",
+            "shape": {
+              "implementation": "string|null",
+              "base": "string|null"
+            }
+          },
+          {
+            "name": "effective_level",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one",
+            "shape": {
+              "level": "string",
+              "rating": "string"
+            }
+          },
+          {
+            "name": "partitions",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one per value",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "crossing_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              }
+            }
+          },
+          {
+            "name": "unconnected",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "ports"
+              ]
+            },
+            "rows": "one per value",
+            "shape": {
+              "direction": "string",
+              "interface": "string|null"
+            }
+          },
+          {
+            "name": "core",
+            "at": {
+              "layer": "tasks"
+            },
+            "rows": "one",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "realised_by",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null"
+            }
+          },
+          {
+            "name": "allocation",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one",
+            "shape": {
+              "sites": "integer",
+              "elements": "integer",
+              "allocated": "boolean|null"
+            }
+          },
+          {
+            "name": "stale_links",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null",
+              "current": "integer"
+            }
+          }
+        ],
+        "join": {
+          "row_ceiling": 50000,
+          "max_entries": 8
+        }
+      },
+      "form": "full",
+      "layers": [
+        {
+          "layer": "interfaces",
+          "optional": false,
+          "present": true,
+          "identity_field": "name",
+          "description": "Port interfaces. Three element kinds discriminated by `kind`: `sender_receiver` (typed data elements), `client_server` (operations with typed, directional arguments) and `external_interface` (a stub for an interface declared outside the project, carrying the reference the source made to it).",
+          "element_kinds": [
+            {
+              "kind": "sender_receiver",
+              "discriminator_field": "kind",
+              "description": "A sender-receiver interface: the set of typed data elements exchanged over a port. Discriminated from `client_server` by `kind: sender_receiver`; it must declare at least one data element.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The interface's identity; the file is named from it (`interfaces/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across every interface kind, must not be blank, and immutable."
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The discriminator that selects this interface kind; always `sender_receiver`.",
+                  "enum": [
+                    "sender_receiver"
+                  ]
+                },
+                {
+                  "name": "data_elements",
+                  "type": "list[data_element]",
+                  "required": true,
+                  "immutable": false,
+                  "description": "The typed data elements exchanged over the interface, addressed by `name`, which must be unique inside the interface. Must not be empty.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "data_element"
+                    ]
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the interface. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none."
+                },
+                {
+                  "name": "package",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The one sub-package of `/PortInterfaces` this sender-receiver interface is emitted in, a single SHORT-NAME segment: the sender-receiver interface and the forms generated from it and every reference to it take `/PortInterfaces/{package}/`. Absent means `/PortInterfaces` itself. SWCraft's importers record it for an element whose source path is exactly `/PortInterfaces/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/PortInterfaces` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule."
+                },
+                {
+                  "name": "is_service",
+                  "type": "boolean",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Whether the interface is a service interface, AUTOSAR's `isService`: one meant for communication with basic software services rather than between application components. Written into the generated ARXML as the interface's `IS-SERVICE`, which states `false` when the model is silent, and left out of the file while it is `false`. A composition may not declare a boundary port typed by a service interface, and the two ends of a connector or a delegation must agree on it."
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The requirements this interface satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. A link here does not justify the components using the interface. It allocates no ASIL to anything.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "client_server",
+              "discriminator_field": "kind",
+              "description": "A client-server interface: the set of operations a server port offers and a client port calls, each with its typed, directional arguments. Discriminated by `kind: client_server`; it must declare at least one operation.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The interface's identity; the file is named from it (`interfaces/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across every interface kind, must not be blank, and immutable."
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The discriminator that selects this interface kind; always `client_server`.",
+                  "enum": [
+                    "client_server"
+                  ]
+                },
+                {
+                  "name": "operations",
+                  "type": "list[operation]",
+                  "required": true,
+                  "immutable": false,
+                  "description": "The operations a server port offers and a client port calls, addressed by `name`, which must be unique inside the interface. Must not be empty.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "operation"
+                    ]
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the interface. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none."
+                },
+                {
+                  "name": "package",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The one sub-package of `/PortInterfaces` this client-server interface is emitted in, a single SHORT-NAME segment: the client-server interface and every reference to it take `/PortInterfaces/{package}/`. Absent means `/PortInterfaces` itself. SWCraft's importers record it for an element whose source path is exactly `/PortInterfaces/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/PortInterfaces` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule."
+                },
+                {
+                  "name": "is_service",
+                  "type": "boolean",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Whether the interface is a service interface, AUTOSAR's `isService`: one meant for communication with basic software services rather than between application components. Written into the generated ARXML as the interface's `IS-SERVICE`, which states `false` when the model is silent, and left out of the file while it is `false`. A composition may not declare a boundary port typed by a service interface, and the two ends of a connector or a delegation must agree on it."
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The requirements this interface satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. A link here does not justify the components using the interface. It allocates no ASIL to anything.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "external_interface",
+              "discriminator_field": "kind",
+              "description": "A stub for a port interface declared outside the project: an ARXML export referenced it and declared it nowhere. It carries that reference, `external_ref` and `external_dest`, verbatim, and the names of the members the project's ports use — `operations` on a client-server stub, `data_elements` on a sender-receiver one — and nothing of their content. A port naming it is emitted with that reference, and no interface is generated for it. Discriminated by `kind: external_interface`.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The stub's identity; the file is named from it (`interfaces/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across every interface kind, must not be blank, and immutable. It is the name a port's `interface` gives; the reference the port is emitted with is `external_ref`."
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The discriminator that selects this interface kind; always `external_interface`.",
+                  "enum": [
+                    "external_interface"
+                  ]
+                },
+                {
+                  "name": "external_ref",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The AUTOSAR path the source's interface reference carried, verbatim: the interface's full path in the file that declares it. Written back unchanged into every port that names the stub. `check-model` reports a blank or malformed one."
+                },
+                {
+                  "name": "external_dest",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The `DEST` the source's interface reference carried, verbatim: one of the eight port interface values the AUTOSAR schema enumerates, `CLIENT-SERVER-INTERFACE`, `SENDER-RECEIVER-INTERFACE`, `MODE-SWITCH-INTERFACE`, `NV-DATA-INTERFACE`, `PARAMETER-INTERFACE`, `TRIGGER-INTERFACE` or the abstract `DATA-INTERFACE` and `PORT-INTERFACE`. A concrete value names the interface's kind, which a connector or a delegation is checked against; an abstract one does not. `check-model` reports any other value."
+                },
+                {
+                  "name": "operations",
+                  "type": "list[string]",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The names of the operations of the external interface that the project's ports use, each the last segment of a member path directly under `external_ref`. Names only: nothing of a member's content is held. Listed only on a stub whose `external_dest` is `CLIENT-SERVER-INTERFACE`; a name listed twice, ignoring case, or a blank one is refused. A member a port's runnable, event or com-spec entry names must be listed here. An empty list is left out of the file.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                },
+                {
+                  "name": "data_elements",
+                  "type": "list[string]",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The names of the data elements of the external interface that the project's ports use, each the last segment of a member path directly under `external_ref`. Names only: nothing of a member's content is held. Listed only on a stub whose `external_dest` is `SENDER-RECEIVER-INTERFACE`; a name listed twice, ignoring case, or a blank one is refused. A member a port's runnable, event or com-spec entry names must be listed here. An empty list is left out of the file.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the stub. An external stub emits no element, so it reaches no generated artifact."
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The requirements this interface stub satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. A link here does not justify the components using the interface. It allocates no ASIL to anything.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "data_element",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "sender_receiver",
+                  "field": "data_elements"
+                }
+              ],
+              "description": "One data element of a sender-receiver interface: a name, the declared data type it carries (`application_type` for an application data type, `implementation_type` for an implementation data type), an optional `init` value it starts from, and an optional `asil` for the safety integrity level of the information it carries.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The data element's identity inside its interface; unique among the interface's data elements and immutable."
+                },
+                {
+                  "name": "application_type",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The name of the declared application data type this data element carries, an element of the `application_types` layer: an application type, an enumeration, a record or an array. Exactly one of `application_type` and `implementation_type` is set.",
+                  "reference": {
+                    "layer": "application_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "implementation_type",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The name of the declared implementation data type this data element carries, an element of the `implementation_types` layer: a value type, a reference type, an implementation record, an implementation array, a pointer or an external data type stub. Exactly one of `application_type` and `implementation_type` is set.",
+                  "reference": {
+                    "layer": "implementation_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "init",
+                  "type": "value",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The value this data element starts from, where the design fixes one. Optional, and its shape follows the element's own declared type: a plain scalar for an application type, for a value type or for a reference type (judged against the type at the end of its chain), the literal's own name for an enumeration, the name of one of the table's entries for a value type or a reference type that references a table (itself or along its chain), a map keyed by exactly the declared field or element names for a record or an implementation record, and a list of exactly the declared length for an array or an implementation array. A pointer takes none. A value the declared type cannot hold is reported as a model error rather than converted. A port of a component may state a value of its own for the element in its `com_specs`, which takes precedence on that port."
+                },
+                {
+                  "name": "asil",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The safety integrity level of the information this element carries: `QM`, `A`, `B`, `C` or `D`, or a decomposed `X(Y)` such as `B(D)` — the thirteen spellings the AUTOSAR Safety Extensions list — where `Y` is the level before decomposition. Every rule ranks by `X`; one rule, `trace.decomposition-context-mismatch`, compares a requirement's `(Y)` with the level its parent requirement had before decomposition. The level sits on the element rather than on the interface or on the type, so one interface may carry a rated element beside an unrated one. Absent when none is allocated; a written `QM`, `QM(Y)` included, declares that none is — ISO 26262-1 calls QM not an ASIL, so it is not the lowest level — and is read as a declaration rather than as an absence. A component providing an element rated above its own level is reported, and so is one requiring an element rated below its own level unless the port declares a measure for that element.",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "QM(A)",
+                    "QM(B)",
+                    "QM(C)",
+                    "QM(D)",
+                    "A(B)",
+                    "A(C)",
+                    "A(D)",
+                    "B(B)",
+                    "B(C)",
+                    "B(D)",
+                    "C(C)",
+                    "C(D)",
+                    "D(D)"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the data element. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none."
+                },
+                {
+                  "name": "sw_impl_policy",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "AUTOSAR's `swImplPolicy` for this element: `standard`, or `queued` for an element whose values the receiver queues rather than overwrites. Absent means `standard`, and nothing is written for it; a stated value is written into the generated ARXML as the element's `SW-IMPL-POLICY`. A queued element is sent and received through queued com-specs, a `require` port reading one names its `queue_length` in `com_specs`, and a by-value read may not take one.",
+                  "enum": [
+                    "standard",
+                    "queued"
+                  ]
+                },
+                {
+                  "name": "sw_calibration_access",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "AUTOSAR's `swCalibrationAccess` for this element: how a measurement and calibration tool may reach it, `not_accessible`, `read_only` or `read_write`. Absent means `not_accessible`, and nothing is written for it; a stated value is written into the generated ARXML as the element's `SW-CALIBRATION-ACCESS`. An element whose `sw_impl_policy` is `queued` supports `not_accessible` only.",
+                  "enum": [
+                    "not_accessible",
+                    "read_only",
+                    "read_write"
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "operation",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "client_server",
+                  "field": "operations"
+                }
+              ],
+              "description": "One operation of a client-server interface: a name and its ordered, typed, directional arguments; an operation may take no arguments at all.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The operation's identity inside its interface; unique among the interface's operations and immutable."
+                },
+                {
+                  "name": "arguments",
+                  "type": "list[argument]",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The operation's ordered arguments, addressed by `name`, which must be unique inside the operation. May be empty.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "argument"
+                    ]
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the operation. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none."
+                }
+              ]
+            },
+            {
+              "kind": "argument",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "operation",
+                  "field": "arguments"
+                }
+              ],
+              "description": "One argument of a client-server operation: its name, the direction data flows through it, and the declared data type it carries (`application_type` for an application data type, `implementation_type` for an implementation data type).",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The argument's identity inside its operation; unique among the operation's arguments and immutable."
+                },
+                {
+                  "name": "direction",
+                  "type": "string",
+                  "required": true,
+                  "immutable": false,
+                  "description": "The direction data flows through the argument: `in` from client to server, `out` from server to client, `inout` both ways.",
+                  "enum": [
+                    "in",
+                    "out",
+                    "inout"
+                  ]
+                },
+                {
+                  "name": "application_type",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The name of the declared application data type this argument carries, an element of the `application_types` layer: an application type, an enumeration, a record or an array. Exactly one of `application_type` and `implementation_type` is set.",
+                  "reference": {
+                    "layer": "application_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "implementation_type",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The name of the declared implementation data type this argument carries, an element of the `implementation_types` layer: a value type, a reference type, an implementation record, an implementation array, a pointer or an external data type stub. Exactly one of `application_type` and `implementation_type` is set.",
+                  "reference": {
+                    "layer": "implementation_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the argument. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "notes": "The same document the default form answers with `description` restored on the layer, on every kind and on every field that declares one, and with the three descriptor booleans spelled out where the default form omits them at `false` — `optional` on the layer, `required` and `immutable` on every field. Nothing else is restored, because nothing else is left out. `baseline` is the stand-in token every vector carries; a harness replaces it with the project's own."
+  }
+}

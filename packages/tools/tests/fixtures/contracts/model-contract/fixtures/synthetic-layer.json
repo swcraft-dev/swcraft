@@ -1,0 +1,58 @@
+{
+  "purpose": "A contract fragment adding one layer, merged into `model-contract.json` IN THE TEST PROCESS ONLY (`model_contract_fixtures.merged_contract`). Nothing production-side loads it, no fixture project on disk gains a `synthetic/` directory, and the shipped contract is not rewritten. The layer is deliberately unremarkable — a `name` identity, a flat storage record, `arxmlBound: false`, a declared `token`, one ordinary scalar field and one reference to an existing layer — because what it has to demonstrate is that a layer nobody wrote special handling for is still accounted for everywhere. A fixture with an interesting shape would prove only that the interesting shape was handled. The completeness checker reports its missing dispositions deterministically and NAMES them. The layer declares its `token` rather than exercising the fallback, for the same reason it answers `arxmlBound`: this fragment stands in for a layer someone would really add, and a real layer declares what the shipped layers declare. Its name happens to be its own token, so the value is unremarkable too; the case that a token is NOT derivable from the name — a layer named `taxes` whose token is `tax` — is exercised in the test process by `packages/tools/tests/test_impact.py`, where a wrong token is visible in the output.",
+  "layers": [
+    {
+      "id": "layer:synthetic",
+      "name": "synthetic",
+      "optional": false,
+      "arxmlBound": false,
+      "token": "synthetic",
+      "identityField": "name",
+      "storage": {
+        "directory": "synthetic",
+        "nesting": "flat",
+        "fileSuffix": ".yaml",
+        "filenameFrom": "name"
+      },
+      "description": "A synthetic layer that exists only inside the test process, to prove that the completeness checker names an unhandled layer entry by entry.",
+      "kinds": [
+        {
+          "id": "kind:synthetic.synthetic",
+          "kind": "synthetic",
+          "memberOnly": false,
+          "description": "The synthetic layer's one element kind: an identity, one ordinary scalar and one reference. Nothing about it is special, which is the point.",
+          "fields": [
+            {
+              "id": "field:synthetic.synthetic.name",
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "immutable": true,
+              "description": "The element's identity, as in every other layer but `requirements`."
+            },
+            {
+              "id": "field:synthetic.synthetic.title",
+              "name": "title",
+              "type": "string",
+              "required": true,
+              "immutable": false,
+              "description": "One ordinary scalar field: no enum, no unit, no collection, no reference."
+            },
+            {
+              "id": "field:synthetic.synthetic.composition",
+              "name": "composition",
+              "type": "string",
+              "required": true,
+              "immutable": false,
+              "description": "One reference field, targeting an existing layer by its declared identity field.",
+              "reference": {
+                "layer": "compositions",
+                "identityField": "name"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

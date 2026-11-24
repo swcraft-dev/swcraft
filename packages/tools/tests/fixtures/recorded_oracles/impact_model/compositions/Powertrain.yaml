@@ -1,0 +1,34 @@
+name: Powertrain
+title: Powertrain composition
+description: >-
+  reference `compositions.composition_port.interface` -> ISpeed and
+  IDiagnostics; reference `compositions.composition_member.type` -> both SWCs.
+  It is the composition the assembly connector belongs to, which is what makes
+  `connectors.connector.composition` resolve.
+
+ports:
+  - name: pSpeedOut
+    direction: provide
+    interface: ISpeed
+  - name: rDiagIn
+    direction: require
+    interface: IDiagnostics
+
+members:
+  - name: sensor
+    type: SpeedSensor
+  - name: control
+    type: SpeedControl
+
+delegations:
+  - name: dSpeedOut
+    port: pSpeedOut
+    member: sensor
+    member_port: pOut
+  - name: dDiagIn
+    port: rDiagIn
+    member: control
+    member_port: rDiag
+satisfies:
+- REQ_SPEED_001@1
+- REQ_SPEED_002@1

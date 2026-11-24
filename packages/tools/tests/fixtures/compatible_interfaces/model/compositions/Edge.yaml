@@ -1,0 +1,38 @@
+name: Edge
+title: Delegating sub-composition
+description: >-
+  One member and two boundary ports, each delegated onto a port of that member
+  whose interface is **differently named and compatible**. The two delegations
+  face opposite ways on purpose, so the outer port's direction selects a
+  different clause for each.
+
+ports:
+  - name: pStatusEdge
+    direction: provide
+    interface: IStatusBasic
+  - name: rCommandEdge
+    direction: require
+    interface: ICommandFull
+
+members:
+  - name: Relay
+    type: Relay
+    description: The one member both delegations reach.
+
+delegations:
+  - name: Edge_pStatusEdge_Relay
+    port: pStatusEdge
+    member: Relay
+    member_port: pStatusOut
+    description: >-
+      The provide-side delegation, judged by `[constr_1070]` 2(a): the inner
+      `IStatusFull` and the outer `IStatusBasic` share `speed` and `level`, and
+      one shared compatible member is the whole of the clause.
+  - name: Edge_rCommandEdge_Relay
+    port: rCommandEdge
+    member: Relay
+    member_port: rCommandIn
+    description: >-
+      The require-side delegation, judged by `[constr_1080]` 1(a): the inner
+      `ICommandBasic`'s two operations are a subset by name of the outer
+      `ICommandFull`'s three.

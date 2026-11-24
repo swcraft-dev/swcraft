@@ -1,0 +1,72 @@
+{
+  "id": "35-make-a-read-implicit",
+  "task": 35,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "BrakeController's ProcessBrakeRequest should read the rear brake temperature implicitly.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "swc",
+        "name": "BrakeController",
+        "has": {
+          "runnables": [
+            {
+              "name": "ProcessBrakeRequest",
+              "reads": [
+                {
+                  "port": "rRearBrakeTemperature",
+                  "element": "temperature",
+                  "by": "implicit"
+                },
+                {
+                  "port": "rPermittedBrakeAction",
+                  "element": "permittedAction"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "BrakeController",
+        "lacks": {
+          "runnables": [
+            {
+              "name": "ProcessBrakeRequest",
+              "reads": [
+                {
+                  "port": "rPermittedBrakeAction",
+                  "element": "permittedAction",
+                  "by": "value"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "BrakeController",
+        "lacks": {
+          "runnables": [
+            {
+              "name": "ProcessBrakeRequest",
+              "reads": [
+                {
+                  "port": "rPermittedBrakeAction",
+                  "element": "permittedAction",
+                  "by": "implicit"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "note": "The rear brake temperature is the read of rRearBrakeTemperature (the port's own description says so); IBrakeTemperature's temperature is not queued and the port states no enable_update for it, so no implicit-access rule fires. The other read, rPermittedBrakeAction's permittedAction, keeps its by-argument form: neither implicit nor by value."
+}

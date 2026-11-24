@@ -1,0 +1,142 @@
+{
+  "id": "37-connect-kiro",
+  "task": 37,
+  "group": "guide-question",
+  "kind": "guide",
+  "status": "ready",
+  "prompt": "How do I connect Kiro to my SWCraft project?",
+  "expect": {
+    "model": "unchanged",
+    "guide": {
+      "sections": [
+        "kiro",
+        "kiro#onboard-project-in-kiro",
+        "kiro#trust-the-folder-then-reload-the-window-once"
+      ],
+      "must": [
+        {
+          "id": "kiro-files",
+          "one_of": [
+            [
+              {
+                "id": "server",
+                "any_of": [
+                  ".kiro/settings/mcp.json"
+                ],
+                "case_sensitive": true
+              },
+              {
+                "id": "instructions",
+                "any_of": [
+                  ".kiro/steering/swcraft.md"
+                ],
+                "case_sensitive": true
+              },
+              {
+                "id": "hook",
+                "any_of": [
+                  ".kiro/hooks/swcraft-guard.json"
+                ],
+                "case_sensitive": true
+              }
+            ],
+            [
+              {
+                "id": "server",
+                "any_of": [
+                  ".kiro/settings/mcp.json"
+                ],
+                "case_sensitive": true
+              },
+              {
+                "id": "instructions",
+                "any_of": [
+                  ".kiro/steering/swcraft.md"
+                ],
+                "case_sensitive": true
+              },
+              {
+                "id": "hook-folder",
+                "any_of": [
+                  ".kiro/hooks/"
+                ],
+                "case_sensitive": true
+              }
+            ]
+          ]
+        },
+        {
+          "id": "panel",
+          "any_of": [
+            "panel"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "trust",
+          "any_of": [
+            "choose Trust",
+            "trust a folder",
+            "trusted the folder",
+            "trust the folder"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "reload",
+          "any_of": [
+            "Reload Window",
+            "reload the window",
+            "reloaded the window"
+          ],
+          "case_sensitive": false
+        }
+      ],
+      "must_not": [
+        {
+          "id": "absolute-path",
+          "any_of": [
+            "absolute path to swcraft.yaml",
+            "absolute path to your swcraft.yaml",
+            "absolute path to the project",
+            "absolute path to your project",
+            "absolute path of your project",
+            "absolute path to the manifest",
+            "absolute path of the manifest",
+            "full path to swcraft.yaml",
+            "full path to your swcraft.yaml",
+            "use an absolute path",
+            "/path/to/",
+            "--project /",
+            "\"--project\", \"/"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "elicit-value",
+          "any_of": [
+            "\"SWCRAFT_REVIEW\": \"elicit\"",
+            "\"SWCRAFT_REVIEW\":\"elicit\"",
+            "SWCRAFT_REVIEW = \"elicit\"",
+            "SWCRAFT_REVIEW=elicit",
+            "SWCRAFT_REVIEW to elicit"
+          ],
+          "case_sensitive": false
+        }
+      ]
+    },
+    "calls": {
+      "forbidden": [
+        "change_set",
+        "build",
+        "validate",
+        "export_component",
+        "import_component"
+      ]
+    }
+  },
+  "reference": {
+    "runs": "candidate builds only: a build without the guide tool fails the read and cited criteria by construction, so a guide question is never run on a baseline",
+    "baseline": "0.22.0's guide has no Kiro page and its template writes no Kiro file, so the question is new with the page and has no baseline answer. The MUSTs: Kiro's three files (its server line .kiro/settings/mcp.json, its instructions .kiro/steering/swcraft.md, its guard hook .kiro/hooks/swcraft-guard.json, the hook also met by its folder .kiro/hooks/, which the guard reads as the project's mark because a user may rename the file), the review mode panel, and the step Kiro alone needs, trusting the folder and then reloading the window once, as two entries so a reply naming the trust without the reload fails (the trust entry's strings name the act of trusting, so neither an untrusted folder nor --trust-workspace meets it); a task holds at most four MUST entries, so the three files are one entry. The MUST NOTs, as task 34's: an instruction to give an absolute manifest path (the project's file names swcraft.yaml relative) and elicit given as the value, in a configuration or assignment form; what they do not reach: a paraphrase of either outside these strings, and the page's own sentence that a scripted kiro-cli run answered elicit with cancel, which no string here matches."
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "name": "read-data-types-layer",
+  "description": "A generic `read` at layer granularity over `implementation_types` (`data_types` until contract `8.0.0`) — the layer the 39-tool MCP surface has no read tool for at all. The read half of the motivating gap closes by addressing, not by a tenth `read_*` tool. The request names `form: full` explicitly, because a layer address answers a summary by default.",
+  "kind": "example",
+  "context": {
+    "summary": "A project whose `implementation_types` layer (`data_types/implementation/`) holds two value types that rest on the base type `float32_base`, which the `base_types` layer declares: `float32`, which `IExample`'s data element is typed by, and `VehicleSpeed_kph`. The layer is readable by address even though no `read_data_types` tool exists, because `read` takes an address rather than a layer-shaped signature.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "base_types",
+        "element": "float32_base"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "float32"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "VehicleSpeed_kph"
+      }
+    ]
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "implementation_types"
+    },
+    "form": "full"
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "implementation_types"
+      },
+      "form": "full",
+      "value": [
+        {
+          "name": "VehicleSpeed_kph",
+          "kind": "value_type",
+          "base": "float32_base",
+          "unit": "kph",
+          "value_min": 0.0,
+          "value_max": 300.0,
+          "compu_method_ref": null,
+          "description": "Vehicle speed in kilometres per hour",
+          "package": null
+        },
+        {
+          "name": "float32",
+          "kind": "value_type",
+          "base": "float32_base",
+          "unit": "",
+          "value_min": null,
+          "value_max": null,
+          "compu_method_ref": null,
+          "description": "",
+          "package": null
+        }
+      ]
+    },
+    "notes": "A layer address is `{layer}` with no `element`; the answer is the layer's elements in the declared field vocabulary, each carrying its `kind` discriminator. Ordering is the registry's, not the client's. `form` is stated explicitly BECAUSE a layer address defaults to `summary`: this vector pins the full width, so the value below is the whole layer and stays byte-identical whatever the default becomes."
+  }
+}

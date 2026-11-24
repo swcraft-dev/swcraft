@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: an APPLICATION-PRIMITIVE-DATA-TYPE of CATEGORY BOOLEAN, the standard spelling of
+  a boolean application type, mapped onto its store by a set every behaviour
+  names.
+
+  SWCraft has no kind of its own for the category: the type is written as an
+  application_type and would be re-exported as CATEGORY VALUE. The loss is a
+  property of the element, reported as a physics note on the element written -
+  never a skip entry, which import component treats as a lossy import and
+  refuses.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Types</SHORT-NAME>
+          <ELEMENTS>
+            <SW-BASE-TYPE>
+              <SHORT-NAME>Word</SHORT-NAME>
+              <CATEGORY>FIXED_LENGTH</CATEGORY>
+              <BASE-TYPE-SIZE>16</BASE-TYPE-SIZE>
+              <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+              <NATIVE-DECLARATION>uint16</NATIVE-DECLARATION>
+            </SW-BASE-TYPE>
+            <IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>RawCount</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Types/Word</BASE-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE>
+            <UNIT>
+              <SHORT-NAME>Rpm</SHORT-NAME>
+              <DISPLAY-NAME>rpm</DISPLAY-NAME>
+            </UNIT>
+            <APPLICATION-PRIMITIVE-DATA-TYPE>
+              <SHORT-NAME>Cadence</SHORT-NAME>
+              <CATEGORY>BOOLEAN</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <UNIT-REF DEST="UNIT">/Acme/Types/Rpm</UNIT-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </APPLICATION-PRIMITIVE-DATA-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Mappings</SHORT-NAME>
+          <ELEMENTS>
+            <DATA-TYPE-MAPPING-SET>
+              <SHORT-NAME>FlagMaps</SHORT-NAME>
+              <DATA-TYPE-MAPS>
+                <DATA-TYPE-MAP>
+                  <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Types/Cadence</APPLICATION-DATA-TYPE-REF>
+                  <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Types/RawCount</IMPLEMENTATION-DATA-TYPE-REF>
+                </DATA-TYPE-MAP>
+              </DATA-TYPE-MAPS>
+            </DATA-TYPE-MAPPING-SET>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Interfaces</SHORT-NAME>
+          <ELEMENTS>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>ICadence</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>cadence</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Types/Cadence</TYPE-TREF>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>CadenceSource</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>pCadence</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Interfaces/ICadence</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR>
+                  <SHORT-NAME>CadenceSourceBehavior</SHORT-NAME>
+                  <DATA-TYPE-MAPPING-REFS>
+                    <DATA-TYPE-MAPPING-REF DEST="DATA-TYPE-MAPPING-SET">/Acme/Mappings/FlagMaps</DATA-TYPE-MAPPING-REF>
+                  </DATA-TYPE-MAPPING-REFS>
+                  <HANDLE-TERMINATION-AND-RESTART>NO-SUPPORT</HANDLE-TERMINATION-AND-RESTART>
+                  <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>CadenceSink</SHORT-NAME>
+              <PORTS>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rCadence</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Interfaces/ICadence</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR>
+                  <SHORT-NAME>CadenceSinkBehavior</SHORT-NAME>
+                  <DATA-TYPE-MAPPING-REFS>
+                    <DATA-TYPE-MAPPING-REF DEST="DATA-TYPE-MAPPING-SET">/Acme/Mappings/FlagMaps</DATA-TYPE-MAPPING-REF>
+                  </DATA-TYPE-MAPPING-REFS>
+                  <HANDLE-TERMINATION-AND-RESTART>NO-SUPPORT</HANDLE-TERMINATION-AND-RESTART>
+                  <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <COMPOSITION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Root</SHORT-NAME>
+              <COMPONENTS>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>source</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Acme/Components/CadenceSource</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>sink</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Acme/Components/CadenceSink</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+              </COMPONENTS>
+            </COMPOSITION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

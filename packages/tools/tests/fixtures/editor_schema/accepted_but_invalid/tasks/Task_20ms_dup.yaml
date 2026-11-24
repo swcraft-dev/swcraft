@@ -1,0 +1,9 @@
+name: Task_20ms_dup
+period: 0.02
+priority: 4
+partition: PARTITION0
+wcet: 100us
+description: Maps a runnable that Task_10ms already maps
+runnables:
+  - swc: ExampleConsumerSWC
+    runnable: ExampleConsumerRun

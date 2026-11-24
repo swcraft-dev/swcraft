@@ -1,0 +1,68 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "swcraft-agent"
+version = "0.24.0"
+description = "SWCraft agent: LLM-driven MCP client for SWCraft architecture tasks."
+requires-python = ">=3.11"
+license = "Apache-2.0"
+# Every entry below is a *direct* use, declared directly. `swcraft-mcp` is the one edge no
+# static audit can see: `swcraft_agent.mcp_client` spawns `-m swcraft_mcp.server` from
+# `sys.executable`, so it must be installed into the same interpreter although nothing imports
+# it. `pyyaml` is not a runtime dependency: the source reads YAML through
+# `swcraft_tools.yaml_load`; the tests import it, so the `dev` group declares it. The swcraft-*
+# pins are exact: the three distributions move in lockstep.
+dependencies = [
+    "openai>=1.30",
+    "mcp[cli]",
+    "swcraft-mcp==0.24.0",
+    "swcraft-tools==0.24.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    # `dev.py test` runs this project's suite under `-n auto --dist loadgroup` too.
+    "pytest-xdist>=3.6",
+    # The per-test timeout.
+    "pytest-timeout>=2.3",
+    # The tests write and read scenario and project YAML with `yaml` directly.
+    "pyyaml>=6.0",
+    "ruff>=0.6",
+    # `lint`'s type check (the [tool.mypy] table below); the bound is the tools project's.
+    "mypy>=1.10,<2",
+]
+
+[project.scripts]
+swcraft-agent = "swcraft_agent.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/swcraft_agent"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# The helper modules the tests import by their top-level names (`node_on_path`, `real_home`) live
+# in tests/support/, out of the test root; pytest's declared `pythonpath` makes them importable.
+pythonpath = ["tests/support"]
+# pytest-timeout's stage ceiling and the plugin it requires.
+timeout = 1200
+required_plugins = ["pytest-timeout>=2.3"]
+markers = [
+    "slow: marks a suite that is minutes rather than seconds, or that needs a real git worktree. Deselected from the fast 'dev.py test' gate, executed only by 'dev.py test-slow', which 'dev.py verify' invokes. The suites are not restated here: packages/tools/tests/test_slow_marker_inventory.py derives them from the marks",
+]
+
+# `lint`'s type check: scripts/run_python_lint.py runs mypy here because this table exists.
+# `swcraft_tools` resolves through its editable install, whose `py.typed` marker lets mypy read
+# its types without reporting its errors here. Every import this package makes is typed.
+
+[tool.mypy]
+python_version = "3.11"
+platform = "linux"
+files = ["src/swcraft_agent"]
+mypy_path = "src"
+warn_unused_ignores = true
+warn_redundant_casts = true
+enable_error_code = ["ignore-without-code"]

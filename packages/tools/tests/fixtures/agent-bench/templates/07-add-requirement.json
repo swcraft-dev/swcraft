@@ -1,0 +1,10 @@
+{
+  "id": "07-add-requirement",
+  "task": 7,
+  "group": "model-change",
+  "kind": "change",
+  "binding": "add_requirement",
+  "oracle": "structural",
+  "prompt": "Add requirement {{requirement}}, 'Bench input report': the component shall report the input it receives. {{component}}'s port {{port}} satisfies it.",
+  "note": "The component with the most ports that has a require port (ties by name), and its first require port, so a model whose largest component only provides still binds; the requirement id takes the first free number of SWR-BENCH-NNN."
+}

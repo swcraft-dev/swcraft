@@ -1,0 +1,79 @@
+{
+  "name": "consistency-violation-interface-init-on-external-type",
+  "description": "An initial value on a data element typed by a stub. SWCraft does not know the stub's structure, so it cannot write a value specification that conforms to it; the element may still be typed by the stub, and it is the `init` that is refused.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model with one implementation data type stub, `ForeignSpeed_T`. The change set creates an interface whose one data element is typed by the stub and carries an `init`.",
+    "existing_elements": [
+      {
+        "layer": "implementation_types",
+        "element": "ForeignSpeed_T"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "ISpeedForeign"
+          }
+        }
+      ],
+      "notes": "The scope covers the one address exactly, so the refusal is the model rule and not the authorization boundary."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:5a0d8e2c17f94b63",
+    "intent": "Publish the speed in the delivery's own type, starting at zero.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "ISpeedForeign"
+        },
+        "value": {
+          "name": "ISpeedForeign",
+          "kind": "sender_receiver",
+          "data_elements": [
+            {
+              "name": "speed",
+              "implementation_type": "ForeignSpeed_T",
+              "init": 0
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "interfaces",
+        "element": "ISpeedForeign",
+        "path": [
+          {
+            "field": "data_elements"
+          },
+          {
+            "member": "speed"
+          },
+          {
+            "field": "init"
+          }
+        ]
+      },
+      {
+        "layer": "implementation_types",
+        "element": "ForeignSpeed_T"
+      }
+    ],
+    "notes": "Two addresses: the `init` the repair removes, and the stub that makes it unanswerable, so a client can see both sides. The same finding is reported for a data element typed by a reference type whose chain of `base`s ends at a stub; it is decided before the `init` rules walk the type, so a stub-typed element never also reports an `init` shape finding for the same cause. Typing the element by the stub without an `init` is legal."
+  }
+}

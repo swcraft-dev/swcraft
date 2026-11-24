@@ -1,0 +1,97 @@
+name: BrakeThermalProtection
+type: application
+asil: B
+description: Derates the permitted brake action when the brake temperature rises, and reports the thermal state.
+package: Brake
+ports:
+- name: rBrakeTemperature
+  direction: require
+  interface: IBrakeTemperature
+  com_specs:
+  - data_element: temperature
+    enable_update: true
+    alive_timeout: 0.15
+    handle_never_received: true
+    handle_timeout_type: replace
+    handle_out_of_range: saturate
+    uses_end_to_end_protection: true
+    init: 25
+  measures:
+    wheelTemperatures: Feeds only the thermal status, never the permitted brake action; range-checked before use; illustrative.
+- name: rBrakeRequest
+  direction: require
+  interface: IBrakeRequest
+- name: rOperatingState
+  satisfies:
+  - SWR-THP-008@1
+  direction: require
+  interface: IVehicleOperatingState
+  description: A QM signal read by an ASIL B component.
+  measures:
+    state: Plausibility check against the brake request; illustrative.
+    vehicleSpeed: Read by no runnable of this component; illustrative.
+- name: pPermittedBrakeAction
+  satisfies:
+  - SWR-THP-003@1
+  direction: provide
+  interface: IPermittedBrakeAction
+- name: pThermalProtectionStatus
+  satisfies:
+  - SWR-THP-004@1
+  direction: provide
+  interface: IThermalProtectionStatus
+- name: pThermalProtectionEvent
+  satisfies:
+  - SWR-THP-005@1
+  direction: provide
+  interface: IThermalProtectionEvent
+runnables:
+- name: InitThermalProtection
+  satisfies:
+  - SWR-THP-002@1
+  events:
+  - type: init
+    name: IT_ThermalProtectionStart
+  writes:
+  - port: pPermittedBrakeAction
+    element: permittedAction
+- name: EvaluateThermalProtection
+  description: Compares the brake temperature against the derating thresholds and publishes the permitted action.
+  symbol: Btp_EvaluateThermalProtection
+  min_start_interval: 0.01
+  events:
+  - type: timing
+    period: 0.05
+    name: TMT_Evaluate50ms
+  wcet: 3500us
+  wcet_type: gross
+  reads:
+  - port: rBrakeTemperature
+    element: temperature
+    by: value
+    name: R_BrakeTemperature
+  - port: rBrakeTemperature
+    element: wheelTemperatures
+  - port: rBrakeRequest
+    element: brakeRequest
+  - port: rOperatingState
+    element: state
+  writes:
+  - port: pPermittedBrakeAction
+    element: permittedAction
+    name: W_PermittedAction
+  - port: pThermalProtectionStatus
+    element: status
+  - port: pThermalProtectionEvent
+    element: event
+  satisfies:
+  - REQ_SHOWCASE_FEATURE_001@1
+  - SWR-THP-001@1
+  - SWR-THP-012@1
+memory:
+  RAM: 4096
+handle_termination_and_restart: no_support
+data_type_mappings:
+- BrakeThermalMappings
+satisfies:
+- REQ_BTP_DECOMP_MONITOR@1

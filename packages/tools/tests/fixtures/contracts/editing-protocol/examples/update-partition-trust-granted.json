@@ -1,0 +1,82 @@
+{
+  "name": "update-partition-trust-granted",
+  "description": "A partition made trusted: the OS leaves a trusted OS-Application unrestricted for memory ([SWS_Os_00207], [SWS_Os_00355], [SWS_Os_00356] protect private data from non-trusted OS-Applications only), so the edit widens what the partition may write. It is the one act the safety guard asks about that is not a weakening: no check refuses it, because pass D already refuses a trusted partition below the processor's highest level, so the act is asked about where it is legal.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model as it stands: `PARTITION0` is the one partition, unrated and `non_trusted` by default (the file declares no `trust`), on the unrated `CORE0`. With no level declared beside it, neither trust rule can fire on either side of the change. The change set makes the partition `trusted`.",
+    "existing_elements": [
+      {
+        "layer": "hardware",
+        "element": "PARTITION0"
+      },
+      {
+        "layer": "hardware",
+        "element": "CORE0"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "hardware",
+            "element": "PARTITION0",
+            "path": [
+              {
+                "field": "trust"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly. It does not authorize the safety question: `non_trusted` to `trusted` widens what the partition may write, which the guard decides by comparing two models, so `grant_partition_trust` is asked once for the whole change set and the status is `committed`."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:ZE1FUHgU4Xb86rkzK_zNuA",
+    "intent": "Make PARTITION0 a trusted partition.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "hardware",
+          "element": "PARTITION0",
+          "path": [
+            {
+              "field": "trust"
+            }
+          ]
+        },
+        "value": "trusted"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:6GgyRTkqb7ERxk_GfnlZlw",
+      "delta": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "hardware",
+            "element": "PARTITION0",
+            "path": [
+              {
+                "field": "trust"
+              }
+            ]
+          },
+          "before": "non_trusted",
+          "after": "trusted",
+          "summary": "hardware/PARTITION0: ~ trust non_trusted -> trusted"
+        }
+      ],
+      "audit_ref": "cs-20261010T073157Z-d56c26"
+    },
+    "notes": "`committed` after the second question. The grant fires no rule — nothing in this model rates a partition, so `safety.trusted-partition-unrated` has no level above `QM` to compare against — and it is asked anyway, because a trusted partition is a permission granted. What the accepted result records is a declaration; nothing in the model verifies that the OS configuration makes the partition trusted, or confines it when it is not."
+  }
+}

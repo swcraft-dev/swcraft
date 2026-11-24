@@ -1,0 +1,9 @@
+id: SWR-BRK-012
+title: Brake request logging
+description: Each rejected brake request shall be reported to diagnostics.
+req_type: req
+version: 1
+source: external
+document: SRS Brake Control
+baseline: '1.0'
+revision: '1'

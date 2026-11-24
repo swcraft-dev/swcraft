@@ -1,0 +1,6 @@
+name: u8_base
+kind: base_type
+size: 8
+encoding: NONE
+native_declaration: uint8
+description: The one base type every value type of this fixture rests on.

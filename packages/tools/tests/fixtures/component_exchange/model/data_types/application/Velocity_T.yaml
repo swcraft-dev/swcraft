@@ -1,0 +1,9 @@
+name: Velocity_T
+kind: application_type
+unit: km/h
+conversion:
+  factor: 0.1
+  offset: 0.0
+range:
+  min: 0.0
+  max: 400.0

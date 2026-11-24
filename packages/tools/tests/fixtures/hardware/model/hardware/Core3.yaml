@@ -1,0 +1,5 @@
+name: CORE3
+kind: core
+threshold: 0.5
+enforcement: advisory
+description: "Advisory escape — over threshold, reported as info only."

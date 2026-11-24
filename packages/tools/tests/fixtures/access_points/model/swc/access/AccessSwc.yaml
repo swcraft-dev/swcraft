@@ -1,0 +1,40 @@
+name: AccessSwc
+type: application
+description: One component carrying all three access lists, and one runnable carrying none.
+ports:
+- name: rSignals
+  direction: require
+  interface: ISignals
+- name: pSignals
+  direction: provide
+  interface: ISignals
+- name: rControl
+  direction: require
+  interface: IControl
+- name: rSpare
+  direction: require
+  interface: ISignals
+runnables:
+- name: AccessMain
+  events:
+  - type: timing
+    period: 0.01
+  reads:
+  - port: rSignals
+    element: speed
+  - port: rSignals
+    element: level
+    by: value
+  writes:
+  - port: pSignals
+    element: speed
+  calls:
+  - port: rControl
+    operation: Apply
+- name: QuietRun
+  events:
+  - type: timing
+    period: 0.02
+handle_termination_and_restart: no_support
+satisfies:
+- REQ-ACC-001@1

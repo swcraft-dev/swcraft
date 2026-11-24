@@ -1,0 +1,8 @@
+name: SpeedFrame
+kind: implementation_record
+elements:
+  - name: raw
+    type: uint16
+  - name: count
+    type: uint8
+description: reference `data_types.implementation_element.type` -> uint16 and uint8.

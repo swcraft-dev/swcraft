@@ -1,0 +1,25 @@
+{
+  "id": "11-ports-of-a-component",
+  "task": 11,
+  "group": "search-and-statistics",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "How many ports does BrakeThermalProtection have, and which?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "number": 6,
+      "mentions_all": [
+        "rBrakeTemperature",
+        "rBrakeRequest",
+        "rOperatingState",
+        "pPermittedBrakeAction",
+        "pThermalProtectionStatus",
+        "pThermalProtectionEvent"
+      ]
+    }
+  },
+  "reference": {
+    "computed_by": "swcraft query swc --members ports, the rows of BrakeThermalProtection"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "12-components-on-an-interface",
+  "task": 12,
+  "group": "search-and-statistics",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which components have a port of interface If0169abcdefghij?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "mentions_all": [
+        "Swc001abcdefghij",
+        "Swc005abcdefghij",
+        "Swc043abcdefghij",
+        "Swc076abcdefghij"
+      ],
+      "mentions_none": [
+        "Swc002abcdefghij",
+        "Swc003abcdefghij",
+        "Swc004abcdefghij",
+        "Swc006abcdefghij"
+      ]
+    }
+  },
+  "reference": {
+    "ports": [
+      "Swc001abcdefghij.P20",
+      "Swc005abcdefghij.P3",
+      "Swc043abcdefghij.P3",
+      "Swc076abcdefghij.P1"
+    ],
+    "computed_by": "swcraft query --request {address: {layer: swc}, members: ports, where: [{field: interface, equals: If0169abcdefghij}]}"
+  }
+}

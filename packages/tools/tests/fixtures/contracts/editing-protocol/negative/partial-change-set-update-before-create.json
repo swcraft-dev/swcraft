@@ -1,0 +1,68 @@
+{
+  "name": "partial-change-set-update-before-create",
+  "description": "A change set that is not applicable as a whole: its first operation updates an element its second operation creates. Nothing here is a broken reference — the missing target is in the set, only later than the operation that needs it — so the set would have to be applied in part, in the order given, to be applied at all. That is a refusal, never a partial commit and never a silent reordering. Whether the reordered set would also be *valid* is a separate question this class does not answer.",
+  "kind": "negative",
+  "context": {
+    "summary": "A model that already declares the `RAM0` memory and the `IVehicleSpeed` interface, and holds no `SpeedSensorSWC`. The client wrote the description update first and the create second.",
+    "existing_elements": [
+      { "layer": "interfaces", "element": "IVehicleSpeed" },
+      { "layer": "hardware", "element": "RAM0" }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": { "layer": "swc", "element": "SpeedSensorSWC", "path": [{ "field": "description" }] }
+        },
+        { "operation": "create", "address": { "layer": "swc", "element": "SpeedSensorSWC" } }
+      ]
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:4b81ce20f7a6d539",
+    "intent": "Add the speed sensor component and set its description.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": { "layer": "swc", "element": "SpeedSensorSWC", "path": [{ "field": "description" }] },
+        "value": "Reads the wheel speed sensors and publishes the vehicle speed"
+      },
+      {
+        "operation": "create",
+        "address": { "layer": "swc", "element": "SpeedSensorSWC" },
+        "value": {
+          "name": "SpeedSensorSWC",
+          "group": "sensors",
+          "type": "application",
+          "description": "",
+          "ports": [
+            {
+              "name": "pSpeed",
+              "direction": "provide",
+              "interface": "IVehicleSpeed",
+              "description": "Publishes the measured vehicle speed"
+            }
+          ],
+          "runnables": [
+            {
+              "name": "SpeedSensorRun",
+              "min_start_interval": 0.01,
+              "events": [{ "type": "timing", "period": 0.01 }]
+            }
+          ],
+          "memory": { "RAM0": 1024 },
+          "handle_termination_and_restart": "no_support"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "partial-change-set",
+    "failure_class": "partial",
+    "violation_layer": "semantic",
+    "addresses": [{ "layer": "swc", "element": "SpeedSensorSWC", "path": [{ "field": "description" }] }],
+    "notes": "The discrimination against `broken-reference` is the staged result: a broken reference is a dangling reference or an unresolvable address in the OUTCOME, while this outcome is fine and only the ordered application is not. The fix belongs to the client — put the `create` first, or fold the description into its payload — because reordering on the client's behalf would commit a sequence nobody reviewed. Applying the valid subset was considered and rejected: it produces a model state no one intended and breaks the reviewed-delta-equals-committed-delta guarantee."
+  }
+}

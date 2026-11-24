@@ -1,0 +1,3 @@
+"row_id","occurrence","component","placement","tasks","partitions","cores","mapping","source_ref","facts_hash","verification_method","comment","accepted","accepted_facts_hash","review_state"
+"occurrence:ExampleConsumerSWC","ExampleConsumerSWC","ExampleConsumerSWC","in-composition","[""Task_10ms""]","[""PARTITION0""]","[""CORE0""]","all-mapped","swc/example/ExampleConsumerSWC.yaml","24d10fa6dca46bbe","","","","","not-reviewed"
+"occurrence:ExampleSWC","ExampleSWC","ExampleSWC","in-composition","[]","[]","[]","not-mapped","swc/example/ExampleSWC.yaml","c4475eeebc0a2b72","","","","","not-reviewed"

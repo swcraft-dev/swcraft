@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hand-crafted, anonymized importer fixture.
+  Mirrors the export's unsupported / skip+report content shapes, using
+  invented names only: CONSTANT-SPECIFICATION, an ADMIN-DATA/SDG vendor
+  metadata blob, a PR-PORT-PROTOTYPE (combined provide+require port), and an
+  unrecognized vendor-specific element sitting directly inside ELEMENTS
+  (ACME-EXPORT-METADATA — not part of the AUTOSAR 4.2.2 schema).
+  No content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Chassis</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Constants</SHORT-NAME>
+              <ELEMENTS>
+                <CONSTANT-SPECIFICATION>
+                  <SHORT-NAME>DefaultBrakeBias</SHORT-NAME>
+                  <VALUE-SPEC>
+                    <NUMERICAL-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>DefaultBrakeBias</SHORT-LABEL>
+                      <VALUE>0</VALUE>
+                    </NUMERICAL-VALUE-SPECIFICATION>
+                  </VALUE-SPEC>
+                </CONSTANT-SPECIFICATION>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>DataTypes</SHORT-NAME>
+              <ELEMENTS>
+                <SW-BASE-TYPE>
+                  <SHORT-NAME>uint8</SHORT-NAME>
+                  <CATEGORY>FIXED_LENGTH</CATEGORY>
+                  <BASE-TYPE-SIZE>8</BASE-TYPE-SIZE>
+                  <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                  <NATIVE-DECLARATION>uint8</NATIVE-DECLARATION>
+                </SW-BASE-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>uint8_impl</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/DataTypes/uint8</BASE-TYPE-REF>
+                        <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Interfaces</SHORT-NAME>
+              <ELEMENTS>
+                <SENDER-RECEIVER-INTERFACE>
+                  <SHORT-NAME>IDiagnosticChannel</SHORT-NAME>
+                  <IS-SERVICE>true</IS-SERVICE>
+                  <DATA-ELEMENTS>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>rawFrame</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/DataTypes/uint8_impl</TYPE-TREF>
+                    </VARIABLE-DATA-PROTOTYPE>
+                  </DATA-ELEMENTS>
+                </SENDER-RECEIVER-INTERFACE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Components</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>DiagnosticBridgeSwc</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="ACME-VENDOR-EXTENSION">
+                        <SD GID="ExportTool">Acme Exporter 1.0.0 (anonymized fixture)</SD>
+                        <SD GID="ExportTimestamp">2026-07-10T00:00:00Z</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PORTS>
+                    <!-- PR-PORT-PROTOTYPE: combined provide+require port, unsupported by SWCraft's
+                         provide/require Port model (skip+report, a shape a tool
+                         export can carry). -->
+                    <PR-PORT-PROTOTYPE>
+                      <SHORT-NAME>prDiagnosticChannel</SHORT-NAME>
+                      <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/IDiagnosticChannel</PROVIDED-INTERFACE-TREF>
+                      <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/IDiagnosticChannel</REQUIRED-INTERFACE-TREF>
+                    </PR-PORT-PROTOTYPE>
+                  </PORTS>
+                </APPLICATION-SW-COMPONENT-TYPE>
+                <!-- Unrecognized vendor-specific element directly inside ELEMENTS: not an
+                     AUTOSAR 4.2.2 tag, must be skip+report rather than crash the reader. -->
+                <ACME-EXPORT-METADATA>
+                  <SHORT-NAME>RhapsodyExportMeta</SHORT-NAME>
+                  <ACME-TOOL-VERSION>1.0.0</ACME-TOOL-VERSION>
+                  <ACME-SOURCE-PROJECT>AnonymizedFixtureProject</ACME-SOURCE-PROJECT>
+                </ACME-EXPORT-METADATA>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

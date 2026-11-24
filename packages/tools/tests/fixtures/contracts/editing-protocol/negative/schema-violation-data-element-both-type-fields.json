@@ -1,0 +1,69 @@
+{
+  "name": "schema-violation-data-element-both-type-fields",
+  "description": "A data element that states BOTH `application_type` and `implementation_type`. Since contract `8.0.0` a data element states the side of its type in exactly one of the two fields (`rule:interfaces.data_element.type-form`), and both names here are declared, each in its own layer — so what refuses is the shape of the payload, not a reference.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model plus the application type `SyntheticTorque`; the base's `implementation_types` layer declares `float32`. The change set creates an interface whose one data element names both.",
+    "existing_elements": [
+      {
+        "layer": "application_types",
+        "element": "SyntheticTorque"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "float32"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "ISyntheticTorque"
+          }
+        }
+      ],
+      "notes": "The scope covers every create exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Carry the synthetic torque on the bus.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "ISyntheticTorque"
+        },
+        "value": {
+          "name": "ISyntheticTorque",
+          "kind": "sender_receiver",
+          "data_elements": [
+            {
+              "name": "torque",
+              "application_type": "SyntheticTorque",
+              "implementation_type": "float32"
+            }
+          ],
+          "description": "The synthetic torque on the bus"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "interfaces",
+        "element": "ISyntheticTorque"
+      }
+    ],
+    "notes": "Refused when the payload is bound, at the element the payload creates. The two legal repairs are the two fields: keep the one that names the side meant and drop the other. A data element that states neither is the other half of the same rule, `schema-violation-data-element-no-type-field`."
+  }
+}

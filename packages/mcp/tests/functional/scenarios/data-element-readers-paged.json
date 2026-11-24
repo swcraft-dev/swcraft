@@ -1,0 +1,160 @@
+{
+  "id": "data-element-readers-paged",
+  "function": "Recipe: Who reads or writes a data element",
+  "finding": {
+    "release": "0.19.1",
+    "row": 4
+  },
+  "tier": "generated-small",
+  "specimen": "scenario-data-element-readers-paged",
+  "class": "boundary-at-scale",
+  "target": {
+    "interface": "most_read_sender_receiver_interface",
+    "element": "most_read_data_element"
+  },
+  "thresholds": {
+    "page_rows": {
+      "value": 20,
+      "because": "the profile's long-list rule: the number, then the first twenty; the recipes' page"
+    },
+    "two_pages": {
+      "value": 40,
+      "because": "two pages of twenty: the readers must be more than this for a replay's row bound to be a check the answer can fail"
+    },
+    "host_spill_bytes": {
+      "value": 8192,
+      "because": "VS Code spills an answer larger than 8 192 bytes to a file (measured 2026-10-24)"
+    }
+  },
+  "steps": [
+    {
+      "id": "page",
+      "recipe": "Who reads or writes a data element",
+      "request": 0,
+      "fill": {
+        "<DATA_ELEMENT>": "element",
+        "<INTERFACE>": "interface"
+      }
+    },
+    {
+      "id": "next",
+      "recipe": "Who reads or writes a data element",
+      "request": 0,
+      "fill": {
+        "<DATA_ELEMENT>": "element",
+        "<INTERFACE>": "interface"
+      },
+      "continues": "page"
+    },
+    {
+      "id": "writers",
+      "recipe": "Who reads or writes a data element",
+      "request": 1,
+      "fill": {
+        "<DATA_ELEMENT>": "element",
+        "<INTERFACE>": "interface"
+      }
+    },
+    {
+      "id": "writers_next",
+      "recipe": "Who reads or writes a data element",
+      "request": 1,
+      "fill": {
+        "<DATA_ELEMENT>": "element",
+        "<INTERFACE>": "interface"
+      },
+      "continues": "writers"
+    }
+  ],
+  "expectations": [
+    {
+      "step": "page",
+      "at": "value.identities",
+      "rows_at_most": "page_rows",
+      "because": "a listing recipe answers one page, never every row (findings after 0.19.1)"
+    },
+    {
+      "step": "page",
+      "bytes_at_most": "host_spill_bytes",
+      "because": "the page fits the host's answer before it spills to a file"
+    },
+    {
+      "step": "page",
+      "at": "page.total",
+      "count_equals": {
+        "locator": "readers_count",
+        "of": "interface"
+      },
+      "because": "the page states every read of the data element through a port on the interface, read off the model's files"
+    },
+    {
+      "step": "page",
+      "at": "page.total",
+      "count_above": "two_pages",
+      "because": "the precondition: more than one page follows the first, so a replay that answered every remaining row would fail its row bound"
+    },
+    {
+      "step": "page",
+      "at": "page.next",
+      "present": true,
+      "because": "the page carries the after that asks for the rest"
+    },
+    {
+      "step": "next",
+      "at": "value.identities",
+      "disjoint_from": "page",
+      "because": "replaying the first page's after (which that page must state as truncated) answers rows the first page does not list"
+    },
+    {
+      "step": "next",
+      "at": "value.identities",
+      "rows_at_most": "page_rows",
+      "because": "a continued page is a page too: replaying the cursor answers at most the next page, never every row after it"
+    },
+    {
+      "step": "next",
+      "bytes_at_most": "host_spill_bytes",
+      "because": "the continued page fits the host's answer too"
+    },
+    {
+      "step": "writers",
+      "at": "value.identities",
+      "rows_at_most": "page_rows",
+      "because": "the writers' request is a page too, with the readers' bound (findings after 0.19.1)"
+    },
+    {
+      "step": "writers",
+      "bytes_at_most": "host_spill_bytes",
+      "because": "the writers' page fits the host's answer before it spills to a file"
+    },
+    {
+      "step": "writers",
+      "at": "page.total",
+      "count_above": "two_pages",
+      "because": "the precondition: the writers are more than two pages too, so a replay that answered every remaining row would fail its row bound"
+    },
+    {
+      "step": "writers",
+      "at": "page.next",
+      "present": true,
+      "because": "the writers' page carries the after that asks for the rest"
+    },
+    {
+      "step": "writers_next",
+      "at": "value.identities",
+      "disjoint_from": "writers",
+      "because": "replaying the writers' after answers rows the first page does not list"
+    },
+    {
+      "step": "writers_next",
+      "at": "value.identities",
+      "rows_at_most": "page_rows",
+      "because": "a continued page of writers is a page too"
+    },
+    {
+      "step": "writers_next",
+      "bytes_at_most": "host_spill_bytes",
+      "because": "the continued writers' page fits the host's answer too"
+    }
+  ]
+}

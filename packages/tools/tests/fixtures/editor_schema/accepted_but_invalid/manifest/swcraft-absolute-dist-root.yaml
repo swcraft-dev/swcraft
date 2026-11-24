@@ -1,0 +1,13 @@
+# Every key is well-typed and `dist_root` is a string, so the manifest schema accepts it;
+# `C:/dist` is an absolute path under Windows' rules, which only the loader can see. The
+# spelling is deliberate: the rule reads BOTH platforms' notions of absolute, so this
+# fixture is refused on the POSIX host that runs the suite exactly as `/var/tmp/dist` would
+# be on Windows.
+name: absolute-dist-root
+schema_version: "1.0"
+model_root: model
+dist_root: "C:/dist"
+views_root: views
+outputs:
+  arxml: dist/model.arxml
+  needs: dist/needs.json

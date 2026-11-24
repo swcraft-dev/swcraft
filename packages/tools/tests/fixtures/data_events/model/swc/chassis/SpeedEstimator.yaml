@@ -1,0 +1,42 @@
+name: SpeedEstimator
+type: application
+description: One component whose runnables are started when a value arrives.
+ports:
+- name: R_WheelSpeed
+  direction: require
+  interface: WheelSpeedIf
+  com_specs:
+  - data_element: FrontRight
+    queue_length: 4
+- name: R_RearSpeed
+  direction: require
+  interface: RearSpeedIf
+- name: R_EcuMode
+  direction: require
+  interface: EcuModeIf
+runnables:
+- name: FilterSpeed
+  events:
+  - type: data
+    port: R_WheelSpeed
+    element: FrontLeft
+  reads:
+  - port: R_WheelSpeed
+    element: FrontLeft
+- name: MonitorSpeed
+  events:
+  - type: timing
+    period: 0.1
+  - type: data
+    port: R_WheelSpeed
+    element: FrontRight
+    disabled_modes:
+    - port: R_EcuMode
+      mode_group_ref: /Foreign/ModeInterfaces/EcuModeIf/EcuMode
+      mode_ref: /Foreign/ModeDeclarationGroups/EcuMode/Sleep
+- name: TrackRearSpeed
+  events:
+  - type: data
+    port: R_RearSpeed
+    element: RearLeft
+handle_termination_and_restart: no_support

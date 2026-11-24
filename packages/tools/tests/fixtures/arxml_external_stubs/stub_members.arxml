@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  External stub members fixture: every construct that names a member of an
+  interface the file does not declare, and every reason one is not listed.
+
+  Nothing under /Remote is declared here. ICalc is a client-server target,
+  ISig a sender-receiver one, IMode a mode-switch one.
+
+  Listed: ICalc/Add (a server com-spec, an operation event, a call point),
+  ICalc/Sub (its server com-spec alone), ISig/level (a sender com-spec, a
+  receiver com-spec, a read, a write and the composition port's sender
+  com-spec), ISig/speed (a receiver com-spec alone) and ISig/torque (the
+  composition port's second sender com-spec alone).
+
+  Not kept: an operation event naming a path two segments under ICalc, a read
+  of ICalc/Add (a data element of a client-server stub), an operation event
+  through the require port rCs (the direction), and the mode-switch com-spec.
+  A local call point (rLocal) sits after the stub call in source order, and a
+  timing event before the stub operation event.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Constants</SHORT-NAME>
+          <ELEMENTS>
+            <CONSTANT-SPECIFICATION>
+              <SHORT-NAME>CZero</SHORT-NAME>
+              <VALUE-SPEC>
+                <NUMERICAL-VALUE-SPECIFICATION>
+                  <VALUE>0</VALUE>
+                </NUMERICAL-VALUE-SPECIFICATION>
+              </VALUE-SPEC>
+            </CONSTANT-SPECIFICATION>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Interfaces</SHORT-NAME>
+          <ELEMENTS>
+            <CLIENT-SERVER-INTERFACE>
+              <SHORT-NAME>ILocal</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <OPERATIONS>
+                <CLIENT-SERVER-OPERATION>
+                  <SHORT-NAME>Ping</SHORT-NAME>
+                </CLIENT-SERVER-OPERATION>
+              </OPERATIONS>
+            </CLIENT-SERVER-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Server</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>pCs</SHORT-NAME>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/Remote/Ifc/ICalc/Add</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/Remote/Ifc/ICalc/Sub</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Remote/Ifc/ICalc</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>pSr</SHORT-NAME>
+                  <PROVIDED-COM-SPECS>
+                    <NONQUEUED-SENDER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/Remote/Ifc/ISig/level</DATA-ELEMENT-REF>
+                      <HANDLE-OUT-OF-RANGE>NONE</HANDLE-OUT-OF-RANGE>
+                      <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                    </NONQUEUED-SENDER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Remote/Ifc/ISig</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rSr</SHORT-NAME>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/Remote/Ifc/ISig/level</DATA-ELEMENT-REF>
+                      <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>true</ENABLE-UPDATE>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <HANDLE-TIMEOUT-TYPE>NONE</HANDLE-TIMEOUT-TYPE>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/Acme/Constants/CZero</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/Remote/Ifc/ISig/speed</DATA-ELEMENT-REF>
+                      <HANDLE-TIMEOUT-TYPE>INVENTED</HANDLE-TIMEOUT-TYPE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Remote/Ifc/ISig</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rCs</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Remote/Ifc/ICalc</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rLocal</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Acme/Interfaces/ILocal</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rMode</SHORT-NAME>
+                  <REQUIRED-COM-SPECS>
+                    <MODE-SWITCH-RECEIVER-COM-SPEC>
+                      <ENHANCED-MODE-API>false</ENHANCED-MODE-API>
+                    </MODE-SWITCH-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="MODE-SWITCH-INTERFACE">/Remote/Ifc/IMode</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR>
+                  <SHORT-NAME>Behavior</SHORT-NAME>
+                  <EVENTS>
+                    <TIMING-EVENT>
+                      <SHORT-NAME>E_Tick</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/Acme/Components/Server/Behavior/Serve</START-ON-EVENT-REF>
+                      <PERIOD>0.01</PERIOD>
+                    </TIMING-EVENT>
+                    <OPERATION-INVOKED-EVENT>
+                      <SHORT-NAME>E_Add</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/Acme/Components/Server/Behavior/Serve</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/Acme/Components/Server/pCs</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/Remote/Ifc/ICalc/Add</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <OPERATION-INVOKED-EVENT>
+                      <SHORT-NAME>E_Deep</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/Acme/Components/Server/Behavior/Serve</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/Acme/Components/Server/pCs</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/Remote/Ifc/ICalc/Nested/Add</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <OPERATION-INVOKED-EVENT>
+                      <SHORT-NAME>E_Backwards</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/Acme/Components/Server/Behavior/Serve</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/Acme/Components/Server/rCs</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/Remote/Ifc/ICalc/Add</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                  </EVENTS>
+                  <HANDLE-TERMINATION-AND-RESTART>NO-SUPPORT</HANDLE-TERMINATION-AND-RESTART>
+                  <RUNNABLES>
+                    <RUNNABLE-ENTITY>
+                      <SHORT-NAME>Serve</SHORT-NAME>
+                      <MINIMUM-START-INTERVAL>0</MINIMUM-START-INTERVAL>
+                      <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>Serve</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY>
+                      <SHORT-NAME>Step</SHORT-NAME>
+                      <MINIMUM-START-INTERVAL>0</MINIMUM-START-INTERVAL>
+                      <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                      <DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                        <VARIABLE-ACCESS>
+                          <SHORT-NAME>R_rSr_level</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/Acme/Components/Server/rSr</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/Remote/Ifc/ISig/level</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS>
+                          <SHORT-NAME>readWrongKind</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/Acme/Components/Server/rCs</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/Remote/Ifc/ICalc/Add</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                      </DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                      <DATA-SEND-POINTS>
+                        <VARIABLE-ACCESS>
+                          <SHORT-NAME>sendLevel</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/Acme/Components/Server/pSr</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/Remote/Ifc/ISig/level</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                      </DATA-SEND-POINTS>
+                      <SERVER-CALL-POINTS>
+                        <SYNCHRONOUS-SERVER-CALL-POINT>
+                          <SHORT-NAME>Call_rCs_Add</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/Acme/Components/Server/rCs</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/Remote/Ifc/ICalc/Add</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                          <TIMEOUT>0</TIMEOUT>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT>
+                          <SHORT-NAME>Call_rLocal_Ping</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/Acme/Components/Server/rLocal</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/Acme/Interfaces/ILocal/Ping</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                          <TIMEOUT>0</TIMEOUT>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                      </SERVER-CALL-POINTS>
+                      <SYMBOL>Step</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                  </RUNNABLES>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Compositions</SHORT-NAME>
+          <ELEMENTS>
+            <COMPOSITION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Top</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>pOut</SHORT-NAME>
+                  <PROVIDED-COM-SPECS>
+                    <NONQUEUED-SENDER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/Remote/Ifc/ISig/level</DATA-ELEMENT-REF>
+                      <HANDLE-OUT-OF-RANGE>SATURATE</HANDLE-OUT-OF-RANGE>
+                      <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                    </NONQUEUED-SENDER-COM-SPEC>
+                    <NONQUEUED-SENDER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/Remote/Ifc/ISig/torque</DATA-ELEMENT-REF>
+                    </NONQUEUED-SENDER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Remote/Ifc/ISig</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+              <COMPONENTS>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>srv</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Acme/Components/Server</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+              </COMPONENTS>
+            </COMPOSITION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

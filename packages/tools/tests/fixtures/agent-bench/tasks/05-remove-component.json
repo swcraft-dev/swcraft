@@ -1,0 +1,58 @@
+{
+  "id": "05-remove-component",
+  "task": 5,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Remove InstrumentCluster from the model, together with everything that refers to it.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "swc",
+        "name": "InstrumentCluster",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "ChassisToCluster",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "DiagnosticsToCluster",
+        "absent": true
+      },
+      {
+        "unreferenced": "InstrumentCluster"
+      },
+      {
+        "unreferenced": "UpdateThermalStatus"
+      },
+      {
+        "layer": "swc",
+        "name": "DiagnosticManager",
+        "has": {
+          "ports": [
+            {
+              "name": "pBrakeDiagnostics"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "sequences",
+        "name": "thermal_status_display",
+        "has": {
+          "steps": [
+            {
+              "swc": "DiagnosticManager",
+              "runnable": "ProcessDiagnosticEvent"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "note": "What refers to it: the member of VehicleControl, the connectors ChassisToCluster and DiagnosticsToCluster, the Task_100ms entry and the second step of the sequence thermal_status_display. The provider side (DiagnosticManager.pBrakeDiagnostics) and the sequence's other step stay."
+}

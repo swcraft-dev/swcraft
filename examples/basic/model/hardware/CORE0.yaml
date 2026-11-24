@@ -1,0 +1,5 @@
+name: CORE0
+kind: core
+threshold: 0.7
+enforcement: strict
+description: Application core 0 — 70% CPU load budget from the concept document

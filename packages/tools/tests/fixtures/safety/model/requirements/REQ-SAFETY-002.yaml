@@ -1,0 +1,7 @@
+id: REQ-SAFETY-002
+title: Speed acquisition
+description: Allocates ASIL B to a component that declares no level (so it derives B) and to one that declares B.
+req_type: req
+version: 1
+source: architecture
+asil: B

@@ -1,0 +1,4 @@
+name: Root
+title: Root composition
+root: true
+description: The top of the hierarchy. Add one member per component you declare.

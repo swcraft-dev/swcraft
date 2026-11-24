@@ -1,0 +1,4568 @@
+[
+  {
+    "name": "nothing decided",
+    "pending": 0,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "a row accepted",
+    "pending": 1,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": "accept",
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "a row rejected",
+    "pending": 1,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": "reject",
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "a row accepted from a preselection",
+    "pending": 1,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": "accept",
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "preselected": true,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "an awaiting link confirmed",
+    "pending": 1,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": "confirm",
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "a chosen entry",
+    "pending": 1,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [
+            {
+              "target": {
+                "kind": "memory",
+                "name": "Ram",
+                "owner": null
+              }
+            }
+          ],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "a row accepted, applied",
+    "pending": 0,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "applied": true,
+              "band": "medium",
+              "decision": "accept",
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "a row rejected, applied",
+    "pending": 0,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "applied": true,
+              "band": "medium",
+              "decision": "reject",
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "a row accepted from a preselection, applied",
+    "pending": 0,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "applied": true,
+              "band": "medium",
+              "decision": "accept",
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "preselected": true,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "an awaiting link confirmed, applied",
+    "pending": 0,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "applied": true,
+              "confirmed": false,
+              "decision": "confirm",
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "a chosen entry, applied",
+    "pending": 0,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [
+            {
+              "applied": true,
+              "target": {
+                "kind": "memory",
+                "name": "Ram",
+                "owner": null
+              }
+            }
+          ],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "a row accepted, stale",
+    "pending": 0,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": "accept",
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "stale": "gone",
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "a row rejected, stale",
+    "pending": 0,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": "reject",
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "stale": "gone",
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "a row accepted from a preselection, stale",
+    "pending": 0,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": "accept",
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "preselected": true,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "stale": "gone",
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "an awaiting link confirmed, stale",
+    "pending": 0,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": "confirm",
+              "member": "BRK-6@1",
+              "stale": "gone",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "a chosen entry, stale",
+    "pending": 0,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": null,
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [
+            {
+              "stale": "gone",
+              "target": {
+                "kind": "memory",
+                "name": "Ram",
+                "owner": null
+              }
+            }
+          ],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "only applied and stale items",
+    "pending": 0,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "applied": true,
+              "band": "medium",
+              "decision": "accept",
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "applied": true,
+              "confirmed": false,
+              "decision": "confirm",
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": null,
+              "member": "BRK-6",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": "reject",
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "stale": "gone",
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [
+            {
+              "stale": "gone",
+              "target": {
+                "kind": "memory",
+                "name": "Ram",
+                "owner": null
+              }
+            }
+          ],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "mixed",
+    "pending": 4,
+    "proposals": {
+      "configuration": {
+        "file": "experiments/trace.yaml",
+        "insideProject": true,
+        "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+      },
+      "formatVersion": 1,
+      "kind": "trace",
+      "model": {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "files": 42,
+        "swcraftVersion": "0.0.0+fixture"
+      },
+      "name": "trace",
+      "requirements": [
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": "accept",
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2943272
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [],
+          "chosenBecause": null,
+          "description": "The brake shall release on request.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+          "id": "BRK-6",
+          "linked": [
+            {
+              "confirmed": false,
+              "decision": "confirm",
+              "member": "BRK-6@1",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": 1
+            },
+            {
+              "confirmed": false,
+              "decision": "confirm",
+              "member": "BRK-6",
+              "stale": "gone",
+              "target": {
+                "kind": "swc",
+                "name": "BrakeController",
+                "owner": null
+              },
+              "version": null
+            }
+          ],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Brake release",
+          "version": 2
+        },
+        {
+          "candidates": [
+            {
+              "band": "medium",
+              "decision": "reject",
+              "evidence": [
+                {
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "neighbours",
+                  "of": 4,
+                  "seeded": 1,
+                  "share": {
+                    "d": 4,
+                    "n": 1
+                  }
+                },
+                {
+                  "count": 1,
+                  "examples": [
+                    "BRK-1"
+                  ],
+                  "kind": "similar",
+                  "score": {
+                    "d": 1000000,
+                    "n": 1000000
+                  }
+                },
+                {
+                  "kind": "text",
+                  "terms": [
+                    "brake"
+                  ]
+                }
+              ],
+              "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+              "group": {
+                "evidence": [
+                  {
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "neighbours",
+                    "of": 4,
+                    "seeded": 2,
+                    "share": {
+                      "d": 2,
+                      "n": 1
+                    }
+                  },
+                  {
+                    "count": 2,
+                    "examples": [
+                      "BRK-1",
+                      "BRK-2"
+                    ],
+                    "kind": "similar",
+                    "score": {
+                      "d": 1000000,
+                      "n": 1000000
+                    }
+                  },
+                  {
+                    "kind": "text",
+                    "terms": [
+                      "brake",
+                      "pad",
+                      "wear"
+                    ]
+                  }
+                ],
+                "kind": "swc",
+                "name": "BrakeController",
+                "score": {
+                  "d": 1000000,
+                  "n": 3400000
+                }
+              },
+              "place": 1,
+              "score": {
+                "d": 1000000,
+                "n": 2274665
+              },
+              "target": {
+                "kind": "port",
+                "name": "pBrakeCmd",
+                "owner": "BrakeController"
+              }
+            }
+          ],
+          "chosen": [
+            {
+              "target": {
+                "kind": "memory",
+                "name": "Ram",
+                "owner": null
+              }
+            },
+            {
+              "applied": true,
+              "target": {
+                "kind": "processor",
+                "name": "Mcu",
+                "owner": null
+              }
+            }
+          ],
+          "chosenBecause": null,
+          "description": "Brake pad wear shall be monitored.",
+          "document": "Brake Spec",
+          "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+          "id": "BRK-5",
+          "linked": [],
+          "lowAccuracy": false,
+          "pass": "review",
+          "title": "Pad wear",
+          "version": 1
+        }
+      ]
+    }
+  }
+]

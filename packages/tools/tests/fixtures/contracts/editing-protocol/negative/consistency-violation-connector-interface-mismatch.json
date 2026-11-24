@@ -1,0 +1,126 @@
+{
+  "name": "consistency-violation-connector-interface-mismatch",
+  "description": "The refusal `examples/create-connector-between-compatible-interfaces.json` is the accepted half of: the same five operations, with one data element of the required interface renamed so that the provided interface offers no counterpart for it. Every element is admissible on its own and every reference resolves; what the assembled staged result breaks is `connector.interface-mismatch`, whose condition is the standard's and not equality of the two names.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, which declares `ExampleSWC`, `ExampleConsumerSWC` and the value types `float32` and `uint8`. The change set creates `IStatusWide` (`speed`, `level`), `IStatusNarrow` (`torque`), a port for each on the two components, and the connector between them.",
+    "existing_elements": [
+      { "layer": "swc", "element": "ExampleSWC" },
+      { "layer": "swc", "element": "ExampleConsumerSWC" },
+      { "layer": "implementation_types", "element": "float32" },
+      { "layer": "implementation_types", "element": "uint8" }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        { "operation": "create", "address": { "layer": "interfaces", "element": "IStatusWide" } },
+        { "operation": "create", "address": { "layer": "interfaces", "element": "IStatusNarrow" } },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [{ "field": "ports" }, { "member": "pStatus" }]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [{ "field": "ports" }, { "member": "rStatus" }]
+          }
+        },
+        { "operation": "create", "address": { "layer": "connectors", "element": "Status_Wide_to_Narrow" } }
+      ],
+      "notes": "The scope covers every address exactly, so the refusal is the model rule and not the authorization boundary. Creating a connector is not a safety act, and the guard is never reached: pass D refuses the staged result first."
+    },
+    "notes": "`torque` is the only difference from the accepted exchange. Both data types are declared, so the pair is judged rather than abstained on — an interface or a type the model does not declare is reported by the rule that owns it (`port.undeclared-interface`, `interface.data-element-undeclared-type`) and this check stays silent, which is the validator's one-root-cause rule."
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9b3e57c2a81df460",
+    "intent": "Join the narrow requirer to the wide provider.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": { "layer": "interfaces", "element": "IStatusWide" },
+        "value": {
+          "name": "IStatusWide",
+          "kind": "sender_receiver",
+          "data_elements": [
+            { "name": "speed", "implementation_type": "float32" },
+            { "name": "level", "implementation_type": "uint8" }
+          ],
+          "description": "Speed with the level beside it"
+        }
+      },
+      {
+        "operation": "create",
+        "address": { "layer": "interfaces", "element": "IStatusNarrow" },
+        "value": {
+          "name": "IStatusNarrow",
+          "kind": "sender_receiver",
+          "data_elements": [{ "name": "torque", "implementation_type": "float32" }],
+          "description": "Just the torque"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [{ "field": "ports" }, { "member": "pStatus" }]
+        },
+        "value": {
+          "name": "pStatus",
+          "direction": "provide",
+          "interface": "IStatusWide",
+          "description": "Publishes the wide status"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [{ "field": "ports" }, { "member": "rStatus" }]
+        },
+        "value": {
+          "name": "rStatus",
+          "direction": "require",
+          "interface": "IStatusNarrow",
+          "description": "Consumes the narrow status"
+        }
+      },
+      {
+        "operation": "create",
+        "address": { "layer": "connectors", "element": "Status_Wide_to_Narrow" },
+        "value": {
+          "name": "Status_Wide_to_Narrow",
+          "from": { "swc": "ExampleSWC", "port": "pStatus" },
+          "to": { "swc": "ExampleConsumerSWC", "port": "rStatus" },
+          "description": "ExampleSWC does not satisfy IStatusNarrow"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "connectors",
+        "element": "Status_Wide_to_Narrow",
+        "path": [{ "field": "from" }, { "field": "port" }]
+      },
+      {
+        "layer": "connectors",
+        "element": "Status_Wide_to_Narrow",
+        "path": [{ "field": "to" }, { "field": "port" }]
+      }
+    ],
+    "notes": "The two addresses are the two endpoints and therefore the two legal repairs — re-point either port, or give the provided interface the element the required one asks for — and the rule chooses neither. They are what the rule named under name equality too: what the widened condition changed is which pairs are reported, never where. This is NOT `broken-reference`: both interfaces exist, both ports exist, and nothing dangles."
+  }
+}

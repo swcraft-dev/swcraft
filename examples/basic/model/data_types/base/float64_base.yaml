@@ -1,0 +1,5 @@
+name: float64_base
+kind: base_type
+size: 64
+encoding: IEEE754
+native_declaration: double

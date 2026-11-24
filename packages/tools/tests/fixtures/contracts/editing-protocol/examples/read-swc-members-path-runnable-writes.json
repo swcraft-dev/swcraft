@@ -1,0 +1,153 @@
+{
+  "name": "read-swc-members-path-runnable-writes",
+  "description": "A member slice along a **path**: `members: \"runnables.writes\"` answers every data element every runnable of every component writes, one row per write, each carrying its owner chain. The path's steps each name a declared collection — `runnables` one of the `swc` layer's top-level kinds, `writes` one of the member kind `runnables` holds — so a collection a member-only kind declares is reachable from the layer address without one read per component. Each row is `{element, through, member}`: the component, the identities of the intermediate members it was reached through (here the runnable's name), then the write. `through` is what tells two rows of one `(port, element)` pair apart — two runnables of one component may write the same data element — so the `index` form and the page cursor carry it too.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with its sender-receiver traffic written down as runnable accesses: `ExampleSWC`'s `ExampleRun` writes `IExample.value` on `pOut` and the physical speed on `pPhysical`, and its `ExampleSlowRun` writes the physical speed too; `ExampleConsumerSWC`'s one runnable reads both. The consumer stands in a composition one level below the root, behind two delegated boundary ports, and the physical speed's data element is typed by an application type a mapping set pairs with `float32` — the facts the identity-row requests of the same seed compute over.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          },
+          {
+            "field": "writes"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleSlowRun"
+          },
+          {
+            "field": "writes"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleConsumerRun"
+          },
+          {
+            "field": "reads"
+          }
+        ]
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IPhysicalSpeed"
+      },
+      {
+        "layer": "application_types",
+        "element": "VehicleSpeed_Kph"
+      },
+      {
+        "layer": "mapping_sets",
+        "element": "PhysicalMapping"
+      },
+      {
+        "layer": "compositions",
+        "element": "ConsumerGroup",
+        "path": [
+          {
+            "field": "delegations"
+          }
+        ]
+      },
+      {
+        "layer": "connectors",
+        "element": "Physical_to_Consumer"
+      }
+    ],
+    "baseline_state": "current",
+    "notes": "The path is the existing `members` key, dotted; no other key changes meaning. The first step resolves against the layer's top-level kinds, each later one against the member kinds the step before it holds, and at each step the FIRST declaring kind supplies the collection while a member whose own kind declares the name otherwise is skipped. The consumer's runnable declares reads and no writes, so the slice answers the provider's rows alone: an element with nothing at the end of the path contributes no row, which is an answer and not an error."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "members": "runnables.writes"
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "swc"
+      },
+      "form": "summary",
+      "members": "runnables.writes",
+      "value": [
+        {
+          "element": "ExampleSWC",
+          "through": [
+            "ExampleRun"
+          ],
+          "member": {
+            "port": "pOut",
+            "element": "value"
+          }
+        },
+        {
+          "element": "ExampleSWC",
+          "through": [
+            "ExampleRun"
+          ],
+          "member": {
+            "port": "pPhysical",
+            "element": "speed"
+          }
+        },
+        {
+          "element": "ExampleSWC",
+          "through": [
+            "ExampleSlowRun"
+          ],
+          "member": {
+            "port": "pPhysical",
+            "element": "speed"
+          }
+        }
+      ]
+    },
+    "notes": "No `form` is stated, so the set default (`summary`) chooses, and each write is published by its collection's member rule: `port` and `element`, the composite identity, with the optional stated `name` omitted where it is unset. `through` is published in every form and only when the path has an intermediate step, so a one-step slice answers exactly the rows it did before paths existed. A map collection may only be the LAST step (its entries are reached by a key, not a member identity) and a step below one is `schema-violation`; a step no kind at that step declares is `unknown-field` (`negative/unknown-field-members-path-step.json`); a step that is declared and is not a collection is `schema-violation`. Rows are per component TYPE: a type placed twice in the composition tree answers its rows once."
+  }
+}

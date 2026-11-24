@@ -1,0 +1,10 @@
+{
+  "id": "20-links-needing-confirmation",
+  "task": 20,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "binding": "links_needing_confirmation",
+  "oracle": "product-rule",
+  "prompt": "Which requirement links need confirmation because the requirement has a newer version?",
+  "note": "Every link validator.stale_link classifies with a stated version older than the requirement's: its requirement and its owning element. A link with no version is another warning and is not asked."
+}

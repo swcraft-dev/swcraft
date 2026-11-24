@@ -1,0 +1,14 @@
+name: IDiagnostics
+kind: client_server
+operations:
+  - name: ReadDtc
+    arguments:
+      - name: dtc_id
+        direction: in
+        implementation_type: uint16
+      - name: status
+        direction: out
+        implementation_type: uint8
+description: reference `interfaces.argument.type` -> uint16 and uint8.
+satisfies:
+- REQ_SPEED_001@1

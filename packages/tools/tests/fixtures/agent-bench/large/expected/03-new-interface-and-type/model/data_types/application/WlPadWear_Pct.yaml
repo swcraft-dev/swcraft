@@ -1,0 +1,6 @@
+name: WlPadWear_Pct
+kind: application_type
+unit: percent
+range:
+  min: 0
+  max: 100

@@ -1,0 +1,59 @@
+{
+  "id": "10-import-component",
+  "task": 10,
+  "group": "mixed",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Import the component in imports/WlLampController.arxml. It needs 512 bytes of Me1abc and none of Me2abc, Me3abc or Me4abc. Add it to the Root composition and connect Swc001abcdefghij's P1 to its rLamp.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "swc",
+        "name": "WlLampController",
+        "has": {
+          "ports": [
+            {
+              "name": "rLamp",
+              "direction": "require",
+              "interface": "If0159abcdefghij"
+            }
+          ],
+          "runnables": [
+            {
+              "name": "UpdateLamp"
+            }
+          ],
+          "memory": {
+            "Me1abc": 512
+          }
+        }
+      },
+      {
+        "layer": "compositions",
+        "name": "Root",
+        "has": {
+          "members": [
+            {
+              "type": "WlLampController"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "connectors",
+        "has": {
+          "from": {
+            "swc": "Swc001abcdefghij",
+            "port": "P1"
+          },
+          "to": {
+            "swc": "WlLampController",
+            "port": "rLamp"
+          }
+        }
+      }
+    ]
+  },
+  "note": "The export is made on demand by scripts/agent_task_bench.py --with-import from a scratch copy of the bench with the component added; its interface and types are the bench's own, so the import reuses them. Every RAM is strict, so the component declares a budget for each."
+}

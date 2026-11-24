@@ -1,0 +1,73 @@
+{
+  "id": "build-report-written",
+  "function": "`swcraft validate`",
+  "tier": "generated-small",
+  "specimen": "scenario-fits-two-verdicts",
+  "class": "normal",
+  "project": "fresh",
+  "target": {
+    "resources": "declared_resources"
+  },
+  "thresholds": {},
+  "steps": [
+    {
+      "id": "first",
+      "cli": [
+        "validate",
+        "--report",
+        "--project",
+        "{manifest}"
+      ]
+    },
+    {
+      "id": "clean",
+      "cli": [
+        "clean-outputs",
+        "--project",
+        "{manifest}"
+      ]
+    },
+    {
+      "id": "second",
+      "cli": [
+        "validate",
+        "--report",
+        "--project",
+        "{manifest}"
+      ]
+    }
+  ],
+  "expectations": [
+    {
+      "step": "first",
+      "exit_code": 0,
+      "because": "the generated model validates, and the report's writing never changes the exit code"
+    },
+    {
+      "step": "clean",
+      "exit_code": 0,
+      "because": "a Build's first step: it moves the ARXML aside as dist/model_old.arxml and removes the report"
+    },
+    {
+      "step": "second",
+      "exit_code": 0,
+      "because": "the same model validates again"
+    },
+    {
+      "step": "second",
+      "file": "dist/build-report.md",
+      "heading": "ARXML changes",
+      "report_first_line": "No ARXML element changed against `dist/model_old.arxml`.",
+      "because": "the second run compared its ARXML with the one the first step kept aside, the first run's, and the model did not move"
+    },
+    {
+      "step": "second",
+      "file": "dist/build-report.md",
+      "heading": "Resources",
+      "report_names_exactly": {
+        "$target": "resources"
+      },
+      "because": "the Resources table has one row per core and memory the model declares, read off the hardware files"
+    }
+  ]
+}

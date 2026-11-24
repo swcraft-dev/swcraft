@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: a client-server operation argument whose type is
+  not in this export.
+
+  ICalibrationService/Calibrate takes two arguments: "request", typed by a
+  declared type, and "result", typed by /Acme/Chassis/Types/AbsentResultType,
+  which nothing declares. The package /Acme/Chassis/Types IS declared and
+  holds other elements, so the cause is "the parent package is present and the
+  element alone is absent" — the one cause of the three that a user reads as
+  "somebody deleted an element", not "somebody sent me one file of several".
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Chassis</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Types</SHORT-NAME>
+              <ELEMENTS>
+                <SW-BASE-TYPE>
+                  <SHORT-NAME>Octet</SHORT-NAME>
+                  <CATEGORY>FIXED_LENGTH</CATEGORY>
+                  <BASE-TYPE-SIZE>8</BASE-TYPE-SIZE>
+                  <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                  <NATIVE-DECLARATION>uint8</NATIVE-DECLARATION>
+                </SW-BASE-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>Level</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/Types/Octet</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Interfaces</SHORT-NAME>
+              <ELEMENTS>
+                <CLIENT-SERVER-INTERFACE>
+                  <SHORT-NAME>ICalibrationService</SHORT-NAME>
+                  <IS-SERVICE>false</IS-SERVICE>
+                  <OPERATIONS>
+                    <CLIENT-SERVER-OPERATION>
+                      <SHORT-NAME>Calibrate</SHORT-NAME>
+                      <ARGUMENTS>
+                        <ARGUMENT-DATA-PROTOTYPE>
+                          <SHORT-NAME>request</SHORT-NAME>
+                          <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/Types/Level</TYPE-TREF>
+                          <DIRECTION>IN</DIRECTION>
+                        </ARGUMENT-DATA-PROTOTYPE>
+                        <ARGUMENT-DATA-PROTOTYPE>
+                          <SHORT-NAME>result</SHORT-NAME>
+                          <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/Types/AbsentResultType</TYPE-TREF>
+                          <DIRECTION>OUT</DIRECTION>
+                        </ARGUMENT-DATA-PROTOTYPE>
+                      </ARGUMENTS>
+                    </CLIENT-SERVER-OPERATION>
+                  </OPERATIONS>
+                </CLIENT-SERVER-INTERFACE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

@@ -1,0 +1,106 @@
+{
+  "name": "read-implementation-types-layer",
+  "description": "A layer-granularity `read` of `implementation_types`, the layer that was `data_types` until contract `8.0.0` and is stored in `data_types/implementation/` since. It answers the base's twelve value types and the value type `SyntheticTorque` — the stored view of the name `application_types` declares too — and no base type and no application type, each of which is an element of a layer of its own.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model plus one name declared in two layers: the application type `SyntheticTorque` (`data_types/application/`) and the implementation type `SyntheticTorque` (`data_types/implementation/`), a value type over the base's `float32_base`, each stating its bounds inline, and the mapping set `SyntheticTorqueMapping` (`data_types/mapping_sets/`) that pairs them. The base's twelve base types (`data_types/base/`) and twelve value types are unchanged.",
+    "existing_elements": [
+      {
+        "layer": "application_types",
+        "element": "SyntheticTorque"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "SyntheticTorque"
+      },
+      {
+        "layer": "mapping_sets",
+        "element": "SyntheticTorqueMapping"
+      }
+    ],
+    "notes": "No `form` is stated, so the layer answers `summary`. `read-data-types-layer` reads the same layer at `full` over a fixture narrowed to two elements; this one reads the base's whole layer beside the pair."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "implementation_types"
+    }
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "implementation_types"
+      },
+      "form": "summary",
+      "value": [
+        {
+          "name": "SyntheticTorque",
+          "kind": "value_type",
+          "base": "float32_base"
+        },
+        {
+          "name": "bool",
+          "kind": "value_type",
+          "base": "bool_base"
+        },
+        {
+          "name": "boolean",
+          "kind": "value_type",
+          "base": "boolean_base"
+        },
+        {
+          "name": "float32",
+          "kind": "value_type",
+          "base": "float32_base"
+        },
+        {
+          "name": "float64",
+          "kind": "value_type",
+          "base": "float64_base"
+        },
+        {
+          "name": "int16",
+          "kind": "value_type",
+          "base": "int16_base"
+        },
+        {
+          "name": "int32",
+          "kind": "value_type",
+          "base": "int32_base"
+        },
+        {
+          "name": "int64",
+          "kind": "value_type",
+          "base": "int64_base"
+        },
+        {
+          "name": "int8",
+          "kind": "value_type",
+          "base": "int8_base"
+        },
+        {
+          "name": "uint16",
+          "kind": "value_type",
+          "base": "uint16_base"
+        },
+        {
+          "name": "uint32",
+          "kind": "value_type",
+          "base": "uint32_base"
+        },
+        {
+          "name": "uint64",
+          "kind": "value_type",
+          "base": "uint64_base"
+        },
+        {
+          "name": "uint8",
+          "kind": "value_type",
+          "base": "uint8_base"
+        }
+      ]
+    },
+    "notes": "A value type's `base` names an element of `base_types`, resolved in that layer alone, so the twelve `{name}_base` names here are references across layers and not members of this one."
+  }
+}

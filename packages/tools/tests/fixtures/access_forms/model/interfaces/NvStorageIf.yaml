@@ -1,0 +1,9 @@
+name: NvStorageIf
+kind: client_server
+description: Writes a block to non-volatile storage.
+operations:
+- name: WriteBlock
+  arguments:
+  - name: block
+    direction: in
+    implementation_type: uint16

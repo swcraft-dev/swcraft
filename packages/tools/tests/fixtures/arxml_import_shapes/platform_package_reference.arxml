@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: a reference into the delivered AUTOSAR platform package,
+  which this export does not declare.
+
+  PlatformAlias names /AUTOSAR_Platform/ImplementationDataTypes/uint8. SWCraft
+  reads no delivered platform package, so the reference is unresolved for
+  exactly the same reason any other absent tree is — it carries no special case, and this
+  fixture exists so that "SWCraft treats the platform package as any other
+  missing file" is a statement a test makes rather than one a document claims.
+
+  Invented names only apart from the platform package's own published path,
+  which is the standard's and not any project's; no content copied from any
+  real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Chassis</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Types</SHORT-NAME>
+              <ELEMENTS>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>PlatformAlias</SHORT-NAME>
+                  <CATEGORY>TYPE_REFERENCE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/AUTOSAR_Platform/ImplementationDataTypes/uint8</IMPLEMENTATION-DATA-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Interfaces</SHORT-NAME>
+              <ELEMENTS>
+                <SENDER-RECEIVER-INTERFACE>
+                  <SHORT-NAME>IPlatformSample</SHORT-NAME>
+                  <IS-SERVICE>false</IS-SERVICE>
+                  <DATA-ELEMENTS>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>sample</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/Types/PlatformAlias</TYPE-TREF>
+                    </VARIABLE-DATA-PROTOTYPE>
+                  </DATA-ELEMENTS>
+                </SENDER-RECEIVER-INTERFACE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

@@ -1,0 +1,37 @@
+# The public part of this repository: what the open copy holds, and nothing else.
+#
+# One entry per line; '#' starts a comment. An entry ending in '/' opens that whole folder,
+# recursively. Any other entry names one file at the root. Everything not listed is closed,
+# so a new root file or a new top-level folder stays closed until a commit lists it here.
+# scripts/public_snapshot.py assembles and checks the snapshot from the tracked files of a
+# commit, and refuses an entry that does not exist, a file entry below the root (or naming a
+# folder), a duplicate entry, an entry inside another, an empty folder entry (a folder holding
+# no file, only a submodule) and an entry that is not a canonical relative POSIX path.
+
+# Folders (whole)
+.github/workflows/
+constraints/
+docs/guide/
+docs/release-notes/
+examples/
+packages/agent/
+packages/mcp/
+packages/specimens/
+packages/tools/
+scripts/
+vscode_extension/
+
+# Root files
+.env.example
+.gitattributes
+.gitignore
+.prototools
+CITATION.cff
+CONTRIBUTING.md
+LICENSE
+NOTICE
+README.md
+THIRD-PARTY-NOTICES.md
+mkdocs.yml
+public-paths.txt
+ruff.toml

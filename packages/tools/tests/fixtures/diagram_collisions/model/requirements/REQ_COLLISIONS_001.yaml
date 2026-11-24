@@ -1,0 +1,6 @@
+id: REQ_COLLISIONS_001
+title: Every drawn element opens its own file
+description: Both components satisfy this requirement, so the model passes check-model.
+req_type: req
+version: 1
+source: architecture

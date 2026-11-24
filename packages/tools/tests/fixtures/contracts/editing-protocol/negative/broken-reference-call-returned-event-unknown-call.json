@@ -1,0 +1,123 @@
+{
+  "name": "broken-reference-call-returned-event-unknown-call",
+  "description": "A `call_returned` event naming a pair no runnable of its component calls asynchronously (contract `12.7.0`, `rule:swc.call-returned-event.unknown-call`): the event is admissible on its own -- its `port` and `operation` are non-blank names and the member address is well formed -- and the assembled result names no asynchronous call point for it, so pass D refuses it as a `broken-reference` at the event's `operation`.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleConsumerSWC` requires `IExample` through `rIn` and calls nothing; the event below names `ReadDtc` of `rIn`, which no runnable of the component calls. The repair is the call with `asynchronous: true` on the runnable that makes it, in the same change set, or another pair; the refusal names no candidate, because the nearest declared name is not the call the event means.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleConsumerRun"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleConsumerRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "call_returned",
+                  "port": "rIn",
+                  "operation": "ReadDtc"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the requested address exactly, so the refusal is pass D's and not the scope gate's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Start ExampleConsumerRun when the ReadDtc call through rIn returns.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleConsumerRun"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "call_returned",
+                "port": "rIn",
+                "operation": "ReadDtc"
+              }
+            }
+          ]
+        },
+        "value": {
+          "type": "call_returned",
+          "port": "rIn",
+          "operation": "ReadDtc"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "broken-reference",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleConsumerRun"
+          },
+          {
+            "field": "events"
+          },
+          {
+            "member": {
+              "type": "call_returned",
+              "port": "rIn",
+              "operation": "ReadDtc"
+            }
+          },
+          {
+            "field": "operation"
+          }
+        ]
+      }
+    ],
+    "notes": "The address is the referrer, the event's `operation`, not the call point that is missing: an event left behind when its call is removed is refused the same way. A pair two runnables call asynchronously is a `consistency-violation` instead (`swc.call-returned-event.ambiguous-call`). The model stays byte-identical."
+  }
+}

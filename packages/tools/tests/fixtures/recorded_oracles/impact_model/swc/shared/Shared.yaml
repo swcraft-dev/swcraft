@@ -1,0 +1,26 @@
+name: Shared
+type: application
+description: >-
+  The SWC half of the name two layers carry. It is also the one member of
+  the `Diagnostics` composition, so a composition depends on it too.
+
+runnables:
+  - name: Shared_Run
+    min_start_interval: 0.02
+    events:
+      - type: timing
+        period: 0.02
+
+memory:
+  RAM0: 256
+
+# The carrier of `relation swc.swc.data_type_mappings` -> DiagMapping. The
+# DESCRIPTION above is deliberately not reworded to say so: a component's
+# description is drawn into `ibd-`/`overview-` and would move the diagram
+# byte-identity record for a fixture note. `DiagMapping.yaml` carries the note.
+data_type_mappings:
+  - DiagMapping
+
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_SPEED_001@1

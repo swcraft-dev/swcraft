@@ -1,0 +1,16 @@
+{
+  "xml.validation.filters": [
+    {
+      "pattern": "**/*.arxml",
+      "noGrammar": "ignore",
+      "schema": {
+        "enabled": "never"
+      }
+    }
+  ],
+  "cSpell.ignorePaths": [
+    "model/**",
+    "dist/**",
+    "views/**"
+  ]
+}

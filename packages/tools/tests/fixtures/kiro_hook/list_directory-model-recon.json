@@ -1,0 +1,11 @@
+{
+  "session_id": "s",
+  "hook_event_name": "PreToolUse",
+  "cwd": "/project",
+  "tool_name": "list_directory",
+  "tool_input": {
+    "path": "/project/model",
+    "explanation": "x",
+    "depth": null
+  }
+}

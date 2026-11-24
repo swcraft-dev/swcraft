@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "findings": {
+    "errors": 0,
+    "informational": 0
+  },
+  "topology": [],
+  "fit": {
+    "kind": "core",
+    "asked": "5.00%"
+  },
+  "cores": [
+    {
+      "name": "CORE0",
+      "kind": "core",
+      "enforcement": "strict",
+      "utilization": "12.00%",
+      "limit": "70.00%",
+      "headroom": "58.00%",
+      "physical_headroom": "88.00%",
+      "status": "within budget",
+      "consumers": [
+        {
+          "name": "Task_10ms",
+          "layer": "tasks",
+          "amount": "12.00%",
+          "declared": true,
+          "detail": "wcet 1200us / period 0.01s"
+        }
+      ],
+      "findings": [],
+      "fit": {
+        "fits": true,
+        "within_threshold": {
+          "fits": true,
+          "limit": "70.00%",
+          "headroom": "58.00%"
+        },
+        "within_size": {
+          "fits": true,
+          "limit": "100.00%",
+          "headroom": "88.00%"
+        },
+        "answer": "fits within the threshold and the size"
+      }
+    }
+  ],
+  "memories": [
+    {
+      "name": "RAM0",
+      "kind": "memory",
+      "enforcement": "strict",
+      "size": 262144,
+      "used": "3584",
+      "limit": "209715",
+      "headroom": "206131",
+      "physical_headroom": "258560",
+      "status": "within budget",
+      "consumers": [
+        {
+          "name": "ExampleSWC",
+          "layer": "swc",
+          "amount": "2048 bytes",
+          "declared": true,
+          "detail": ""
+        },
+        {
+          "name": "ExampleConsumerSWC",
+          "layer": "swc",
+          "amount": "1536 bytes",
+          "declared": true,
+          "detail": ""
+        }
+      ],
+      "findings": []
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+name: WheelSensor
+type: application
+description: >-
+  A wheel speed sensor, placed twice: once in the root composition and once in
+  the rear axle. It publishes its speed implicitly.
+ports:
+- name: pWheelSpeed
+  direction: provide
+  interface: WheelSpeedIf
+runnables:
+- name: SampleSpeed
+  events:
+  - type: timing
+    period: 0.01
+  writes:
+  - port: pWheelSpeed
+    element: speed
+    by: implicit
+handle_termination_and_restart: no_support

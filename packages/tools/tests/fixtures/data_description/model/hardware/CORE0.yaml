@@ -1,0 +1,4 @@
+name: CORE0
+kind: core
+threshold: 1.0
+enforcement: advisory

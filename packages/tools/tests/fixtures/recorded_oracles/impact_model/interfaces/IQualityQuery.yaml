@@ -1,0 +1,9 @@
+name: IQualityQuery
+kind: client_server
+operations:
+  - name: ReadQuality
+    arguments:
+      - name: quality
+        direction: out
+        application_type: Quality
+description: reference `interfaces.argument.application_type` -> Quality.

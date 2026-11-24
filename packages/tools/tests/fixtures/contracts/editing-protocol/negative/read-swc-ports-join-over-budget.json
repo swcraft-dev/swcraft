@@ -1,0 +1,57 @@
+{
+  "name": "read-swc-ports-join-over-budget",
+  "description": "A `join` whose product exceeds the server's join row ceiling: every port of every component joined with every port of the same component. `WideSWC`'s 800 ports meet themselves 800 times each, 640 000 combined rows, far above the 50 000-row ceiling `discover` publishes as `reads.join.row_ceiling`. The product is COUNTED from the hash join's buckets — for each key both sides carry, the outer rows on it times the joined rows on it, a `null` matching nothing — and the request is refused with `over-budget` BEFORE a combined row is built, whatever `limit` it carries: every page of a join builds the whole join before windowing it, so a page narrows the answer and never the work. The refusal therefore offers no page, and no `where` either: a clause the client did not state is another question, and its value would be the server's guess. A join under the ceiling is built and paged like any read, its page held to the response budget.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model with one further component, `WideSWC`, carrying 800 ports on the base's own `IExample` interface — the seed `negative/read-layer-full-over-budget.json` reads. Each side of the join alone is the `ports` member slice, whose `index` answers.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "WideSWC"
+      }
+    ],
+    "baseline_state": "current",
+    "notes": "A read takes no scope and writes no audit record, refused or not. The model is valid; the only thing wrong with the exchange is the size of the product it asks for."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "form": "index",
+    "members": "ports",
+    "limit": 50,
+    "join": [
+      {
+        "with": {
+          "address": {
+            "layer": "swc"
+          },
+          "members": "ports"
+        },
+        "on": [
+          {
+            "left": "element",
+            "right": "element"
+          }
+        ],
+        "as": "peer"
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "over-budget",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc"
+      }
+    ],
+    "notes": "`invalid` and `semantic` for the reasons `negative/read-layer-full-over-budget.json` states: the request conforms to `$defs/readRequest` and only the server can know the product's size. `measured` carries the product's exact row count as `elements` and, as `wire_bytes`, the size of the unpaged `index` answer that would carry it, computed from each row's own size without building a combined row; the refusal is decided by the row count against the ceiling, not by that figure against the budget. NO `hints` key: the `limit` of 50 the request carries is the page a client would have tried, and it is refused the same way, because the ceiling is on the product's work and not on the page. Narrowing either side with `where` is what brings it under, and the message says so; it is not contract."
+  }
+}

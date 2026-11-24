@@ -1,0 +1,6 @@
+id: REQ-ACC-001
+title: Runnable data access
+description: AccessMain reads, writes and calls through AccessSwc's ports; ServerSwc provides the called operation.
+req_type: req
+version: 1
+source: architecture

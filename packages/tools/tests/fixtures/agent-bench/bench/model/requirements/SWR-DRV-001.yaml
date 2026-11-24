@@ -1,0 +1,9 @@
+id: SWR-DRV-001
+title: Thermal status display
+description: The instrument cluster shall display the thermal protection status.
+req_type: req
+version: 1
+source: external
+document: SRS Driver Information
+baseline: '1.0'
+revision: '1'

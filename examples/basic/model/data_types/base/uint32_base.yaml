@@ -1,0 +1,5 @@
+name: uint32_base
+kind: base_type
+size: 32
+encoding: NONE
+native_declaration: uint32_t

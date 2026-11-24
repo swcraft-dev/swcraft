@@ -1,0 +1,10 @@
+id: SWR-DIA-002
+title: Snapshot storage
+description: On a thermal protection event the diagnostic manager shall store a snapshot
+  in non-volatile storage.
+req_type: req
+version: 1
+source: external
+document: SRS Diagnostics
+baseline: '1.0'
+revision: '1'

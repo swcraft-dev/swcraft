@@ -1,0 +1,28 @@
+{
+  "id": "20-links-needing-confirmation",
+  "task": 20,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which requirement links need confirmation because the requirement has a newer version?",
+  "note": "The bench mirrors showcase 4fdc642.",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "mentions_all": [
+        "REQ_BTP_TEMPERATURE_RANGE",
+        "IBrakeDiagnostics",
+        "IBrakeTemperature",
+        "IThermalProtectionStatus"
+      ]
+    }
+  },
+  "reference": {
+    "needs_confirmation": [
+      "interface IBrakeDiagnostics: REQ_BTP_TEMPERATURE_RANGE@1, the requirement at version 2",
+      "interface IBrakeTemperature: REQ_BTP_TEMPERATURE_RANGE@1, the requirement at version 2",
+      "interface IThermalProtectionStatus: REQ_BTP_TEMPERATURE_RANGE@1, the requirement at version 2"
+    ],
+    "computed_by": "swcraft check-model --format json, the findings trace.link-needs-confirmation"
+  }
+}

@@ -1,0 +1,9 @@
+name: InterfacelessPortSWC
+type: application
+description: A declared component whose port names no interface
+ports:
+  - name: pOut
+    direction: provide
+memory:
+  RAM: 16
+handle_termination_and_restart: no_support

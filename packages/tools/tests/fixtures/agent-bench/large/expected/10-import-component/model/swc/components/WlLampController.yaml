@@ -1,0 +1,19 @@
+name: WlLampController
+type: application
+ports:
+- name: rLamp
+  direction: require
+  interface: If0159abcdefghij
+runnables:
+- name: UpdateLamp
+  events:
+  - type: timing
+    period: 0.05
+handle_termination_and_restart: no_support
+data_type_mappings:
+- Ms1abcdefghi
+memory:
+  Me1abc: 512
+  Me2abc: 0
+  Me3abc: 0
+  Me4abc: 0

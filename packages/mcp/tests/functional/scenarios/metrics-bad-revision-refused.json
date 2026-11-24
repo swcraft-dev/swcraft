@@ -1,0 +1,52 @@
+{
+  "id": "metrics-bad-revision-refused",
+  "function": "`swcraft metrics`",
+  "tier": "generated-small",
+  "specimen": "scenario-impact-summary-bounded",
+  "class": "refusal",
+  "thresholds": {},
+  "steps": [
+    {
+      "id": "named",
+      "cli": [
+        "metrics",
+        "--project",
+        "{manifest}",
+        "--format",
+        "json",
+        "--since",
+        "no-such-rev"
+      ]
+    },
+    {
+      "id": "head",
+      "cli": [
+        "metrics",
+        "--project",
+        "{manifest}",
+        "--format",
+        "json",
+        "--since-head"
+      ],
+      "stdout": "json"
+    }
+  ],
+  "expectations": [
+    {
+      "step": "named",
+      "exit_code": 1,
+      "because": "a revision named with --since that cannot be read refuses the run, as diff does: a series with a silently missing column would mislead"
+    },
+    {
+      "step": "head",
+      "exit_code": 0,
+      "because": "the automatic base is the one exception: HEAD that cannot be read is a sentence in the answer, never a refusal"
+    },
+    {
+      "step": "head",
+      "at": "answers.heading",
+      "present": true,
+      "because": "the second answer still stands and says why there is nothing to compare"
+    }
+  ]
+}

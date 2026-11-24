@@ -1,0 +1,6 @@
+id: REQ-PROBE-001
+title: Probe signals
+description: ProbeSender publishes the signals ProbeReceiver consumes.
+req_type: req
+version: 1
+source: architecture

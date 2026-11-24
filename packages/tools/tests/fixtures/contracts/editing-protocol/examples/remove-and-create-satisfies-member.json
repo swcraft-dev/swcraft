@@ -1,0 +1,109 @@
+{
+  "name": "remove-and-create-satisfies-member",
+  "description": "The wire shape of a link replacement: a `satisfies` list is a `whole_value` list, so a link confirmed at a new version is one member removed and one created in the same list — an `update` at the member is refused `immutable-field` (`apply.py`). The two rows are the client's own; `confirm_links` on the requirement's `version` states the same pair for every link at once.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, seeded: `REQ_EXAMPLE_001` is at version 2, and `ExampleSWC` still links it at `@1`.",
+    "existing_elements": [
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_001"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "satisfies"
+          },
+          {
+            "member": "REQ_EXAMPLE_001@1"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Confirm ExampleSWC's link to REQ_EXAMPLE_001 at version 2.",
+    "operations": [
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "satisfies"
+            },
+            {
+              "member": "REQ_EXAMPLE_001@1"
+            }
+          ]
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "satisfies"
+            },
+            {
+              "member": "REQ_EXAMPLE_001@2"
+            }
+          ]
+        },
+        "value": "REQ_EXAMPLE_001@2"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "satisfies"
+              },
+              {
+                "member": "REQ_EXAMPLE_001@1"
+              }
+            ]
+          },
+          "before": "REQ_EXAMPLE_001@1",
+          "summary": "swc/ExampleSWC: - satisfies[REQ_EXAMPLE_001@1]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "satisfies"
+              },
+              {
+                "member": "REQ_EXAMPLE_001@2"
+              }
+            ]
+          },
+          "after": "REQ_EXAMPLE_001@2",
+          "summary": "swc/ExampleSWC: + satisfies[REQ_EXAMPLE_001@2]"
+        }
+      ]
+    },
+    "notes": "`ExampleConsumerSWC`'s link stays at `@1`: the change set names only ExampleSWC's, and the warning `trace.link-needs-confirmation` remains for the other. A `remove` carrying a `value` is refused, its message naming this shape."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "session_id": "8c72e49c-9278-48b3-a471-4fc481162787",
+  "transcript_path": "/home/user/.claude/projects/-project/8c72e49c-9278-48b3-a471-4fc481162787.jsonl",
+  "cwd": "/project",
+  "prompt_id": "f403a694-333c-4c42-b8bf-4a608a90b67c",
+  "permission_mode": "acceptEdits",
+  "effort": {
+    "level": "medium"
+  },
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Write",
+  "tool_input": {
+    "file_path": "/project/notes.txt",
+    "content": "probe"
+  },
+  "tool_use_id": "toolu_01LrDdues3NBiCJNxs4TrXcW"
+}

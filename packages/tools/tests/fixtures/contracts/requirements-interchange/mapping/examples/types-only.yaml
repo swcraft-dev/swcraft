@@ -1,0 +1,4 @@
+# Only the types: every field keeps SWCraft's own source name.
+types:
+  sysreq: req
+  test: ignore

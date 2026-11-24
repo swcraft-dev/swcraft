@@ -1,0 +1,4 @@
+name: PARTITION1
+kind: partition
+core: CORE1
+description: reference `hardware.partition.core` -> CORE1; reference `tasks.task.partition` from the task on it.

@@ -1,0 +1,6 @@
+name: Cp1abcdefg
+kind: processor
+satisfies:
+- Rq01abcdefghijk@2
+- Rq02abcdef@2
+- Rq03abcdef@1

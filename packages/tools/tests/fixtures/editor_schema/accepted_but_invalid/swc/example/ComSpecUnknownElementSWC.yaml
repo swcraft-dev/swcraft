@@ -1,0 +1,13 @@
+name: ComSpecUnknownElementSWC
+type: application
+description: States a com-spec for a data element its port's interface does not declare
+ports:
+  - name: rIn
+    direction: require
+    interface: IExample
+    com_specs:
+      - data_element: missing
+        enable_update: true
+memory:
+  RAM0: 16
+handle_termination_and_restart: no_support

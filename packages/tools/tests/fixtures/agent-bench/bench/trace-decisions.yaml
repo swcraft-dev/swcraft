@@ -1,0 +1,107 @@
+formatVersion: 1
+decisions:
+- requirement: SWR-BRK-001
+  version: 1
+  target:
+    kind: runnable
+    owner: BrakeController
+    name: ProcessBrakeRequest
+  decision: accept
+- requirement: SWR-BRK-002
+  version: 1
+  target:
+    kind: swc
+    owner: null
+    name: BrakeController
+  decision: accept
+- requirement: SWR-BRK-003
+  version: 1
+  target:
+    kind: port
+    owner: BrakeController
+    name: rPermittedBrakeAction
+  decision: accept
+- requirement: SWR-BRK-004
+  version: 1
+  target:
+    kind: port
+    owner: BrakeController
+    name: rRearBrakeTemperature
+  decision: accept
+- requirement: SWR-BRK-008
+  version: 1
+  target:
+    kind: swc
+    owner: null
+    name: BrakeController
+  decision: accept
+- requirement: SWR-BRK-009
+  version: 1
+  target:
+    kind: swc
+    owner: null
+    name: BrakeController
+  decision: accept
+- requirement: SWR-BRK-010
+  version: 1
+  target:
+    kind: swc
+    owner: null
+    name: BrakeController
+  decision: accept
+- requirement: SWR-THP-001
+  version: 1
+  target:
+    kind: runnable
+    owner: BrakeThermalProtection
+    name: EvaluateThermalProtection
+  decision: accept
+- requirement: SWR-THP-002
+  version: 1
+  target:
+    kind: runnable
+    owner: BrakeThermalProtection
+    name: InitThermalProtection
+  decision: accept
+- requirement: SWR-THP-003
+  version: 1
+  target:
+    kind: port
+    owner: BrakeThermalProtection
+    name: pPermittedBrakeAction
+  decision: accept
+- requirement: SWR-THP-004
+  version: 1
+  target:
+    kind: port
+    owner: BrakeThermalProtection
+    name: pThermalProtectionStatus
+  decision: accept
+- requirement: SWR-THP-005
+  version: 1
+  target:
+    kind: port
+    owner: BrakeThermalProtection
+    name: pThermalProtectionEvent
+  decision: accept
+- requirement: SWR-THP-007
+  version: 1
+  target:
+    kind: interface
+    owner: null
+    name: IBrakeTemperature
+  decision: accept
+- requirement: SWR-THP-008
+  version: 1
+  target:
+    kind: port
+    owner: BrakeThermalProtection
+    name: rOperatingState
+  decision: accept
+- requirement: SWR-THP-012
+  version: 1
+  target:
+    kind: runnable
+    owner: BrakeThermalProtection
+    name: EvaluateThermalProtection
+  decision: accept

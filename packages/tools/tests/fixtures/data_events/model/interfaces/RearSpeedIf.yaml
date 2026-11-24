@@ -1,0 +1,6 @@
+name: RearSpeedIf
+kind: external_interface
+external_ref: /Foreign/PortInterfaces/RearSpeedIf
+external_dest: SENDER-RECEIVER-INTERFACE
+data_elements:
+- RearLeft

@@ -1,0 +1,2 @@
+# A team link type holds a list of ids; ignoring it by its forward name ignores verifies_back too.
+ignore: [verifies]

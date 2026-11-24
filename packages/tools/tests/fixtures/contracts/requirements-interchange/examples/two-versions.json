@@ -1,0 +1,56 @@
+{
+  "project": "Brake Control",
+  "created": "2026-10-18T09:00:00",
+  "current_version": "SRS-2.3",
+  "versions": {
+    "SRS-2.2": {
+      "created": "2026-09-01T09:00:00",
+      "creator": {
+        "program": "sphinx_needs",
+        "version": "9.0.0"
+      },
+      "needs_amount": 1,
+      "needs": {
+        "SWR-12": {
+          "id": "SWR-12",
+          "title": "Title of SWR-12",
+          "content": "The software shall do what SWR-12 says.",
+          "type": "spec"
+        }
+      }
+    },
+    "SRS-2.3": {
+      "created": "2026-10-18T09:00:00",
+      "creator": {
+        "program": "sphinx_needs",
+        "version": "9.0.0"
+      },
+      "needs_amount": 2,
+      "filters": {},
+      "filters_amount": 0,
+      "needs_schema": {
+        "type": "object"
+      },
+      "needs_defaults_removed": false,
+      "needs": {
+        "SG-1": {
+          "id": "SG-1",
+          "title": "Title of SG-1",
+          "content": "The software shall do what SG-1 says.",
+          "type": "req",
+          "asil": "D"
+        },
+        "SWR-12": {
+          "id": "SWR-12",
+          "title": "Title of SWR-12",
+          "content": "The software shall do what SWR-12 says.",
+          "type": "req",
+          "derived_from": [
+            "SG-1"
+          ],
+          "asil": "QM"
+        }
+      }
+    }
+  }
+}

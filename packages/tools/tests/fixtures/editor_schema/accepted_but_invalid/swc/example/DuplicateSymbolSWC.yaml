@@ -1,0 +1,13 @@
+name: DuplicateSymbolSWC
+type: application
+description: Two runnables written with one symbol, one stating the other's name as its own
+runnables:
+  - name: First
+    events:
+      - type: timing
+        period: 0.01
+  - name: Second
+    symbol: First
+memory:
+  RAM0: 16
+handle_termination_and_restart: no_support

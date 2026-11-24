@@ -1,0 +1,10 @@
+{
+  "id": "17-largest-ram-consumer",
+  "task": 17,
+  "group": "relations-and-containment",
+  "kind": "question",
+  "binding": "largest_consumer_of_the_busiest_memory",
+  "oracle": "product-rule",
+  "prompt": "Which component takes the most of {{memory}}?",
+  "note": "Of the memories whose every consumer declared an amount (else not applicable, undeclared-consumer: the largest is unknown), the one the most components consume; its largest consumer by the resource report's figure, which counts a component type once. Two consumers sharing the largest figure leave the template not applicable (tie)."
+}

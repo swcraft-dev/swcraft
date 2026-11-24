@@ -1,0 +1,8 @@
+name: Task_1000ms
+period: 1.0
+priority: 1
+partition: PARTITION0
+wcet: 20ms
+runnables:
+- swc: SpeedEstimator
+  runnable: CalibrateOffsets

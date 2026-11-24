@@ -1,0 +1,3 @@
+name: float32
+kind: value_type
+base: float32_base

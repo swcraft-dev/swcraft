@@ -1,0 +1,82 @@
+{
+  "id": "26-upgrade-to-a-new-release",
+  "task": 26,
+  "group": "guide-question",
+  "kind": "guide",
+  "status": "ready",
+  "prompt": "A new SWCraft release is out. How do I upgrade my project to it?",
+  "expect": {
+    "model": "unchanged",
+    "guide": {
+      "sections": [
+        "upgrading#the-procedure",
+        "upgrading#upgrading-by-version",
+        "upgrading"
+      ],
+      "must": [
+        {
+          "id": "pin",
+          "any_of": [
+            "toolchain_version"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "onboard",
+          "any_of": [
+            "Onboard Project",
+            "swcraft.onboardProject"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "check-model",
+          "any_of": [
+            "check-model"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "validate",
+          "any_of": [
+            "swcraft validate"
+          ],
+          "case_sensitive": true
+        }
+      ],
+      "must_not": [
+        {
+          "id": "pip",
+          "any_of": [
+            "pip install",
+            "pip3 install",
+            "pip upgrade"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "upgrade-command",
+          "any_of": [
+            "swcraft upgrade",
+            "swcraft self-update",
+            "swcraft update"
+          ],
+          "case_sensitive": true
+        }
+      ]
+    },
+    "calls": {
+      "forbidden": [
+        "change_set",
+        "build",
+        "validate",
+        "export_component",
+        "import_component"
+      ]
+    }
+  },
+  "reference": {
+    "runs": "candidate builds only: a build without the guide tool fails the read and cited criteria by construction, so a guide question is never run on a baseline",
+    "baseline": "76a5f6532's upgrading.md has The procedure with the same five steps, its first step 'read the release note' where today's says 'take the steps of every release after yours in Upgrading by version'; the steps-by-release fact accepts both. The installer, the pin, Onboard Project, check-model and validate read alike on both."
+  }
+}

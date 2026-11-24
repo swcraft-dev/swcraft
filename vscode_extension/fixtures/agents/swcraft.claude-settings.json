@@ -1,0 +1,20 @@
+{
+  "env": {
+    "CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS": "0"
+  },
+  "enabledMcpjsonServers": ["swcraft"],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^(Read|Grep|Glob|Edit|Write|MultiEdit|NotebookEdit|Bash|Monitor|PowerShell)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "swcraft guard --host claude",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

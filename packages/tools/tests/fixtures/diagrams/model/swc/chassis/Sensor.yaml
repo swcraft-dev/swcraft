@@ -1,0 +1,22 @@
+name: Sensor
+type: application
+description: Measures the speed and provides it twice, filtered and raw.
+ports:
+  - name: pSpeed
+    direction: provide
+    interface: ISpeed
+    description: The filtered speed.
+  - name: pRaw
+    direction: provide
+    interface: ISpeed
+runnables:
+  - name: SensorRun
+    events:
+      - type: timing
+        period: 0.01
+    writes:
+      - port: pSpeed
+        element: speed
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_DIAGRAMS_001@1

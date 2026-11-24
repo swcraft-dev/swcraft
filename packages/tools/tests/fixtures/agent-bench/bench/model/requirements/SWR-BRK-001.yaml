@@ -1,0 +1,10 @@
+id: SWR-BRK-001
+title: Brake request processing
+description: The brake controller shall process every brake request within one control
+  cycle.
+req_type: req
+version: 1
+source: external
+document: SRS Brake Control
+baseline: '1.0'
+revision: '1'

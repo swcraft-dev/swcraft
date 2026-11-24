@@ -1,0 +1,137 @@
+{
+  "components": {
+    "by_declared_level": {
+      "A": 0,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "QM": 0
+    },
+    "hubs": [],
+    "ports": {
+      "top": [
+        1,
+        1
+      ],
+      "total": 2
+    },
+    "runnables": 2,
+    "unconnected": {
+      "max_on_one": 0,
+      "total": 0
+    }
+  },
+  "connectors": {
+    "assembly": 1,
+    "delegation": 0,
+    "links": 0
+  },
+  "contract_version": "12.0.0",
+  "hardware": {
+    "cores": 1,
+    "memories": 0,
+    "partitions": 1,
+    "rated_partitions": 0
+  },
+  "identifiers": {
+    "application_types": {
+      "max_length": 11,
+      "mean_length": 10.0
+    },
+    "base_types": {
+      "max_length": 14,
+      "mean_length": 14.0
+    },
+    "compositions": {
+      "max_length": 4,
+      "mean_length": 4.0
+    },
+    "compu_methods": {
+      "max_length": 0,
+      "mean_length": 0
+    },
+    "connectors": {
+      "max_length": 14,
+      "mean_length": 14.0
+    },
+    "data_constraints": {
+      "max_length": 0,
+      "mean_length": 0
+    },
+    "hardware": {
+      "max_length": 10,
+      "mean_length": 6.0
+    },
+    "implementation_types": {
+      "max_length": 10,
+      "mean_length": 9.5
+    },
+    "interfaces": {
+      "max_length": 16,
+      "mean_length": 16.0
+    },
+    "mapping_sets": {
+      "max_length": 12,
+      "mean_length": 12.0
+    },
+    "max_length": 16,
+    "requirements": {
+      "max_length": 15,
+      "mean_length": 15.0
+    },
+    "sequences": {
+      "max_length": 13,
+      "mean_length": 13.0
+    },
+    "swc": {
+      "max_length": 16,
+      "mean_length": 16.0
+    },
+    "tasks": {
+      "max_length": 9,
+      "mean_length": 9.0
+    },
+    "units": {
+      "max_length": 0,
+      "mean_length": 0
+    }
+  },
+  "interfaces": {
+    "client_server": 1,
+    "fan_out": {
+      "max": 2,
+      "top": [
+        2
+      ]
+    },
+    "sender_receiver": 1
+  },
+  "layers": {
+    "application_types": 3,
+    "base_types": 1,
+    "compositions": 1,
+    "compu_methods": 0,
+    "connectors": 1,
+    "data_constraints": 0,
+    "hardware": 3,
+    "implementation_types": 2,
+    "interfaces": 2,
+    "mapping_sets": 1,
+    "requirements": 1,
+    "sequences": 1,
+    "swc": 2,
+    "tasks": 1,
+    "units": 0
+  },
+  "passport_version": "1.0.0",
+  "requirements": {
+    "links": 2,
+    "on_all_site_kinds": 0,
+    "on_one_port": 0,
+    "stale_links": 0,
+    "unallocated": 0
+  },
+  "tasks": {
+    "idle": 0
+  }
+}

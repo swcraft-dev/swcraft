@@ -1,0 +1,49 @@
+{
+  "name": "consistency-violation-unreachable-memory",
+  "description": "A task moved into a partition on a core that is DECLARED but from which the memory its component budgets is not reachable. It is `broken-reference-task-on-undeclared-partition.json`'s sibling one pass later: the same change set over a fixture that declares `PARTITION1` on `CORE1`, so both references resolve and what refuses the staged result is `hardware.unreachable-memory` — a `consistency-violation`, because every identity in the rule resolves and nothing is dangling. What is wrong is the DESIGN: the integrator has not declared that `CORE1` may use `RAM0`. Since contract `9.0.0` a task reaches its core through its partition, so the rule reads the core the task's partition is on.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model with a second core, `CORE1`, seeded beside `CORE0`, and an unrated partition `PARTITION1` on it. `RAM0` is accessible from `CORE0` alone; `Task_10ms` runs in `PARTITION0`, so on `CORE0`, and runs a runnable of `ExampleConsumerSWC`, which budgets `RAM0`. The change set moves the task into `PARTITION1`.",
+    "existing_elements": [
+      { "layer": "tasks", "element": "Task_10ms" },
+      { "layer": "swc", "element": "ExampleConsumerSWC" },
+      { "layer": "hardware", "element": "CORE0" },
+      { "layer": "hardware", "element": "CORE1" },
+      { "layer": "hardware", "element": "PARTITION1" },
+      { "layer": "hardware", "element": "RAM0" }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": { "layer": "tasks", "element": "Task_10ms", "path": [{ "field": "partition" }] }
+        }
+      ],
+      "notes": "The scope covers the address exactly, so the refusal is the model rule and not the authorization boundary. Note which way the safety guard does NOT point here: moving a task is not a safety act, and the edit that WOULD be one is the other repair — admitting `CORE1` to `RAM0.accessible`, which `examples/update-memory-accessible-and-threshold.json` carries as a `widen_access`."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Move Task_10ms into the partition on the second core.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": { "layer": "tasks", "element": "Task_10ms", "path": [{ "field": "partition" }] },
+        "value": "PARTITION1"
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      { "layer": "tasks", "element": "Task_10ms", "path": [{ "field": "partition" }] },
+      { "layer": "hardware", "element": "PARTITION1", "path": [{ "field": "core" }] },
+      { "layer": "hardware", "element": "RAM0", "path": [{ "field": "accessible" }] }
+    ],
+    "notes": "Three addresses, and they are the three legal repairs: move the task back into a partition whose core the memory admits, move its partition to such a core, or admit the core to the memory. The rule does not choose between them, exactly as `consistency-violation-second-processor.json` does not choose which processor to delete. The last address is the `accessible` FIELD and not a member of it — the three sibling `accessible` rules address a member because the member is there and is wrong, whereas here the repair adds a member that does not exist yet and has no address. What this refusal does NOT reach is the linker script: `hardware.unreachable-memory` reads whether the integrator DECLARED the memory reachable from that core, and nothing in the model expresses where a symbol is actually linked."
+  }
+}

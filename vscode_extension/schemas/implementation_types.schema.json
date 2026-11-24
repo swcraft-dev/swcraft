@@ -1,0 +1,300 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://swcraft.dev/schemas/implementation_types.schema.json",
+  "title": "Implementation Types",
+  "$comment": "Implementation data types, one file each under `data_types/implementation/`: how the platform stores the data a model exchanges. Six element kinds discriminated by `kind` (`value_type`, `reference_type`, `external_type`, `implementation_record`, `implementation_array`, `pointer`), plus one nested member kind (`implementation_element`). A `value_type` is the implementation type that rests on a base type, an element of the `base_types` layer, a `reference_type` rests on another implementation type, and `implementation_record`, `implementation_array` and `pointer` are the implementation structure, array and pointer; a mapping set pairs each application type, an element of the `application_types` layer, with the implementation type that stores it. An `external_type` is a stub for an implementation type declared outside the project. An implementation type and an application type may carry one name. The directory is mandatory and may be empty.",
+  "oneOf": [
+    {
+      "description": "An implementation data type of category `VALUE`, emitted as an `IMPLEMENTATION-DATA-TYPE` whose `BASE-TYPE-REF` points at its `base`, which must name a declared base type. It is what a data element or an argument names as its type, and what a mapping set pairs with the application type it stores; a record field and an array element name the application view instead. A declared `value_min` or `value_max` is written as the type's own `{name}_Range` `DATA-CONSTR`, one rule of `INTERNAL-CONSTRS` with each declared bound as a `CLOSED` limit, referenced by a `DATA-CONSTR-REF`; `unit` reaches no ARXML element.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The type's identity; the file is named from it (`data_types/implementation/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the implementation types, must not be blank, and immutable; an application type may carry the same name.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The discriminator that selects this data type kind; always `value_type`.",
+          "type": "string",
+          "const": "value_type"
+        },
+        "base": {
+          "description": "Must name a declared base type, an element of the `base_types` layer. A base type is resolved in that layer alone, so it may carry the value type's own name.",
+          "type": "string"
+        },
+        "unit": {
+          "description": "The physical unit of the value, as free text (for example `km/h`). Documentation only; it reaches no ARXML element: Table 5.18 of the software component template gives an implementation data type's `unit` no place in any category, and `[constr_1009]` makes the table binding.",
+          "type": "string",
+          "default": ""
+        },
+        "value_min": {
+          "description": "The lower bound of the value; omitted or `null` when there is none. Must be <= `value_max` when both are given; neither accepts NaN or ±Infinity.",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "value_max": {
+          "description": "The upper bound of the value; omitted or `null` when there is none. Must be >= `value_min` when both are given; neither accepts NaN or ±Infinity.",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "compu_method_ref": {
+          "description": "The name of a declared `texttable` compu method, an element of the `compu_methods` layer, whose entries name the type's values: the one way an implementation type states literals. Absent states none. Must not be blank.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "package": {
+          "description": "The one sub-package of `/DataTypes/Implementation`, its layer's package, this value type is emitted in, a single SHORT-NAME segment: the value type and every reference to it take `/DataTypes/Implementation/{package}/`. Absent means `/DataTypes/Implementation` itself. SWCraft's importers record it for an element whose source path is exactly `/DataTypes/Implementation/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/DataTypes/Implementation` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "base"
+      ]
+    },
+    {
+      "description": "An implementation data type of category `TYPE_REFERENCE`, emitted as an `IMPLEMENTATION-DATA-TYPE` whose `IMPLEMENTATION-DATA-TYPE-REF` points at its `base`, which must name a declared `value_type`, another `reference_type`, an `implementation_record`, an `implementation_array`, a `pointer` or an `external_type` stub. It carries no unit and no range: those belong to the `value_type` at the bottom of the chain, and an `init` value under a reference type is judged against the type its chain ends at. Like a value type it is what a data element or an argument names, and what a mapping set pairs with the application type it stores.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The type's identity; the file is named from it (`data_types/implementation/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the implementation types, must not be blank, and immutable; an application type may carry the same name.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The discriminator that selects this data type kind; always `reference_type`.",
+          "type": "string",
+          "const": "reference_type"
+        },
+        "base": {
+          "description": "Must name a declared value type, reference type, implementation record, implementation array, pointer or external data type stub; may not name the reference type itself, and may not lead back to it through a chain of other types.",
+          "type": "string"
+        },
+        "compu_method_ref": {
+          "description": "The name of a declared `texttable` compu method, an element of the `compu_methods` layer, whose entries name the type's values: the one way an implementation type states literals. Absent states none. Must not be blank.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "package": {
+          "description": "The one sub-package of `/DataTypes/Implementation`, its layer's package, this reference type is emitted in, a single SHORT-NAME segment: the reference type and every reference to it take `/DataTypes/Implementation/{package}/`. Absent means `/DataTypes/Implementation` itself. SWCraft's importers record it for an element whose source path is exactly `/DataTypes/Implementation/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/DataTypes/Implementation` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "base"
+      ]
+    },
+    {
+      "description": "A stub for an implementation data type declared outside the project: an ARXML export referenced it and declared it nowhere. It carries that reference, `external_ref` and `external_dest`, verbatim and nothing of the type's content. A data element's or an argument's `implementation_type`, a reference type's `base`, an implementation record's element, an implementation array's element and a pointer's `target` may name it, and each is emitted with that reference; a record field, an array element and a mapping set may not. No type is generated for it. Discriminated by `kind: external_type`.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The type's identity; the file is named from it (`data_types/implementation/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the implementation types, must not be blank, and immutable; an application type may carry the same name.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The discriminator that selects this data type kind; always `external_type`.",
+          "type": "string",
+          "const": "external_type"
+        },
+        "external_ref": {
+          "description": "The AUTOSAR path the source's type reference carried, verbatim: the type's full path in the file that declares it. Written back unchanged into every reference to the stub. `check-model` reports a blank or malformed one.",
+          "type": "string",
+          "default": ""
+        },
+        "external_dest": {
+          "description": "The `DEST` the source's type reference carried, verbatim. `IMPLEMENTATION-DATA-TYPE` is the one value admitted, and `check-model` reports any other.",
+          "type": "string",
+          "default": ""
+        },
+        "description": {
+          "description": "Free text about the stub. An external stub emits no element, so it reaches no generated artifact.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "required": [
+        "name",
+        "kind"
+      ]
+    },
+    {
+      "description": "An implementation data type of category `STRUCTURE`, emitted as an `IMPLEMENTATION-DATA-TYPE` whose `SUB-ELEMENTS` are its `elements` in order, each of category `TYPE_REFERENCE` naming the implementation type it carries. Element names are unique inside the type, and an element's type must name a declared implementation type that does not, directly or through other types, contain this type again. A mapping set may pair it with an application record; records are not required to be mapped.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The type's identity; the file is named from it (`data_types/implementation/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the implementation types, must not be blank, and immutable; an application type may carry the same name.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The discriminator that selects this data type kind; always `implementation_record`.",
+          "type": "string",
+          "const": "implementation_record"
+        },
+        "elements": {
+          "description": "The type's named, typed elements in declaration order, addressed by `name`. Must not be empty.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/implementation_element"
+          }
+        },
+        "description": {
+          "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "package": {
+          "description": "The one sub-package of `/DataTypes/Implementation`, its layer's package, this implementation record is emitted in, a single SHORT-NAME segment: the implementation record and every reference to it take `/DataTypes/Implementation/{package}/`. Absent means `/DataTypes/Implementation` itself. SWCraft's importers record it for an element whose source path is exactly `/DataTypes/Implementation/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/DataTypes/Implementation` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "elements"
+      ]
+    },
+    {
+      "description": "An implementation data type of category `ARRAY` with fixed-size semantics: `length` elements of one declared `element_type`, emitted as an `IMPLEMENTATION-DATA-TYPE` with one sub-element named `element_name`. The element type must name a declared implementation type and must not close a cycle back to this array. A mapping set may pair it with an application array; arrays are not required to be mapped. Variable-size arrays are not modelled.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The type's identity; the file is named from it (`data_types/implementation/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the implementation types, must not be blank, and immutable; an application type may carry the same name.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The discriminator that selects this data type kind; always `implementation_array`.",
+          "type": "string",
+          "const": "implementation_array"
+        },
+        "element_type": {
+          "description": "The name of the declared type of every element: a value type, a reference type, an implementation record, an implementation array, a pointer or an external data type stub, and never a base type or an application type, enumeration, record or array. It may not be this array itself, nor a type that contains this array.",
+          "type": "string"
+        },
+        "length": {
+          "description": "The number of elements in the array, emitted as the sub-element's `ARRAY-SIZE` with `FIXED-SIZE` semantics. Must be > 0.",
+          "type": "integer"
+        },
+        "element_name": {
+          "description": "The `SHORT-NAME` of the array's one sub-element, kept as the source declared it rather than invented. Must not be blank.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "package": {
+          "description": "The one sub-package of `/DataTypes/Implementation`, its layer's package, this implementation array is emitted in, a single SHORT-NAME segment: the implementation array and every reference to it take `/DataTypes/Implementation/{package}/`. Absent means `/DataTypes/Implementation` itself. SWCraft's importers record it for an element whose source path is exactly `/DataTypes/Implementation/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/DataTypes/Implementation` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "element_type",
+        "length",
+        "element_name"
+      ]
+    },
+    {
+      "description": "An implementation data type of category `DATA_REFERENCE`: a pointer to the declared implementation type its `target` names, emitted with `SW-POINTER-TARGET-PROPS` of target category `TYPE_REFERENCE`. A pointer to a pointer names another `pointer` as its target; a pointer graph that leads back to itself is refused. A pointer is never mapped: no mapping set may pair an application type with it, directly, through a reference type or inside a mapped composite. A connector between two application components may not carry a data element or an argument typed by one.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The type's identity; the file is named from it (`data_types/implementation/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the implementation types, must not be blank, and immutable; an application type may carry the same name.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The discriminator that selects this data type kind; always `pointer`.",
+          "type": "string",
+          "const": "pointer"
+        },
+        "target": {
+          "description": "The name of the declared type the pointer points to: a value type, a reference type, an implementation record, an implementation array, a pointer or an external data type stub, and never a base type or an application type, enumeration, record or array. It may not name the pointer itself, and may not lead back to it through other types.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "package": {
+          "description": "The one sub-package of `/DataTypes/Implementation`, its layer's package, this pointer type is emitted in, a single SHORT-NAME segment: the pointer type and every reference to it take `/DataTypes/Implementation/{package}/`. Absent means `/DataTypes/Implementation` itself. SWCraft's importers record it for an element whose source path is exactly `/DataTypes/Implementation/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/DataTypes/Implementation` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "target"
+      ]
+    }
+  ],
+  "definitions": {
+    "implementation_element": {
+      "description": "A member of an `implementation_record` type's `elements` collection, emitted as one sub-element of category `TYPE_REFERENCE`; like `record_field` it has no file and no layer-level address.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The element's identity inside its implementation record, emitted as the sub-element's `SHORT-NAME`; unique among the record's elements and immutable.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The name of the declared type the element carries: a value type, a reference type, an implementation record, an implementation array, a pointer or an external data type stub, and never a base type or an application type, enumeration, record or array. It may not close a cycle back to the record.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text about the implementation element. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ]
+    }
+  }
+}

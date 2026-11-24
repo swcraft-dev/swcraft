@@ -1,0 +1,59 @@
+{
+  "name": "schema-violation-join-without-index-form",
+  "description": "A read carrying `join` that does not state `form: \"index\"`. A join answers IDENTITY ROWS, which is the `index` form, and the request must say so explicitly: an implicit `index` would contradict the published default table (`readsCapability.default_form`), where `index` is never a default. The envelope refuses it (pass A, and `protocol.schema.json`'s `if`/`then`), before the model is consulted; `summary` and `full` are refused the same way.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. The request is right in every other respect — a layer address, a declared member path and a well-formed join entry — so the refusal is the missing form alone.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current",
+    "notes": "A read takes no scope and writes no audit record, refused or not."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "members": "runnables.writes",
+    "join": [
+      {
+        "with": {
+          "address": {
+            "layer": "connectors"
+          },
+          "derived": [
+            "connection_ends"
+          ]
+        },
+        "on": [
+          {
+            "left": "member.port",
+            "right": "derived.connection_ends.provider.port"
+          }
+        ],
+        "as": "connection"
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "protocol-schema",
+    "notes": "`derived` without `form: \"index\"` is refused by the same rule (`$defs/rowForm`). Stating `form: \"index\"` makes this request answerable."
+  }
+}

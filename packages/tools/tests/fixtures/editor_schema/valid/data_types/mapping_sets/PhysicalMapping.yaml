@@ -1,0 +1,5 @@
+name: PhysicalMapping
+maps:
+- application: VehicleSpeed_Kph
+  implementation: Speed_T
+description: Hand-built mapping set fixture — the corpus declares no set

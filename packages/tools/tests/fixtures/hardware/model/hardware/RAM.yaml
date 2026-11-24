@@ -1,0 +1,12 @@
+name: RAM
+kind: memory
+type: RAM
+size: 4096
+accessible:
+- CORE0
+- CORE1
+- CORE2
+- CORE3
+threshold: 0.8
+enforcement: strict
+description: "Passing memory."

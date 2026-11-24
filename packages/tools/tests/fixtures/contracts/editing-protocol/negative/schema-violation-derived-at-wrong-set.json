@@ -1,0 +1,54 @@
+{
+  "name": "schema-violation-derived-at-wrong-set",
+  "description": "A computed value asked for at a set it does not apply at: `connection_ends` is published at the `connectors` layer (`reads.derived`'s `at`), and this read names it at the `swc` layer. The name is in the vocabulary and the read is well formed, so the refusal is `schema-violation` — the combination has no answer — and not `unknown-field`, which is a name outside the vocabulary. It is never answered with a blank value.",
+  "kind": "negative",
+  "context": {
+    "summary": "The seed of `examples/read-swc-members-path-runnable-writes.json`, whose `swc` layer holds two components; the refusal does not depend on them, because a computed value's `at` is checked against the request before a row is computed.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      }
+    ],
+    "baseline_state": "current",
+    "notes": "A read takes no scope and writes no audit record, refused or not."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "form": "index",
+    "derived": [
+      "connection_ends"
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc"
+      }
+    ],
+    "notes": "The address echoed back is the one the client sent: `derived` is a request key, not a path step. The message names the value, where it is computed and where this read reads, and is not contract. `base_type` asked of the `swc` layer without `members` is refused the same way: it is computed at the runnables' accesses (`runnables.reads`, `runnables.writes`), not at the components."
+  }
+}

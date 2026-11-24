@@ -1,0 +1,175 @@
+{
+  "id": "codex-guard-model-writes",
+  "function": "`swcraft guard`",
+  "tier": "generated-small",
+  "specimen": "example-minimal",
+  "class": "refusal",
+  "project": "fresh",
+  "thresholds": {},
+  "steps": [
+    {
+      "id": "patch-into-model",
+      "cli": [
+        "guard",
+        "--host",
+        "codex"
+      ],
+      "stdin": {
+        "hook_event_name": "PreToolUse",
+        "cwd": "{project}",
+        "tool_name": "apply_patch",
+        "tool_input": {
+          "command": "*** Begin Patch\n*** Update File: model/swc/Probe.yaml\n@@\n-description: a\n+description: b\n*** End Patch\n"
+        }
+      }
+    },
+    {
+      "id": "shell-into-model",
+      "cli": [
+        "guard",
+        "--host",
+        "codex"
+      ],
+      "stdin": {
+        "hook_event_name": "PreToolUse",
+        "cwd": "{project}",
+        "tool_name": "Bash",
+        "tool_input": {
+          "command": "sed -i s/a/b/ model/swc/Probe.yaml"
+        }
+      }
+    },
+    {
+      "id": "patch-outside",
+      "cli": [
+        "guard",
+        "--host",
+        "codex"
+      ],
+      "stdin": {
+        "hook_event_name": "PreToolUse",
+        "cwd": "{project}",
+        "tool_name": "apply_patch",
+        "tool_input": {
+          "command": "*** Begin Patch\n*** Add File: notes/readme.md\n+Notes beside the model.\n*** End Patch\n"
+        }
+      }
+    },
+    {
+      "id": "shell-outside",
+      "cli": [
+        "guard",
+        "--host",
+        "codex"
+      ],
+      "stdin": {
+        "hook_event_name": "PreToolUse",
+        "cwd": "{project}",
+        "tool_name": "Bash",
+        "tool_input": {
+          "command": "swcraft check-model --project swcraft.yaml"
+        }
+      }
+    },
+    {
+      "id": "build-the-gate",
+      "cli": [
+        "guard",
+        "--host",
+        "codex"
+      ],
+      "stdin": {
+        "hook_event_name": "PreToolUse",
+        "cwd": "{project}",
+        "tool_name": "Bash",
+        "tool_input": {
+          "command": "swcraft validate --project swcraft.yaml"
+        }
+      }
+    }
+  ],
+  "expectations": [
+    {
+      "step": "patch-into-model",
+      "at": "hookSpecificOutput.permissionDecision",
+      "present": true,
+      "because": "a patch that updates a file inside the model directory is denied: the model is changed through the SWCraft tools, whose changes the panel reviews"
+    },
+    {
+      "step": "patch-into-model",
+      "at": "hookSpecificOutput.permissionDecisionReason",
+      "present": true
+    },
+    {
+      "step": "patch-into-model",
+      "at": "permissionDecision",
+      "absent": true,
+      "because": "Codex's deny carries its decision only inside hookSpecificOutput: a top-level key is output Codex does not support, a failed hook after which it runs the tool"
+    },
+    {
+      "step": "patch-into-model",
+      "at": "permissionDecisionReason",
+      "absent": true
+    },
+    {
+      "step": "shell-into-model",
+      "at": "hookSpecificOutput.permissionDecision",
+      "present": true,
+      "because": "a shell command that names a path inside the model directory is denied"
+    },
+    {
+      "step": "shell-into-model",
+      "at": "hookSpecificOutput.permissionDecisionReason",
+      "present": true
+    },
+    {
+      "step": "shell-into-model",
+      "at": "permissionDecision",
+      "absent": true
+    },
+    {
+      "step": "shell-into-model",
+      "at": "permissionDecisionReason",
+      "absent": true
+    },
+    {
+      "step": "patch-outside",
+      "at": "hookSpecificOutput",
+      "absent": true,
+      "because": "a patch outside the model directory is allowed: the answer decides nothing"
+    },
+    {
+      "step": "shell-outside",
+      "at": "hookSpecificOutput",
+      "absent": true,
+      "because": "a shell command naming no path in the model directory is allowed: swcraft check-model reads the model itself"
+    },
+    {
+      "step": "build-the-gate",
+      "at": "hookSpecificOutput",
+      "absent": true,
+      "because": "the gate naming the guarded manifest is allowed while every output that manifest names keeps off swcraft.yaml, .codex and the model: the sole authoritative gate must be runnable by the agent"
+    },
+    {
+      "step": "patch-into-model",
+      "exit_code": 0,
+      "because": "the guard decides on stdout and exits 0 whatever it decides: Codex reads an exit 2 as a block, with stderr as the reason"
+    },
+    {
+      "step": "shell-into-model",
+      "exit_code": 0
+    },
+    {
+      "step": "patch-outside",
+      "exit_code": 0
+    },
+    {
+      "step": "shell-outside",
+      "exit_code": 0
+    },
+    {
+      "step": "build-the-gate",
+      "exit_code": 0
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+name: diag_link
+from:
+  swc: DiagServer
+  port: pDiag
+to:
+  composition: Chassis
+  port: rDiag

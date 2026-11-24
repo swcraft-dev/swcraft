@@ -1,0 +1,6 @@
+id: REQ_EXAMPLE_001
+title: Example requirement for ExampleSWC
+description: The system shall provide example functionality via ExampleSWC.
+req_type: req
+version: 1
+source: architecture

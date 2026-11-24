@@ -1,0 +1,7 @@
+name: NvStorageLink
+from:
+  swc: NvStorage
+  port: pNvStorage
+to:
+  swc: BrakeController
+  port: rNvStorage

@@ -1,0 +1,15 @@
+{
+  "current_version": "SRS-1",
+  "versions": {
+    "SRS-1": {
+      "needs": {
+        "hardware:Core0": {
+          "id": "hardware:Core0",
+          "title": "Title of hardware:Core0",
+          "content": "The software shall do what hardware:Core0 says.",
+          "type": "req"
+        }
+      }
+    }
+  }
+}

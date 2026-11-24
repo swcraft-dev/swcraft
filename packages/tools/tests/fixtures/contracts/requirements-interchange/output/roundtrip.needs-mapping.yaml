@@ -1,0 +1,6 @@
+# roundtrip.needs-mapping.yaml - SWCraft's own needs.json read back through the import's reader.
+types:
+  arch_req: req
+  arch_spec: spec
+  arch_element: ignore
+ignore: [satisfies, satisfies_unconfirmed, derived_from_unconfirmed, swcraft_path]

@@ -1,0 +1,6 @@
+name: Task_negative
+period: -0.01
+priority: 1
+partition: PARTITION0
+wcet: 10us
+description: A negative period is a number to the schema and a refusal to the loader

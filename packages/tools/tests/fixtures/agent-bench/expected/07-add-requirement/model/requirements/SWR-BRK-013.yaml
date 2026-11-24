@@ -1,0 +1,6 @@
+id: SWR-BRK-013
+title: Derated brake request
+description: The brake controller shall limit the brake request while the permitted brake action is DERATED.
+req_type: req
+version: 1
+source: architecture

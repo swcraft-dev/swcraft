@@ -1,0 +1,6 @@
+name: Root
+title: Root composition
+root: true
+members:
+- name: BrakeCtrl
+  type: BrakeCtrl

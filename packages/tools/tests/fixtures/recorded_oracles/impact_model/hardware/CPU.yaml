@@ -1,0 +1,5 @@
+name: CPU
+kind: processor
+description: The one processor; deleting it is not a safety act, and `hardware.no-processor` is what refuses it.
+satisfies:
+- REQ_SPEED_001@1

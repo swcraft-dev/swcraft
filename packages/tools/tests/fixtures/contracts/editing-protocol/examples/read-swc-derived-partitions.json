@@ -1,0 +1,99 @@
+{
+  "name": "read-swc-derived-partitions",
+  "description": "A computed value on request: `derived: [\"partitions\"]` at the `swc` layer adds to each component the partitions its runnables run in — one value per declared partition whose tasks run a runnable of the component, as `{\"partition\": ..., \"core\": ...}`, in partition-name order, `core` being the partition's core where it resolves to a declared core and `null` otherwise. The value is the validator's own reading of what a partition runs, the one its partition rules read, and never a second formula; a partition name declared twice resolves to its first declaration. Set-valued (`rows: \"one per value\"`): a component in two partitions is two rows, and a component no partition runs has no row. It reads component types, so two instances of one type are not told apart.",
+  "kind": "example",
+  "context": {
+    "summary": "The base model with a second core, `CORE1`, carrying `PARTITION1`, and a task in `PARTITION1` running `ExampleSWC`; the base's task runs `ExampleConsumerSWC` in `PARTITION0` on `CORE0`. A third component, `UnplacedSWC`, is run by no task. So two components answer one partition each, on their cores, and the third answers no row.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "UnplacedSWC"
+      },
+      {
+        "layer": "hardware",
+        "element": "CORE1"
+      },
+      {
+        "layer": "hardware",
+        "element": "PARTITION1"
+      },
+      {
+        "layer": "tasks",
+        "element": "Task_10ms_P1"
+      }
+    ],
+    "baseline_state": "current",
+    "notes": "A read takes no scope and writes no audit record."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "form": "index",
+    "derived": [
+      "partitions"
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "swc"
+      },
+      "form": "index",
+      "derived": [
+        "partitions"
+      ],
+      "value": {
+        "count": 2,
+        "identities": [
+          {
+            "element": "ExampleConsumerSWC",
+            "derived": {
+              "partitions": {
+                "partition": "PARTITION0",
+                "core": "CORE0"
+              }
+            }
+          },
+          {
+            "element": "ExampleSWC",
+            "derived": {
+              "partitions": {
+                "partition": "PARTITION1",
+                "core": "CORE1"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "notes": "`UnplacedSWC` has no row: a set-valued computed value drops the row it has no value for, so \"which components does no partition run\" is the layer's `index` minus the components this read answers. `partitions` applies at the elements of the `swc` layer alone: asked at another layer or at a member path it is `schema-violation`, never a blank."
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "name": "create-partition-trusted",
+  "description": "A partition created whole already `trusted`. No address arm reads a `hardware` create; the guard compares two models and reads a partition the baseline lacks as the default class, `non_trusted`, so creating one trusted is the same grant as making an existing one trusted, and it is asked about exactly the same way.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model as it stands: `PARTITION0` is the one partition, unrated and `non_trusted`, on the unrated `CORE0`. The change set creates `PARTITION1` on `CORE0`, unrated and `trusted`. No partition declares a level, so neither trust rule fires on the staged model.",
+    "existing_elements": [
+      {
+        "layer": "hardware",
+        "element": "CORE0"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "hardware",
+            "element": "PARTITION1"
+          }
+        }
+      ],
+      "notes": "The scope covers the created element exactly. It does not authorize the safety question: the partition arrives `trusted`, which the guard decides by comparing two models, so `grant_partition_trust` is asked once for the whole change set and the status is `committed`."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:ZE1FUHgU4Xb86rkzK_zNuA",
+    "intent": "Add a trusted partition on CORE0.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "hardware",
+          "element": "PARTITION1"
+        },
+        "value": {
+          "name": "PARTITION1",
+          "kind": "partition",
+          "core": "CORE0",
+          "trust": "trusted",
+          "description": "A second partition on CORE0, trusted and unrated, running nothing yet."
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:72-cVNZs2mQm7gdZdN0RjA",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "hardware",
+            "element": "PARTITION1"
+          },
+          "after": {
+            "name": "PARTITION1",
+            "kind": "partition",
+            "core": "CORE0",
+            "asil": null,
+            "trust": "trusted",
+            "coexistence": "",
+            "description": "A second partition on CORE0, trusted and unrated, running nothing yet.",
+            "satisfies": []
+          },
+          "summary": "hardware: + PARTITION1"
+        }
+      ],
+      "audit_ref": "cs-20261010T073157Z-bac8c3"
+    },
+    "notes": "`committed` after the second question. A trusted partition beside a rated one would be judged by the two trust rules — below the highest level, or unrated beside a level above `QM` — and pass D would refuse it; here nothing is rated, so the act is legal and it is the grant itself that the human answers for."
+  }
+}

@@ -1,0 +1,9 @@
+name: Task_10ms
+period: 0.01
+priority: 5
+partition: PARTITION0
+wcet: 1200us
+description: 10 ms application task
+runnables:
+- swc: ExampleConsumerSWC
+  runnable: ExampleConsumerRun

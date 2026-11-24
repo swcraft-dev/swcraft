@@ -1,0 +1,108 @@
+{
+  "current_version": "SYS-2.1",
+  "project": "brake-architecture",
+  "versions": {
+    "SYS-2.1": {
+      "needs": {
+        "AR_001": {
+          "asil": "B",
+          "content": "BrakeCtrl shall forward a brake request to the actuator within 10 ms.",
+          "derived_from": [
+            "SYS_001",
+            "SWC-BrakeCtrl"
+          ],
+          "derived_from_unconfirmed": [
+            "SYS_002",
+            "CUST_001"
+          ],
+          "id": "AR_001",
+          "swcraft_path": "requirements/AR_001.yaml",
+          "tags": [],
+          "title": "Brake request handling",
+          "type": "arch_req"
+        },
+        "AS_001": {
+          "asil": "C",
+          "content": "The brake request is one unsigned byte, 0 to 100 percent.",
+          "derived_from_unconfirmed": [
+            "SYS_003"
+          ],
+          "id": "AS_001",
+          "swcraft_path": "requirements/AS_001.yaml",
+          "tags": [],
+          "title": "Brake request frame",
+          "type": "arch_spec"
+        },
+        "HW-BrakeEcu": {
+          "content": "The brake ECU's processor.",
+          "id": "HW-BrakeEcu",
+          "satisfies": [
+            "AS_001",
+            "SYS_REQ[12]",
+            "[[SYS_REQ_14]]"
+          ],
+          "swcraft_path": "hardware/BrakeEcu.yaml",
+          "tags": [
+            "processor"
+          ],
+          "title": "BrakeEcu",
+          "type": "arch_element"
+        },
+        "IF-IBrakeRequest": {
+          "content": "The brake request, sent every 10 ms.",
+          "id": "IF-IBrakeRequest",
+          "satisfies_unconfirmed": [
+            "SYS_003"
+          ],
+          "swcraft_path": "interfaces/IBrakeRequest.yaml",
+          "tags": [
+            "interface"
+          ],
+          "title": "IBrakeRequest",
+          "type": "arch_element"
+        },
+        "PORT-BrakeCtrl-pBrakeReq": {
+          "content": "The brake request to the actuator.",
+          "id": "PORT-BrakeCtrl-pBrakeReq",
+          "satisfies": [
+            "SYS_001",
+            "AR_001"
+          ],
+          "swcraft_path": "swc/brake#[[1]]/BrakeCtrl.yaml",
+          "tags": [
+            "port"
+          ],
+          "title": "BrakeCtrl.pBrakeReq",
+          "type": "arch_element"
+        },
+        "RUN-BrakeCtrl-BrakeRun": {
+          "content": "",
+          "id": "RUN-BrakeCtrl-BrakeRun",
+          "satisfies": [
+            "SYS_REQ[13]"
+          ],
+          "satisfies_unconfirmed": [
+            "SYS_002"
+          ],
+          "swcraft_path": "swc/brake#[[1]]/BrakeCtrl.yaml",
+          "tags": [
+            "runnable"
+          ],
+          "title": "BrakeCtrl.BrakeRun",
+          "type": "arch_element"
+        },
+        "SWC-BrakeCtrl": {
+          "content": "The brake controller.",
+          "id": "SWC-BrakeCtrl",
+          "swcraft_path": "swc/brake#[[1]]/BrakeCtrl.yaml",
+          "tags": [
+            "swc"
+          ],
+          "title": "BrakeCtrl",
+          "type": "arch_element"
+        }
+      },
+      "needs_amount": 7
+    }
+  }
+}

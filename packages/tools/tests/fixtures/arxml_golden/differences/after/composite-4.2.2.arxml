@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>DataTypes</SHORT-NAME>
+      <ELEMENTS>
+        <SW-BASE-TYPE>
+          <SHORT-NAME>float32</SHORT-NAME>
+          <CATEGORY>FIXED_LENGTH</CATEGORY>
+          <BASE-TYPE-SIZE>32</BASE-TYPE-SIZE>
+          <BASE-TYPE-ENCODING>IEEE754</BASE-TYPE-ENCODING>
+          <NATIVE-DECLARATION>float32</NATIVE-DECLARATION>
+        </SW-BASE-TYPE>
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>float32_impl</SHORT-NAME>
+          <CATEGORY>VALUE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <BASE-TYPE-REF DEST="SW-BASE-TYPE">/DataTypes/float32</BASE-TYPE-REF>
+                <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </IMPLEMENTATION-DATA-TYPE>
+        <SW-BASE-TYPE>
+          <SHORT-NAME>uint16</SHORT-NAME>
+          <CATEGORY>FIXED_LENGTH</CATEGORY>
+          <BASE-TYPE-SIZE>16</BASE-TYPE-SIZE>
+          <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+          <NATIVE-DECLARATION>uint16</NATIVE-DECLARATION>
+        </SW-BASE-TYPE>
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>uint16_impl</SHORT-NAME>
+          <CATEGORY>VALUE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <BASE-TYPE-REF DEST="SW-BASE-TYPE">/DataTypes/uint16</BASE-TYPE-REF>
+                <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </IMPLEMENTATION-DATA-TYPE>
+        <SW-BASE-TYPE>
+          <SHORT-NAME>uint8</SHORT-NAME>
+          <CATEGORY>FIXED_LENGTH</CATEGORY>
+          <BASE-TYPE-SIZE>8</BASE-TYPE-SIZE>
+          <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+          <NATIVE-DECLARATION>uint8</NATIVE-DECLARATION>
+        </SW-BASE-TYPE>
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>uint8_impl</SHORT-NAME>
+          <CATEGORY>VALUE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <BASE-TYPE-REF DEST="SW-BASE-TYPE">/DataTypes/uint8</BASE-TYPE-REF>
+                <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </IMPLEMENTATION-DATA-TYPE>
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>Speed_T</SHORT-NAME>
+          <CATEGORY>VALUE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <BASE-TYPE-REF DEST="SW-BASE-TYPE">/DataTypes/float32</BASE-TYPE-REF>
+                <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </IMPLEMENTATION-DATA-TYPE>
+        <IMPLEMENTATION-DATA-TYPE>
+          <SHORT-NAME>Status_T</SHORT-NAME>
+          <CATEGORY>VALUE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <BASE-TYPE-REF DEST="SW-BASE-TYPE">/DataTypes/uint16</BASE-TYPE-REF>
+                <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </IMPLEMENTATION-DATA-TYPE>
+        <APPLICATION-PRIMITIVE-DATA-TYPE>
+          <SHORT-NAME>float32_AppView</SHORT-NAME>
+          <CATEGORY>VALUE</CATEGORY>
+        </APPLICATION-PRIMITIVE-DATA-TYPE>
+        <APPLICATION-PRIMITIVE-DATA-TYPE>
+          <SHORT-NAME>Speed_T_AppView</SHORT-NAME>
+          <CATEGORY>VALUE</CATEGORY>
+        </APPLICATION-PRIMITIVE-DATA-TYPE>
+        <COMPU-METHOD>
+          <SHORT-NAME>Gear_T_CompuMethod</SHORT-NAME>
+          <CATEGORY>TEXTTABLE</CATEGORY>
+          <COMPU-INTERNAL-TO-PHYS>
+            <COMPU-SCALES>
+              <COMPU-SCALE>
+                <SHORT-LABEL>PARK</SHORT-LABEL>
+                <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                <COMPU-CONST>
+                  <VT>PARK</VT>
+                </COMPU-CONST>
+              </COMPU-SCALE>
+              <COMPU-SCALE>
+                <SHORT-LABEL>DRIVE</SHORT-LABEL>
+                <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                <COMPU-CONST>
+                  <VT>DRIVE</VT>
+                </COMPU-CONST>
+              </COMPU-SCALE>
+            </COMPU-SCALES>
+          </COMPU-INTERNAL-TO-PHYS>
+        </COMPU-METHOD>
+        <APPLICATION-PRIMITIVE-DATA-TYPE>
+          <SHORT-NAME>Gear_T</SHORT-NAME>
+          <CATEGORY>TEXTTABLE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <COMPU-METHOD-REF DEST="COMPU-METHOD">/DataTypes/Gear_T_CompuMethod</COMPU-METHOD-REF>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </APPLICATION-PRIMITIVE-DATA-TYPE>
+        <APPLICATION-ARRAY-DATA-TYPE>
+          <SHORT-NAME>Samples_T</SHORT-NAME>
+          <CATEGORY>ARRAY</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+          <ELEMENT>
+            <SHORT-NAME>Element</SHORT-NAME>
+            <CATEGORY>VALUE</CATEGORY>
+            <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/DataTypes/Speed_T_AppView</TYPE-TREF>
+            <ARRAY-SIZE-SEMANTICS>FIXED-SIZE</ARRAY-SIZE-SEMANTICS>
+            <MAX-NUMBER-OF-ELEMENTS>4</MAX-NUMBER-OF-ELEMENTS>
+          </ELEMENT>
+        </APPLICATION-ARRAY-DATA-TYPE>
+        <APPLICATION-RECORD-DATA-TYPE>
+          <SHORT-NAME>Pose_T</SHORT-NAME>
+          <CATEGORY>STRUCTURE</CATEGORY>
+          <ELEMENTS>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>x</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/DataTypes/float32_AppView</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+            <APPLICATION-RECORD-ELEMENT>
+              <SHORT-NAME>gear</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/DataTypes/Gear_T</TYPE-TREF>
+            </APPLICATION-RECORD-ELEMENT>
+          </ELEMENTS>
+        </APPLICATION-RECORD-DATA-TYPE>
+        <DATA-TYPE-MAPPING-SET>
+          <SHORT-NAME>DataTypeMappingSet</SHORT-NAME>
+          <DATA-TYPE-MAPS>
+            <DATA-TYPE-MAP>
+              <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/DataTypes/float32_AppView</APPLICATION-DATA-TYPE-REF>
+              <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/float32_impl</IMPLEMENTATION-DATA-TYPE-REF>
+            </DATA-TYPE-MAP>
+            <DATA-TYPE-MAP>
+              <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/DataTypes/Speed_T_AppView</APPLICATION-DATA-TYPE-REF>
+              <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/Speed_T</IMPLEMENTATION-DATA-TYPE-REF>
+            </DATA-TYPE-MAP>
+          </DATA-TYPE-MAPS>
+        </DATA-TYPE-MAPPING-SET>
+      </ELEMENTS>
+    </AR-PACKAGE>
+    <AR-PACKAGE>
+      <SHORT-NAME>PortInterfaces</SHORT-NAME>
+      <ELEMENTS>
+        <SENDER-RECEIVER-INTERFACE>
+          <SHORT-NAME>IActuatorStatus</SHORT-NAME>
+          <IS-SERVICE>false</IS-SERVICE>
+          <DATA-ELEMENTS>
+            <VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>status</SHORT-NAME>
+              <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/Status_T</TYPE-TREF>
+            </VARIABLE-DATA-PROTOTYPE>
+          </DATA-ELEMENTS>
+        </SENDER-RECEIVER-INTERFACE>
+        <CLIENT-SERVER-INTERFACE>
+          <SHORT-NAME>ICalibration</SHORT-NAME>
+          <IS-SERVICE>false</IS-SERVICE>
+          <OPERATIONS>
+            <CLIENT-SERVER-OPERATION>
+              <SHORT-NAME>SetOffset</SHORT-NAME>
+              <ARGUMENTS>
+                <ARGUMENT-DATA-PROTOTYPE>
+                  <SHORT-NAME>samples</SHORT-NAME>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                  <TYPE-TREF DEST="APPLICATION-ARRAY-DATA-TYPE">/DataTypes/Samples_T</TYPE-TREF>
+                  <DIRECTION>IN</DIRECTION>
+                  <SERVER-ARGUMENT-IMPL-POLICY>USE-ARGUMENT-TYPE</SERVER-ARGUMENT-IMPL-POLICY>
+                </ARGUMENT-DATA-PROTOTYPE>
+                <ARGUMENT-DATA-PROTOTYPE>
+                  <SHORT-NAME>raw</SHORT-NAME>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                  <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/uint8_impl</TYPE-TREF>
+                  <DIRECTION>OUT</DIRECTION>
+                  <SERVER-ARGUMENT-IMPL-POLICY>USE-ARGUMENT-TYPE</SERVER-ARGUMENT-IMPL-POLICY>
+                </ARGUMENT-DATA-PROTOTYPE>
+              </ARGUMENTS>
+            </CLIENT-SERVER-OPERATION>
+          </OPERATIONS>
+        </CLIENT-SERVER-INTERFACE>
+        <SENDER-RECEIVER-INTERFACE>
+          <SHORT-NAME>IPose</SHORT-NAME>
+          <IS-SERVICE>false</IS-SERVICE>
+          <DATA-ELEMENTS>
+            <VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>pose</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-RECORD-DATA-TYPE">/DataTypes/Pose_T</TYPE-TREF>
+            </VARIABLE-DATA-PROTOTYPE>
+          </DATA-ELEMENTS>
+        </SENDER-RECEIVER-INTERFACE>
+        <SENDER-RECEIVER-INTERFACE>
+          <SHORT-NAME>IVehicleSpeed</SHORT-NAME>
+          <IS-SERVICE>false</IS-SERVICE>
+          <DATA-ELEMENTS>
+            <VARIABLE-DATA-PROTOTYPE>
+              <SHORT-NAME>speed</SHORT-NAME>
+              <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/DataTypes/Speed_T</TYPE-TREF>
+            </VARIABLE-DATA-PROTOTYPE>
+          </DATA-ELEMENTS>
+        </SENDER-RECEIVER-INTERFACE>
+      </ELEMENTS>
+    </AR-PACKAGE>
+    <AR-PACKAGE>
+      <SHORT-NAME>ComponentTypes</SHORT-NAME>
+      <ELEMENTS>
+        <APPLICATION-SW-COMPONENT-TYPE>
+          <SHORT-NAME>ActuatorSwc</SHORT-NAME>
+          <PORTS>
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>pStatus</SHORT-NAME>
+              <PROVIDED-COM-SPECS>
+                <NONQUEUED-SENDER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/PortInterfaces/IActuatorStatus/status</DATA-ELEMENT-REF>
+                  <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                </NONQUEUED-SENDER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/PortInterfaces/IActuatorStatus</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>rSpeed</SHORT-NAME>
+              <REQUIRED-COM-SPECS>
+                <NONQUEUED-RECEIVER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/PortInterfaces/IVehicleSpeed/speed</DATA-ELEMENT-REF>
+                  <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                  <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                  <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                  <FILTER>
+                    <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                  </FILTER>
+                  <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                </NONQUEUED-RECEIVER-COM-SPEC>
+              </REQUIRED-COM-SPECS>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/PortInterfaces/IVehicleSpeed</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+          </PORTS>
+          <INTERNAL-BEHAVIORS>
+            <SWC-INTERNAL-BEHAVIOR>
+              <SHORT-NAME>ActuatorSwc_InternalBehavior</SHORT-NAME>
+              <EVENTS>
+                <TIMING-EVENT>
+                  <SHORT-NAME>TMT_ActuatorMain</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ComponentTypes/ActuatorSwc/ActuatorSwc_InternalBehavior/ActuatorMain</START-ON-EVENT-REF>
+                  <PERIOD>0.02</PERIOD>
+                </TIMING-EVENT>
+              </EVENTS>
+              <PORT-API-OPTIONS>
+                <PORT-API-OPTION>
+                  <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                  <INDIRECT-API>false</INDIRECT-API>
+                  <PORT-REF DEST="P-PORT-PROTOTYPE">/ComponentTypes/ActuatorSwc/pStatus</PORT-REF>
+                </PORT-API-OPTION>
+                <PORT-API-OPTION>
+                  <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                  <INDIRECT-API>false</INDIRECT-API>
+                  <PORT-REF DEST="R-PORT-PROTOTYPE">/ComponentTypes/ActuatorSwc/rSpeed</PORT-REF>
+                </PORT-API-OPTION>
+              </PORT-API-OPTIONS>
+              <RUNNABLES>
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>ActuatorMain</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0</MINIMUM-START-INTERVAL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>ActuatorMain</SYMBOL>
+                </RUNNABLE-ENTITY>
+              </RUNNABLES>
+              <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+            </SWC-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+        </APPLICATION-SW-COMPONENT-TYPE>
+        <SWC-IMPLEMENTATION>
+          <SHORT-NAME>ActuatorSwc_Implementation</SHORT-NAME>
+          <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/ComponentTypes/ActuatorSwc/ActuatorSwc_InternalBehavior</BEHAVIOR-REF>
+        </SWC-IMPLEMENTATION>
+        <APPLICATION-SW-COMPONENT-TYPE>
+          <SHORT-NAME>SensorSwc</SHORT-NAME>
+          <PORTS>
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>pSpeed</SHORT-NAME>
+              <PROVIDED-COM-SPECS>
+                <NONQUEUED-SENDER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/PortInterfaces/IVehicleSpeed/speed</DATA-ELEMENT-REF>
+                  <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                </NONQUEUED-SENDER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/PortInterfaces/IVehicleSpeed</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            <P-PORT-PROTOTYPE>
+              <SHORT-NAME>pPose</SHORT-NAME>
+              <PROVIDED-COM-SPECS>
+                <NONQUEUED-SENDER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/PortInterfaces/IPose/pose</DATA-ELEMENT-REF>
+                  <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                </NONQUEUED-SENDER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/PortInterfaces/IPose</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            <R-PORT-PROTOTYPE>
+              <SHORT-NAME>rCalib</SHORT-NAME>
+              <REQUIRED-COM-SPECS>
+                <CLIENT-COM-SPEC>
+                  <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/PortInterfaces/ICalibration/SetOffset</OPERATION-REF>
+                </CLIENT-COM-SPEC>
+              </REQUIRED-COM-SPECS>
+              <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/PortInterfaces/ICalibration</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+          </PORTS>
+          <INTERNAL-BEHAVIORS>
+            <SWC-INTERNAL-BEHAVIOR>
+              <SHORT-NAME>SensorSwc_InternalBehavior</SHORT-NAME>
+              <EVENTS>
+                <TIMING-EVENT>
+                  <SHORT-NAME>TMT_SensorMain</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ComponentTypes/SensorSwc/SensorSwc_InternalBehavior/SensorMain</START-ON-EVENT-REF>
+                  <PERIOD>0.01</PERIOD>
+                </TIMING-EVENT>
+                <INIT-EVENT>
+                  <SHORT-NAME>IT_SensorMain</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ComponentTypes/SensorSwc/SensorSwc_InternalBehavior/SensorMain</START-ON-EVENT-REF>
+                </INIT-EVENT>
+              </EVENTS>
+              <PORT-API-OPTIONS>
+                <PORT-API-OPTION>
+                  <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                  <INDIRECT-API>false</INDIRECT-API>
+                  <PORT-REF DEST="P-PORT-PROTOTYPE">/ComponentTypes/SensorSwc/pPose</PORT-REF>
+                </PORT-API-OPTION>
+                <PORT-API-OPTION>
+                  <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                  <INDIRECT-API>false</INDIRECT-API>
+                  <PORT-REF DEST="P-PORT-PROTOTYPE">/ComponentTypes/SensorSwc/pSpeed</PORT-REF>
+                </PORT-API-OPTION>
+                <PORT-API-OPTION>
+                  <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                  <INDIRECT-API>false</INDIRECT-API>
+                  <PORT-REF DEST="R-PORT-PROTOTYPE">/ComponentTypes/SensorSwc/rCalib</PORT-REF>
+                </PORT-API-OPTION>
+              </PORT-API-OPTIONS>
+              <RUNNABLES>
+                <RUNNABLE-ENTITY>
+                  <SHORT-NAME>SensorMain</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.005</MINIMUM-START-INTERVAL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>SensorMain</SYMBOL>
+                </RUNNABLE-ENTITY>
+              </RUNNABLES>
+              <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+            </SWC-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+        </APPLICATION-SW-COMPONENT-TYPE>
+        <SWC-IMPLEMENTATION>
+          <SHORT-NAME>SensorSwc_Implementation</SHORT-NAME>
+          <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/ComponentTypes/SensorSwc/SensorSwc_InternalBehavior</BEHAVIOR-REF>
+        </SWC-IMPLEMENTATION>
+        <COMPOSITION-SW-COMPONENT-TYPE>
+          <SHORT-NAME>Root</SHORT-NAME>
+          <PORTS>
+          </PORTS>
+          <COMPONENTS>
+            <SW-COMPONENT-PROTOTYPE>
+              <SHORT-NAME>SensorSwc</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/ComponentTypes/SensorSwc</TYPE-TREF>
+            </SW-COMPONENT-PROTOTYPE>
+            <SW-COMPONENT-PROTOTYPE>
+              <SHORT-NAME>ActuatorSwc</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/ComponentTypes/ActuatorSwc</TYPE-TREF>
+            </SW-COMPONENT-PROTOTYPE>
+          </COMPONENTS>
+          <CONNECTORS>
+            <ASSEMBLY-SW-CONNECTOR>
+              <SHORT-NAME>speedLink</SHORT-NAME>
+              <PROVIDER-IREF>
+                <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/ComponentTypes/Root/SensorSwc</CONTEXT-COMPONENT-REF>
+                <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/ComponentTypes/SensorSwc/pSpeed</TARGET-P-PORT-REF>
+              </PROVIDER-IREF>
+              <REQUESTER-IREF>
+                <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/ComponentTypes/Root/ActuatorSwc</CONTEXT-COMPONENT-REF>
+                <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ComponentTypes/ActuatorSwc/rSpeed</TARGET-R-PORT-REF>
+              </REQUESTER-IREF>
+            </ASSEMBLY-SW-CONNECTOR>
+          </CONNECTORS>
+        </COMPOSITION-SW-COMPONENT-TYPE>
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

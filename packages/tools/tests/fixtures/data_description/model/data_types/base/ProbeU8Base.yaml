@@ -1,0 +1,5 @@
+name: ProbeU8Base
+kind: base_type
+size: 8
+encoding: NONE
+native_declaration: uint8

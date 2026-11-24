@@ -1,0 +1,10 @@
+name: Display
+type: application
+description: The require side of the sender-receiver assembly connector.
+ports:
+  - name: rStatus
+    direction: require
+    interface: IStatusBasic
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_COMPATIBILITY_001@1

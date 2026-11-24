@@ -1,0 +1,44 @@
+{
+  "name": "broken-reference-task-on-undeclared-partition",
+  "description": "A task repointed at a partition name the model does not declare. It is the vector for what a task's placement IS since contract `9.0.0`: `Task.partition`, a declared reference into `hardware/` by identity, resolved by the reference pass like a port's `interface` or a data element's `implementation_type` — the task's core is its partition's. It takes the place of `Task.core`. The refusal is therefore `broken-reference` and not `consistency-violation` — the client is told a reference does not resolve, which is a repair it can make at either end.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, whose `hardware/` layer declares `CPU`, `CORE0`, `PARTITION0` (on `CORE0`) and `RAM0` and nothing else. `Task_10ms` runs in `PARTITION0`; the change set moves it to `PARTITION1`, which no hardware element declares.",
+    "existing_elements": [
+      { "layer": "tasks", "element": "Task_10ms" },
+      { "layer": "hardware", "element": "PARTITION0" }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": { "layer": "tasks", "element": "Task_10ms", "path": [{ "field": "partition" }] }
+        }
+      ],
+      "notes": "The scope covers the address, so the refusal is the reference rule and not the authorization boundary."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Move Task_10ms to the second partition.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": { "layer": "tasks", "element": "Task_10ms", "path": [{ "field": "partition" }] },
+        "value": "PARTITION1"
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "broken-reference",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      { "layer": "tasks", "element": "Task_10ms", "path": [{ "field": "partition" }] },
+      { "layer": "hardware" }
+    ],
+    "notes": "Two addresses, and the pair is the rule: the referrer — the task's `partition` field, the value a client can change — and the layer the target would have to be declared in, which is where the other repair goes. Declaring `PARTITION1` in the same change set makes the exchange acceptable, exactly as `broken-reference-remove-referenced-interface.json` is repaired by clearing its referrers. What this refusal does NOT cover is the KIND of the element the name resolves to: `partition: \"CORE0\"` resolves — a `reference` names a layer, and `hardware` holds its four kinds in one identity namespace — and is refused one pass later by `check-model`'s `hardware.partition-not-a-partition` as a `consistency-violation`. The reference vocabulary has no room for a kind, and none is invented for it. The partition's own reference, its `core`, is refused the same way when it dangles: `hardware.partition-undeclared-core`, a `broken-reference` in the group a memory's `accessible` entry shares, because one repair — declaring the core — fixes both."
+  }
+}

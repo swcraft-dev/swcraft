@@ -1,0 +1,24 @@
+{
+  "id": "13-unconnected-ports",
+  "task": 13,
+  "group": "search-and-statistics",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which ports are unconnected?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "mentions_all": [
+        "rEcuMode",
+        "rOdometer"
+      ]
+    }
+  },
+  "reference": {
+    "ports": [
+      "DiagnosticManager.rEcuMode",
+      "InstrumentCluster.rOdometer"
+    ],
+    "computed_by": "every component port that is the endpoint of no connector and no delegation, and every composition port missing its delegation inside or its connector or delegation outside (none of the eight is); no query derivation answers it, so the test recomputes it from the loaded model"
+  }
+}

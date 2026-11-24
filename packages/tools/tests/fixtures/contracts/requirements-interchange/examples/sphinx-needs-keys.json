@@ -1,0 +1,38 @@
+{
+  "current_version": "SRS-1",
+  "project": "Brake control",
+  "versions": {
+    "SRS-1": {
+      "creator": {
+        "program": "sphinx_needs",
+        "version": "9.2.0"
+      },
+      "needs": {
+        "SWR-1": {
+          "id": "SWR-1",
+          "title": "Title of SWR-1",
+          "content": "The software **shall** do what :need:`SG-1` says.",
+          "type": "req",
+          "type_name": "Requirement",
+          "status": null,
+          "asil": "",
+          "document": "",
+          "revision": "",
+          "docname": "index",
+          "doctype": ".rst",
+          "lineno": 12,
+          "tags": [],
+          "parts": {},
+          "parent_needs": [],
+          "parent_needs_back": [],
+          "links_back": [],
+          "derived_from_back": [],
+          "duration": null,
+          "completion": null,
+          "url": null
+        }
+      },
+      "needs_amount": 1
+    }
+  }
+}

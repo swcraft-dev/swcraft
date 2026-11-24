@@ -1,0 +1,6 @@
+name: ExampleSWC
+type: application
+description: The same component name as swc/example/ExampleSWC.yaml, in another group
+memory:
+  RAM: 16
+handle_termination_and_restart: no_support

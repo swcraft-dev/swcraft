@@ -1,0 +1,282 @@
+{
+  "name": "discover-layer-base-types-full",
+  "description": "The `base_types` layer's descriptor at `form: \"full\"` — the one form that carries the descriptor PROSE, asked for one layer at a time because the project-wide `full` discovery is REFUSED with `over-budget` on every project (`negative/discover-project-full-over-budget.json`), and the refusal's second step is exactly this request. Together the fifteen per-layer `full` vectors replay every layer, kind and field annotation the model contract ships, verbatim, which is where the shipped-prose oracle (`packages/tools/tests/test_model_contract_conformance.py`) rides: rewording an annotation in the contract is a protocol-output change, and this is the output it changes. Of this layer: the layer contract `8.0.0` added when base types left `data_types`, stored one directory below it in `data_types/base/`, with exactly one kind, `base_type`, and therefore no discriminator — its `kind` field is an ordinary literal every file carries, still published immutable as it was while it was the discriminator: the contract's one immutability override. A value type's `base` is resolved in this layer alone.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` shape of a SWCraft project: fifteen scaffolded layers, `base_types` among them, holding the twelve platform base types in `data_types/base/`. Nothing about the response depends on which elements are in the layer: the inventory is derived from the model contract through the registry, not from the files.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "discover",
+    "layer": "base_types",
+    "form": "full"
+  },
+  "expected": {
+    "response": {
+      "response": "discover",
+      "project": {
+        "name": "swcraft-basic-example",
+        "arxml_version": "4.2.2",
+        "swcraft_version": "0.24.0"
+      },
+      "baseline": "rev1:kk7N755-pYf2txfvyVl9Kw",
+      "reads": {
+        "forms": [
+          "summary",
+          "full",
+          "index"
+        ],
+        "default_form": {
+          "layer": "summary",
+          "collection": "summary",
+          "element": "full",
+          "field": "full"
+        },
+        "budget_wire_bytes": 80000,
+        "hint_page_size": 50,
+        "discover": {
+          "forms": [
+            "summary",
+            "full",
+            "baseline"
+          ],
+          "default_form": "summary"
+        },
+        "derived": [
+          {
+            "name": "connection_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string"
+              }
+            }
+          },
+          {
+            "name": "base_type",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "runnables.reads",
+                "runnables.writes"
+              ]
+            },
+            "rows": "one",
+            "shape": {
+              "implementation": "string|null",
+              "base": "string|null"
+            }
+          },
+          {
+            "name": "effective_level",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one",
+            "shape": {
+              "level": "string",
+              "rating": "string"
+            }
+          },
+          {
+            "name": "partitions",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one per value",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "crossing_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              }
+            }
+          },
+          {
+            "name": "unconnected",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "ports"
+              ]
+            },
+            "rows": "one per value",
+            "shape": {
+              "direction": "string",
+              "interface": "string|null"
+            }
+          },
+          {
+            "name": "core",
+            "at": {
+              "layer": "tasks"
+            },
+            "rows": "one",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "realised_by",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null"
+            }
+          },
+          {
+            "name": "allocation",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one",
+            "shape": {
+              "sites": "integer",
+              "elements": "integer",
+              "allocated": "boolean|null"
+            }
+          },
+          {
+            "name": "stale_links",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null",
+              "current": "integer"
+            }
+          }
+        ],
+        "join": {
+          "row_ceiling": 50000,
+          "max_entries": 8
+        }
+      },
+      "form": "full",
+      "layers": [
+        {
+          "layer": "base_types",
+          "optional": false,
+          "present": true,
+          "identity_field": "name",
+          "description": "Base types, one file each under `data_types/base/`: how the platform stores a value — its size, its encoding and its C declaration. One kind, `base_type`, which a `value_type` names as its `base` and which no data element, argument, record field or array element names. The directory is mandatory and may be empty.",
+          "element_kinds": [
+            {
+              "kind": "base_type",
+              "description": "A base type: how the platform stores a value — its size in bits, its encoding and its C declaration — emitted as a `SW-BASE-TYPE`. A base type is never what a data prototype is typed by (AUTOSAR's `AutosarDataPrototype.type`): no data element, argument, record field or array element may name one. A base type is an element of its own layer, `base_types`, so it may share its name with a type of another layer. A `value_type` names it as its `base`, and the data prototypes name the `value_type`.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The type's identity; the file is named from it (`data_types/base/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the base types, must not be blank, and immutable."
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "Always `base_type`. The layer holds one kind and is not discriminated; the field is an ordinary literal, kept, immutable as it was, so a base type file reads as it did when base types were a kind of the data types layer.",
+                  "enum": [
+                    "base_type"
+                  ]
+                },
+                {
+                  "name": "size",
+                  "type": "integer",
+                  "required": true,
+                  "immutable": false,
+                  "unit": "bits",
+                  "description": "The size of the base type, in bits. Must be > 0."
+                },
+                {
+                  "name": "encoding",
+                  "type": "string",
+                  "required": true,
+                  "immutable": false,
+                  "description": "A required AUTOSAR BASE-TYPE-ENCODING token (NONE, 2C, IEEE754, ...); must not be blank, because a blank one is not round-trippable through the ARXML importer."
+                },
+                {
+                  "name": "native_declaration",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The C type name the generated code declares for this base type (for example `uint8_t`), emitted exactly as written as its `NATIVE-DECLARATION`. Required by check-model: SWCraft never derives one, so a base type without it still loads, but check-model reports it and ARXML generation refuses it until it is filled in."
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none."
+                },
+                {
+                  "name": "package",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The one sub-package of `/DataTypes/Base`, its layer's package, this base type is emitted in, a single SHORT-NAME segment: the base type and every reference to it take `/DataTypes/Base/{package}/`. Absent means `/DataTypes/Base` itself. SWCraft's importers record it for an element whose source path is exactly `/DataTypes/Base/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/DataTypes/Base` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "notes": "The same document the default form answers with `description` restored on the layer, on every kind and on every field that declares one, and with the three descriptor booleans spelled out where the default form omits them at `false` — `optional` on the layer, `required` and `immutable` on every field. Nothing else is restored, because nothing else is left out. `baseline` is the stand-in token every vector carries; a harness replaces it with the project's own."
+  }
+}

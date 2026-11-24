@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="688.52" height="205" viewBox="0 0 688.52 205" font-family="Helvetica, Arial, sans-serif" data-view="ibd-Root">
+<title>Root — internal block diagram</title>
+<style>g.edges use{stroke-width:10px;stroke-dasharray:none}</style>
+<rect class="background" width="100%" height="100%" fill="white"/>
+<g class="frame">
+<g class="frame" data-role="frame" data-name="Root"><title>composition Root
+Root composition
+The top of the hierarchy. Both of its members are compositions, a shape a tool export's top level can have: a connector there joins two composition prototypes and therefore names two composition TYPES.</title><rect x="22" y="22" width="644.52" height="161" rx="4" fill="#fafafa" stroke="#333333" stroke-width="1.5"/></g>
+</g>
+<g class="edges">
+<g class="edge connector" data-role="connector" data-name="root_link" data-source="p2" data-target="p3" stroke-width="1"><title>connector root_link: Sub.pSignalOut -&gt; Sink.rSignalIn
+The root's one assembly connector, between two composition-typed endpoints. It names no composition of its own, so it belongs to the root -- resolved where the model is in hand, never written into the file.</title><path id="e1" d="M 370.88 113 L 390.88 113" fill="none" stroke="#555555"/><use href="#e1" opacity="0"/></g>
+</g>
+<g class="members">
+<g class="member composition" data-role="member" data-name="Sub" data-type="Sub" data-kind="composition"><title>Sub (composition)
+The producing sub-composition.</title><rect x="172.84" y="83" width="172.04" height="60" rx="3" fill="#fff4d6" stroke="#333333" stroke-width="1"/></g>
+<g class="member composition" data-role="member" data-name="Sink" data-type="Sink" data-kind="composition"><title>Sink (composition)
+The consuming sub-composition.</title><rect x="414.88" y="83" width="161.64" height="60" rx="3" fill="#fff4d6" stroke="#333333" stroke-width="1"/></g>
+</g>
+<g class="ports">
+<g id="p1" class="port require sender-receiver" data-role="port" data-owner="Sub" data-name="rTrigger" data-interface="ITrigger"><title>Sub.rTrigger: require ITrigger (sender-receiver)
+· trigger: uint8</title><rect class="port-box" x="166.84" y="107" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="166.84" y1="113" x2="156.84" y2="113" stroke="#222222" stroke-width="1.2"/><path d="M 156.84 113 L 148.84 107 M 156.84 113 L 148.84 119" fill="none" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="148.84" y="107" width="30" height="12" opacity="0"/></g>
+<g id="p2" class="port provide sender-receiver" data-role="port" data-owner="Sub" data-name="pSignalOut" data-interface="ISignal"><title>Sub.pSignalOut: provide ISignal (sender-receiver)
+· value: uint8</title><rect class="port-box" x="338.88" y="107" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="350.88" y1="113" x2="354.88" y2="113" stroke="#222222" stroke-width="1.2"/><path d="M 354.88 107 L 364.88 107 L 370.88 113 L 364.88 119 L 354.88 119 Z" fill="white" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="338.88" y="107" width="32" height="12" opacity="0"/></g>
+<g id="p3" class="port require sender-receiver" data-role="port" data-owner="Sink" data-name="rSignalIn" data-interface="ISignal"><title>Sink.rSignalIn: require ISignal (sender-receiver)
+· value: uint8</title><rect class="port-box" x="408.88" y="107" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="408.88" y1="113" x2="398.88" y2="113" stroke="#222222" stroke-width="1.2"/><path d="M 398.88 113 L 390.88 107 M 398.88 113 L 390.88 119" fill="none" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="390.88" y="107" width="30" height="12" opacity="0"/></g>
+</g>
+<g class="labels">
+<text class="frame-label" x="29" y="38.6" font-size="12" data-kind="composition" font-weight="bold">Root — Root composition</text>
+<text class="member-label" x="248.24" y="99.6" font-size="12" data-kind="composition" font-weight="600">Sub</text>
+<text class="port-label in-member" x="181.84" y="116" font-size="10" fill="#444444" data-kind="composition" text-anchor="start">rTrigger</text>
+<text class="port-label in-member" x="335.88" y="116" font-size="10" fill="#444444" data-kind="composition" text-anchor="end">pSignalOut</text>
+<text class="member-label" x="484.78" y="99.6" font-size="12" data-kind="composition" font-weight="600">Sink</text>
+<text class="port-label in-member" x="423.88" y="116" font-size="10" fill="#444444" data-kind="composition" text-anchor="start">rSignalIn</text>
+</g>
+</svg>

@@ -1,0 +1,6 @@
+name: SpeedCompu
+kind: linear
+unit: Kmh
+factor: 0.1
+offset: 0.0
+description: Hand-built linear fixture — the corpus declares no compu method element

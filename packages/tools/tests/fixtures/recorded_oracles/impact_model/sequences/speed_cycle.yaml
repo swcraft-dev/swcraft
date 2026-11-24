@@ -1,0 +1,8 @@
+name: speed_cycle
+task: Task_10ms
+title: Speed sensing and control cycle
+steps:
+  - swc: SpeedSensor
+    runnable: SpeedSensor_Run
+  - swc: SpeedControl
+    runnable: SpeedControl_Run

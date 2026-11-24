@@ -1,0 +1,6 @@
+id: SWR-WL-100
+title: Missing input report
+description: The component shall report a missing value on P10.
+req_type: req
+version: 1
+source: architecture

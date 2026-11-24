@@ -1,0 +1,18 @@
+
+DECLARED 2 resource(s)
+FINDINGS 0 error(s), 0 informational
+
+RESOURCE CORE0 (core, strict)
+  STATUS within budget
+  UTILIZATION 12.00% of a 70.00% threshold (headroom 58.00%)
+  PHYSICAL HEADROOM 88.00% of the core
+  CONSUMERS 1 task(s), 0 without a declared budget
+    - Task_10ms: 12.00% (wcet 1200us / period 0.01s)
+
+RESOURCE RAM0 (memory, size 262144 bytes, strict)
+  STATUS within budget
+  CONSUMPTION 3584 bytes of a 209715.2 byte budget (headroom 206131.2 bytes)
+  PHYSICAL HEADROOM 258560 bytes of a 262144 byte size
+  CONSUMERS 2 SWC(s), 0 without a declared budget
+    - ExampleConsumerSWC: 1536 bytes
+    - ExampleSWC: 2048 bytes

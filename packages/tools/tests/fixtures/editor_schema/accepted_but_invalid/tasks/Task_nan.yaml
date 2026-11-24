@@ -1,0 +1,6 @@
+name: Task_nan
+period: .nan
+priority: 1
+partition: PARTITION0
+wcet: 10us
+description: YAML spells NaN as .nan; the schema's number type admits it

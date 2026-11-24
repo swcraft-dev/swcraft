@@ -1,0 +1,10 @@
+{
+  "id": "05-remove-component",
+  "task": 5,
+  "group": "model-change",
+  "kind": "change",
+  "binding": "remove_a_component",
+  "oracle": "structural",
+  "prompt": "Remove {{component}} from the model, together with everything that refers to it.",
+  "note": "Of the components that are not hubs (at most twice the median component's ports), the one with the most connectors. What refers to it: its connectors, its composition members and their delegations, and the task entries and sequence steps naming it."
+}

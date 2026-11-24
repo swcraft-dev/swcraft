@@ -1,0 +1,4 @@
+name: SpeedFramesPtr
+kind: pointer
+target: SpeedFrames
+description: reference `data_types.pointer.target` -> SpeedFrames.

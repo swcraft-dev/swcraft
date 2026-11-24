@@ -1,0 +1,12 @@
+name: IStatusFull
+kind: sender_receiver
+description: >-
+  The wider sender-receiver interface: three data elements, written in `Count`,
+  of which the narrower one asks for two.
+data_elements:
+  - name: speed
+    implementation_type: Count
+  - name: level
+    implementation_type: Count
+  - name: mode
+    implementation_type: Count

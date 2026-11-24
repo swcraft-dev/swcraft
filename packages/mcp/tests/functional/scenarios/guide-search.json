@@ -1,0 +1,76 @@
+{
+  "id": "guide-search",
+  "function": "MCP `guide`",
+  "tier": "generated-small",
+  "specimen": "scenario-impact-summary-bounded",
+  "class": "normal",
+  "guide": "installed",
+  "thresholds": {
+    "no_hit": {
+      "value": 0,
+      "because": "a search whose words the guide uses answers at least one section"
+    },
+    "hit_limit": {
+      "value": 5,
+      "because": "a search answers at most five sections (guide_search.SEARCH_HIT_LIMIT)"
+    },
+    "guide_reply_budget": {
+      "value": 8000,
+      "because": "every guide reply is at most 8 000 wire bytes, under VS Code's 8 192-byte spill to a file (guide_search.GUIDE_REPLY_BUDGET_WIRE_BYTES)"
+    }
+  },
+  "steps": [
+    {
+      "id": "words",
+      "mcp": "guide",
+      "arguments": {
+        "search": "check the model before a build"
+      }
+    },
+    {
+      "id": "rule",
+      "mcp": "guide",
+      "arguments": {
+        "search": "rule:application_types.application_type.conversion-form"
+      }
+    }
+  ],
+  "expectations": [
+    {
+      "step": "words",
+      "at": "hits",
+      "count_above": "no_hit"
+    },
+    {
+      "step": "words",
+      "at": "hits",
+      "rows_at_most": "hit_limit"
+    },
+    {
+      "step": "words",
+      "at": "hits.*.read.section",
+      "present": true,
+      "because": "every hit carries the ready request that opens it"
+    },
+    {
+      "step": "words",
+      "bytes_at_most": "guide_reply_budget"
+    },
+    {
+      "step": "rule",
+      "at": "hits.0.read.section",
+      "literal_equals": "reference/rules#checks-on-a-single-element",
+      "because": "a rule id is looked up exactly: its first hit is the section of the rules page that holds the rule's row"
+    },
+    {
+      "step": "rule",
+      "at": "hits.0.read.part",
+      "present": true,
+      "because": "the ready request names the part that holds the row, so a rule deep in a long section is read in one call"
+    },
+    {
+      "step": "rule",
+      "bytes_at_most": "guide_reply_budget"
+    }
+  ]
+}

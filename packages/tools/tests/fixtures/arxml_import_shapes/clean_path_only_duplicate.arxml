@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: a duplicate whose two declarations differ in
+  NOTHING but the path they reference — and which is therefore clean.
+
+  GearStateEnum_CompuMethod is declared identically in /Acme/Left/Methods and
+  /Acme/Right/Methods. GearStateEnum is declared in both AppTypes packages and
+  points at its OWN copy of that compu-method, so the two declarations differ
+  in the reference TEXT and in nothing else.
+
+  This is value_conflict_enum.arxml's clean twin: the same two-level shape,
+  with the two compu-methods identical instead of five scales against four.
+  One file merges both groups, the other conflicts on both — the pair is what
+  shows the verdict is decided by the referenced group and not by the shape.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Left</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Methods</SHORT-NAME>
+              <ELEMENTS>
+                <COMPU-METHOD>
+                  <SHORT-NAME>GearStateEnum_CompuMethod</SHORT-NAME>
+                  <CATEGORY>TEXTTABLE</CATEGORY>
+                  <COMPU-INTERNAL-TO-PHYS>
+                    <COMPU-SCALES>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>PARK</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>DRIVE</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                    </COMPU-SCALES>
+                  </COMPU-INTERNAL-TO-PHYS>
+                </COMPU-METHOD>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>AppTypes</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-PRIMITIVE-DATA-TYPE>
+                  <SHORT-NAME>GearStateEnum</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <COMPU-METHOD-REF DEST="COMPU-METHOD">/Acme/Left/Methods/GearStateEnum_CompuMethod</COMPU-METHOD-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </APPLICATION-PRIMITIVE-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Right</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Methods</SHORT-NAME>
+              <ELEMENTS>
+                <COMPU-METHOD>
+                  <SHORT-NAME>GearStateEnum_CompuMethod</SHORT-NAME>
+                  <CATEGORY>TEXTTABLE</CATEGORY>
+                  <COMPU-INTERNAL-TO-PHYS>
+                    <COMPU-SCALES>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>PARK</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>DRIVE</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                    </COMPU-SCALES>
+                  </COMPU-INTERNAL-TO-PHYS>
+                </COMPU-METHOD>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>AppTypes</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-PRIMITIVE-DATA-TYPE>
+                  <SHORT-NAME>GearStateEnum</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <COMPU-METHOD-REF DEST="COMPU-METHOD">/Acme/Right/Methods/GearStateEnum_CompuMethod</COMPU-METHOD-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </APPLICATION-PRIMITIVE-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

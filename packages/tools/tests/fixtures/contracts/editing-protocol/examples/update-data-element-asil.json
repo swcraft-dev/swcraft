@@ -1,0 +1,107 @@
+{
+  "name": "update-data-element-asil",
+  "description": "The level on the INFORMATION rather than on the component that carries it — the third bearer, and the one that sits on a member of an element. An interface can carry a rated element beside an unrated one, which is what decided this field belongs on the data element and not on the interface or on the type. Writing it for the first time allocates a level where none was, so the RAISE itself is not a safety act — it makes `safety.provider-below-element` refuse more. What it can do is make a `measures` map that a `require` port already carried go LIVE, because `safety.consumer-above-element` reads a rated element and not an unrated one; where that happens the guard mints a `DECLARE_MEASURE` about the port, and this vector's model is written so that it does not (the other case must not commit with the host shown nothing).",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with `REQ_EXAMPLE_001` already allocated at ASIL D, so both components DERIVE D and neither declares a level of its own. The change set rates `IExample.value` at D. Provider and consumer are both at D, so the element is neither above the one nor below the other and the staged result is clean.",
+    "existing_elements": [
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_001"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "interfaces",
+            "element": "IExample",
+            "path": [
+              {
+                "field": "data_elements"
+              },
+              {
+                "member": "value"
+              },
+              {
+                "field": "asil"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly. The verb is an `update` at the field's own address although the key is absent on disk: `asil` has no default, so the element always declares the PLACE for it and writing it the first time changes a field rather than creating a member — the same rule `examples/update-requirement-and-swc-asil.json` states one layer up. Not a safety act in this direction, on this model: allocating a level where none was makes `safety.provider-below-element` refuse more, and no `require` port in this project carries a standing `measures` map naming this element. Where one does, the rating makes that map answer a finding nobody answered in the change set and the guard mints a `DECLARE_MEASURE` about the port — the sixth direction, reached without any address arm firing. LOWERING the level, or clearing it, is a safety act on every model — `SafetyChangeKind.LOWER_ALLOCATION`, the seventh direction."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:37q42HcBvIyq2eAGhTOAzA",
+    "intent": "Rate the vehicle-speed signal at ASIL D.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "interfaces",
+          "element": "IExample",
+          "path": [
+            {
+              "field": "data_elements"
+            },
+            {
+              "member": "value"
+            },
+            {
+              "field": "asil"
+            }
+          ]
+        },
+        "value": "D"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:37q42HcBvIyq2eAGhTOAzA",
+      "delta": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "interfaces",
+            "element": "IExample",
+            "path": [
+              {
+                "field": "data_elements"
+              },
+              {
+                "member": "value"
+              },
+              {
+                "field": "asil"
+              }
+            ]
+          },
+          "before": null,
+          "after": "D",
+          "summary": "interfaces/IExample: ~ data_elements[value].asil None -> D"
+        }
+      ]
+    },
+    "notes": "One entry, one address, and the verb worth reading: an `update` at the field's own address although the key is absent on disk. `asil` has no default, so the element always declares the place for it and `before` is `null` — the same shape `update-requirement-and-swc-asil.json` has one layer up, and the reason a first-time write of a scalar is never a `create`. The status is `staged` because nothing here is a safety act ON THIS MODEL: allocating a level where none was makes `safety.provider-below-element` refuse more, and no port of this project carries a standing measure for the element. The verdict is not a property of the address — a rating that makes a standing `measures` map go live is a `DECLARE_MEASURE`, and the outcome gate mints it with no address arm firing. What the accepted result does NOT say is that the model is safe — it says the element's declared level is not below its producer's and not above its consumer's, which is a comparison of the project's own declarations."
+  }
+}

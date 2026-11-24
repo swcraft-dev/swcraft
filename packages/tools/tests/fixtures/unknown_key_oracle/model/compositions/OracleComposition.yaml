@@ -1,0 +1,15 @@
+name: OracleComposition
+title: Oracle composition
+description: One boundary port delegated to one member's port.
+ports:
+- name: pOut
+  direction: provide
+  interface: IOracleData
+members:
+- name: Member
+  type: OracleSwc
+delegations:
+- name: OracleComposition_pOut_Member
+  port: pOut
+  member: Member
+  member_port: pData

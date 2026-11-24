@@ -1,0 +1,14 @@
+name: CalibrationIf
+kind: client_server
+description: Reads the calibration block and its version.
+operations:
+- name: ReadBlock
+  arguments:
+  - name: block
+    direction: out
+    implementation_type: uint16
+- name: GetVersion
+  arguments:
+  - name: version
+    direction: out
+    implementation_type: uint16

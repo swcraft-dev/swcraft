@@ -1,0 +1,114 @@
+{
+  "id": "effective-level-paged",
+  "function": "Recipe: Components by effective level",
+  "finding": {
+    "release": "0.19.1",
+    "row": 2
+  },
+  "tier": "generated-small",
+  "specimen": "scenario-effective-level-paged",
+  "class": "boundary-at-scale",
+  "target": {
+    "level": "commonest_level"
+  },
+  "thresholds": {
+    "page_rows": {
+      "value": 20,
+      "because": "the profile's long-list rule: the number, then the first twenty; the recipes' page"
+    },
+    "two_pages": {
+      "value": 40,
+      "because": "two pages of twenty: the level must hold more than this for a replay's row bound to be a check the answer can fail"
+    },
+    "host_spill_bytes": {
+      "value": 8192,
+      "because": "VS Code spills an answer larger than 8 192 bytes to a file (measured 2026-10-24)"
+    }
+  },
+  "steps": [
+    {
+      "id": "count",
+      "recipe": "Components by effective level",
+      "request": 0,
+      "fill": {
+        "<LEVEL>": "level"
+      }
+    },
+    {
+      "id": "page",
+      "recipe": "Components by effective level",
+      "request": -1,
+      "fill": {
+        "<LEVEL>": "level"
+      }
+    },
+    {
+      "id": "next",
+      "recipe": "Components by effective level",
+      "request": -1,
+      "fill": {
+        "<LEVEL>": "level"
+      },
+      "continues": "page"
+    }
+  ],
+  "expectations": [
+    {
+      "step": "page",
+      "at": "value.identities",
+      "rows_at_most": "page_rows",
+      "because": "a listing recipe answers one page, never every row (findings after 0.19.1)"
+    },
+    {
+      "step": "page",
+      "bytes_at_most": "host_spill_bytes",
+      "because": "the page fits the host's answer before it spills to a file"
+    },
+    {
+      "step": "page",
+      "at": "page.total",
+      "count_equals": {
+        "step": "count",
+        "at": "count"
+      },
+      "because": "the page states the count the recipe's first request answered"
+    },
+    {
+      "step": "page",
+      "at": "page.total",
+      "count_above": "two_pages",
+      "because": "the precondition: more than one page follows the first, so a replay that answered every remaining row would fail its row bound"
+    },
+    {
+      "step": "page",
+      "at": "page.next",
+      "present": true,
+      "because": "the page carries the after that asks for the rest"
+    },
+    {
+      "step": "count",
+      "at": "count",
+      "count_equals": {
+        "passport": "layers.swc"
+      },
+      "because": "no component declares a level and nothing raises one, so every component is effective QM: the count is the layer's"
+    },
+    {
+      "step": "next",
+      "at": "value.identities",
+      "disjoint_from": "page",
+      "because": "replaying the first page's after (which that page must state as truncated) answers rows the first page does not list"
+    },
+    {
+      "step": "next",
+      "at": "value.identities",
+      "rows_at_most": "page_rows",
+      "because": "a continued page is a page too: replaying the cursor answers at most the next page, never every row after it"
+    },
+    {
+      "step": "next",
+      "bytes_at_most": "host_spill_bytes",
+      "because": "the continued page fits the host's answer too"
+    }
+  ]
+}

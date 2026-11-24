@@ -1,0 +1,470 @@
+{
+  "name": "find-for-requirement-existing-links-bounded",
+  "description": "A `find` for a requirement with more links than an answer lists: `existing_links` holds at most sixteen, the first in the address order, and when links were left out `existing_links_more` counts them and `existing_links_read` is the `read` request that pages every link of the requirement — an `index` read of the requirements layer with `where` on its `id`, `derived: [\"realised_by\"]` and `limit` the published `hint_page_size`, continued by `after` — sent back verbatim. The two keys are carried together, and only beside a full list of sixteen. The read starts at the first link: it is the whole set and the listed links are its preview.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with `REQ_EXAMPLE_002` added (the `find-for-requirement` vector's requirement) and satisfied at its current version 1 by twenty interfaces: `IExample` and nineteen of its shape, `ILink01` to `ILink19`, which no port uses.",
+    "existing_elements": [
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_002"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink01"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink02"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink03"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink04"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink05"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink06"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink07"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink08"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink09"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink10"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink11"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink12"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink13"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink14"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink15"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink16"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink17"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink18"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ILink19"
+      }
+    ],
+    "notes": "One place is asked for, so the ranking stays short; the subject is the existing links. Twenty links, sixteen listed and four counted. A requirement with at most sixteen links carries neither key (the `find-for-requirement` vector)."
+  },
+  "input": {
+    "operation": "find",
+    "for_requirement": "REQ_EXAMPLE_002",
+    "candidates": 1
+  },
+  "expected": {
+    "response": {
+      "response": "find",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "for_requirement": "REQ_EXAMPLE_002",
+      "neighbours": 0,
+      "places": [
+        {
+          "group": {
+            "kind": "swc",
+            "name": "ExampleConsumerSWC"
+          },
+          "score": {
+            "n": 1000000,
+            "d": 1000000
+          },
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "consumer",
+                "data",
+                "input",
+                "port",
+                "value"
+              ]
+            }
+          ],
+          "rows": [
+            {
+              "address": {
+                "layer": "swc",
+                "element": "ExampleConsumerSWC",
+                "path": [
+                  {
+                    "field": "ports"
+                  },
+                  {
+                    "member": "rIn"
+                  }
+                ]
+              },
+              "target": {
+                "kind": "port",
+                "owner": "ExampleConsumerSWC",
+                "name": "rIn"
+              },
+              "score": {
+                "n": 1000000,
+                "d": 1000000
+              },
+              "band": "medium",
+              "evidence": [
+                {
+                  "kind": "text",
+                  "terms": [
+                    "input",
+                    "port",
+                    "data",
+                    "value"
+                  ]
+                }
+              ]
+            },
+            {
+              "address": {
+                "layer": "swc",
+                "element": "ExampleConsumerSWC"
+              },
+              "target": {
+                "kind": "swc",
+                "owner": null,
+                "name": "ExampleConsumerSWC"
+              },
+              "score": {
+                "n": 446824,
+                "d": 1000000
+              },
+              "band": "weak",
+              "evidence": [
+                {
+                  "kind": "text",
+                  "terms": [
+                    "consumer",
+                    "data"
+                  ]
+                }
+              ]
+            },
+            {
+              "address": {
+                "layer": "swc",
+                "element": "ExampleConsumerSWC",
+                "path": [
+                  {
+                    "field": "runnables"
+                  },
+                  {
+                    "member": "ExampleConsumerRun"
+                  }
+                ]
+              },
+              "target": {
+                "kind": "runnable",
+                "owner": "ExampleConsumerSWC",
+                "name": "ExampleConsumerRun"
+              },
+              "score": {
+                "n": 374460,
+                "d": 1000000
+              },
+              "band": "weak",
+              "evidence": [
+                {
+                  "kind": "text",
+                  "terms": [
+                    "consumer"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "existing_links": [
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "IExample"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "IExample"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink01"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink01"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink02"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink02"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink03"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink03"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink04"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink04"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink05"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink05"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink06"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink06"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink07"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink07"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink08"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink08"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink09"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink09"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink10"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink10"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink11"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink11"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink12"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink12"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink13"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink13"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink14"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink14"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        },
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "ILink15"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "ILink15"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        }
+      ],
+      "existing_links_more": 4,
+      "existing_links_read": {
+        "operation": "read",
+        "address": {
+          "layer": "requirements"
+        },
+        "form": "index",
+        "where": [
+          {
+            "field": "id",
+            "equals": "REQ_EXAMPLE_002"
+          }
+        ],
+        "limit": 50,
+        "derived": [
+          "realised_by"
+        ]
+      }
+    }
+  }
+}

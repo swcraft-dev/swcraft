@@ -1,0 +1,6 @@
+name: bad-interface
+kind: sender_receiver
+description: A hyphen is not allowed in an AUTOSAR Identifier
+data_elements:
+  - name: value
+    implementation_type: uint8

@@ -1,0 +1,4 @@
+name: PARTITION3
+kind: partition
+core: CORE3
+description: The one partition on CORE3, without a level.

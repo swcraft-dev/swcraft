@@ -1,0 +1,45 @@
+{
+  "name": "read-application-types-layer",
+  "description": "A layer-granularity `read` of `application_types`, the layer contract `8.0.0` split out of `data_types` and stores in `data_types/application/`. It answers the one application type the model declares, `SyntheticTorque` — and only that one: the implementation type of the same name is an element of another layer, which this address does not reach. One of four reads of one model, one per data description layer and the mapping sets, which together show a name in two layers answered as two elements.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model plus one name declared in two layers: the application type `SyntheticTorque` (`data_types/application/`) and the implementation type `SyntheticTorque` (`data_types/implementation/`), a value type over the base's `float32_base`, each stating its bounds inline, and the mapping set `SyntheticTorqueMapping` (`data_types/mapping_sets/`) that pairs them. The base's twelve base types (`data_types/base/`) and twelve value types are unchanged.",
+    "existing_elements": [
+      {
+        "layer": "application_types",
+        "element": "SyntheticTorque"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "SyntheticTorque"
+      },
+      {
+        "layer": "mapping_sets",
+        "element": "SyntheticTorqueMapping"
+      }
+    ],
+    "notes": "No `form` is stated, so a layer address answers its default, `summary`. The same model is read at the other three layers by `read-implementation-types-layer`, `read-base-types-layer` and `read-mapping-sets-layer`."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "application_types"
+    }
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "application_types"
+      },
+      "form": "summary",
+      "value": [
+        {
+          "name": "SyntheticTorque",
+          "kind": "application_type"
+        }
+      ]
+    },
+    "notes": "Identity is `(layer, name)`: the name `SyntheticTorque` is the identity of one element in this layer and of another in `implementation_types`, and an import keeps both under their declared name where it renamed the implementation member `{name}_impl` until contract `8.0.0`."
+  }
+}

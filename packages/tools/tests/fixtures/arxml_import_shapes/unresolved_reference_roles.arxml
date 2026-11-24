@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: one unresolved reference per kept role that no other
+  fixture in this directory carries.
+
+  The importer KEEPS a reference in more roles than this file carries; some
+  have a fixture of their own (an argument's type in
+  unresolved_argument_type.arxml, a reference type's base in
+  unresolved_implementation_type_reference.arxml, the three mapping roles in
+  unresolved_mapping_references.arxml). Five more are here, one element each,
+  so that one test per role has a subject:
+
+    Level        BASE-TYPE-REF on a value type          -> /Vendor/BaseTypes/Word
+    ILevel       TYPE-TREF on a data element            -> .../Types/AbsentElementType
+    StatusRecord TYPE-TREF on a record field            -> .../AppTypes/AbsentFieldType
+    StatusArray  TYPE-TREF on an array element          -> .../AppTypes/AbsentItemType
+    ReporterSwc  PROVIDED-INTERFACE-TREF on a component port
+                                                        -> .../Interfaces/AbsentProvidedInterface
+    Root         PROVIDED-INTERFACE-TREF on a composition's BOUNDARY port
+                                                        -> .../Interfaces/AbsentOuterInterface
+
+  The last two carry one role string between them — a port is a port whoever
+  owns it — so a test tells them apart by the element the reference stands in,
+  not by the role.
+
+  Root also places a prototype of ReporterSwc, which resolves: the composition
+  is kept for its own port's sake and not because the file has nothing else.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Chassis</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Types</SHORT-NAME>
+              <ELEMENTS>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>Level</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Vendor/BaseTypes/Word</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>AppTypes</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-RECORD-DATA-TYPE>
+                  <SHORT-NAME>StatusRecord</SHORT-NAME>
+                  <CATEGORY>STRUCTURE</CATEGORY>
+                  <ELEMENTS>
+                    <APPLICATION-RECORD-ELEMENT>
+                      <SHORT-NAME>flag</SHORT-NAME>
+                      <CATEGORY>VALUE</CATEGORY>
+                      <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Chassis/AppTypes/AbsentFieldType</TYPE-TREF>
+                    </APPLICATION-RECORD-ELEMENT>
+                  </ELEMENTS>
+                </APPLICATION-RECORD-DATA-TYPE>
+                <APPLICATION-ARRAY-DATA-TYPE>
+                  <SHORT-NAME>StatusArray</SHORT-NAME>
+                  <CATEGORY>ARRAY</CATEGORY>
+                  <ELEMENT>
+                    <SHORT-NAME>entry</SHORT-NAME>
+                    <CATEGORY>VALUE</CATEGORY>
+                    <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Chassis/AppTypes/AbsentItemType</TYPE-TREF>
+                    <MAX-NUMBER-OF-ELEMENTS>4</MAX-NUMBER-OF-ELEMENTS>
+                  </ELEMENT>
+                </APPLICATION-ARRAY-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Interfaces</SHORT-NAME>
+              <ELEMENTS>
+                <SENDER-RECEIVER-INTERFACE>
+                  <SHORT-NAME>ILevel</SHORT-NAME>
+                  <IS-SERVICE>false</IS-SERVICE>
+                  <DATA-ELEMENTS>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>level</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/Types/AbsentElementType</TYPE-TREF>
+                    </VARIABLE-DATA-PROTOTYPE>
+                  </DATA-ELEMENTS>
+                </SENDER-RECEIVER-INTERFACE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Components</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>ReporterSwc</SHORT-NAME>
+                  <PORTS>
+                    <P-PORT-PROTOTYPE>
+                      <SHORT-NAME>pStatus</SHORT-NAME>
+                      <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/AbsentProvidedInterface</PROVIDED-INTERFACE-TREF>
+                    </P-PORT-PROTOTYPE>
+                  </PORTS>
+                  <INTERNAL-BEHAVIORS>
+                    <SWC-INTERNAL-BEHAVIOR>
+                      <SHORT-NAME>ReporterSwc_InternalBehavior</SHORT-NAME>
+                      <HANDLE-TERMINATION-AND-RESTART>NO-SUPPORT</HANDLE-TERMINATION-AND-RESTART>
+                      <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                    </SWC-INTERNAL-BEHAVIOR>
+                  </INTERNAL-BEHAVIORS>
+                </APPLICATION-SW-COMPONENT-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Compositions</SHORT-NAME>
+              <ELEMENTS>
+                <COMPOSITION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>Root</SHORT-NAME>
+                  <PORTS>
+                    <P-PORT-PROTOTYPE>
+                      <SHORT-NAME>pOuterStatus</SHORT-NAME>
+                      <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/AbsentOuterInterface</PROVIDED-INTERFACE-TREF>
+                    </P-PORT-PROTOTYPE>
+                  </PORTS>
+                  <COMPONENTS>
+                    <SW-COMPONENT-PROTOTYPE>
+                      <SHORT-NAME>ReporterPart</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Acme/Chassis/Components/ReporterSwc</TYPE-TREF>
+                    </SW-COMPONENT-PROTOTYPE>
+                  </COMPONENTS>
+                </COMPOSITION-SW-COMPONENT-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

@@ -1,0 +1,27 @@
+name: NvStorage
+type: application
+description: The server of the storage and calibration operations.
+ports:
+- name: pNvStorage
+  direction: provide
+  interface: NvStorageIf
+- name: pCalibration
+  direction: provide
+  interface: CalibrationIf
+runnables:
+- name: WriteBlockServer
+  events:
+  - type: operation
+    port: pNvStorage
+    operation: WriteBlock
+- name: ReadBlockServer
+  events:
+  - type: operation
+    port: pCalibration
+    operation: ReadBlock
+- name: GetVersionServer
+  events:
+  - type: operation
+    port: pCalibration
+    operation: GetVersion
+handle_termination_and_restart: no_support

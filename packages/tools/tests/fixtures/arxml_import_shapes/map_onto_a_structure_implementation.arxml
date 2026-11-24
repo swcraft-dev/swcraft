@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: a DATA-TYPE-MAP whose implementation side is an
+  IMPLEMENTATION-DATA-TYPE of CATEGORY STRUCTURE.
+
+  A STRUCTURE of the supported shape is imported and its map is written; this
+  one declares no SUB-ELEMENTS, a shape the model does not hold, so it is
+  skipped under its own reason and the map onto it is REPORTED and not written
+  — the set is still imported, with the entry it can carry, because a set is a
+  container and one row it cannot hold is not a reason to lose the other.
+
+  The second map in the same set is the one that CAN be written, so the
+  fixture shows both halves of that division in one file.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Types</SHORT-NAME>
+          <ELEMENTS>
+            <SW-BASE-TYPE>
+              <SHORT-NAME>Word</SHORT-NAME>
+              <CATEGORY>FIXED_LENGTH</CATEGORY>
+              <BASE-TYPE-SIZE>16</BASE-TYPE-SIZE>
+              <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+              <NATIVE-DECLARATION>uint16</NATIVE-DECLARATION>
+            </SW-BASE-TYPE>
+            <IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>RawScalar</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Types/Word</BASE-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE>
+            <IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>RawPair</SHORT-NAME>
+              <CATEGORY>STRUCTURE</CATEGORY>
+            </IMPLEMENTATION-DATA-TYPE>
+            <APPLICATION-PRIMITIVE-DATA-TYPE>
+              <SHORT-NAME>Distance</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+            </APPLICATION-PRIMITIVE-DATA-TYPE>
+            <APPLICATION-RECORD-DATA-TYPE>
+              <SHORT-NAME>Span</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-RECORD-ELEMENT>
+                  <SHORT-NAME>from</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Types/Distance</TYPE-TREF>
+                </APPLICATION-RECORD-ELEMENT>
+                <APPLICATION-RECORD-ELEMENT>
+                  <SHORT-NAME>to</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Types/Distance</TYPE-TREF>
+                </APPLICATION-RECORD-ELEMENT>
+              </ELEMENTS>
+            </APPLICATION-RECORD-DATA-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Mappings</SHORT-NAME>
+          <ELEMENTS>
+            <DATA-TYPE-MAPPING-SET>
+              <SHORT-NAME>Maps</SHORT-NAME>
+              <DATA-TYPE-MAPS>
+                <DATA-TYPE-MAP>
+                  <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-RECORD-DATA-TYPE">/Acme/Types/Span</APPLICATION-DATA-TYPE-REF>
+                  <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Types/RawPair</IMPLEMENTATION-DATA-TYPE-REF>
+                </DATA-TYPE-MAP>
+                <DATA-TYPE-MAP>
+                  <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Types/Distance</APPLICATION-DATA-TYPE-REF>
+                  <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Types/RawScalar</IMPLEMENTATION-DATA-TYPE-REF>
+                </DATA-TYPE-MAP>
+              </DATA-TYPE-MAPS>
+            </DATA-TYPE-MAPPING-SET>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Interfaces</SHORT-NAME>
+          <ELEMENTS>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>ISpan</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>span</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-RECORD-DATA-TYPE">/Acme/Types/Span</TYPE-TREF>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>SpanSource</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>pSpan</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Interfaces/ISpan</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR>
+                  <SHORT-NAME>SpanSourceBehavior</SHORT-NAME>
+                  <DATA-TYPE-MAPPING-REFS>
+                    <DATA-TYPE-MAPPING-REF DEST="DATA-TYPE-MAPPING-SET">/Acme/Mappings/Maps</DATA-TYPE-MAPPING-REF>
+                  </DATA-TYPE-MAPPING-REFS>
+                  <HANDLE-TERMINATION-AND-RESTART>NO-SUPPORT</HANDLE-TERMINATION-AND-RESTART>
+                  <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <COMPOSITION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Root</SHORT-NAME>
+              <COMPONENTS>
+                <SW-COMPONENT-PROTOTYPE>
+                  <SHORT-NAME>source</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Acme/Components/SpanSource</TYPE-TREF>
+                </SW-COMPONENT-PROTOTYPE>
+              </COMPONENTS>
+            </COMPOSITION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

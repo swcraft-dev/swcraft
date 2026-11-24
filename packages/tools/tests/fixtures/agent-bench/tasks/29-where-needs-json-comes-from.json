@@ -1,0 +1,69 @@
+{
+  "id": "29-where-needs-json-comes-from",
+  "task": 29,
+  "group": "guide-question",
+  "kind": "guide",
+  "status": "ready",
+  "prompt": "Where does needs.json come from, and what is outputs.needs?",
+  "expect": {
+    "model": "unchanged",
+    "guide": {
+      "sections": [
+        "cli#publishing-the-architecture-to-the-requirements-team",
+        "cli#generating",
+        "getting-started#generate-the-rest",
+        "upgrading#upgrading-from-0-21-0"
+      ],
+      "must": [
+        {
+          "id": "command",
+          "any_of": [
+            "swcraft generate needs"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "manifest-key",
+          "any_of": [
+            "outputs.needs"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "default",
+          "any_of": [
+            "dist/needs.json"
+          ],
+          "case_sensitive": true
+        }
+      ],
+      "must_not": [
+        {
+          "id": "hand-written",
+          "any_of": [
+            "edit needs.json by hand",
+            "write needs.json by hand",
+            "needs.json is written by hand",
+            "needs.json is edited by hand",
+            "hand-edit needs.json",
+            "hand-write needs.json"
+          ],
+          "case_sensitive": false
+        }
+      ]
+    },
+    "calls": {
+      "forbidden": [
+        "change_set",
+        "build",
+        "validate",
+        "export_component",
+        "import_component"
+      ]
+    }
+  },
+  "reference": {
+    "runs": "candidate builds only: a build without the guide tool fails the read and cited criteria by construction, so a guide question is never run on a baseline",
+    "baseline": "76a5f6532's cli.md already has generate needs and outputs.needs (Generating; Publishing the architecture to the requirements team: one file, outputs.needs names it, dist/needs.json unless you say otherwise, the Sphinx-Needs format). Today's Upgrading section From 0.21.0 is new and only adds the history (outputs.rst renamed); no fact rests on it."
+  }
+}

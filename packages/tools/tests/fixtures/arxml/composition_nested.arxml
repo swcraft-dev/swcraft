@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hand-crafted, anonymized importer fixture.
+  Mirrors a 2-level composition nesting with delegation-connector chains
+  across composition boundaries, using invented names only:
+    - OuterComposition contains InnerComposition_1 (a prototype of
+      InnerComposition) and ActuatorSwc_1 (a prototype of ActuatorSwc),
+      connected by an ASSEMBLY-SW-CONNECTOR at the outer level.
+    - InnerComposition contains two prototypes of the SAME SWC type
+      (SensorSwc_Front, SensorSwc_Rear — both TYPE-TREF SensorSwc).
+    - DEL_Front is a resolvable delegation: InnerComposition's boundary
+      port pFrontValue delegates inward to SensorSwc_Front's pValue port.
+      Chained with the outer assembly connector, this forms one fully
+      resolvable ActuatorSwc_1 <- InnerComposition_1.pFrontValue <-
+      SensorSwc_Front leaf-to-leaf chain.
+    - DEL_Rear is a DANGLING delegation: its inner target port reference
+      (SensorSwc/pValueGhost) does not exist on SensorSwc, simulating an
+      unresolvable chain end that must be skipped, not crashed on.
+  No content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Chassis</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>DataTypes</SHORT-NAME>
+              <ELEMENTS>
+                <SW-BASE-TYPE>
+                  <SHORT-NAME>uint16</SHORT-NAME>
+                  <CATEGORY>FIXED_LENGTH</CATEGORY>
+                  <BASE-TYPE-SIZE>16</BASE-TYPE-SIZE>
+                  <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                  <NATIVE-DECLARATION>uint16</NATIVE-DECLARATION>
+                </SW-BASE-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>SensorValue_impl</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/DataTypes/uint16</BASE-TYPE-REF>
+                        <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Interfaces</SHORT-NAME>
+              <ELEMENTS>
+                <SENDER-RECEIVER-INTERFACE>
+                  <SHORT-NAME>ISensorValue</SHORT-NAME>
+                  <IS-SERVICE>false</IS-SERVICE>
+                  <DATA-ELEMENTS>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>value</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/DataTypes/SensorValue_impl</TYPE-TREF>
+                    </VARIABLE-DATA-PROTOTYPE>
+                  </DATA-ELEMENTS>
+                </SENDER-RECEIVER-INTERFACE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Components</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>SensorSwc</SHORT-NAME>
+                  <PORTS>
+                    <P-PORT-PROTOTYPE>
+                      <SHORT-NAME>pValue</SHORT-NAME>
+                      <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/ISensorValue</PROVIDED-INTERFACE-TREF>
+                    </P-PORT-PROTOTYPE>
+                  </PORTS>
+                  <INTERNAL-BEHAVIORS>
+                    <SWC-INTERNAL-BEHAVIOR>
+                      <SHORT-NAME>SensorSwc_InternalBehavior</SHORT-NAME>
+                      <HANDLE-TERMINATION-AND-RESTART>NO-SUPPORT</HANDLE-TERMINATION-AND-RESTART>
+                      <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                    </SWC-INTERNAL-BEHAVIOR>
+                  </INTERNAL-BEHAVIORS>
+                </APPLICATION-SW-COMPONENT-TYPE>
+                <APPLICATION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>ActuatorSwc</SHORT-NAME>
+                  <PORTS>
+                    <R-PORT-PROTOTYPE>
+                      <SHORT-NAME>rValue</SHORT-NAME>
+                      <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/ISensorValue</REQUIRED-INTERFACE-TREF>
+                    </R-PORT-PROTOTYPE>
+                  </PORTS>
+                  <INTERNAL-BEHAVIORS>
+                    <SWC-INTERNAL-BEHAVIOR>
+                      <SHORT-NAME>ActuatorSwc_InternalBehavior</SHORT-NAME>
+                      <HANDLE-TERMINATION-AND-RESTART>NO-SUPPORT</HANDLE-TERMINATION-AND-RESTART>
+                      <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                    </SWC-INTERNAL-BEHAVIOR>
+                  </INTERNAL-BEHAVIORS>
+                </APPLICATION-SW-COMPONENT-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Compositions</SHORT-NAME>
+              <ELEMENTS>
+                <COMPOSITION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>InnerComposition</SHORT-NAME>
+                  <PORTS>
+                    <P-PORT-PROTOTYPE>
+                      <SHORT-NAME>pFrontValue</SHORT-NAME>
+                      <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/ISensorValue</PROVIDED-INTERFACE-TREF>
+                    </P-PORT-PROTOTYPE>
+                    <P-PORT-PROTOTYPE>
+                      <SHORT-NAME>pRearValue</SHORT-NAME>
+                      <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/ISensorValue</PROVIDED-INTERFACE-TREF>
+                    </P-PORT-PROTOTYPE>
+                  </PORTS>
+                  <COMPONENTS>
+                    <SW-COMPONENT-PROTOTYPE>
+                      <SHORT-NAME>SensorSwc_Front</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Acme/Chassis/Components/SensorSwc</TYPE-TREF>
+                    </SW-COMPONENT-PROTOTYPE>
+                    <SW-COMPONENT-PROTOTYPE>
+                      <SHORT-NAME>SensorSwc_Rear</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Acme/Chassis/Components/SensorSwc</TYPE-TREF>
+                    </SW-COMPONENT-PROTOTYPE>
+                  </COMPONENTS>
+                  <CONNECTORS>
+                    <!-- Resolvable: inner target port exists on SensorSwc. -->
+                    <DELEGATION-SW-CONNECTOR>
+                      <SHORT-NAME>DEL_Front</SHORT-NAME>
+                      <INNER-PORT-IREF>
+                        <P-PORT-IN-COMPOSITION-INSTANCE-REF>
+                          <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Acme/Chassis/Compositions/InnerComposition/SensorSwc_Front</CONTEXT-COMPONENT-REF>
+                          <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/Acme/Chassis/Components/SensorSwc/pValue</TARGET-P-PORT-REF>
+                        </P-PORT-IN-COMPOSITION-INSTANCE-REF>
+                      </INNER-PORT-IREF>
+                      <OUTER-PORT-REF DEST="P-PORT-PROTOTYPE">/Acme/Chassis/Compositions/InnerComposition/pFrontValue</OUTER-PORT-REF>
+                    </DELEGATION-SW-CONNECTOR>
+                    <!-- Dangling: SensorSwc has no port named "pValueGhost". -->
+                    <DELEGATION-SW-CONNECTOR>
+                      <SHORT-NAME>DEL_Rear</SHORT-NAME>
+                      <INNER-PORT-IREF>
+                        <P-PORT-IN-COMPOSITION-INSTANCE-REF>
+                          <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Acme/Chassis/Compositions/InnerComposition/SensorSwc_Rear</CONTEXT-COMPONENT-REF>
+                          <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/Acme/Chassis/Components/SensorSwc/pValueGhost</TARGET-P-PORT-REF>
+                        </P-PORT-IN-COMPOSITION-INSTANCE-REF>
+                      </INNER-PORT-IREF>
+                      <OUTER-PORT-REF DEST="P-PORT-PROTOTYPE">/Acme/Chassis/Compositions/InnerComposition/pRearValue</OUTER-PORT-REF>
+                    </DELEGATION-SW-CONNECTOR>
+                  </CONNECTORS>
+                </COMPOSITION-SW-COMPONENT-TYPE>
+                <COMPOSITION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>OuterComposition</SHORT-NAME>
+                  <PORTS>
+                  </PORTS>
+                  <COMPONENTS>
+                    <SW-COMPONENT-PROTOTYPE>
+                      <SHORT-NAME>InnerComposition_1</SHORT-NAME>
+                      <TYPE-TREF DEST="COMPOSITION-SW-COMPONENT-TYPE">/Acme/Chassis/Compositions/InnerComposition</TYPE-TREF>
+                    </SW-COMPONENT-PROTOTYPE>
+                    <SW-COMPONENT-PROTOTYPE>
+                      <SHORT-NAME>ActuatorSwc_1</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Acme/Chassis/Components/ActuatorSwc</TYPE-TREF>
+                    </SW-COMPONENT-PROTOTYPE>
+                  </COMPONENTS>
+                  <CONNECTORS>
+                    <ASSEMBLY-SW-CONNECTOR>
+                      <SHORT-NAME>Assembly_Inner_to_Actuator</SHORT-NAME>
+                      <PROVIDER-IREF>
+                        <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Acme/Chassis/Compositions/OuterComposition/InnerComposition_1</CONTEXT-COMPONENT-REF>
+                        <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/Acme/Chassis/Compositions/InnerComposition/pFrontValue</TARGET-P-PORT-REF>
+                      </PROVIDER-IREF>
+                      <REQUESTER-IREF>
+                        <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Acme/Chassis/Compositions/OuterComposition/ActuatorSwc_1</CONTEXT-COMPONENT-REF>
+                        <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/Acme/Chassis/Components/ActuatorSwc/rValue</TARGET-R-PORT-REF>
+                      </REQUESTER-IREF>
+                    </ASSEMBLY-SW-CONNECTOR>
+                  </CONNECTORS>
+                </COMPOSITION-SW-COMPONENT-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

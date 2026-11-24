@@ -1,0 +1,7 @@
+name: If0001abcdefghij
+kind: sender_receiver
+data_elements:
+- name: deShared
+  implementation_type: Vt001abcde
+satisfies:
+- Rq01abcdefghijk@2

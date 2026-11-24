@@ -1,0 +1,246 @@
+{
+  "id": "import-conflicts-reported",
+  "function": "`swcraft import model`",
+  "finding": {
+    "release": "0.19.0",
+    "row": 4
+  },
+  "tier": "generated-small",
+  "specimen": "scenario-import-conflicts-reported",
+  "class": "refusal",
+  "project": "fresh",
+  "target": {
+    "conflicted": {
+      "question": "heaviest_sender_receiver_interfaces",
+      "first": 2
+    }
+  },
+  "thresholds": {},
+  "steps": [
+    {
+      "id": "export",
+      "cli": [
+        "generate",
+        "arxml",
+        "--project",
+        "{manifest}"
+      ]
+    },
+    {
+      "id": "init",
+      "cli": [
+        "init",
+        "imported"
+      ]
+    },
+    {
+      "id": "import",
+      "cli": [
+        "import",
+        "model",
+        "--verbose",
+        "--source",
+        "dist/model.arxml",
+        "--project",
+        "imported/swcraft.yaml"
+      ]
+    },
+    {
+      "id": "check",
+      "cli": [
+        "check-model",
+        "--project",
+        "imported/swcraft.yaml",
+        "--format",
+        "json"
+      ]
+    }
+  ],
+  "expectations": [
+    {
+      "step": "export",
+      "exit_code": 0
+    },
+    {
+      "step": "import",
+      "exit_code": 0
+    },
+    {
+      "step": "check",
+      "exit_code": 0,
+      "because": "a generated model's own export imports into a model check-model accepts"
+    },
+    {
+      "step": "check",
+      "findings_exactly": {
+        "pairs": []
+      }
+    }
+  ],
+  "variants": {
+    "normal": {},
+    "conflict": {
+      "steps": [
+        {
+          "id": "export",
+          "cli": [
+            "generate",
+            "arxml",
+            "--project",
+            "{manifest}"
+          ]
+        },
+        {
+          "id": "faults",
+          "export_faults": {
+            "interfaces": {
+              "$target": "conflicted"
+            },
+            "kind": "value",
+            "source": "dist/model.arxml",
+            "output": "faulted.arxml"
+          }
+        },
+        {
+          "id": "init",
+          "cli": [
+            "init",
+            "imported"
+          ]
+        },
+        {
+          "id": "import",
+          "cli": [
+            "import",
+            "model",
+            "--verbose",
+            "--source",
+            "faulted.arxml",
+            "--project",
+            "imported/swcraft.yaml"
+          ]
+        },
+        {
+          "id": "check",
+          "cli": [
+            "check-model",
+            "--project",
+            "imported/swcraft.yaml",
+            "--format",
+            "json"
+          ]
+        }
+      ],
+      "expectations": [
+        {
+          "step": "import",
+          "exit_code": 0,
+          "because": "a conflict imports neither declaration and the import goes on"
+        },
+        {
+          "step": "import",
+          "report_referrers_exactly": {
+            "ports_naming": "conflicted"
+          },
+          "because": "each element that referred to a conflicted interface is kept and named in the report"
+        },
+        {
+          "step": "check",
+          "exit_code": 1,
+          "because": "check-model reports every kept reference to a conflicted interface"
+        },
+        {
+          "step": "check",
+          "findings_exactly": {
+            "pairs": [
+              {
+                "rule": "port.undeclared-interface",
+                "ports_naming": "conflicted"
+              }
+            ],
+            "minus_variant": "normal"
+          },
+          "because": "exactly the ports naming a conflicted interface, beyond the normal variant's findings"
+        }
+      ]
+    },
+    "merge": {
+      "steps": [
+        {
+          "id": "export",
+          "cli": [
+            "generate",
+            "arxml",
+            "--project",
+            "{manifest}"
+          ]
+        },
+        {
+          "id": "faults",
+          "export_faults": {
+            "interfaces": {
+              "$target": "conflicted"
+            },
+            "kind": "description",
+            "source": "dist/model.arxml",
+            "output": "faulted.arxml"
+          }
+        },
+        {
+          "id": "init",
+          "cli": [
+            "init",
+            "imported"
+          ]
+        },
+        {
+          "id": "import",
+          "cli": [
+            "import",
+            "model",
+            "--verbose",
+            "--source",
+            "faulted.arxml",
+            "--project",
+            "imported/swcraft.yaml"
+          ]
+        },
+        {
+          "id": "check",
+          "cli": [
+            "check-model",
+            "--project",
+            "imported/swcraft.yaml",
+            "--format",
+            "json"
+          ]
+        }
+      ],
+      "expectations": [
+        {
+          "step": "import",
+          "exit_code": 0
+        },
+        {
+          "step": "import",
+          "report_merged_exactly": {
+            "interfaces": "conflicted"
+          },
+          "because": "each interface declared twice with its description alone differing is reported as one merged group"
+        },
+        {
+          "step": "check",
+          "exit_code": 0,
+          "because": "a description differing alone is a merge, not a conflict"
+        },
+        {
+          "step": "check",
+          "findings_exactly": {
+            "pairs": []
+          },
+          "because": "the normal variant's findings, which that variant pins as none"
+        }
+      ]
+    }
+  }
+}

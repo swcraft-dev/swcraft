@@ -1,0 +1,5 @@
+name: boolean_base
+kind: base_type
+size: 8
+encoding: BOOLEAN
+native_declaration: boolean

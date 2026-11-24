@@ -1,0 +1,170 @@
+{
+  "name": "create-texttable-enum-and-value-type",
+  "description": "One change set declares a texttable compu method with two entries, an enumeration that states its values by naming it (`compu_method_ref`, and no `literals`), and an implementation value type naming the same table — one table shared by an application type and an implementation type, as contract `8.0.0`'s elements allow. An implementation type has no inline counterpart: a referenced table is the only way it states its values.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, whose `base_types` layer declares `uint8_base` and whose `compu_methods` layer is empty.",
+    "existing_elements": [
+      {
+        "layer": "base_types",
+        "element": "uint8_base"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "compu_methods",
+            "element": "ProbeGearTable"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "ProbeGear"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "ProbeGearRaw"
+          }
+        }
+      ],
+      "notes": "The scope covers every operation exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Declare the probe gear's values once and name them from both views.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "compu_methods",
+          "element": "ProbeGearTable"
+        },
+        "value": {
+          "name": "ProbeGearTable",
+          "kind": "texttable",
+          "entries": [
+            {
+              "name": "ProbePark",
+              "value": 0,
+              "description": "Probe gear parked"
+            },
+            {
+              "name": "ProbeDrive",
+              "value": 1,
+              "description": "Probe gear driving"
+            }
+          ],
+          "description": "Probe gear values"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "application_types",
+          "element": "ProbeGear"
+        },
+        "value": {
+          "name": "ProbeGear",
+          "kind": "enum",
+          "compu_method_ref": "ProbeGearTable",
+          "description": "Probe gear, its values in a shared table"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "implementation_types",
+          "element": "ProbeGearRaw"
+        },
+        "value": {
+          "name": "ProbeGearRaw",
+          "kind": "value_type",
+          "base": "uint8_base",
+          "compu_method_ref": "ProbeGearTable",
+          "description": "Probe gear, stored, naming the same table"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "ProbeGear"
+          },
+          "after": {
+            "name": "ProbeGear",
+            "kind": "enum",
+            "literals": null,
+            "compu_method_ref": "ProbeGearTable",
+            "description": "Probe gear, its values in a shared table",
+            "package": null
+          },
+          "summary": "application_types: + ProbeGear"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "ProbeGearRaw"
+          },
+          "after": {
+            "name": "ProbeGearRaw",
+            "kind": "value_type",
+            "base": "uint8_base",
+            "unit": "",
+            "value_min": null,
+            "value_max": null,
+            "compu_method_ref": "ProbeGearTable",
+            "description": "Probe gear, stored, naming the same table",
+            "package": null
+          },
+          "summary": "implementation_types: + ProbeGearRaw"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "compu_methods",
+            "element": "ProbeGearTable"
+          },
+          "after": {
+            "name": "ProbeGearTable",
+            "kind": "texttable",
+            "entries": [
+              {
+                "name": "ProbePark",
+                "value": 0,
+                "description": "Probe gear parked"
+              },
+              {
+                "name": "ProbeDrive",
+                "value": 1,
+                "description": "Probe gear driving"
+              }
+            ],
+            "description": "Probe gear values",
+            "package": null
+          },
+          "summary": "compu_methods: + ProbeGearTable"
+        }
+      ]
+    },
+    "notes": "The delta is compared as a set, displayed in the contract's layer order. The enumeration's `literals` is `null` in its `after`: exactly one of `literals` and `compu_method_ref` is set (`rule:application_types.enum.literals-form`). An enumeration that names a table generates no `{name}_CompuMethod`, so that name is not reserved for it."
+  }
+}

@@ -1,0 +1,10 @@
+name: TaskA
+period: 0.01
+priority: 5
+partition: PARTITION0
+wcet: 2000us
+runnables:
+  - swc: SensorA
+    runnable: Init
+  - swc: SensorB
+    runnable: Init

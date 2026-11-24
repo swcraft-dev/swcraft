@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="835.12" height="318" viewBox="0 0 835.12 318" font-family="Helvetica, Arial, sans-serif" data-view="ibd-Sub">
+<title>Sub — internal block diagram</title>
+<style>g.edges use{stroke-width:10px;stroke-dasharray:none}</style>
+<rect class="background" width="100%" height="100%" fill="white"/>
+<g class="frame">
+<g class="frame" data-role="frame" data-name="Sub" data-parents="Root#Sub"><title>composition Sub
+Producing sub-composition
+Two boundary ports, three members -- one of them named differently from its type and one of them an external stub -- two delegations and the assembly connector drawn at this level.</title><rect x="46" y="22" width="741.12" height="274" rx="4" fill="#fafafa" stroke="#333333" stroke-width="1.5"/></g>
+</g>
+<g class="edges">
+<g class="edge connector" data-role="connector" data-name="sub_link" data-source="p4" data-target="p5" stroke-width="1"><title>connector sub_link: Alpha.pInner -&gt; Gamma.rInner
+The assembly connector drawn inside `Sub`. Its `from` endpoint names the TYPE `Beta`; the member of that type inside `Sub` is `Alpha`, so the emitted CONTEXT-COMPONENT-REF ends at `.../Sub/Alpha` and the TARGET-P-PORT-REF at `.../Beta/pInner`.</title><path id="e1" d="M 424.72 209.33 L 434.72 209.33 L 434.72 125.33 L 444.72 125.33" fill="none" stroke="#555555"/><use href="#e1" opacity="0"/></g>
+<g class="edge delegation" data-role="delegation" data-name="Sub_pSignalOut_Alpha" data-source="p3" data-target="p2" stroke-width="1"><title>delegation Sub_pSignalOut_Alpha: Alpha.pOut -&gt; Sub.pSignalOut
+The provide-side delegation, an INNER-PORT-IREF of the P variant.</title><path id="e2" d="M 424.72 234 L 781.12 234" fill="none" stroke="#555555"/><use href="#e2" opacity="0"/></g>
+<g class="edge delegation" data-role="delegation" data-name="Sub_rTrigger_Gamma" data-source="p1" data-target="p6" stroke-width="1"><title>delegation Sub_rTrigger_Gamma: Sub.rTrigger -&gt; Gamma.rTrig
+A require-side delegation, an INNER-PORT-IREF of the R variant.</title><path id="e3" d="M 52 100.67 L 444.72 100.67" fill="none" stroke="#555555"/><use href="#e3" opacity="0"/></g>
+</g>
+<g class="members">
+<g class="member component" data-role="member" data-name="Alpha" data-type="Beta" data-kind="component"><title>Alpha : Beta (component)
+The type the member `Alpha` of composition `Sub` instantiates -- the member whose name differs from its type, which is what makes the two reference bases of an assembly connector and a delegation observable.</title><rect x="216.44" y="191.67" width="182.28" height="60" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="Gamma" data-type="Gamma" data-kind="component"><title>Gamma (component)
+The require side of the assembly connector drawn inside `Sub`.</title><rect x="468.72" y="83" width="160" height="60" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="Ext" data-type="ExternalStub" data-kind="component"><title>Ext : ExternalStub (component)
+A component this model declares a prototype for and no type for: the writer emits the two verbatim strings below as the prototype's TYPE-TREF and DEST and emits no APPLICATION-SW-COMPONENT-TYPE at all. It carries no ports, so nothing can be wired to it.</title><rect x="240.58" y="111.67" width="160" height="60" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+</g>
+<g class="ports">
+<g id="p1" class="port require sender-receiver" data-role="port" data-owner="" data-name="rTrigger" data-interface="ITrigger"><title>Sub.rTrigger: require ITrigger (sender-receiver)
+· trigger: uint8</title><rect class="port-box" x="40" y="94.67" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="40" y1="100.67" x2="30" y2="100.67" stroke="#222222" stroke-width="1.2"/><path d="M 30 100.67 L 22 94.67 M 30 100.67 L 22 106.67" fill="none" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="22" y="94.67" width="30" height="12" opacity="0"/></g>
+<g id="p2" class="port provide sender-receiver" data-role="port" data-owner="" data-name="pSignalOut" data-interface="ISignal"><title>Sub.pSignalOut: provide ISignal (sender-receiver)
+· value: uint8</title><rect class="port-box" x="781.12" y="228" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="793.12" y1="234" x2="797.12" y2="234" stroke="#222222" stroke-width="1.2"/><path d="M 797.12 228 L 807.12 228 L 813.12 234 L 807.12 240 L 797.12 240 Z" fill="white" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="781.12" y="228" width="32" height="12" opacity="0"/></g>
+<g id="p3" class="port provide sender-receiver" data-role="port" data-owner="Alpha" data-name="pOut" data-interface="ISignal"><title>Alpha.pOut: provide ISignal (sender-receiver)
+· value: uint8</title><rect class="port-box" x="392.72" y="228" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="404.72" y1="234" x2="408.72" y2="234" stroke="#222222" stroke-width="1.2"/><path d="M 408.72 228 L 418.72 228 L 424.72 234 L 418.72 240 L 408.72 240 Z" fill="white" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="392.72" y="228" width="32" height="12" opacity="0"/></g>
+<g id="p4" class="port provide sender-receiver" data-role="port" data-owner="Alpha" data-name="pInner" data-interface="ITrigger"><title>Alpha.pInner: provide ITrigger (sender-receiver)
+· trigger: uint8</title><rect class="port-box" x="392.72" y="203.34" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="404.72" y1="209.34" x2="408.72" y2="209.34" stroke="#222222" stroke-width="1.2"/><path d="M 408.72 203.34 L 418.72 203.34 L 424.72 209.34 L 418.72 215.34 L 408.72 215.34 Z" fill="white" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="392.72" y="203.34" width="32" height="12" opacity="0"/></g>
+<g id="p5" class="port require sender-receiver" data-role="port" data-owner="Gamma" data-name="rInner" data-interface="ITrigger"><title>Gamma.rInner: require ITrigger (sender-receiver)
+· trigger: uint8</title><rect class="port-box" x="462.72" y="119.33" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="462.72" y1="125.33" x2="452.72" y2="125.33" stroke="#222222" stroke-width="1.2"/><path d="M 452.72 125.33 L 444.72 119.33 M 452.72 125.33 L 444.72 131.33" fill="none" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="444.72" y="119.33" width="30" height="12" opacity="0"/></g>
+<g id="p6" class="port require sender-receiver" data-role="port" data-owner="Gamma" data-name="rTrig" data-interface="ITrigger"><title>Gamma.rTrig: require ITrigger (sender-receiver)
+· trigger: uint8</title><rect class="port-box" x="462.72" y="94.67" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="462.72" y1="100.67" x2="452.72" y2="100.67" stroke="#222222" stroke-width="1.2"/><path d="M 452.72 100.67 L 444.72 94.67 M 452.72 100.67 L 444.72 106.67" fill="none" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="444.72" y="94.67" width="30" height="12" opacity="0"/></g>
+</g>
+<g class="labels">
+<g class="frame-up"><title>up to Root</title><text class="frame-label" x="121.4" y="38.6" font-size="12" data-kind="composition" font-weight="bold">↑ Sub — Producing sub-composition</text></g>
+<text class="port-label" x="55" y="118.67" font-size="10" fill="#444444" text-anchor="start">rTrigger</text>
+<text class="port-label" x="778.12" y="252" font-size="10" fill="#444444" text-anchor="end">pSignalOut</text>
+<text class="member-label" x="262.64" y="208.27" font-size="12" data-kind="component" font-weight="600">Alpha : Beta</text>
+<text class="port-label in-member" x="389.72" y="237" font-size="10" fill="#444444" data-kind="component" text-anchor="end">pOut</text>
+<text class="port-label in-member" x="389.72" y="212.34" font-size="10" fill="#444444" data-kind="component" text-anchor="end">pInner</text>
+<text class="member-label" x="534.5" y="99.6" font-size="12" data-kind="component" font-weight="600">Gamma</text>
+<text class="port-label in-member" x="477.72" y="128.33" font-size="10" fill="#444444" data-kind="component" text-anchor="start">rInner</text>
+<text class="port-label in-member" x="477.72" y="103.67" font-size="10" fill="#444444" data-kind="component" text-anchor="start">rTrig</text>
+<text class="member-label" x="258.12" y="128.27" font-size="12" data-kind="component" font-weight="600">Ext : ExternalStub</text>
+</g>
+</svg>

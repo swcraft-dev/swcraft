@@ -1,0 +1,37 @@
+{
+  "id": "17-largest-ram-consumer",
+  "task": 17,
+  "group": "relations-and-containment",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which component takes the most of RAM?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "first_of": {
+        "candidates": [
+          "BrakeController",
+          "BrakeTemperatureSensor",
+          "BrakeThermalProtection",
+          "DiagnosticManager",
+          "InstrumentCluster",
+          "VehicleStateManager",
+          "NvM"
+        ],
+        "expected": "BrakeThermalProtection"
+      }
+    }
+  },
+  "reference": {
+    "consumers": {
+      "BrakeThermalProtection": 4096,
+      "BrakeController": 3072,
+      "BrakeTemperatureSensor": 2048,
+      "VehicleStateManager": 2048,
+      "DiagnosticManager": 1536,
+      "InstrumentCluster": 1536
+    },
+    "computed_by": "swcraft resource-report"
+  },
+  "note": "The resource report counts a component type once. BrakeTemperatureSensor has two instances (front and rear), and counted per instance it would tie at 4096; the product's figure decides."
+}

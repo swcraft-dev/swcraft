@@ -1,0 +1,195 @@
+{
+  "name": "update-and-remove-mapping-sets",
+  "description": "The other two verbs on the layer contract `7.0.0` added, in one exchange: a pair re-pointed at another implementation type, a second pair added to the same set, and an empty set removed whole. Re-pointing edits `implementation`, because `application` is the pair's identity inside the set and pairing a different application type is a different pair — the distinction the collection's `identityField` declares and the immutability rule enforces.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with two application types and two mapping sets seeded. `PhysicalMapping` pairs `VehicleSpeed_Kph` with the value type `float32`; `LegacyMapping` was declared before its pairs were known and still holds none, which is legal — a set is a container. No component names either set, so removing one leaves nothing dangling.",
+    "existing_elements": [
+      {
+        "layer": "application_types",
+        "element": "VehicleSpeed_Kph"
+      },
+      {
+        "layer": "application_types",
+        "element": "EngineSpeed_Rpm"
+      },
+      {
+        "layer": "mapping_sets",
+        "element": "PhysicalMapping",
+        "path": [
+          {
+            "field": "maps"
+          },
+          {
+            "member": "VehicleSpeed_Kph"
+          }
+        ]
+      },
+      {
+        "layer": "mapping_sets",
+        "element": "LegacyMapping"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "mapping_sets",
+            "element": "PhysicalMapping",
+            "path": [
+              {
+                "field": "maps"
+              },
+              {
+                "member": "VehicleSpeed_Kph"
+              },
+              {
+                "field": "implementation"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "mapping_sets",
+            "element": "PhysicalMapping",
+            "path": [
+              {
+                "field": "maps"
+              },
+              {
+                "member": "EngineSpeed_Rpm"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "mapping_sets",
+            "element": "LegacyMapping"
+          }
+        }
+      ]
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Store the vehicle speed in float64, pair the engine speed, and retire the empty set.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "mapping_sets",
+          "element": "PhysicalMapping",
+          "path": [
+            {
+              "field": "maps"
+            },
+            {
+              "member": "VehicleSpeed_Kph"
+            },
+            {
+              "field": "implementation"
+            }
+          ]
+        },
+        "value": "float64"
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "mapping_sets",
+          "element": "PhysicalMapping",
+          "path": [
+            {
+              "field": "maps"
+            },
+            {
+              "member": "EngineSpeed_Rpm"
+            }
+          ]
+        },
+        "value": {
+          "application": "EngineSpeed_Rpm",
+          "implementation": "uint16"
+        }
+      },
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "mapping_sets",
+          "element": "LegacyMapping"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "mapping_sets",
+            "element": "LegacyMapping"
+          },
+          "before": {
+            "name": "LegacyMapping",
+            "maps": 0
+          },
+          "summary": "mapping_sets: - LegacyMapping",
+          "before_form": "summary"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "mapping_sets",
+            "element": "PhysicalMapping",
+            "path": [
+              {
+                "field": "maps"
+              },
+              {
+                "member": "EngineSpeed_Rpm"
+              }
+            ]
+          },
+          "after": {
+            "application": "EngineSpeed_Rpm",
+            "implementation": "uint16"
+          },
+          "summary": "mapping_sets/PhysicalMapping: + maps[EngineSpeed_Rpm]"
+        },
+        {
+          "operation": "update",
+          "address": {
+            "layer": "mapping_sets",
+            "element": "PhysicalMapping",
+            "path": [
+              {
+                "field": "maps"
+              },
+              {
+                "member": "VehicleSpeed_Kph"
+              },
+              {
+                "field": "implementation"
+              }
+            ]
+          },
+          "before": "float32",
+          "after": "float64",
+          "summary": "mapping_sets/PhysicalMapping: ~ maps[VehicleSpeed_Kph].implementation float32 -> float64"
+        }
+      ]
+    },
+    "notes": "The three verbs reach the layer through the generic engine alone: nothing in `swcraft_tools/editing/` names `mapping_sets`, and the registry the protocol projects is derived from the contract, which is what `test_generic_core_gate.py` holds. A pair is addressed by `{member: \"VehicleSpeed_Kph\"}` because the collection declares `application` as its `identityField` — the `field` member-identity form, the one `runnables` uses — so re-pointing is an `update` of `implementation` and never of the member as a whole. Removing the empty set is a plain element `remove` and asks the host nothing: no safety rule reads this layer, and no component names the set, so there are no referrers to clear (`remove-memory-resource-with-referrers-cleared` is the shape that has both). The delta is in the projection's own order — removes, creates, then updates — and not in the order the operations were sent."
+  }
+}

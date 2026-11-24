@@ -1,0 +1,6 @@
+name: ITrigger
+kind: sender_receiver
+description: The interface the inner assembly connector and one delegation carry.
+data_elements:
+  - name: trigger
+    implementation_type: uint8

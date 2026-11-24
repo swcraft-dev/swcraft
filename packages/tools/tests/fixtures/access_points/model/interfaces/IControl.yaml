@@ -1,0 +1,9 @@
+name: IControl
+kind: client_server
+description: The one client-server interface the call point goes through.
+operations:
+- name: Apply
+  arguments:
+  - name: value
+    direction: in
+    implementation_type: uint8

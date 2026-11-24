@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="762" height="152" viewBox="0 0 762 152" font-family="Helvetica, Arial, sans-serif" data-view="nesting">
+<title>Root — nesting</title>
+<rect class="background" width="100%" height="100%" fill="white"/>
+<g class="frame">
+<g class="frame" data-role="frame" data-name="Root" data-type="Root" data-kind="composition"><title>composition Root
+Root composition</title><rect x="20" y="20" width="722" height="112" rx="4" fill="#fafafa" stroke="#333333" stroke-width="1.5"/></g>
+</g>
+<g class="members">
+<g class="member composition" data-role="member" data-name="Sub" data-type="Sub" data-kind="composition"><title>Sub (composition)
+Producing sub-composition</title><rect x="32" y="46" width="440.92" height="74" rx="3" fill="#fff4d6" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="Alpha" data-type="Beta" data-kind="component"><title>Alpha : Beta (component)</title><rect x="44" y="72" width="120" height="36" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="Gamma" data-type="Gamma" data-kind="component"><title>Gamma (component)</title><rect x="176" y="72" width="120" height="36" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="Ext" data-type="ExternalStub" data-kind="component"><title>Ext : ExternalStub (component)</title><rect x="308" y="72" width="152.92" height="36" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g class="member composition" data-role="member" data-name="Sink" data-type="Sink" data-kind="composition"><title>Sink (composition)
+Consuming sub-composition</title><rect x="484.92" y="46" width="245.08" height="74" rx="3" fill="#fff4d6" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="Consumer" data-type="Consumer" data-kind="component"><title>Consumer (component)</title><rect x="496.92" y="72" width="120" height="36" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+</g>
+<g class="labels">
+<text class="frame-label" x="32" y="37" font-size="12" data-kind="composition" font-weight="bold">Root — Root composition</text>
+<text class="member-label" x="44" y="63" font-size="12" data-kind="composition" font-weight="600">Sub — Producing sub-composition</text>
+<text class="member-label" x="104" y="94.2" font-size="12" data-kind="component" text-anchor="middle">Alpha : Beta</text>
+<text class="member-label" x="236" y="94.2" font-size="12" data-kind="component" text-anchor="middle">Gamma</text>
+<text class="member-label" x="384.46" y="94.2" font-size="12" data-kind="component" text-anchor="middle">Ext : ExternalStub</text>
+<text class="member-label" x="496.92" y="63" font-size="12" data-kind="composition" font-weight="600">Sink — Consuming sub-composition</text>
+<text class="member-label" x="556.92" y="94.2" font-size="12" data-kind="component" text-anchor="middle">Consumer</text>
+</g>
+</svg>

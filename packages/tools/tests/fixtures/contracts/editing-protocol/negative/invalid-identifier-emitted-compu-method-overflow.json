@@ -1,0 +1,55 @@
+{
+  "name": "invalid-identifier-emitted-compu-method-overflow",
+  "description": "A `create` whose declared name is a legal AUTOSAR `Identifier` and whose emitted name is not. The enum is 117 characters; the exporter emits a `{name}_CompuMethod` COMPU-METHOD for its literals, and that form is 129 — one over the 128-character limit. The identifier rule is checked on what is emitted, not on what is declared.",
+  "kind": "negative",
+  "context": {
+    "summary": "The baseline as it stands — the change set needs nothing already in it. Nothing about the declared name is wrong: it matches `[a-zA-Z][a-zA-Z0-9_]*` and is inside 128 characters, so no request-shape check and no naive name check would catch it. The *kind* is what makes it illegal: `{name}_CompuMethod` is emitted for an **enum** only, so the same 117-character name declared as a value type, a reference type or a base type is legal — since contract `7.0.0` none of the three is lengthened by any generated form at all, the application view the exporter used to invent for a value type having gone with the declared `application_type` that replaced it.",
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "VehicleSpeedSignalScalingFactorForHighResolutionWheelSpeedSensorFrontLeftAxleMeasurementCalibrationValueRawUnfiltered"
+          }
+        }
+      ]
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Add the enum that classifies the front-left wheel speed sensor's raw unfiltered calibration value.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "application_types",
+          "element": "VehicleSpeedSignalScalingFactorForHighResolutionWheelSpeedSensorFrontLeftAxleMeasurementCalibrationValueRawUnfiltered"
+        },
+        "value": {
+          "name": "VehicleSpeedSignalScalingFactorForHighResolutionWheelSpeedSensorFrontLeftAxleMeasurementCalibrationValueRawUnfiltered",
+          "kind": "enum",
+          "literals": [
+            { "name": "Uncalibrated", "value": 0 },
+            { "name": "Calibrated", "value": 1 }
+          ],
+          "description": "Calibration state of the front-left wheel speed sensor"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "invalid-identifier",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "application_types",
+        "element": "VehicleSpeedSignalScalingFactorForHighResolutionWheelSpeedSensorFrontLeftAxleMeasurementCalibrationValueRawUnfiltered"
+      }
+    ],
+    "notes": "The protocol does not hold `element` to the `Identifier` pattern — `requirements` are identified by `id` (`REQ-SPEED-001`), legal model content and an illegal ARXML identifier — so this can only be a semantic rejection. The generated forms lengthen a declared name (`_CompuMethod`, `_Implementation`, `_InternalBehavior`, `TMT_`, `IT_`, and contract `7.0.0`'s `_Unit`, `_Compu` and `_Range`) and each is scoped, exactly as `writer/arxml_generation`'s own tables scope them: `RESERVED_DATA_TYPE_RULES` is one row, `{x}_CompuMethod` for an enum, and the three application-type forms are scoped by the **field** whose declaration makes the exporter emit that element rather than by a kind — a type declaring no `unit` mints no `{x}_Unit`. The engine reads that same table, so it refuses this enum exactly as `check-model` refuses it — and accepts the same name declared as a value type exactly as `check-model` accepts it. A guard that ignored the kind would refuse names generation accepts, which is the defect the writer records in place."
+  }
+}

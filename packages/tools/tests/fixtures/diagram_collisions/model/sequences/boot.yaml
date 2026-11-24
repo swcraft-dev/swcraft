@@ -1,0 +1,8 @@
+name: boot
+task: TaskA
+title: Two runnables named Init
+steps:
+  - swc: SensorA
+    runnable: Init
+  - swc: SensorB
+    runnable: Init

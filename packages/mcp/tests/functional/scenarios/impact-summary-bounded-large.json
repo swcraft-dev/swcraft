@@ -1,0 +1,229 @@
+{
+  "id": "impact-summary-bounded-large",
+  "function": "MCP `impact_of` — `summary`",
+  "finding": {
+    "release": "0.19.0",
+    "row": 1
+  },
+  "tier": "large-bench",
+  "specimen": "large-bench",
+  "class": "boundary-at-scale",
+  "target": {
+    "interface": "heaviest_interface",
+    "component": "largest_component"
+  },
+  "thresholds": {
+    "page_rows": {
+      "value": 20,
+      "because": "the profile's long-list rule: the number, then the first twenty; the recipes' page"
+    },
+    "host_spill_bytes": {
+      "value": 8192,
+      "because": "VS Code spills an answer larger than 8 192 bytes to a file (measured 2026-10-23)"
+    }
+  },
+  "steps": [
+    {
+      "id": "interface-count",
+      "mcp": "impact_of",
+      "arguments": {
+        "name": {
+          "$target": "interface"
+        },
+        "form": "count"
+      }
+    },
+    {
+      "id": "interface-summary",
+      "mcp": "impact_of",
+      "arguments": {
+        "name": {
+          "$target": "interface"
+        },
+        "form": "summary"
+      },
+      "text": "impact-summary"
+    },
+    {
+      "id": "interface-next",
+      "mcp": "impact_of",
+      "arguments": {
+        "name": {
+          "$target": "interface"
+        },
+        "form": "summary"
+      },
+      "continues": "interface-summary",
+      "text": "impact-summary"
+    },
+    {
+      "id": "component-count",
+      "mcp": "impact_of",
+      "arguments": {
+        "name": {
+          "$target": "component"
+        },
+        "form": "count"
+      }
+    },
+    {
+      "id": "component-summary",
+      "mcp": "impact_of",
+      "arguments": {
+        "name": {
+          "$target": "component"
+        },
+        "form": "summary"
+      },
+      "text": "impact-summary"
+    },
+    {
+      "id": "component-next",
+      "mcp": "impact_of",
+      "arguments": {
+        "name": {
+          "$target": "component"
+        },
+        "form": "summary"
+      },
+      "continues": "component-summary",
+      "text": "impact-summary"
+    }
+  ],
+  "expectations": [
+    {
+      "step": "interface-count",
+      "at": "matched.*.total",
+      "count_above": "page_rows",
+      "because": "the precondition: the heaviest interface's walk is longer than one page"
+    },
+    {
+      "step": "interface-count",
+      "at": "matched.*.by_kind.swc",
+      "count_equals": {
+        "locator": "components_naming_count",
+        "of": "interface"
+      },
+      "because": "the walk reaches every component whose port names the interface, counted off the model by the locator, so a count asked about another element fails"
+    },
+    {
+      "step": "component-count",
+      "at": "matched.*.total",
+      "count_above": "page_rows",
+      "because": "the precondition: the largest component's walk is longer than one page"
+    },
+    {
+      "step": "component-count",
+      "at": "matched.*.by_kind.connector",
+      "count_equals": {
+        "locator": "connector_count",
+        "of": "component"
+      },
+      "because": "the walk reaches every connector with an end on the component, counted off the model by the locator, so a count asked about another element fails"
+    },
+    {
+      "step": "interface-summary",
+      "at": "rows",
+      "count_equals": {
+        "threshold": "page_rows"
+      },
+      "because": "a summary with no limit answers the first page of a long walk, not fewer rows and not the whole walk"
+    },
+    {
+      "step": "interface-summary",
+      "at": "page.total",
+      "count_equals": {
+        "step": "interface-count",
+        "at": "matched.*.total"
+      },
+      "because": "the page's footer states the whole walk's count, so the rows it leaves out are said, never dropped"
+    },
+    {
+      "step": "interface-summary",
+      "at": "page.next",
+      "present": true,
+      "because": "the footer carries the cursor that asks for the next page"
+    },
+    {
+      "step": "interface-summary",
+      "bytes_at_most": "host_spill_bytes"
+    },
+    {
+      "step": "interface-next",
+      "at": "rows",
+      "disjoint_from": "interface-summary",
+      "because": "replaying the first page's cursor (which that page must state as truncated) answers rows the first page does not list, so the cursor continues the walk rather than restarting or ending it"
+    },
+    {
+      "step": "interface-next",
+      "at": "rows",
+      "rows_at_most": "page_rows",
+      "because": "a continued page is a page too: replaying the cursor answers at most the next twenty rows, never every row after it"
+    },
+    {
+      "step": "interface-next",
+      "bytes_at_most": "host_spill_bytes"
+    },
+    {
+      "step": "interface-next",
+      "at": "page.total",
+      "count_equals": {
+        "step": "interface-count",
+        "at": "matched.*.total"
+      },
+      "because": "the continued page states the same whole walk"
+    },
+    {
+      "step": "component-summary",
+      "at": "rows",
+      "count_equals": {
+        "threshold": "page_rows"
+      },
+      "because": "a summary with no limit answers the first page of a long walk, not fewer rows and not the whole walk"
+    },
+    {
+      "step": "component-summary",
+      "at": "page.total",
+      "count_equals": {
+        "step": "component-count",
+        "at": "matched.*.total"
+      },
+      "because": "the page's footer states the whole walk's count, so the rows it leaves out are said, never dropped"
+    },
+    {
+      "step": "component-summary",
+      "at": "page.next",
+      "present": true,
+      "because": "the footer carries the cursor that asks for the next page"
+    },
+    {
+      "step": "component-summary",
+      "bytes_at_most": "host_spill_bytes"
+    },
+    {
+      "step": "component-next",
+      "at": "rows",
+      "disjoint_from": "component-summary",
+      "because": "replaying the first page's cursor (which that page must state as truncated) answers rows the first page does not list, so the cursor continues the walk rather than restarting or ending it"
+    },
+    {
+      "step": "component-next",
+      "at": "rows",
+      "rows_at_most": "page_rows",
+      "because": "a continued page is a page too: replaying the cursor answers at most the next twenty rows, never every row after it"
+    },
+    {
+      "step": "component-next",
+      "bytes_at_most": "host_spill_bytes"
+    },
+    {
+      "step": "component-next",
+      "at": "page.total",
+      "count_equals": {
+        "step": "component-count",
+        "at": "matched.*.total"
+      },
+      "because": "the continued page states the same whole walk"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+# The user guide's site, built by `python scripts/dev.py docs` (`mkdocs build --strict` in
+# scripts/build_artifacts.py's build_docs_site(), the one place mkdocs is invoked).
+#
+# * `docs_dir` is docs/guide/ only: the rest of docs/ is not for the guide's reader and is not
+#   built into the site. The build copies the release notes into docs/guide/release-notes/, so
+#   a page links a note relatively (`release-notes/<version>.md`).
+# * No version string appears here. The build writes docs/guide/version.md, which is gitignored
+#   and absent from `nav`; the release-notes section is generated and gitignored too, and `nav`
+#   names only its index.
+#
+# The narrative rows of `nav` are edited by hand; the `Reference:` section is NOT: `python
+# scripts/dev.py docs-reference` rewrites it from the pages it generates, and
+# packages/tools/tests/test_guide_reference_drift.py holds the two to each other. A row the
+# generator does not own survives the rewrite (the MCP tool page joins the section that way), but
+# a line in the section that is not a `- <label>: <path>` row, a comment included, makes the
+# rewrite refuse and change nothing: keep such a line outside the section.
+
+site_name: SWCraft Guide
+site_description: Working with an architecture model in SWCraft.
+docs_dir: docs/guide
+site_dir: dist/docs/site
+use_directory_urls: true
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Start here: index.md
+  - The big picture: big-picture.md
+  - Getting started: getting-started.md
+  - An architecture repository: architecture-repository.md
+  - How-to:
+      - Overview: how-to/index.md
+      - Connect two components: how-to/connect-components.md
+      - Add a component: how-to/add-a-component.md
+      - Add an interface: how-to/add-an-interface.md
+      - Move a runnable: how-to/move-a-runnable.md
+      - Remove an element: how-to/remove-an-element.md
+      - Rename an element: how-to/rename-an-element.md
+      - Link requirements: how-to/link-requirements.md
+      - Import a component: how-to/import-a-component.md
+      - What a change affects: how-to/what-a-change-affects.md
+      - Check a memory: how-to/check-memory.md
+      - Ask about components and ports: how-to/ask-about-components.md
+      - Ask about requirements: how-to/ask-about-requirements.md
+      - What a refusal means: how-to/refusals.md
+  - Working with the model: model.md
+  - Safety levels: safety.md
+  - In VS Code: vscode.md
+  - In Kiro: kiro.md
+  - The model guard's rules: model-guard.md
+  - The assistant: assistant.md
+  - Command line: cli.md
+  - Diagrams: diagrams.md
+  - Test tables: test-tables.md
+  - The Change Report: change-report.md
+  - Architecture metrics: metrics.md
+  - Experiments: experiments.md
+  - Upgrading: upgrading.md
+  - Troubleshooting: troubleshooting.md
+  - Release notes: release-notes/index.md
+  - Reference:
+      - Overview: reference/index.md
+      - The model layers: reference/model/index.md
+      - Requirements: reference/model/requirements.md
+      - Compositions: reference/model/compositions.md
+      - SWCs: reference/model/swc.md
+      - Interfaces: reference/model/interfaces.md
+      - Application Types: reference/model/application_types.md
+      - Implementation Types: reference/model/implementation_types.md
+      - Base Types: reference/model/base_types.md
+      - Units: reference/model/units.md
+      - Compu Methods: reference/model/compu_methods.md
+      - Data Constraints: reference/model/data_constraints.md
+      - Mapping Sets: reference/model/mapping_sets.md
+      - Connectors: reference/model/connectors.md
+      - Tasks: reference/model/tasks.md
+      - Sequences: reference/model/sequences.md
+      - Hardware: reference/model/hardware.md
+      - The checks: reference/rules.md
+      - The command line: reference/cli.md
+      - The requirements interchange file: reference/requirements-interchange.md
+      - The model passport: reference/model-passport.md
+      - The assistant's tools: reference/tools.md

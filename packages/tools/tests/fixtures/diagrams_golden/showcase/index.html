@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vehicle-control-showcase</title>
+<style>
+body { margin: 0 auto; max-width: 960px; padding: 16px; font: 14px Helvetica, Arial, sans-serif; }
+a { color: #1a5fb4; }
+li { margin: 2px 0; }
+.file { color: #555555; font-size: 12px; }
+pre { background: #f6f6f6; padding: 8px; overflow-x: auto; }
+</style>
+</head>
+<body>
+<h1>vehicle-control-showcase</h1>
+<section>
+<h2>Compositions</h2>
+<ul>
+<li><a href="ibd-VehicleControl.html">VehicleControl — internal block diagram</a> <span class="file">(<a href="ibd-VehicleControl.svg">SVG</a>)</span></li>
+<li><a href="overview-VehicleControl.html">VehicleControl — overview</a> <span class="file">(<a href="overview-VehicleControl.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section>
+<h2>Nesting</h2>
+<ul>
+<li><a href="nesting.html">VehicleControl — nesting</a> <span class="file">(<a href="nesting.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section>
+<h2>Deployment</h2>
+<ul>
+<li><a href="deployment.html">CPU — deployment</a> <span class="file">(<a href="deployment.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section>
+<h2>Sequences</h2>
+<ul>
+<li><a href="sequence-baseline_50ms_cycle.html">baseline_50ms_cycle — sequence diagram</a> <span class="file">(<a href="sequence-baseline_50ms_cycle.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section id="report">
+<h2>Report</h2>
+<pre>Diagrams report: vehicle-control-showcase
+
+Views: 5
+  ibd-VehicleControl            768.56 x 525 px  8484 bytes
+  overview-VehicleControl       488.28 x 455 px  3776 bytes
+  nesting                       863.28 x 114 px  2861 bytes
+  deployment                    959.28 x 228 px  4210 bytes
+  sequence-baseline_50ms_cycle  721.12 x 244 px  5788 bytes
+
+Not drawn: none
+
+Drawn as a loop: none
+</pre>
+</section>
+<p><a href="report.txt">report.txt</a></p>
+<script type="application/json" id="swcraft-elements">{"compositions/VehicleControl.yaml": {"members": {}, "views": ["ibd-VehicleControl", "overview-VehicleControl", "nesting"]}, "hardware/CPU.yaml": {"members": {}, "views": ["deployment"]}, "hardware/Core0.yaml": {"members": {}, "views": ["deployment"]}, "hardware/Partition0.yaml": {"members": {}, "views": ["deployment"]}, "sequences/baseline_50ms_cycle.yaml": {"members": {}, "views": ["sequence-baseline_50ms_cycle"]}, "swc/application/BrakeController.yaml": {"members": {"ports/pBrakeRequest": ["ibd-VehicleControl"], "ports/rPermittedBrakeAction": ["ibd-VehicleControl"], "runnables/ProcessBrakeRequest": ["sequence-baseline_50ms_cycle"]}, "views": ["ibd-VehicleControl", "overview-VehicleControl", "nesting", "deployment", "sequence-baseline_50ms_cycle"]}, "swc/application/BrakeTemperatureSensor.yaml": {"members": {"ports/pBrakeTemperature": ["ibd-VehicleControl"], "runnables/PublishBrakeTemperature": ["sequence-baseline_50ms_cycle"]}, "views": ["ibd-VehicleControl", "overview-VehicleControl", "nesting", "deployment", "sequence-baseline_50ms_cycle"]}, "swc/application/DiagnosticManager.yaml": {"members": {"ports/rThermalProtectionEvent": ["ibd-VehicleControl"]}, "views": ["ibd-VehicleControl", "overview-VehicleControl", "nesting", "deployment"]}, "swc/application/InstrumentCluster.yaml": {"members": {"ports/rThermalProtectionStatus": ["ibd-VehicleControl"]}, "views": ["ibd-VehicleControl", "overview-VehicleControl", "nesting", "deployment"]}, "swc/application/VehicleStateManager.yaml": {"members": {"ports/pOperatingState": ["ibd-VehicleControl"], "runnables/PublishOperatingState": ["sequence-baseline_50ms_cycle"]}, "views": ["ibd-VehicleControl", "overview-VehicleControl", "nesting", "deployment", "sequence-baseline_50ms_cycle"]}, "tasks/Task_100ms.yaml": {"members": {}, "views": ["deployment"]}, "tasks/Task_50ms.yaml": {"members": {}, "views": ["deployment", "sequence-baseline_50ms_cycle"]}}</script>
+</body>
+</html>

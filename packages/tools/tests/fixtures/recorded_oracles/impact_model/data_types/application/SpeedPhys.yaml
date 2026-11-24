@@ -1,0 +1,7 @@
+name: SpeedPhys
+kind: application_type
+unit: km/h
+range:
+  min: 0.0
+  max: 400.0
+description: the physical view a composite member names; `mapping_sets.map.application` resolves to it.

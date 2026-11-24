@@ -1,0 +1,26 @@
+{
+  "id": "metrics-tool-bad-revision-refused",
+  "function": "MCP `architecture_metrics`",
+  "tier": "generated-small",
+  "specimen": "scenario-impact-summary-bounded",
+  "class": "refusal",
+  "thresholds": {},
+  "steps": [
+    {
+      "id": "named",
+      "mcp": "architecture_metrics",
+      "arguments": {
+        "since": "no-such-rev"
+      },
+      "text": "refusal"
+    }
+  ],
+  "expectations": [
+    {
+      "step": "named",
+      "at": "refusal",
+      "present": true,
+      "because": "a revision that cannot be read answers one ERROR: text and no figure; the tool has no automatic base, so it never answers a sentence instead"
+    }
+  ]
+}

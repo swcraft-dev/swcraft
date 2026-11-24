@@ -1,0 +1,9 @@
+name: Root
+title: Root
+root: true
+description: Places two compositions, each holding a member named Sensor of a different type.
+members:
+  - name: Left
+    composition: LeftC
+  - name: Right
+    composition: RightC

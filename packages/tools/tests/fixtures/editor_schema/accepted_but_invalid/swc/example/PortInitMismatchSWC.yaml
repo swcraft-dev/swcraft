@@ -1,0 +1,13 @@
+name: PortInitMismatchSWC
+type: application
+description: States a port's own init value whose shape its data element's type cannot hold
+ports:
+  - name: rIn
+    direction: require
+    interface: IExample
+    com_specs:
+      - data_element: value
+        init: [1, 2]
+memory:
+  RAM0: 16
+handle_termination_and_restart: no_support

@@ -1,0 +1,223 @@
+{
+  "name": "update-requirement-version-confirming-links",
+  "description": "An `update` of a requirement's `version` with `confirm_links: true`: the server confirms every `satisfies` link naming the requirement at another version, or at none, as ordinary operations run after the client's — a `remove` of the old member and a `create` of `REQ_EXAMPLE_001@2` in the same list (a `satisfies` list is a `whole_value` list: a link is added or removed, never edited in place), only the `remove` where the list already holds the new version — and the delta marks each of its rows `origin: \"server\"`. A port's bare link is confirmed like a stated one; the `derived_from` member of `REQ_EXAMPLE_002` is no link and is left alone.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, seeded: `REQ_EXAMPLE_001` at version 1 is linked at `@1` from both components' own `satisfies`, by a bare id from `ExampleConsumerSWC`'s port `rIn`, and from `IExample` at both `@1` and `@2`; `REQ_EXAMPLE_002` derives from `REQ_EXAMPLE_001@1`.",
+    "existing_elements": [
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_001"
+      },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_002"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "ports"
+          },
+          {
+            "member": "rIn"
+          }
+        ]
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      }
+    ],
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Raise REQ_EXAMPLE_001 to version 2 and confirm every link to it.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "requirements",
+          "element": "REQ_EXAMPLE_001",
+          "path": [
+            {
+              "field": "version"
+            }
+          ]
+        },
+        "value": 2,
+        "confirm_links": true
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rIn"
+              },
+              {
+                "field": "satisfies"
+              },
+              {
+                "member": "REQ_EXAMPLE_001"
+              }
+            ]
+          },
+          "before": "REQ_EXAMPLE_001",
+          "summary": "swc/ExampleConsumerSWC: - ports[rIn].satisfies[REQ_EXAMPLE_001]",
+          "origin": "server"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rIn"
+              },
+              {
+                "field": "satisfies"
+              },
+              {
+                "member": "REQ_EXAMPLE_001@2"
+              }
+            ]
+          },
+          "after": "REQ_EXAMPLE_001@2",
+          "summary": "swc/ExampleConsumerSWC: + ports[rIn].satisfies[REQ_EXAMPLE_001@2]",
+          "origin": "server"
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "satisfies"
+              },
+              {
+                "member": "REQ_EXAMPLE_001@1"
+              }
+            ]
+          },
+          "before": "REQ_EXAMPLE_001@1",
+          "summary": "swc/ExampleConsumerSWC: - satisfies[REQ_EXAMPLE_001@1]",
+          "origin": "server"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "satisfies"
+              },
+              {
+                "member": "REQ_EXAMPLE_001@2"
+              }
+            ]
+          },
+          "after": "REQ_EXAMPLE_001@2",
+          "summary": "swc/ExampleConsumerSWC: + satisfies[REQ_EXAMPLE_001@2]",
+          "origin": "server"
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "satisfies"
+              },
+              {
+                "member": "REQ_EXAMPLE_001@1"
+              }
+            ]
+          },
+          "before": "REQ_EXAMPLE_001@1",
+          "summary": "swc/ExampleSWC: - satisfies[REQ_EXAMPLE_001@1]",
+          "origin": "server"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "satisfies"
+              },
+              {
+                "member": "REQ_EXAMPLE_001@2"
+              }
+            ]
+          },
+          "after": "REQ_EXAMPLE_001@2",
+          "summary": "swc/ExampleSWC: + satisfies[REQ_EXAMPLE_001@2]",
+          "origin": "server"
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "interfaces",
+            "element": "IExample",
+            "path": [
+              {
+                "field": "satisfies"
+              },
+              {
+                "member": "REQ_EXAMPLE_001@1"
+              }
+            ]
+          },
+          "before": "REQ_EXAMPLE_001@1",
+          "summary": "interfaces/IExample: - satisfies[REQ_EXAMPLE_001@1]",
+          "origin": "server"
+        },
+        {
+          "operation": "update",
+          "address": {
+            "layer": "requirements",
+            "element": "REQ_EXAMPLE_001",
+            "path": [
+              {
+                "field": "version"
+              }
+            ]
+          },
+          "before": 1,
+          "after": 2,
+          "summary": "requirements/REQ_EXAMPLE_001: ~ version 1 -> 2"
+        }
+      ]
+    },
+    "notes": "With the version unchanged (an update to its current value, the re-import case) the field delta is empty and the server's rows are the whole delta. The flag on any other address is refused `schema-violation`. The audit's `change_set_staged` record lists the server's removes and creates under `server_operations`, beside the client's update under `operations`."
+  }
+}

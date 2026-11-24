@@ -1,0 +1,84 @@
+{
+  "name": "create-at-occupied-storage-target",
+  "description": "A `create` whose identity no element declares, but whose plain file name — the one composed from the identity — another element's file already holds. The store keeps every name: the new element is written to the nearest free collision-suffixed file and the element that held the plain name is left byte-identical. Nothing in the exchange shows it, and that is the contract: the response of this create is the response of a create that took no suffix, because a file name is storage and storage never crosses the boundary in either direction. A collision of FILE names is never refused: on a case-insensitive filesystem that would make `UInt16` unrepresentable beside `uint16`.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model plus one hand-authored file, `data_types/implementation/Speed_kph.yaml`, whose declared name is `VehicleSpeed_kph`. No element of the `implementation_types` layer is named `Speed_kph`, so the identity is free while its plain file name is held. The commit writes `data_types/implementation/Speed_kph~1.yaml` declaring `Speed_kph`; the change set's writer entry in the audit log records that target beside the address `{implementation_types, Speed_kph}`, and the response carries neither the file nor the suffix.",
+    "existing_elements": [
+      {
+        "layer": "implementation_types",
+        "element": "VehicleSpeed_kph"
+      }
+    ],
+    "occupied_targets": [
+      {
+        "layer": "implementation_types",
+        "element": "Speed_kph"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "Speed_kph"
+          }
+        }
+      ],
+      "notes": "The scope covers the requested address exactly. A scope is keyed by address and never by file, so the file the store chooses needs no approval of its own — it is not something the host is shown or could be shown."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Add a shorter-named value type for the vehicle speed.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "implementation_types",
+          "element": "Speed_kph"
+        },
+        "value": {
+          "name": "Speed_kph",
+          "kind": "value_type",
+          "base": "float32_base",
+          "unit": "kph",
+          "description": "Vehicle speed in kilometres per hour"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:3mQh8cVZ0yK1pW7tN2sR4g",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "Speed_kph"
+          },
+          "after": {
+            "name": "Speed_kph",
+            "kind": "value_type",
+            "base": "float32_base",
+            "unit": "kph",
+            "value_min": null,
+            "value_max": null,
+            "compu_method_ref": null,
+            "description": "Vehicle speed in kilometres per hour",
+            "package": null
+          },
+          "summary": "implementation_types: + Speed_kph"
+        }
+      ],
+      "audit_ref": "cs-20260911T120000Z-5a1f00"
+    },
+    "notes": "`committed`, and not a safety act: a new value type makes no check refuse less. The delta is exactly the one `create-data-type-alias.json` would produce for this payload against a model where nothing holds the name, which is the point — which file an element lives in is a fact of the store and of the audit log's written-target record, never of the protocol. An identity already declared by an element is still an `identity-conflict` (`negative/identity-conflict-duplicate-data-type.json`): what collides is an identity, never a file name."
+  }
+}

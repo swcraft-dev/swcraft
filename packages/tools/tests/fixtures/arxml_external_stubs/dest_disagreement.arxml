@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  External stub fixture: absent paths whose
+  reference occurrences disagree on DEST get no stub.
+
+  /Remote/If/IAcross is named by a port of Left with DEST CLIENT-SERVER-INTERFACE
+  and by a port of Right with DEST SENDER-RECEIVER-INTERFACE: a disagreement
+  ACROSS owners. /Remote/If/IWithin is named by two ports of Right itself, a
+  client-server and a mode-switch DEST: WITHIN one owner. /Remote/Types/TWithin
+  is named by two arguments of one client-server interface, one DEST an
+  implementation type and the other an application type: within one owner,
+  and the one case where the member identity alone tells the occurrences apart.
+
+  /Remote/If/IAgreed is named twice with one DEST, so it is the one stub here.
+
+  /Remote/If/IFar is named by two ports of Far, in a package of its own, with
+  two DESTs: a disagreement a package selection of Components drops whole,
+  and IAcross gains a third occurrence there, so the same selection narrows a
+  disagreement it keeps.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Interfaces</SHORT-NAME>
+          <ELEMENTS>
+            <CLIENT-SERVER-INTERFACE>
+              <SHORT-NAME>IMixedArgs</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <OPERATIONS>
+                <CLIENT-SERVER-OPERATION>
+                  <SHORT-NAME>Get</SHORT-NAME>
+                  <ARGUMENTS>
+                    <ARGUMENT-DATA-PROTOTYPE>
+                      <SHORT-NAME>value</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Remote/Types/TWithin</TYPE-TREF>
+                      <DIRECTION>OUT</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                  </ARGUMENTS>
+                </CLIENT-SERVER-OPERATION>
+                <CLIENT-SERVER-OPERATION>
+                  <SHORT-NAME>Set</SHORT-NAME>
+                  <ARGUMENTS>
+                    <ARGUMENT-DATA-PROTOTYPE>
+                      <SHORT-NAME>value</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Remote/Types/TWithin</TYPE-TREF>
+                      <DIRECTION>IN</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                  </ARGUMENTS>
+                </CLIENT-SERVER-OPERATION>
+              </OPERATIONS>
+            </CLIENT-SERVER-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Left</SHORT-NAME>
+              <PORTS>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rAcross</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Remote/If/IAcross</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rAgreed</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Remote/If/IAgreed</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>pMixed</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Acme/Interfaces/IMixedArgs</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Right</SHORT-NAME>
+              <PORTS>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rAcross</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Remote/If/IAcross</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rWithinCs</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Remote/If/IWithin</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rWithinMode</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="MODE-SWITCH-INTERFACE">/Remote/If/IWithin</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rAgreed</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Remote/If/IAgreed</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Elsewhere</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>Far</SHORT-NAME>
+              <PORTS>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rFarCs</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/Remote/If/IFar</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rFarSr</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Remote/If/IFar</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE>
+                  <SHORT-NAME>rAcross</SHORT-NAME>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Remote/If/IAcross</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

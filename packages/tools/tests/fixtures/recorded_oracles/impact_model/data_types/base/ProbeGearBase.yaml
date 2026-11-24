@@ -1,0 +1,5 @@
+name: ProbeGearBase
+kind: base_type
+size: 32
+encoding: 2C
+native_declaration: sint32_t

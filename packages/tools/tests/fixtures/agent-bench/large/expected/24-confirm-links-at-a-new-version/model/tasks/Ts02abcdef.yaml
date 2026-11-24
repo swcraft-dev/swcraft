@@ -1,0 +1,19 @@
+name: Ts02abcdef
+period: 0.02
+priority: 21
+partition: Pa1abc
+wcet: 1us
+runnables:
+- swc: Swc006abcdefghij
+  runnable: R1
+- swc: Swc007abcdefghij
+  runnable: R1
+- swc: Swc008abcdefghij
+  runnable: R1
+- swc: Swc009abcdefghij
+  runnable: R1
+- swc: Swc010abcdefghij
+  runnable: R1
+coexistence: 'Specimen: components of several levels share this task by construction.'
+satisfies:
+- Rq02abcdef@2

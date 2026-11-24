@@ -1,0 +1,93 @@
+{
+  "$comment": [
+    "The committed expected-difference list for the three ARXML goldens.",
+    "Written BEFORE the writer was changed and before a single golden was regenerated, by hand,",
+    "from the design: an unmatched difference must fail a test rather than reach a reviewer's",
+    "attention. `packages/tools/tests/test_arxml_golden_differences.py` computes the observed difference",
+    "between `differences/before/<name>.arxml` (the exact pre-change bytes, committed for this) and",
+    "the golden beside it, and asserts it EQUALS the entry below.",
+    "",
+    "How a difference is measured. Each document is flattened into one STRUCTURAL LINE per XML",
+    "element, `{tag}|{path}|{DEST}|{text}`, where `path` is the SHORT-NAME chain of the element",
+    "itself or of its nearest named ancestor, `DEST` is the reference attribute or empty, and",
+    "`text` is the element's own leaf text or empty. Three axes are then compared:",
+    "  * `renamed` -- string substitutions applied to every line of the BEFORE document first, so",
+    "    a pure rename is declared once instead of appearing as N removals and N additions;",
+    "  * `structure_removed` / `structure_added` -- the multiset difference of the lines that",
+    "    remain, sorted;",
+    "  * `order_changes` -- for every named parent whose set of named children is unchanged, the",
+    "    child order before and after. A reorder under a parent whose child set ALSO changed is",
+    "    carried by the two multisets and is deliberately not reported twice.",
+    "",
+    "What this comparison does NOT reach: attributes other than `DEST`, and whitespace. Byte",
+    "equality against the golden is `test_arxml_golden.py`'s own assertion and stays the",
+    "authority; this file is about the CHANGE between two goldens, not about either one."
+  ],
+  "goldens": {
+    "basic-4.2.2": {
+      "model_root": "examples/basic/model",
+      "reason": [
+        "The writer no longer invents `SwCraftComposition`. `examples/basic/model/compositions/",
+        "Root.yaml` declares the root, so the one composition element is renamed to `Root` and",
+        "every path built from the old name follows it -- the element itself, its two",
+        "SW-COMPONENT-PROTOTYPEs, its ASSEMBLY-SW-CONNECTOR and the connector's two",
+        "CONTEXT-COMPONENT-REFs.",
+        "The prototypes also change order. They used to be the `swc` layer's read order",
+        "(ExampleConsumerSWC before ExampleSWC, because a layer is read by sorted path); they are",
+        "the root's declared `members` order now, which is ExampleSWC first.",
+        "Nothing else moves: no element is added or removed, no TARGET-*-PORT-REF changes (it has",
+        "always pointed at the TYPE's port, never at the prototype), and no TYPE-TREF changes."
+      ],
+      "renamed": [["SwCraftComposition", "Root"]],
+      "structure_removed": [],
+      "structure_added": [],
+      "order_changes": [
+        {
+          "parent": "/ComponentTypes/Root",
+          "before": ["ExampleConsumerSWC", "ExampleSWC", "Example_to_Consumer"],
+          "after": ["ExampleSWC", "ExampleConsumerSWC", "Example_to_Consumer"]
+        }
+      ],
+      "bytes_identical": false
+    },
+    "composite-4.2.2": {
+      "model_root": "packages/tools/tests/fixtures/component_exchange/model",
+      "reason": [
+        "The same two differences as `basic-4.2.2`, for the same two reasons, on a model root whose",
+        "root composition declares SensorSwc before ActuatorSwc while the `swc` layer reads",
+        "ActuatorSwc first. This golden carries every tag SWCraft emits, and none of the other 93",
+        "is touched: the composition change reaches nothing outside the composition element."
+      ],
+      "renamed": [["SwCraftComposition", "Root"]],
+      "structure_removed": [],
+      "structure_added": [],
+      "order_changes": [
+        {
+          "parent": "/ComponentTypes/Root",
+          "before": ["ActuatorSwc", "SensorSwc", "speedLink"],
+          "after": ["SensorSwc", "ActuatorSwc", "speedLink"]
+        }
+      ],
+      "bytes_identical": false
+    },
+    "empty-4.2.2": {
+      "model_root": null,
+      "reason": [
+        "No difference at all, and the entry exists to say so rather than to leave the third golden",
+        "unmentioned (the committed golden set is three files, and",
+        "`GOLDEN_MODEL_ROOTS` names only two because this one is generated from a freshly created",
+        "empty tree git cannot represent).",
+        "Before the change an empty model emitted no composition because it declared no CONNECTOR;",
+        "after it, it emits none because it declares no COMPOSITION. The gate moved from the",
+        "connector layer to the compositions layer and the degenerate output is unchanged -- which",
+        "is the assertion, not a coincidence: this is the one golden whose bytes are compared",
+        "directly."
+      ],
+      "renamed": [],
+      "structure_removed": [],
+      "structure_added": [],
+      "order_changes": [],
+      "bytes_identical": true
+    }
+  }
+}

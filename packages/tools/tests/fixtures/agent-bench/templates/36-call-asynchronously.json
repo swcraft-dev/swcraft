@@ -1,0 +1,10 @@
+{
+  "id": "36-call-asynchronously",
+  "task": 36,
+  "group": "model-change",
+  "kind": "change",
+  "binding": "call_asynchronously",
+  "oracle": "structural",
+  "prompt": "{{component}}'s {{runnable}} should not wait for {{operation}} on {{port}}; start a new runnable {{callback}} when it returns.",
+  "note": "The first synchronous call in row order whose port and operation no other call of its component names, so no mixed-synchrony finding can follow; the callback is a new runnable whose one event is the call_returned of that pair, named On<Operation>Returned with the first free numeric suffix. The call keeps its other fields."
+}

@@ -1,0 +1,46 @@
+{
+  "id": "22-candidates-for-a-requirement",
+  "task": 22,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which elements could realise Rq17abcdef? Give the best candidates with the reason.",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "candidates": {
+        "top": [
+          "Swc136abcdefghi",
+          "Swc137abcdefghi",
+          "Swc138abcdefghi"
+        ],
+        "terms": {
+          "Swc136abcdefghi": [
+            "forwarding",
+            "hub",
+            "latency"
+          ],
+          "Swc137abcdefghi": [
+            "forwarding",
+            "hub",
+            "latency"
+          ],
+          "Swc138abcdefghi": [
+            "forwarding",
+            "hub",
+            "latency"
+          ]
+        }
+      }
+    }
+  },
+  "reference": {
+    "rule": "N = 3: the reply names the three top groups (place 1-3) of the deterministic trace search with its default configuration, in any order, and for each at least one term the search says it shares; already-linked elements the search leaves out may be named beside them. The search ranks the components whose descriptions share the requirement's words (forwarding, hub, latency) first: the ground is the search's ranking, not a reading of the text.",
+    "search": [
+      "1. swc Swc136abcdefghi 1.0, shares forwarding, hub, latency",
+      "2. swc Swc137abcdefghi 1.0, shares forwarding, hub, latency",
+      "3. swc Swc138abcdefghi 1.0, shares forwarding, hub, latency"
+    ],
+    "computed_by": "swcraft experiment trace --format json (default configuration) on a copy of the bench, the requirement's candidates by place"
+  }
+}

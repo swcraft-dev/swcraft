@@ -1,0 +1,45 @@
+{
+  "name": "read-mapping-sets-layer",
+  "description": "A layer-granularity `read` of `mapping_sets`, stored in `data_types/mapping_sets/` since contract `8.0.0` moved the layer beside the types it pairs. It answers the one set the model declares, whose one map pairs an application type and an implementation type that share the name `SyntheticTorque`: the two sides spell one name and name two elements, because each is resolved in the layer its field targets.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model plus one name declared in two layers: the application type `SyntheticTorque` (`data_types/application/`) and the implementation type `SyntheticTorque` (`data_types/implementation/`), a value type over the base's `float32_base`, each stating its bounds inline, and the mapping set `SyntheticTorqueMapping` (`data_types/mapping_sets/`) that pairs them. The base's twelve base types (`data_types/base/`) and twelve value types are unchanged.",
+    "existing_elements": [
+      {
+        "layer": "application_types",
+        "element": "SyntheticTorque"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "SyntheticTorque"
+      },
+      {
+        "layer": "mapping_sets",
+        "element": "SyntheticTorqueMapping"
+      }
+    ],
+    "notes": "No `form` is stated, so the layer answers `summary`; the set's `maps` collection is answered as a count, as every collection is in a summary."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "mapping_sets"
+    }
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "mapping_sets"
+      },
+      "form": "summary",
+      "value": [
+        {
+          "name": "SyntheticTorqueMapping",
+          "maps": 1
+        }
+      ]
+    },
+    "notes": "The map's two sides are read as written; which layer each resolves in is the contract's (`map.application` targets `application_types`, `map.implementation` targets `implementation_types`), and pass D judges it on a change set rather than a read."
+  }
+}

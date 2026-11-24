@@ -1,0 +1,134 @@
+{
+  "id": "02-brake-data-logger",
+  "task": 2,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Add a brake diagnostics data logger to the model: 1. A new application component BrakeDataLogger with a require port rBrakeDiagnostics (interface IBrakeDiagnostics) and a runnable LogSnapshot: it runs every 0.1 s and calls the operation ReadSnapshot through rBrakeDiagnostics. RAM 1024. The runnable satisfies REQ_BTP_DIAGNOSTICS@1. 2. Add BrakeDataLogger as a member of the composition VehicleControl. 3. Remove the connector DiagnosticsToCluster and add the connector DiagnosticsToLogger from DiagnosticManager.pBrakeDiagnostics to BrakeDataLogger.rBrakeDiagnostics. 4. Put BrakeDataLogger.LogSnapshot into the task Task_100ms. 5. Remove the satisfies link to REQ_SHOWCASE_BASELINE_002@1 from the port DiagnosticManager.pBrakeDiagnostics. After the changes run check-model.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "swc",
+        "name": "BrakeDataLogger",
+        "has": {
+          "type": "application",
+          "ports": [
+            {
+              "name": "rBrakeDiagnostics",
+              "direction": "require",
+              "interface": "IBrakeDiagnostics"
+            }
+          ],
+          "runnables": [
+            {
+              "name": "LogSnapshot",
+              "events": [
+                {
+                  "type": "timing",
+                  "period": 0.1
+                }
+              ],
+              "calls": [
+                {
+                  "port": "rBrakeDiagnostics",
+                  "operation": "ReadSnapshot"
+                }
+              ],
+              "satisfies": [
+                "REQ_BTP_DIAGNOSTICS@1"
+              ]
+            }
+          ],
+          "memory": {
+            "RAM": 1024
+          }
+        }
+      },
+      {
+        "layer": "compositions",
+        "name": "VehicleControl",
+        "has": {
+          "members": [
+            {
+              "type": "BrakeDataLogger"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "connectors",
+        "name": "DiagnosticsToCluster",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "DiagnosticsToLogger",
+        "has": {
+          "from": {
+            "swc": "DiagnosticManager",
+            "port": "pBrakeDiagnostics"
+          },
+          "to": {
+            "swc": "BrakeDataLogger",
+            "port": "rBrakeDiagnostics"
+          }
+        }
+      },
+      {
+        "any_of": [
+          {
+            "layer": "tasks",
+            "name": "Task_100ms",
+            "has": {
+              "runnables": [
+                {
+                  "swc": "BrakeDataLogger",
+                  "runnable": "LogSnapshot"
+                }
+              ]
+            }
+          },
+          {
+            "layer": "tasks",
+            "name": "Task_100ms",
+            "has": {
+              "runnables": [
+                {
+                  "instance": "BrakeDataLogger",
+                  "runnable": "LogSnapshot"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "name": "DiagnosticManager",
+        "has": {
+          "ports": [
+            {
+              "name": "pBrakeDiagnostics"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "DiagnosticManager",
+        "lacks": {
+          "ports": [
+            {
+              "name": "pBrakeDiagnostics",
+              "satisfies": [
+                "REQ_SHOWCASE_BASELINE_002@1"
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "note": "The prompt is the maintainer's, verbatim."
+}

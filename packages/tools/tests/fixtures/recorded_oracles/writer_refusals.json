@@ -1,0 +1,786 @@
+{
+  "model": "impact_model",
+  "note": "What every public create_* accepts and refuses TODAY, with the exception type it raises. `identity_over_long` and `group_over_long` are 300 characters, past the filesystem's own component limit, which is why some of them are an OSError rather than a refusal. A function whose guards refuse the bare dot, the control character and the over-long name before they reach the filesystem (`create_composition`, `create_mapping_set`) carries no `filesystem_dependent` declaration. `collisions` records that the store keeps every name: a `create_*` whose composed file name is held by a file declaring ANOTHER identity takes the nearest free `~N` collision suffix and succeeds, and only an identity already declared by content is refused. Each case's seed is exactly what the function's own `accepted_baseline` call writes (the identity renamed for the first case, under another file name for the second), and each case carries a `reason`. A `message` is a prefix: the refusal ends with the absolute path of the file that declares the identity. An unrelated file of the layer that does not parse is refused as a `ValueError` naming the layer and the file; a test over every function pins that rather than a case here, since no row seeds an unparseable file.",
+  "filesystem_dependent_note": "`filesystem_dependent` names the property of the recording host's filesystem a row records, for the rows that record one; it is a DECLARATION beside the verdicts, which it does not change. The two values are described in `filesystem_dependent_properties` and `test_writer_mutations_storage.py` branches on both. What it does not reach: the six `identity_bare_dot` rows write `..yaml`, which is also a filesystem question and is left undeclared because no host has been observed refusing it - if one is, it is a row to declare, not a verdict to edit.",
+  "filesystem_dependent_properties": {
+    "control-character-in-a-component": "This row records that the RECORDING HOST's filesystem accepted a path component carrying U+0001 and made a real directory or file of it. It is not a property of SWCraft and not true everywhere: measured 2026-08-27 on Windows 10.0.26200, the same segment is `OSError: [WinError 123] The filename, directory name, or volume label syntax is incorrect`. The verdict below is NOT rewritten - it is what was measured where it was measured. `test_every_frozen_verdict_is_unchanged` asks the live filesystem (tools/tests/filesystem_support.accepts_path_segment) which of the two outcomes to expect; what it asserts either way is that the refusal, when there is one, comes from the filesystem and never as a ValueError out of SWCraft's composer.",
+    "over-long-component": "This row records the errno the RECORDING HOST's filesystem raised for a 300-character component: ENAMETOOLONG (63 on the macOS recorder, 36 on Linux). The Windows errno for a path past MAX_PATH is UNMEASURED as of 2026-08-27 - the control-character case above aborts the replay first, so nobody has ever seen it - and none is invented here. The replay asks this filesystem for its own answer on the same segment and, where that answer is not ENAMETOOLONG, requires create_* to have failed the same way rather than asserting a literal nobody measured."
+  },
+  "probe_values": {
+    "identity_with_slash": "A/B",
+    "identity_with_backslash": "A\\B",
+    "identity_with_dotdot": "A..B",
+    "identity_bare_dot": ".",
+    "identity_control_character": "A\u0001B",
+    "identity_over_long": "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",
+    "group_bare_dot": ".",
+    "group_control_character": "A\u0001B",
+    "group_over_long": "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",
+    "group_dotdot": "..",
+    "group_with_slash": "a/b"
+  },
+  "functions": [
+    {
+      "function": "create_swc",
+      "identity_parameter": "name",
+      "cases": {
+        "accepted_baseline": {
+          "accepted": true,
+          "exception": null,
+          "path": "swc/probe/ProbeSWC.yaml"
+        },
+        "identity_with_slash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A/B': must not contain path separators or '..'"
+        },
+        "identity_with_backslash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A\\B': must not contain path separators or '..'"
+        },
+        "identity_with_dotdot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A..B': must not contain path separators or '..'"
+        },
+        "identity_bare_dot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "SWC name '.' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). Choose another name \u2014 for examp"
+        },
+        "identity_control_character": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "SWC name 'A\u0001B' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). Choose another name \u2014 for exa"
+        },
+        "identity_over_long": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "SWC name 'LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
+        },
+        "group_bare_dot": {
+          "accepted": true,
+          "exception": null,
+          "path": "swc/ProbeSWC.yaml"
+        },
+        "group_control_character": {
+          "accepted": true,
+          "exception": null,
+          "path": "swc/A\u0001B/ProbeSWC.yaml",
+          "filesystem_dependent": "control-character-in-a-component"
+        },
+        "group_over_long": {
+          "accepted": false,
+          "exception": "OSError",
+          "message": "[Errno 63] File name too long: '/var/folders/c2/vvc72k8s3vl0cydx2zkr9sj80000gn/T/phase22_2-writer-dt7yo90j/model/swc/LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",
+          "filesystem_dependent": "over-long-component"
+        },
+        "group_dotdot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid group '..': must not contain path separators or '..'"
+        },
+        "group_with_slash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid group 'a/b': must not contain path separators or '..'"
+        }
+      }
+    },
+    {
+      "function": "create_interface",
+      "identity_parameter": "name",
+      "cases": {
+        "accepted_baseline": {
+          "accepted": true,
+          "exception": null,
+          "path": "interfaces/IProbe.yaml"
+        },
+        "identity_with_slash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid interface name 'A/B': must not contain path separators or '..'"
+        },
+        "identity_with_backslash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid interface name 'A\\B': must not contain path separators or '..'"
+        },
+        "identity_with_dotdot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid interface name 'A..B': must not contain path separators or '..'"
+        },
+        "identity_bare_dot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Interface name '.' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). Choose another name \u2014 for"
+        },
+        "identity_control_character": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Interface name 'A\u0001B' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). Choose another name \u2014 f"
+        },
+        "identity_over_long": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Interface name 'LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
+        }
+      }
+    },
+    {
+      "function": "create_cs_interface",
+      "identity_parameter": "name",
+      "cases": {
+        "accepted_baseline": {
+          "accepted": true,
+          "exception": null,
+          "path": "interfaces/IProbeService.yaml"
+        },
+        "identity_with_slash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid interface name 'A/B': must not contain path separators or '..'"
+        },
+        "identity_with_backslash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid interface name 'A\\B': must not contain path separators or '..'"
+        },
+        "identity_with_dotdot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid interface name 'A..B': must not contain path separators or '..'"
+        },
+        "identity_bare_dot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Interface name '.' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). Choose another name \u2014 for"
+        },
+        "identity_control_character": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Interface name 'A\u0001B' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). Choose another name \u2014 f"
+        },
+        "identity_over_long": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Interface name 'LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
+        }
+      }
+    },
+    {
+      "function": "create_requirement",
+      "identity_parameter": "req_id",
+      "cases": {
+        "accepted_baseline": {
+          "accepted": true,
+          "exception": null,
+          "path": "requirements/REQ_PROBE_001.yaml"
+        },
+        "identity_with_slash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid req_id 'A/B': must not contain path separators or '..'"
+        },
+        "identity_with_backslash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid req_id 'A\\B': must not contain path separators or '..'"
+        },
+        "identity_with_dotdot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid req_id 'A..B': must not contain path separators or '..'"
+        },
+        "identity_bare_dot": {
+          "accepted": true,
+          "exception": null,
+          "path": "requirements/..yaml"
+        },
+        "identity_control_character": {
+          "accepted": true,
+          "exception": null,
+          "path": "requirements/A\u0001B.yaml",
+          "filesystem_dependent": "control-character-in-a-component"
+        },
+        "identity_over_long": {
+          "accepted": false,
+          "exception": "OSError",
+          "message": "[Errno 63] File name too long: '/var/folders/c2/vvc72k8s3vl0cydx2zkr9sj80000gn/T/phase22_2-writer-vj5urqvd/model/requirements/LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",
+          "filesystem_dependent": "over-long-component"
+        }
+      }
+    },
+    {
+      "function": "create_composition",
+      "identity_parameter": "name",
+      "cases": {
+        "accepted_baseline": {
+          "accepted": true,
+          "exception": null,
+          "path": "compositions/ProbeComposition.yaml"
+        },
+        "identity_with_slash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A/B': must not contain path separators or '..'"
+        },
+        "identity_with_backslash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A\\B': must not contain path separators or '..'"
+        },
+        "identity_with_dotdot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A..B': must not contain path separators or '..'"
+        },
+        "identity_bare_dot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Composition name '.' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). Cho"
+        },
+        "identity_control_character": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Composition name 'A\u0001B' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). C"
+        },
+        "identity_over_long": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Composition name 'LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
+        }
+      }
+    },
+    {
+      "function": "create_connector",
+      "identity_parameter": "name",
+      "cases": {
+        "accepted_baseline": {
+          "accepted": true,
+          "exception": null,
+          "path": "connectors/Probe_Connector.yaml"
+        },
+        "identity_with_slash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A/B': must not contain path separators or '..'"
+        },
+        "identity_with_backslash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A\\B': must not contain path separators or '..'"
+        },
+        "identity_with_dotdot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A..B': must not contain path separators or '..'"
+        },
+        "identity_bare_dot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Connector name '.' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). Choose another name \u2014 for"
+        },
+        "identity_control_character": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Connector name 'A\u0001B' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). Choose another name \u2014 f"
+        },
+        "identity_over_long": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Connector name 'LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
+        }
+      }
+    },
+    {
+      "function": "create_task",
+      "identity_parameter": "name",
+      "cases": {
+        "accepted_baseline": {
+          "accepted": true,
+          "exception": null,
+          "path": "tasks/Task_Probe.yaml"
+        },
+        "identity_with_slash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A/B': must not contain path separators or '..'"
+        },
+        "identity_with_backslash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A\\B': must not contain path separators or '..'"
+        },
+        "identity_with_dotdot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A..B': must not contain path separators or '..'"
+        },
+        "identity_bare_dot": {
+          "accepted": true,
+          "exception": null,
+          "path": "tasks/..yaml"
+        },
+        "identity_control_character": {
+          "accepted": true,
+          "exception": null,
+          "path": "tasks/A\u0001B.yaml",
+          "filesystem_dependent": "control-character-in-a-component"
+        },
+        "identity_over_long": {
+          "accepted": false,
+          "exception": "OSError",
+          "message": "[Errno 63] File name too long: '/var/folders/c2/vvc72k8s3vl0cydx2zkr9sj80000gn/T/phase22_2-writer-jrfdx585/model/tasks/LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",
+          "filesystem_dependent": "over-long-component"
+        }
+      }
+    },
+    {
+      "function": "create_sequence",
+      "identity_parameter": "name",
+      "cases": {
+        "accepted_baseline": {
+          "accepted": true,
+          "exception": null,
+          "path": "sequences/probe_cycle.yaml"
+        },
+        "identity_with_slash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A/B': must not contain path separators or '..'"
+        },
+        "identity_with_backslash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A\\B': must not contain path separators or '..'"
+        },
+        "identity_with_dotdot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A..B': must not contain path separators or '..'"
+        },
+        "identity_bare_dot": {
+          "accepted": false,
+          "exception": "ValidationError",
+          "message": "1 validation error for Sequence\nname\n  Value error, name must be an identifier, because it names the sequence's diagram files (match ^[A-Za-z_][A-Za-z0-9_]*$; no spaces, hyphens, leading digits, or other special characters) [type=value"
+        },
+        "identity_control_character": {
+          "accepted": false,
+          "exception": "ValidationError",
+          "message": "1 validation error for Sequence\nname\n  Value error, name must be an identifier, because it names the sequence's diagram files (match ^[A-Za-z_][A-Za-z0-9_]*$; no spaces, hyphens, leading digits, or other special characters) [type=value"
+        },
+        "identity_over_long": {
+          "accepted": false,
+          "exception": "OSError",
+          "message": "[Errno 63] File name too long: '/var/folders/c2/vvc72k8s3vl0cydx2zkr9sj80000gn/T/phase22_2-writer-j3gc9l5k/model/sequences/LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",
+          "filesystem_dependent": "over-long-component"
+        }
+      }
+    },
+    {
+      "function": "create_data_type",
+      "identity_parameter": "name",
+      "cases": {
+        "accepted_baseline": {
+          "accepted": true,
+          "exception": null,
+          "path": "data_types/base/ProbeType.yaml"
+        },
+        "identity_with_slash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid data type name 'A/B': must not contain path separators or '..'"
+        },
+        "identity_with_backslash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid data type name 'A\\B': must not contain path separators or '..'"
+        },
+        "identity_with_dotdot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid data type name 'A..B': must not contain path separators or '..'"
+        },
+        "identity_bare_dot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Data type name '.' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). Choose another name \u2014 for"
+        },
+        "identity_control_character": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Data type name 'A\u0001B' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). Choose another name \u2014 f"
+        },
+        "identity_over_long": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Data type name 'LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
+        }
+      }
+    },
+    {
+      "function": "create_mapping_set",
+      "identity_parameter": "name",
+      "cases": {
+        "accepted_baseline": {
+          "accepted": true,
+          "exception": null,
+          "path": "data_types/mapping_sets/ProbeMappingSet.yaml"
+        },
+        "identity_with_slash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A/B': must not contain path separators or '..'"
+        },
+        "identity_with_backslash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A\\B': must not contain path separators or '..'"
+        },
+        "identity_with_dotdot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A..B': must not contain path separators or '..'"
+        },
+        "identity_bare_dot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Mapping set name '.' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). Choose another name \u2014 f"
+        },
+        "identity_control_character": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Mapping set name 'A\u0001B' is not a legal AUTOSAR Identifier: must be an AUTOSAR Identifier matching [a-zA-Z][a-zA-Z0-9_]* (a letter first, then letters, digits or underscores only). Choose another name \u2014"
+        },
+        "identity_over_long": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Mapping set name 'LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
+        }
+      }
+    },
+    {
+      "function": "create_hardware_element",
+      "identity_parameter": "name",
+      "cases": {
+        "accepted_baseline": {
+          "accepted": true,
+          "exception": null,
+          "path": "hardware/ProbePool.yaml"
+        },
+        "identity_with_slash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A/B': must not contain path separators or '..'"
+        },
+        "identity_with_backslash": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A\\B': must not contain path separators or '..'"
+        },
+        "identity_with_dotdot": {
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Invalid name 'A..B': must not contain path separators or '..'"
+        },
+        "identity_bare_dot": {
+          "accepted": true,
+          "exception": null,
+          "path": "hardware/..yaml"
+        },
+        "identity_control_character": {
+          "accepted": true,
+          "exception": null,
+          "path": "hardware/A\u0001B.yaml",
+          "filesystem_dependent": "control-character-in-a-component"
+        },
+        "identity_over_long": {
+          "accepted": false,
+          "exception": "OSError",
+          "message": "[Errno 63] File name too long: '/var/folders/c2/vvc72k8s3vl0cydx2zkr9sj80000gn/T/phase22_2-writer-sjnvlcup/model/hardware/LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",
+          "filesystem_dependent": "over-long-component"
+        }
+      }
+    }
+  ],
+  "collisions": [
+    {
+      "function": "create_swc",
+      "cases": {
+        "path_held_by_another_identity": {
+          "reason": "the composed file name `ProbeSWC.yaml` is held by a file declaring `ProbeSWC_Occupant`, so the create takes the nearest free collision suffix and succeeds; the occupant is left byte-identical.",
+          "seed": {
+            "path": "swc/probe/ProbeSWC.yaml",
+            "content": "name: ProbeSWC_Occupant\ntype: application\nports: []\nrunnables: []\n"
+          },
+          "accepted": true,
+          "exception": null,
+          "path": "swc/probe/ProbeSWC~1.yaml"
+        },
+        "identity_held_under_another_file_name": {
+          "reason": "a file under another name already declares the identity, and the content check refuses it.",
+          "seed": {
+            "path": "swc/probe/Elsewhere.yaml",
+            "content": "name: ProbeSWC\ntype: application\nports: []\nrunnables: []\n"
+          },
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "SWC 'ProbeSWC' already exists at "
+        }
+      }
+    },
+    {
+      "function": "create_interface",
+      "cases": {
+        "path_held_by_another_identity": {
+          "reason": "the composed file name `IProbe.yaml` is held by a file declaring `IProbe_Occupant`, so the create takes the nearest free collision suffix and succeeds; the occupant is left byte-identical.",
+          "seed": {
+            "path": "interfaces/IProbe.yaml",
+            "content": "name: IProbe_Occupant\nkind: sender_receiver\ndata_elements:\n- name: value\n  implementation_type: float32\n"
+          },
+          "accepted": true,
+          "exception": null,
+          "path": "interfaces/IProbe~1.yaml"
+        },
+        "identity_held_under_another_file_name": {
+          "reason": "a file under another name already declares the identity, and the content check refuses it.",
+          "seed": {
+            "path": "interfaces/Elsewhere.yaml",
+            "content": "name: IProbe\nkind: sender_receiver\ndata_elements:\n- name: value\n  implementation_type: float32\n"
+          },
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Interface 'IProbe' already exists at "
+        }
+      }
+    },
+    {
+      "function": "create_cs_interface",
+      "cases": {
+        "path_held_by_another_identity": {
+          "reason": "the composed file name `IProbeService.yaml` is held by a file declaring `IProbeService_Occupant`, so the create takes the nearest free collision suffix and succeeds; the occupant is left byte-identical.",
+          "seed": {
+            "path": "interfaces/IProbeService.yaml",
+            "content": "name: IProbeService_Occupant\nkind: client_server\noperations:\n- name: Read\n  arguments:\n  - name: a\n    direction: in\n    implementation_type: uint8\n"
+          },
+          "accepted": true,
+          "exception": null,
+          "path": "interfaces/IProbeService~1.yaml"
+        },
+        "identity_held_under_another_file_name": {
+          "reason": "a file under another name already declares the identity, and the content check refuses it.",
+          "seed": {
+            "path": "interfaces/Elsewhere.yaml",
+            "content": "name: IProbeService\nkind: client_server\noperations:\n- name: Read\n  arguments:\n  - name: a\n    direction: in\n    implementation_type: uint8\n"
+          },
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Interface 'IProbeService' already exists at "
+        }
+      }
+    },
+    {
+      "function": "create_requirement",
+      "cases": {
+        "path_held_by_another_identity": {
+          "reason": "the composed file name `REQ_PROBE_001.yaml` is held by a file declaring `REQ_PROBE_OCCUPANT`, so the create takes the nearest free collision suffix and succeeds; the occupant is left byte-identical.",
+          "seed": {
+            "path": "requirements/REQ_PROBE_001.yaml",
+            "content": "id: REQ_PROBE_OCCUPANT\ntitle: Probe\ndescription: Probe requirement.\nreq_type: req\nversion: 1\nsource: architecture\n"
+          },
+          "accepted": true,
+          "exception": null,
+          "path": "requirements/REQ_PROBE_001~1.yaml"
+        },
+        "identity_held_under_another_file_name": {
+          "reason": "a file under another name already declares the identity, and the content check refuses it.",
+          "seed": {
+            "path": "requirements/Elsewhere.yaml",
+            "content": "id: REQ_PROBE_001\ntitle: Probe\ndescription: Probe requirement.\nreq_type: req\nversion: 1\nsource: architecture\n"
+          },
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Requirement 'REQ_PROBE_001' already exists at "
+        }
+      }
+    },
+    {
+      "function": "create_composition",
+      "cases": {
+        "path_held_by_another_identity": {
+          "reason": "the composed file name `ProbeComposition.yaml` is held by a file declaring `ProbeComposition_Occupant`, so the create takes the nearest free collision suffix and succeeds; the occupant is left byte-identical.",
+          "seed": {
+            "path": "compositions/ProbeComposition.yaml",
+            "content": "name: ProbeComposition_Occupant\ntitle: Probe composition\nports: []\nmembers: []\ndelegations: []\n"
+          },
+          "accepted": true,
+          "exception": null,
+          "path": "compositions/ProbeComposition~1.yaml"
+        },
+        "identity_held_under_another_file_name": {
+          "reason": "a file under another name already declares the identity, and the content check refuses it.",
+          "seed": {
+            "path": "compositions/Elsewhere.yaml",
+            "content": "name: ProbeComposition\ntitle: Probe composition\nports: []\nmembers: []\ndelegations: []\n"
+          },
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Composition 'ProbeComposition' already exists at "
+        }
+      }
+    },
+    {
+      "function": "create_connector",
+      "cases": {
+        "path_held_by_another_identity": {
+          "reason": "the composed file name `Probe_Connector.yaml` is held by a file declaring `Probe_Connector_Occupant`, so the create takes the nearest free collision suffix and succeeds; the occupant is left byte-identical.",
+          "seed": {
+            "path": "connectors/Probe_Connector.yaml",
+            "content": "name: Probe_Connector_Occupant\nfrom:\n  swc: SpeedSensor\n  port: pOut\nto:\n  swc: SpeedControl\n  port: rIn\n"
+          },
+          "accepted": true,
+          "exception": null,
+          "path": "connectors/Probe_Connector~1.yaml"
+        },
+        "identity_held_under_another_file_name": {
+          "reason": "a file under another name already declares the identity, and the content check refuses it.",
+          "seed": {
+            "path": "connectors/Elsewhere.yaml",
+            "content": "name: Probe_Connector\nfrom:\n  swc: SpeedSensor\n  port: pOut\nto:\n  swc: SpeedControl\n  port: rIn\n"
+          },
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Connector 'Probe_Connector' already exists at "
+        }
+      }
+    },
+    {
+      "function": "create_task",
+      "cases": {
+        "path_held_by_another_identity": {
+          "reason": "the composed file name `Task_Probe.yaml` is held by a file declaring `Task_Probe_Occupant`, so the create takes the nearest free collision suffix and succeeds; the occupant is left byte-identical.",
+          "seed": {
+            "path": "tasks/Task_Probe.yaml",
+            "content": "name: Task_Probe_Occupant\nperiod: 0.05\npriority: 2\npartition: PARTITION0\nwcet: 100us\nrunnables: []\n"
+          },
+          "accepted": true,
+          "exception": null,
+          "path": "tasks/Task_Probe~1.yaml"
+        },
+        "identity_held_under_another_file_name": {
+          "reason": "a file under another name already declares the identity, and the content check refuses it.",
+          "seed": {
+            "path": "tasks/Elsewhere.yaml",
+            "content": "name: Task_Probe\nperiod: 0.05\npriority: 2\npartition: PARTITION0\nwcet: 100us\nrunnables: []\n"
+          },
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Task 'Task_Probe' already exists at "
+        }
+      }
+    },
+    {
+      "function": "create_sequence",
+      "cases": {
+        "path_held_by_another_identity": {
+          "reason": "the composed file name `probe_cycle.yaml` is held by a file declaring `probe_cycle_Occupant`, so the create takes the nearest free collision suffix and succeeds; the occupant is left byte-identical.",
+          "seed": {
+            "path": "sequences/probe_cycle.yaml",
+            "content": "name: probe_cycle_Occupant\ntask: Task_10ms\nsteps:\n- swc: SpeedSensor\n  runnable: SpeedSensor_Run\n"
+          },
+          "accepted": true,
+          "exception": null,
+          "path": "sequences/probe_cycle~1.yaml"
+        },
+        "identity_held_under_another_file_name": {
+          "reason": "a file under another name already declares the identity, and the content check refuses it.",
+          "seed": {
+            "path": "sequences/Elsewhere.yaml",
+            "content": "name: probe_cycle\ntask: Task_10ms\nsteps:\n- swc: SpeedSensor\n  runnable: SpeedSensor_Run\n"
+          },
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Sequence 'probe_cycle' already exists at "
+        }
+      }
+    },
+    {
+      "function": "create_data_type",
+      "cases": {
+        "path_held_by_another_identity": {
+          "reason": "the composed file name `ProbeType.yaml` is held by a file declaring `ProbeType_Occupant`, so the create takes the nearest free collision suffix and succeeds; the occupant is left byte-identical.",
+          "seed": {
+            "path": "data_types/base/ProbeType.yaml",
+            "content": "name: ProbeType_Occupant\nkind: base_type\nsize: 8\nencoding: NONE\n"
+          },
+          "accepted": true,
+          "exception": null,
+          "path": "data_types/base/ProbeType~1.yaml"
+        },
+        "identity_held_under_another_file_name": {
+          "reason": "a file under another name already declares the identity, and the content check refuses it.",
+          "seed": {
+            "path": "data_types/base/Elsewhere.yaml",
+            "content": "name: ProbeType\nkind: base_type\nsize: 8\nencoding: NONE\n"
+          },
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "DataType 'ProbeType' already exists at "
+        }
+      }
+    },
+    {
+      "function": "create_mapping_set",
+      "cases": {
+        "path_held_by_another_identity": {
+          "reason": "the composed file name `ProbeMappingSet.yaml` is held by a file declaring `ProbeMappingSet_Occupant`, so the create takes the nearest free collision suffix and succeeds; the occupant is left byte-identical.",
+          "seed": {
+            "path": "data_types/mapping_sets/ProbeMappingSet.yaml",
+            "content": "name: ProbeMappingSet_Occupant\nmaps: []\n"
+          },
+          "accepted": true,
+          "exception": null,
+          "path": "data_types/mapping_sets/ProbeMappingSet~1.yaml"
+        },
+        "identity_held_under_another_file_name": {
+          "reason": "a file under another name already declares the identity, and the content check refuses it.",
+          "seed": {
+            "path": "data_types/mapping_sets/Elsewhere.yaml",
+            "content": "name: ProbeMappingSet\nmaps: []\n"
+          },
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Mapping set 'ProbeMappingSet' already exists at "
+        }
+      }
+    },
+    {
+      "function": "create_hardware_element",
+      "cases": {
+        "path_held_by_another_identity": {
+          "reason": "the composed file name `ProbePool.yaml` is held by a file declaring `ProbePool_Occupant`, so the create takes the nearest free collision suffix and succeeds; the occupant is left byte-identical.",
+          "seed": {
+            "path": "hardware/ProbePool.yaml",
+            "content": "name: ProbePool_Occupant\nkind: memory\ntype: RAM\nsize: 4096\naccessible:\n- CORE0\nthreshold: 0.5\nenforcement: strict\n"
+          },
+          "accepted": true,
+          "exception": null,
+          "path": "hardware/ProbePool~1.yaml"
+        },
+        "identity_held_under_another_file_name": {
+          "reason": "a file under another name already declares the identity, and the content check refuses it.",
+          "seed": {
+            "path": "hardware/Elsewhere.yaml",
+            "content": "name: ProbePool\nkind: memory\ntype: RAM\nsize: 4096\naccessible:\n- CORE0\nthreshold: 0.5\nenforcement: strict\n"
+          },
+          "accepted": false,
+          "exception": "ValueError",
+          "message": "Hardware element 'ProbePool' already exists at "
+        }
+      }
+    }
+  ]
+}

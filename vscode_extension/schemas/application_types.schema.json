@@ -1,0 +1,370 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://swcraft.dev/schemas/application_types.schema.json",
+  "title": "Application Types",
+  "$comment": "Application data types, one file each under `data_types/application/`: the physical view of the data a model exchanges. Four element kinds discriminated by `kind` (`enum`, `record`, `array`, `application_type`), plus four nested member kinds (`enum_literal`, `record_field`, `conversion`, `range`). A record field and an array element name an application type; a data element and an argument name one by their `application_type`, and a mapping set pairs one with the implementation type that stores it. An application type and an implementation type may carry one name. The directory is mandatory and may be empty.",
+  "oneOf": [
+    {
+      "description": "An enumeration type: a set of named values, each with an integer value. Emitted as an `APPLICATION-PRIMITIVE-DATA-TYPE` of category `VALUE`. Its values are stated in one of two forms: inline as `literals`, from which a `{name}_CompuMethod` of category `TEXTTABLE` is generated that maps each literal to its value, or by `compu_method_ref`, naming a `texttable` element of the `compu_methods` layer, which generates no form.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The type's identity; the file is named from it (`data_types/application/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the application types, must not be blank, and immutable; an implementation type may carry the same name. Where the enumeration states `literals`, it is suffixed `_CompuMethod` for the generated computation method.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The discriminator that selects this data type kind; always `enum`.",
+          "type": "string",
+          "const": "enum"
+        },
+        "literals": {
+          "description": "The enumeration's named literals, addressed by `name`: the inline form of its values, from which the `{name}_CompuMethod` is generated. Absent where the enumeration names a `texttable` by its `compu_method_ref` instead; it states exactly one of the two, and stated literals must not be empty.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/enum_literal"
+          }
+        },
+        "compu_method_ref": {
+          "description": "The name of a declared `texttable` compu method, an element of the `compu_methods` layer, whose entries are the enumeration's values: the type's properties refer to that element, and no `{name}_CompuMethod` is generated. The by-reference form of `literals`; an enumeration states exactly one of the two. Must not be blank.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "package": {
+          "description": "The one sub-package of `/DataTypes/Application`, its layer's package, this enumeration is emitted in, a single SHORT-NAME segment: the enumeration and the forms generated from it and every reference to it take `/DataTypes/Application/{package}/`. Absent means `/DataTypes/Application` itself. SWCraft's importers record it for an element whose source path is exactly `/DataTypes/Application/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/DataTypes/Application` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "kind"
+      ]
+    },
+    {
+      "description": "A record (structure) type: an ordered list of named, typed fields. Field names are unique inside the record, and a field's type must name a declared data type that does not, directly or through other records and arrays, contain this record again.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The type's identity; the file is named from it (`data_types/application/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the application types, must not be blank, and immutable; an implementation type may carry the same name.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The discriminator that selects this data type kind; always `record`.",
+          "type": "string",
+          "const": "record"
+        },
+        "fields": {
+          "description": "The record's named, typed fields in declaration order, addressed by `name`. Must not be empty.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/record_field"
+          }
+        },
+        "description": {
+          "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "package": {
+          "description": "The one sub-package of `/DataTypes/Application`, its layer's package, this record is emitted in, a single SHORT-NAME segment: the record and every reference to it take `/DataTypes/Application/{package}/`. Absent means `/DataTypes/Application` itself. SWCraft's importers record it for an element whose source path is exactly `/DataTypes/Application/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/DataTypes/Application` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "fields"
+      ]
+    },
+    {
+      "description": "A fixed-length array type: `length` elements of one declared `element_type`. The element type must name a declared data type and must not close a cycle back to this array.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The type's identity; the file is named from it (`data_types/application/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the application types, must not be blank, and immutable; an implementation type may carry the same name.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The discriminator that selects this data type kind; always `array`.",
+          "type": "string",
+          "const": "array"
+        },
+        "element_type": {
+          "description": "The name of the declared data type of every element: an application type, an enumeration, a record or an array, an element of the `application_types` layer — a composite's members are typed by the physical view. It may not be this array itself, nor a type that contains this array.",
+          "type": "string"
+        },
+        "length": {
+          "description": "The number of elements in the array. Must be > 0.",
+          "type": "integer"
+        },
+        "description": {
+          "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "package": {
+          "description": "The one sub-package of `/DataTypes/Application`, its layer's package, this array is emitted in, a single SHORT-NAME segment: the array and every reference to it take `/DataTypes/Application/{package}/`. Absent means `/DataTypes/Application` itself. SWCraft's importers record it for an element whose source path is exactly `/DataTypes/Application/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/DataTypes/Application` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "element_type",
+        "length"
+      ]
+    },
+    {
+      "description": "An application data type of category `VALUE`, emitted as an `APPLICATION-PRIMITIVE-DATA-TYPE`: the physical view of a signal, with the unit it is measured in, the linear conversion from the stored value to the physical one and the range it is declared within. It names no other type, which is why it can close no cycle; the implementation type that stores it is paired with it by a mapping set. A data element and an argument name one by their `application_type`, and a record field and an array element by their type. The generated forms its name has to stay inside the `Identifier` limit for are `{name}_Unit`, `{name}_Compu` and `{name}_Range`, each emitted only when the field it comes from is declared.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The type's identity; the file is named from it (`data_types/application/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the application types, must not be blank, and immutable; an implementation type may carry the same name.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The discriminator that selects this data type kind; always `application_type`.",
+          "type": "string",
+          "const": "application_type"
+        },
+        "unit": {
+          "description": "The physical unit the value is measured in, as free text (for example `km/h`). Unlike a value type's `unit` it is emitted: a declared one becomes a `UNIT` element named `{name}_Unit`, carrying this text as its display name, which the type's properties point at. A blank unit emits nothing, and a type that declares a `conversion` must declare one: the conversion is written as a `LINEAR` computation method, which refers to this unit.",
+          "type": "string",
+          "default": ""
+        },
+        "conversion": {
+          "description": "The linear conversion from the stored value to the physical one: physical = stored × `factor` + `offset`. A declared conversion, `{}` included, becomes a `LINEAR` computation method named `{name}_Compu` that refers to the type's `unit`, so it needs one: `check-model` reports a conversion without a unit and the ARXML writer refuses it. An absent conversion emits nothing and says that the stored value is the physical value.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/conversion"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "range": {
+          "description": "The physical limits the value is declared within. A declared range becomes a data constraint named `{name}_Range` carrying the two bounds; an absent one emits nothing and declares no limit. It is the range an `init` value under this type is judged against, exactly as a value type's `value_min` and `value_max` are.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/range"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit_ref": {
+          "description": "The name of a declared unit, an element of the `units` layer, the value is measured in: the type's properties refer to that element, and no `{name}_Unit` is generated. The by-reference form of `unit`; a type states at most one of the two (a blank `unit` is none). Must not be blank.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "compu_method_ref": {
+          "description": "The name of a declared `linear` compu method, an element of the `compu_methods` layer, that converts the stored value to the physical one: the type's properties refer to that element, and no `{name}_Compu` is generated. The by-reference form of `conversion`; a type states at most one of the two. Must not be blank.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "data_constr_ref": {
+          "description": "The name of a declared data constraint, an element of the `data_constraints` layer, holding the physical limits the value is declared within: the type's properties refer to that element, and no `{name}_Range` is generated. The by-reference form of `range`; a type states at most one of the two. Must not be blank.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "description": "Free text about the type. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "package": {
+          "description": "The one sub-package of `/DataTypes/Application`, its layer's package, this application type is emitted in, a single SHORT-NAME segment: the application type and the forms generated from it and every reference to it take `/DataTypes/Application/{package}/`. Absent means `/DataTypes/Application` itself. SWCraft's importers record it for an element whose source path is exactly `/DataTypes/Application/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/DataTypes/Application` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "kind"
+      ]
+    }
+  ],
+  "definitions": {
+    "enum_literal": {
+      "description": "One named value of an `enum` type: a member of its `literals` collection, never a standalone element, so it has no file and no layer-level address.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The literal's identity inside its enumeration; unique among the enumeration's literals and immutable.",
+          "type": "string"
+        },
+        "value": {
+          "description": "The integer the literal stands for. Unique among the enumeration's literals; emitted as the literal's `LOWER-LIMIT`/`UPPER-LIMIT` in the computation method.",
+          "type": "integer"
+        },
+        "description": {
+          "description": "Free text about the enum literal. Written into the generated ARXML as its `COMPU-SCALE`'s `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ]
+    },
+    "record_field": {
+      "description": "A member of a `record` type's `fields` collection; like `enum_literal` it has no file and no layer-level address.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The field's identity inside its record; unique among the record's fields and immutable.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The name of the declared data type the field carries: an application type, an enumeration, a record or an array, an element of the `application_types` layer — a composite's members are typed by the physical view. It may not close a cycle back to the record.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text about the record field. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ]
+    },
+    "conversion": {
+      "description": "One linear conversion: physical = stored × `factor` + `offset`. A nested object rather than a list member, so it has no identity of its own and every field of it may change. Both coefficients carry a default, so a conversion that names only `factor` leaves the offset at zero; the scale's limits are its optional `limits`.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "factor": {
+          "description": "What the stored value is multiplied by to give the physical value; `1` when it is not declared. It accepts neither NaN nor ±Infinity.",
+          "type": "number",
+          "default": 1
+        },
+        "offset": {
+          "description": "What is added after the multiplication to give the physical value; `0` when it is not declared. It accepts neither NaN nor ±Infinity.",
+          "type": "number",
+          "default": 0
+        },
+        "limits": {
+          "description": "The limits of the conversion's scale, on the stored side: the values the conversion is defined for, which is what the standard reads a scale's limits as -- the limiting values before the conversion is applied. Written as the scale's `LOWER-LIMIT` and `UPPER-LIMIT`. Absent, the scale states no limit and the conversion applies to every stored value; it is not the physical range, which is the type's `range`.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/conversion_limits"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "conversion_limits": {
+      "description": "The limits of a conversion's scale, on the stored side. A nested object rather than a list member, so it has no identity of its own and every field of it may change. Either limit may be left out; the lower one must not be above the upper one, and the two may be equal only when both are closed.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lower": {
+          "description": "The lowest stored value the conversion applies to, written as the scale's `LOWER-LIMIT`; omitted or `null` when the scale states none. An infinite limit is no bound: leave it out.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/conversion_limit_bound"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "upper": {
+          "description": "The highest stored value the conversion applies to, written as the scale's `UPPER-LIMIT`; omitted or `null` when the scale states none. An infinite limit is no bound: leave it out.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/conversion_limit_bound"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "conversion_limit_bound": {
+      "description": "One limit of a scale: a stored value and whether the limit itself belongs to the interval. A nested object rather than a list member, so it has no identity of its own and every field of it may change.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "description": "The limit's stored value. An integer is held as the integer it is, never rounded through a float; it accepts neither NaN nor ±Infinity.",
+          "type": "number"
+        },
+        "interval": {
+          "description": "Whether the limit belongs to the interval: `closed` (it does; the default, as an absent `INTERVAL-TYPE` is) or `open` (it does not). Written as the limit's `INTERVAL-TYPE`.",
+          "type": "string",
+          "enum": [
+            "closed",
+            "open"
+          ],
+          "default": "closed"
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "range": {
+      "description": "The physical limits a value is declared within. A nested object rather than a list member, so it has no identity of its own and every field of it may change. Either bound may be left out, exactly as a value type's `value_min` and `value_max` may be.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min": {
+          "description": "The lower physical limit; omitted or `null` when there is none. Must be <= `max` when both are given; neither accepts NaN or ±Infinity.",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "max": {
+          "description": "The upper physical limit; omitted or `null` when there is none. Must be >= `min` when both are given; neither accepts NaN or ±Infinity.",
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

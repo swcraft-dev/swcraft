@@ -1,0 +1,13 @@
+name: Brake
+type: application
+description: brake control
+ports:
+- name: pTemp
+  direction: provide
+  interface: ITemp
+- name: pCmd
+  direction: require
+  interface: ITemp
+runnables:
+- name: Supervise
+  description: supervise the brake temperature

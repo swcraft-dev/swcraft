@@ -1,0 +1,10 @@
+name: Controller
+type: application
+description: The require side of the client-server assembly connector.
+ports:
+  - name: rCommand
+    direction: require
+    interface: ICommandBasic
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_COMPATIBILITY_001@1

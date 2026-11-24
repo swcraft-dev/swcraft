@@ -1,0 +1,15 @@
+name: DisabledModeSWC
+type: application
+description: A timing event disabled in a mode arriving on a port the component never declares
+runnables:
+  - name: DisabledRun
+    events:
+      - type: timing
+        period: 0.01
+        disabled_modes:
+          - port: rMode
+            mode_group_ref: /Modes/PortInterfaces/IModes/Mode
+            mode_ref: /Modes/ModeDeclarationGroups/Modes/Off
+memory:
+  RAM0: 16
+handle_termination_and_restart: no_support

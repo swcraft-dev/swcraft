@@ -1,0 +1,4 @@
+name: SpeedMapping
+maps:
+- application: VehicleSpeed
+  implementation: uint16

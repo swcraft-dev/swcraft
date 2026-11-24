@@ -1,0 +1,12 @@
+name: Task_Argued
+period: 0.02
+priority: 5
+partition: P_Argued
+wcet: 300us
+description: Two distinct effective levels — D declared and B derived — with the argument that closes the finding.
+coexistence: The two components run in separate memory partitions with timing protection; the argument is recorded in the item's safety case.
+runnables:
+- swc: TorqueLimiter
+  runnable: PublishSafety
+- swc: SpeedSensor
+  runnable: SampleSpeed

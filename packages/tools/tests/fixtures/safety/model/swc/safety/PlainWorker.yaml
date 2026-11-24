@@ -1,0 +1,27 @@
+name: PlainWorker
+type: application
+description: Declares ASIL B. Consumes an ASIL A element unmeasured on one port and with a BLANK measure on another, which closes the finding exactly as a named mechanism does.
+asil: B
+ports:
+- name: rPlain
+  direction: require
+  interface: IPlainSignals
+- name: rPlainBlank
+  direction: require
+  interface: IPlainSignals
+  measures:
+    status: ''
+runnables:
+- name: Work
+  events:
+  - type: timing
+    period: 0.01
+- name: WorkSlow
+  events:
+  - type: timing
+    period: 0.05
+memory:
+  RAM0: 256
+handle_termination_and_restart: no_support
+satisfies:
+- REQ-SAFETY-002@1

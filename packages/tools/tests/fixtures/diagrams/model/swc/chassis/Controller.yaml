@@ -1,0 +1,30 @@
+name: Controller
+type: application
+description: Consumes the speed, feeds its own estimate back to itself and asks the diagnostics.
+ports:
+  - name: rSpeed
+    direction: require
+    interface: ISpeed
+  - name: rRaw
+    direction: require
+    interface: ISpeed
+  - name: pLoop
+    direction: provide
+    interface: ISpeed
+  - name: rLoop
+    direction: require
+    interface: ISpeed
+  - name: pSpeedOut
+    direction: provide
+    interface: ISpeed
+  - name: rDiag
+    direction: require
+    interface: IDiag
+runnables:
+  - name: ControlRun
+    events:
+      - type: timing
+        period: 0.01
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_DIAGRAMS_001@1

@@ -1,0 +1,22 @@
+{
+  "name": "envelope-unknown-rename-operation",
+  "description": "A `rename` request. `rename` is not in the protocol at all (an identity change is a `remove` and a `create`) — the envelope has no branch for it, and no implementation can quietly add one back without changing the schema.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `rename-swc-via-remove-create-and-reference-updates.json` is the accepted way to express this same intent: a `remove`, a `create` and one explicit `update` per referring element, in one change set.",
+    "existing_elements": [{ "layer": "swc", "element": "ExampleSWC" }],
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "rename",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "address": { "layer": "swc", "element": "ExampleSWC" },
+    "value": "SpeedSensorSWC"
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "protocol-schema",
+    "notes": "The request discriminator is closed to `discover`, `read` and `change_set`, and a change set's operations to `create`, `update` and `remove`. A dedicated rename would have to decide inside the protocol whether to cascade into every referencing element — precisely the class of change the review boundary exists to show the user rather than perform on their behalf."
+  }
+}

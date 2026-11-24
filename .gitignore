@@ -1,0 +1,95 @@
+# Derived build artifacts (never committed)
+dist/
+*.arxml
+!packages/tools/tests/fixtures/arxml/*.arxml
+# Every negation below is non-recursive: it admits only the direct `*.arxml` children of its
+# folder, and the test named beside it fails when one is missing from a fresh clone.
+# The ARXML writer's goldens (test_arxml_golden.py).
+!packages/tools/tests/fixtures/arxml_golden/*.arxml
+# The goldens before and after a recorded writer change, so the expected-difference list is
+# checked against an observed difference (test_arxml_golden_differences.py).
+!packages/tools/tests/fixtures/arxml_golden/differences/before/*.arxml
+!packages/tools/tests/fixtures/arxml_golden/differences/after/*.arxml
+# Synthetic component files in an earlier release's writer shape (test_component_import.py).
+!packages/tools/tests/fixtures/component_exchange/earlier_release/*.arxml
+# The importer's synthetic exports, invented names only; each test pins its folder as a set
+# (test_arxml_import_shapes.py, test_external_stubs_import.py, test_operation_event_import.py).
+!packages/tools/tests/fixtures/arxml_import_shapes/*.arxml
+!packages/tools/tests/fixtures/arxml_external_stubs/*.arxml
+!packages/tools/tests/fixtures/operation_events/*.arxml
+# The agent task benchmark's component export (scripts/tests/test_agent_task_check.py).
+!packages/tools/tests/fixtures/agent-bench/bench/imports/*.arxml
+views/
+tmp/
+
+# AUTOSAR schema (license-gated, fetched by scripts/download_autosar_schema.py). Anchored: an
+# unanchored `schemas/` would also ignore the committed vscode_extension/schemas/.
+/schemas/
+
+# Written by `python scripts/dev.py docs` at build time: the guide's version page and its release
+# notes. Committed, they would make the guide one more version-lockstep site.
+/docs/guide/version.md
+/docs/guide/release-notes/
+
+# The rendered guide the swcraft-tools wheel carries, written by `python scripts/dev.py artifacts`.
+# Anchored, so the rule cannot reach the module of the same name (guide_site.py).
+/packages/tools/src/swcraft_tools/guide_site/
+# The rewrite's sidecars: every destructive step is a rename, so they exist only during a rewrite
+# or after a killed run.
+/packages/tools/src/swcraft_tools/guide_site.incoming/
+/packages/tools/src/swcraft_tools/guide_site.outgoing/
+
+# The diagram layout engine, the elkjs tarball's files (pinned by version and SHA-256 in
+# scripts/workstation/pins/runtime-pins.json), staged as package data by `python scripts/dev.py
+# install` and `runtime`; with sidecars as for guide_site.
+/packages/tools/src/swcraft_tools/writer/diagrams/elkjs/
+/packages/tools/src/swcraft_tools/writer/diagrams/elkjs.incoming/
+/packages/tools/src/swcraft_tools/writer/diagrams/elkjs.previous/
+
+# The root LICENSE and NOTICE, copied into each Python project and the extension before
+# packaging; the root files are the one source.
+/packages/tools/LICENSE
+/packages/tools/NOTICE
+/packages/mcp/LICENSE
+/packages/mcp/NOTICE
+/packages/agent/LICENSE
+/packages/agent/NOTICE
+/packages/specimens/LICENSE
+/packages/specimens/NOTICE
+/vscode_extension/LICENSE
+/vscode_extension/NOTICE
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
+.ruff_cache/
+.mypy_cache/
+
+# Coverage artifacts (report-only)
+.coverage
+.coverage.*
+coverage.json
+
+# Benchmark artifacts (machine-local, report-only)
+packages/tools/.benchmarks/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Node / tooling
+node_modules/
+out/
+*.vsix
+.vscode-test/
+
+# The specimen cache and the provisioned specimen generator; git holds only their passports and
+# pins (packages/tools/tests/fixtures/specimens/).
+.cache/
+
+# macOS
+.DS_Store

@@ -1,0 +1,12 @@
+name: Sensor_to_Control
+composition: Powertrain
+from:
+  swc: SpeedSensor
+  port: pOut
+to:
+  swc: SpeedControl
+  port: rIn
+description: >-
+  reference `connectors.connector_endpoint.swc` -> both SWCs; reference
+  `connectors.connector.composition` -> Powertrain, the composition the
+  connector is drawn inside.

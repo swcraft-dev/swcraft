@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: an unresolved target whose bare SHORT-NAME IS
+  declared somewhere else in the same file.
+
+  ISpeed's data element points at /Acme/Absent/Types/SpeedValue, which no
+  element of this export declares — while /Acme/Present/Types/SpeedValue is
+  declared and is a data type of the very layer the reference names. Binding
+  the reference by its bare name would bind it to an unrelated element, which
+  is why the reference is recorded as the PATH the export spelled and never
+  resolved by name.
+
+  The cause is "the package tree is cut part-way": /Acme is declared,
+  /Acme/Absent is not.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Present</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Types</SHORT-NAME>
+              <ELEMENTS>
+                <SW-BASE-TYPE>
+                  <SHORT-NAME>Word16</SHORT-NAME>
+                  <CATEGORY>FIXED_LENGTH</CATEGORY>
+                  <BASE-TYPE-SIZE>16</BASE-TYPE-SIZE>
+                  <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                  <NATIVE-DECLARATION>uint16</NATIVE-DECLARATION>
+                </SW-BASE-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>SpeedValue</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <DESC>
+                    <L-2 L="FOR-ALL">An unrelated element that happens to carry the short name the dangling reference ends in (invented fixture).</L-2>
+                  </DESC>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Present/Types/Word16</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Interfaces</SHORT-NAME>
+              <ELEMENTS>
+                <SENDER-RECEIVER-INTERFACE>
+                  <SHORT-NAME>ISpeed</SHORT-NAME>
+                  <IS-SERVICE>false</IS-SERVICE>
+                  <DATA-ELEMENTS>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>speed</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Absent/Types/SpeedValue</TYPE-TREF>
+                    </VARIABLE-DATA-PROTOTYPE>
+                  </DATA-ELEMENTS>
+                </SENDER-RECEIVER-INTERFACE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

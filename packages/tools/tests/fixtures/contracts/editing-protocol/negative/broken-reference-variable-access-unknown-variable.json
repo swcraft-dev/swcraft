@@ -1,0 +1,109 @@
+{
+  "name": "broken-reference-variable-access-unknown-variable",
+  "description": "A runnable access to an inter-runnable variable its component does not declare (contract `12.1.0`, `rule:swc.variable-access.unknown-variable`, `[constr_2026]`): the access is admissible on its own -- its `variable` is a non-blank name and the member address is well formed -- and the assembled result breaks the reference, so pass D refuses it as a `broken-reference` at the access's `variable` field.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` declares no variable, so the read below names nothing. A variable of another component would be unknown the same way: a runnable accesses only a variable of its own component.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "reads_variables"
+              },
+              {
+                "member": "ExampleState"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the requested address exactly, so the refusal is pass D's and not the scope gate's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Let ExampleRun read the ExampleState variable.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "reads_variables"
+            },
+            {
+              "member": "ExampleState"
+            }
+          ]
+        },
+        "value": {
+          "variable": "ExampleState"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "broken-reference",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          },
+          {
+            "field": "reads_variables"
+          },
+          {
+            "member": "ExampleState"
+          },
+          {
+            "field": "variable"
+          }
+        ]
+      }
+    ],
+    "notes": "The address is the referrer, the access's `variable`, not the variable that is missing: the repair is to supply the variable in the same change set -- `examples/create-variable-and-its-accesses.json` is exactly that change set -- or to repoint or remove the access. Removing a variable that an access still names is refused the same way, at every access naming it. The model stays byte-identical."
+  }
+}

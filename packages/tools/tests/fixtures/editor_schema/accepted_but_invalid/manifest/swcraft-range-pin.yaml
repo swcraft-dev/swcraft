@@ -1,0 +1,14 @@
+# Every key is well-typed and `toolchain_version` is a string, so the manifest schema
+# accepts it; `>=0.7` is a *specifier* and not a version, which only the loader's field
+# validator can see — the schema carries no `pattern`, deliberately (the model-contract
+# rule: what JSON Schema cannot express is a `check-model` answer, not a hand-written
+# regular expression that would be a second copy of PEP 440's grammar).
+name: range-pinned
+schema_version: "1.0"
+model_root: model
+dist_root: dist
+views_root: views
+toolchain_version: ">=0.7"
+outputs:
+  arxml: dist/model.arxml
+  needs: dist/needs.json

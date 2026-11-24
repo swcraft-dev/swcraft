@@ -1,0 +1,7 @@
+name: Ram
+kind: memory
+type: RAM
+size: 1024
+accessible:
+- Core0
+threshold: 0.8

@@ -1,0 +1,109 @@
+{
+  "name": "broken-reference-exclusive-area-unknown-area",
+  "description": "A runnable entry naming an exclusive area its component does not declare (contract `12.2.0`, `rule:swc.exclusive-area.unknown-area`): the entry is admissible on its own -- its `area` is a non-blank name and the member address is well formed -- and the assembled result breaks the reference, so pass D refuses it as a `broken-reference` at the entry's `area` field.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` declares no exclusive area, so the entry below names nothing. An area of another component would be unknown the same way: an exclusive area is local to the component whose behaviour aggregates it.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "runs_inside"
+              },
+              {
+                "member": "ExampleGuard"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the requested address exactly, so the refusal is pass D's and not the scope gate's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Let ExampleRun run inside the ExampleGuard exclusive area.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "runs_inside"
+            },
+            {
+              "member": "ExampleGuard"
+            }
+          ]
+        },
+        "value": {
+          "area": "ExampleGuard"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "broken-reference",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          },
+          {
+            "field": "runs_inside"
+          },
+          {
+            "member": "ExampleGuard"
+          },
+          {
+            "field": "area"
+          }
+        ]
+      }
+    ],
+    "notes": "The address is the referrer, the entry's `area`, not the area that is missing: the repair is to supply the area in the same change set -- `examples/create-exclusive-area-and-its-entries.json` is exactly that change set -- or to remove the entry. Removing an area that an entry still names is refused the same way, once for the area, at every entry naming it. The model stays byte-identical."
+  }
+}

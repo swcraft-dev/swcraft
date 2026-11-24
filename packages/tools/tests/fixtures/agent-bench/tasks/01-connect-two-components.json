@@ -1,0 +1,52 @@
+{
+  "id": "01-connect-two-components",
+  "task": 1,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Add a sender port pForwardedThermalStatus (interface IThermalProtectionStatus) to DiagnosticManager and a receiver port rForwardedThermalStatus with the same interface to InstrumentCluster, and connect the two.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "swc",
+        "name": "DiagnosticManager",
+        "has": {
+          "ports": [
+            {
+              "name": "pForwardedThermalStatus",
+              "direction": "provide",
+              "interface": "IThermalProtectionStatus"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "InstrumentCluster",
+        "has": {
+          "ports": [
+            {
+              "name": "rForwardedThermalStatus",
+              "direction": "require",
+              "interface": "IThermalProtectionStatus"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "connectors",
+        "has": {
+          "from": {
+            "swc": "DiagnosticManager",
+            "port": "pForwardedThermalStatus"
+          },
+          "to": {
+            "swc": "InstrumentCluster",
+            "port": "rForwardedThermalStatus"
+          }
+        }
+      }
+    ]
+  }
+}

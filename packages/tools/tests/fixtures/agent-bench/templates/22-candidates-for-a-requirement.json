@@ -1,0 +1,10 @@
+{
+  "id": "22-candidates-for-a-requirement",
+  "task": 22,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "binding": "candidates_for_a_requirement",
+  "oracle": "product-rule",
+  "prompt": "Which elements could realise {{requirement}}? Give the best candidates with the reason.",
+  "note": "The first requirement, by id, for which the deterministic trace search with its default configuration answers three groups of distinct names, each sharing a term: the reply names the three, in any order, and for each at least one term the search says it shares."
+}

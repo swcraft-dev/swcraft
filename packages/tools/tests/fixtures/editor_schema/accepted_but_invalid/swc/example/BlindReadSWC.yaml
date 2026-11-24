@@ -1,0 +1,18 @@
+name: BlindReadSWC
+type: application
+description: A runnable reading through a port the component never declares
+ports:
+  - name: rIn
+    direction: require
+    interface: IExample
+runnables:
+  - name: BlindReadRun
+    events:
+      - type: timing
+        period: 0.01
+    reads:
+      - port: rMissing
+        element: value
+memory:
+  RAM: 16
+handle_termination_and_restart: no_support

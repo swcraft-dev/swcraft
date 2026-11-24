@@ -1,0 +1,8 @@
+name: Dangling_Link
+description: The `from` endpoint names a component that is not declared
+from:
+  swc: NoSuchSWC
+  port: pOut
+to:
+  swc: ExampleConsumerSWC
+  port: rIn

@@ -1,0 +1,45 @@
+{
+  "current_version": "",
+  "project": "swcraft-basic-example",
+  "versions": {
+    "": {
+      "needs": {
+        "REQ_EXAMPLE_001": {
+          "content": "The system shall provide example functionality via ExampleSWC.",
+          "id": "REQ_EXAMPLE_001",
+          "swcraft_path": "requirements/REQ_EXAMPLE_001.yaml",
+          "tags": [],
+          "title": "Example requirement for ExampleSWC",
+          "type": "arch_req"
+        },
+        "SWC-ExampleConsumerSWC": {
+          "content": "Example software component consuming data from ExampleSWC",
+          "id": "SWC-ExampleConsumerSWC",
+          "satisfies": [
+            "REQ_EXAMPLE_001"
+          ],
+          "swcraft_path": "swc/example/ExampleConsumerSWC.yaml",
+          "tags": [
+            "swc"
+          ],
+          "title": "ExampleConsumerSWC",
+          "type": "arch_element"
+        },
+        "SWC-ExampleSWC": {
+          "content": "Example software component for testing and demonstration",
+          "id": "SWC-ExampleSWC",
+          "satisfies": [
+            "REQ_EXAMPLE_001"
+          ],
+          "swcraft_path": "swc/example/ExampleSWC.yaml",
+          "tags": [
+            "swc"
+          ],
+          "title": "ExampleSWC",
+          "type": "arch_element"
+        }
+      },
+      "needs_amount": 3
+    }
+  }
+}

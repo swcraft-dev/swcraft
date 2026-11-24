@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://swcraft.dev/schemas/tasks.schema.json",
+  "title": "Tasks",
+  "$comment": "OS tasks and the runnables each one executes. `period` is in seconds; a budget, `wcet`, carries its own unit.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "description": "The task's identity; the file is named from it (`tasks/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the layer, must not be empty, and immutable.",
+      "type": "string"
+    },
+    "period": {
+      "description": "The task's activation period, in seconds (a budget, `wcet`, carries its own unit). Must be > 0. (unit: seconds)",
+      "type": "number"
+    },
+    "priority": {
+      "description": "Must be >= 0; higher is more urgent.",
+      "type": "integer"
+    },
+    "partition": {
+      "description": "The name of the partition this task runs in; the task runs on that partition's core. It must name a `partition` declared under `hardware/`.",
+      "type": "string"
+    },
+    "wcet": {
+      "description": "The task's execution-time budget: what the architect allots to the task, an upper bound the model is checked against and never a measurement. Written as a whole number followed by its unit, one of `ns`, `us`, `ms` or `s` — `1200us`, `2ms` — with no space, no leading zero, no decimal point and at most 18 digits; omitted or `null` when no budget is declared, greater than zero when present, and a `strict` core budget requires one on every task of that core. Analysis input only: the standard's execution-time constraint names an executable entity, and an OS task is none, so no ARXML output carries it. A file still spelling `wcet_us` is refused with the new spelling.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "description": {
+      "description": "Free text about the task. Carried in the model; it reaches no generated artifact.",
+      "type": "string",
+      "default": ""
+    },
+    "runnables": {
+      "description": "The runnables the task executes, in order, each naming its component by exactly one of `swc` and `instance`, and its `runnable`; an entry written the same way appears at most once in a task.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/task_runnable_ref"
+      },
+      "default": []
+    },
+    "coexistence": {
+      "description": "The argument for scheduling components of different safety integrity levels together in this task, as free text. Declaring one stops the task being reported for mixing levels. It answers mixing by execution time inside this task; the partition's own `coexistence` answers mixing by memory. It is a declaration and not a verification: the text is checked against nothing, and the model expresses no memory protection and no schedule isolation — so a task carrying an argument is argued, never shown to be free of interference. Legal on a task whose components are rated alike, where nothing reads it yet.",
+      "type": "string",
+      "default": ""
+    },
+    "satisfies": {
+      "description": "The requirements this task satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. It allocates no ASIL to anything.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "required": [
+    "name",
+    "period",
+    "priority",
+    "partition"
+  ],
+  "definitions": {
+    "task_runnable_ref": {
+      "description": "One entry of a task's `runnables` list: a runnable of a software component, the component named by exactly one of `swc` (a component type placed at most once below the root composition, or not at all) and `instance` (one occurrence of a component below the root composition). The `(swc, instance, runnable)` triple, the absent selector as `null`, is the member's identity, because runnable names are unique only inside their own component.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "swc": {
+          "description": "The name of the declared software component that owns the runnable; exactly one of `swc` and `instance` is set. Part of the member's composite identity, and so immutable.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "instance": {
+          "description": "The occurrence of a component below the root composition whose runnable this is, as a `/`-joined path of composition member names from the root composition down — a member of the root is its member name alone, a nested one `outer/inner` — never starting with the root composition's own name; exactly one of `swc` and `instance` is set. Part of the member's composite identity, and so immutable.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "runnable": {
+          "description": "The name of a runnable of that component. Part of the composite identity, and so immutable; a runnable of one resolved component is mapped to at most one task across the model.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "runnable"
+      ]
+    }
+  }
+}

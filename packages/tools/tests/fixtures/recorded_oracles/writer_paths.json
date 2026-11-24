@@ -1,0 +1,157 @@
+{
+  "model": "impact_model",
+  "targets": [
+    {
+      "function": "create_swc",
+      "site": "writer/mutations.py::create_swc",
+      "arguments": {
+        "name": "ProbeSWC",
+        "group": "probe"
+      },
+      "path": "swc/probe/ProbeSWC.yaml"
+    },
+    {
+      "function": "create_interface",
+      "site": "writer/mutations.py::create_interface",
+      "arguments": {
+        "name": "IProbe",
+        "data_elements": [
+          {
+            "name": "value",
+            "implementation_type": "float32"
+          }
+        ]
+      },
+      "path": "interfaces/IProbe.yaml"
+    },
+    {
+      "function": "create_cs_interface",
+      "site": "writer/mutations.py::create_cs_interface",
+      "arguments": {
+        "name": "IProbeService",
+        "operations": [
+          {
+            "name": "Read",
+            "arguments": [
+              {
+                "name": "a",
+                "direction": "in",
+                "implementation_type": "uint8"
+              }
+            ]
+          }
+        ]
+      },
+      "path": "interfaces/IProbeService.yaml"
+    },
+    {
+      "function": "create_requirement",
+      "site": "writer/mutations.py::create_requirement",
+      "arguments": {
+        "req_id": "REQ_PROBE_001",
+        "title": "Probe",
+        "description": "Probe requirement."
+      },
+      "path": "requirements/REQ_PROBE_001.yaml"
+    },
+    {
+      "function": "create_composition",
+      "site": "writer/mutations.py::create_composition",
+      "arguments": {
+        "name": "ProbeComposition",
+        "title": "Probe composition"
+      },
+      "path": "compositions/ProbeComposition.yaml"
+    },
+    {
+      "function": "create_connector",
+      "site": "writer/mutations.py::create_connector",
+      "arguments": {
+        "name": "Probe_Connector",
+        "from_swc": "SpeedSensor",
+        "from_port": "pOut",
+        "to_swc": "SpeedControl",
+        "to_port": "rIn"
+      },
+      "path": "connectors/Probe_Connector.yaml"
+    },
+    {
+      "function": "create_task",
+      "site": "writer/mutations.py::create_task",
+      "arguments": {
+        "name": "Task_Probe",
+        "period": 0.05,
+        "priority": 2,
+        "partition": "PARTITION0",
+        "wcet": "100us"
+      },
+      "path": "tasks/Task_Probe.yaml"
+    },
+    {
+      "function": "create_sequence",
+      "site": "writer/mutations.py::create_sequence",
+      "arguments": {
+        "name": "probe_cycle",
+        "task": "Task_10ms",
+        "steps": [
+          {
+            "swc": "SpeedSensor",
+            "runnable": "SpeedSensor_Run"
+          }
+        ]
+      },
+      "path": "sequences/probe_cycle.yaml"
+    },
+    {
+      "function": "create_data_type",
+      "site": "writer/mutations.py::create_data_type",
+      "arguments": {
+        "name": "ProbeType",
+        "kind": "base_type",
+        "size": 8,
+        "encoding": "NONE"
+      },
+      "path": "data_types/base/ProbeType.yaml"
+    },
+    {
+      "function": "create_data_type",
+      "site": "writer/mutations.py::create_data_type",
+      "arguments": {
+        "name": "ProbeType",
+        "kind": "base_type",
+        "size": 8,
+        "encoding": "NONE"
+      },
+      "path": "data_types/base/ProbeType.yaml"
+    },
+    {
+      "function": "create_mapping_set",
+      "site": "writer/mutations.py::create_mapping_set",
+      "arguments": {
+        "name": "ProbeMappingSet",
+        "maps": [
+          {
+            "application": "SpeedPhys",
+            "implementation": "Speed"
+          }
+        ]
+      },
+      "path": "data_types/mapping_sets/ProbeMappingSet.yaml"
+    },
+    {
+      "function": "create_hardware_element",
+      "site": "writer/mutations.py::create_hardware_element",
+      "arguments": {
+        "name": "ProbePool",
+        "kind": "memory",
+        "memory_type": "RAM",
+        "size": 4096,
+        "accessible": [
+          "CORE0"
+        ],
+        "threshold": 0.5
+      },
+      "path": "hardware/ProbePool.yaml"
+    }
+  ]
+}

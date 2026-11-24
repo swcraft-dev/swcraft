@@ -1,0 +1,14 @@
+# Scenario 1 - add a SWC with a port, then a runnable.
+#
+# `approvals` are consumed IN ORDER by that turn's review questions; an unscoped turn
+# asks one per change set. They never carry into the next turn, and a question with no
+# answer left denies.
+#
+# The first turn's `create` declares `handle_termination_and_restart` because the system
+# prompt asks it of every new component, and `satisfies` because the user names the requirement.
+- user: "Add a new application SWC called EngineController in the powertrain group\
+    \ with a provide port pEngineSpeed on interface ISpeed. It realizes requirement\
+    \ REQ_ENG_001."
+  approvals: ["y"]
+- user: "Now add a runnable ComputeSpeed to EngineController with a 10ms timing event."
+  approvals: ["y"]

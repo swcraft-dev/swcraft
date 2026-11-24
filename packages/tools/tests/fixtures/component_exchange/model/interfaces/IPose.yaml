@@ -1,0 +1,5 @@
+name: IPose
+kind: sender_receiver
+data_elements:
+- name: pose
+  application_type: Pose_T

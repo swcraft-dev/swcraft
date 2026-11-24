@@ -1,0 +1,9 @@
+{
+  "session_id": "s",
+  "hook_event_name": "PreToolUse",
+  "cwd": "/project",
+  "tool_name": "mcp_swcraft_discover",
+  "tool_input": {
+    "form": "baseline"
+  }
+}

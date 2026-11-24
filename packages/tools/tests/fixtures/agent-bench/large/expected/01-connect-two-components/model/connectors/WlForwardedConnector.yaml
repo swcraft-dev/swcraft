@@ -1,0 +1,7 @@
+name: WlForwardedConnector
+from:
+  swc: Swc075abcdefghij
+  port: pForwardedOutput
+to:
+  swc: Swc076abcdefghij
+  port: rForwardedOutput

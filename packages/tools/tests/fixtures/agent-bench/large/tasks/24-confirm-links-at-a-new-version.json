@@ -1,0 +1,123 @@
+{
+  "id": "24-confirm-links-at-a-new-version",
+  "task": 24,
+  "group": "requirements-and-traceability",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Requirement Rq02abcdef moved to version 2; confirm every link to it at the new version.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "requirements",
+        "name": "Rq02abcdef",
+        "has": {
+          "version": 2
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "Swc002abcdefghij",
+        "has": {
+          "satisfies": [
+            "Rq02abcdef@2"
+          ]
+        },
+        "lacks": {
+          "satisfies": [
+            "Rq02abcdef@1"
+          ]
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "Swc001abcdefghij",
+        "has": {
+          "ports": [
+            {
+              "name": "P2",
+              "satisfies": [
+                "Rq02abcdef@2"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "Swc002abcdefghij",
+        "has": {
+          "runnables": [
+            {
+              "name": "R1",
+              "satisfies": [
+                "Rq02abcdef@2"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "layer": "interfaces",
+        "name": "If0002abcdefghij",
+        "has": {
+          "satisfies": [
+            "Rq02abcdef@2"
+          ]
+        },
+        "lacks": {
+          "satisfies": [
+            "Rq02abcdef@1"
+          ]
+        }
+      },
+      {
+        "layer": "compositions",
+        "name": "Root",
+        "has": {
+          "satisfies": [
+            "Rq01abcdefghijk@2",
+            "Rq02abcdef@2",
+            "Rq03abcdef@1"
+          ]
+        },
+        "lacks": {
+          "satisfies": [
+            "Rq02abcdef@1"
+          ]
+        }
+      },
+      {
+        "layer": "tasks",
+        "name": "Ts02abcdef",
+        "has": {
+          "satisfies": [
+            "Rq02abcdef@2"
+          ]
+        },
+        "lacks": {
+          "satisfies": [
+            "Rq02abcdef@1"
+          ]
+        }
+      },
+      {
+        "layer": "hardware",
+        "name": "Cp1abcdefg",
+        "has": {
+          "satisfies": [
+            "Rq02abcdef@2"
+          ]
+        },
+        "lacks": {
+          "satisfies": [
+            "Rq02abcdef@1"
+          ]
+        }
+      },
+      {
+        "unreferenced": "Rq02abcdef@1"
+      }
+    ]
+  }
+}

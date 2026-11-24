@@ -1,0 +1,18 @@
+Diagrams report: Diagram fixture
+
+Views: 7
+  ibd-Chassis           906.48 x 314 px  12484 bytes
+  overview-Chassis      670.14 x 245 px  4346 bytes
+  ibd-Vehicle           765.8 x 205 px  4308 bytes
+  overview-Vehicle      670.14 x 175 px  2847 bytes
+  nesting               630.32 x 152 px  2561 bytes
+  deployment            388 x 228 px  2487 bytes
+  sequence-speed_cycle  614.6 x 296 px  5415 bytes
+
+Not drawn: 2 in 1 kind
+  not-run: 2
+    deployment  DiagServer: no task runs a runnable of it
+    deployment  Logger: no task runs a runnable of it
+
+Drawn as a loop: 1
+  ibd-Chassis  control_loop: Controller.pLoop -> Controller.rLoop

@@ -1,0 +1,137 @@
+{
+  "name": "consistency-violation-duplicate-event-name",
+  "description": "Two events of one component written with one `SHORT-NAME`. Since contract `8.0.0` an event may state its `name`, and the events of a component are siblings in one `SWC-INTERNAL-BEHAVIOR`, so a stated name equal to another event's name as written -- here the name the writer derives for the existing timing event -- is `rule:name.duplicate-event`, a finding of the cross-element check rather than a load failure.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC`'s runnable `ExampleRun` has one timing event, which states no name and is written `TMT_ExampleRun`. The change set adds an init event that states exactly that name.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "init",
+                  "name": "TMT_ExampleRun"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly, so the refusal is the model rule and not the authorization boundary."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Give the example runnable a start-up event.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "init",
+                "name": "TMT_ExampleRun"
+              }
+            }
+          ]
+        },
+        "value": {
+          "type": "init",
+          "name": "TMT_ExampleRun"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          },
+          {
+            "field": "events"
+          },
+          {
+            "member": {
+              "type": "timing",
+              "period": 0.01
+            }
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          },
+          {
+            "field": "events"
+          },
+          {
+            "member": {
+              "type": "init",
+              "name": "TMT_ExampleRun"
+            }
+          }
+        ]
+      }
+    ],
+    "notes": "Two addresses, one per event the name is written for, each the event's whole value: the timing event that states no name and the init event that states the derived one. The repair is a stated name that no other event of the component is written with -- the rule judges names exactly, and a pair that differs only in case is `rule:name.name-space-collision`'s. The file LOADS: this is a finding of the assembled model and never a load failure."
+  }
+}

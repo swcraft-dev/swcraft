@@ -1,0 +1,10 @@
+name: Consumer
+type: application
+description: The only member of `Sink`; the target of its one delegation.
+ports:
+  - name: rIn
+    direction: require
+    interface: ISignal
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_COMPOSITIONS_001@1

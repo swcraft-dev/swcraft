@@ -1,0 +1,10 @@
+{
+  "id": "15-components-in-a-partition",
+  "task": 15,
+  "group": "relations-and-containment",
+  "kind": "question",
+  "binding": "components_in_the_busiest_partition",
+  "oracle": "structural",
+  "prompt": "Which components are inside partition {{partition}}?",
+  "note": "The partition whose tasks map the runnables of the most components (by type or by instance): every such component, in row order, and up to three components no task of it maps that the reply must not name."
+}

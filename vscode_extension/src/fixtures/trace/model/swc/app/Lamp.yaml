@@ -1,0 +1,11 @@
+name: Lamp
+type: application
+ports:
+  - name: pLamp
+    direction: provide
+    interface: ITemp
+runnables:
+  - name: Drive
+    description: lamp driver
+satisfies:
+  - SR-1@1

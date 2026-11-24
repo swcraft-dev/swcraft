@@ -1,0 +1,5 @@
+name: CORE2
+kind: core
+threshold: 0.9
+enforcement: strict
+description: "Rate-monotonic violation while well under the load threshold."

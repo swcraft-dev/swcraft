@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: a VALUE conflict — one enum name declared twice
+  with five scales against four.
+
+  DriveModeEnum is declared in /Acme/Left/AppTypes and /Acme/Right/AppTypes.
+  Each points at a COMPU-METHOD of one name in its own package, and the two
+  compu-methods differ: five COMPU-SCALEs on the left, four on the right.
+
+  For the IMPORTER the enum's backing scales are part of the enum's own
+  comparison, so this is a DIRECT value conflict on DriveModeEnum. For the external oracle, which knows no SWCraft
+  kind, the COMPU-METHOD is a declaration of its own: it reports the
+  compu-method group as the conflict and the enum group as INHERITING it.
+  Both readings name the same defect at the same place; the difference is
+  recorded in arxml_import_shapes_support.py rather than reconciled.
+
+  The clean twin of this file is clean_path_only_duplicate.arxml: the same
+  structure with two IDENTICAL compu-methods, which merges.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Left</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Methods</SHORT-NAME>
+              <ELEMENTS>
+                <COMPU-METHOD>
+                  <SHORT-NAME>DriveModeEnum_CompuMethod</SHORT-NAME>
+                  <CATEGORY>TEXTTABLE</CATEGORY>
+                  <COMPU-INTERNAL-TO-PHYS>
+                    <COMPU-SCALES>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>IDLE</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>CREEP</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">2</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">2</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>CRUISE</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">3</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">3</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>SPORT</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">4</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">4</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>LIMP</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                    </COMPU-SCALES>
+                  </COMPU-INTERNAL-TO-PHYS>
+                </COMPU-METHOD>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>AppTypes</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-PRIMITIVE-DATA-TYPE>
+                  <SHORT-NAME>DriveModeEnum</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <COMPU-METHOD-REF DEST="COMPU-METHOD">/Acme/Left/Methods/DriveModeEnum_CompuMethod</COMPU-METHOD-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </APPLICATION-PRIMITIVE-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Right</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Methods</SHORT-NAME>
+              <ELEMENTS>
+                <COMPU-METHOD>
+                  <SHORT-NAME>DriveModeEnum_CompuMethod</SHORT-NAME>
+                  <CATEGORY>TEXTTABLE</CATEGORY>
+                  <COMPU-INTERNAL-TO-PHYS>
+                    <COMPU-SCALES>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>IDLE</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>CREEP</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">2</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">2</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>CRUISE</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">3</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">3</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>SPORT</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                    </COMPU-SCALES>
+                  </COMPU-INTERNAL-TO-PHYS>
+                </COMPU-METHOD>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>AppTypes</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-PRIMITIVE-DATA-TYPE>
+                  <SHORT-NAME>DriveModeEnum</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <COMPU-METHOD-REF DEST="COMPU-METHOD">/Acme/Right/Methods/DriveModeEnum_CompuMethod</COMPU-METHOD-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </APPLICATION-PRIMITIVE-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

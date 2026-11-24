@@ -1,0 +1,59 @@
+{
+  "name": "consistency-violation-data-type-external-incomplete-reference",
+  "description": "A data type stub whose `DEST` is not the one this layer admits. The stub loads, as its interface twin does, and the model rule holds the pair to `IMPLEMENTATION-DATA-TYPE`, the one `DEST` a type stub may carry in this contract.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. The change set creates one data type stub whose `external_dest` names an application data type.",
+    "existing_elements": [],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "ForeignSpeed_T"
+          }
+        }
+      ],
+      "notes": "The scope covers the one address exactly, so the refusal is the model rule and not the authorization boundary."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:3c7e19a4b0d25f86",
+    "intent": "Carry the speed type as a reference into the rest of the delivery.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "implementation_types",
+          "element": "ForeignSpeed_T"
+        },
+        "value": {
+          "name": "ForeignSpeed_T",
+          "kind": "external_type",
+          "external_ref": "/Foreign/ImplementationDataTypes/ForeignSpeed_T",
+          "external_dest": "APPLICATION-PRIMITIVE-DATA-TYPE"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "implementation_types",
+        "element": "ForeignSpeed_T",
+        "path": [
+          {
+            "field": "external_dest"
+          }
+        ]
+      }
+    ],
+    "notes": "One address, at the field the repair is about. `IMPLEMENTATION-DATA-TYPE` is the whole admitted set in this contract: a stub stands where a data element's or an argument's `implementation_type`, or a reference type's `base`, names an implementation type, while a value type's `base`, a record field, an array's element type and a mapping set's two sides never admit one. As for the interface twin, the rule judges the pair and never the target it names."
+  }
+}

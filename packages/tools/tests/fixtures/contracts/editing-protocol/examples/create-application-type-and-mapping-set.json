@@ -1,0 +1,135 @@
+{
+  "name": "create-application-type-and-mapping-set",
+  "description": "The tenth layer authored with no new tool and no new address form. One `create` declares the physical view of a signal — its unit, its linear conversion and its range — and a second declares the set that says which implementation type stores it. The `mapping_sets` layer arrived with contract `7.0.0` and has never had an MCP tool of its own; the generic change set reaches it because the registry is derived from the contract, which is the property `create-data-type-alias` was the mandatory vector for.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, whose `implementation_types` layer (`data_types/implementation/`) holds the value type `float32` and whose `data_types/mapping_sets/` directory is present and empty — the state a project with no physical type is in, and the reason the layer declares `optional: false` and still may hold no file. Neither element the change set creates exists.",
+    "existing_elements": [
+      {
+        "layer": "implementation_types",
+        "element": "float32"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "VehicleSpeed_Kph"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "mapping_sets",
+            "element": "PhysicalMapping"
+          }
+        }
+      ],
+      "notes": "Two element addresses in two layers, one of which had no tool to be named after. Scope is keyed by operation and address throughout, so a layer added by a contract bump needs no scope vocabulary of its own."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Declare the physical view of the vehicle speed signal and the set that stores it.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "application_types",
+          "element": "VehicleSpeed_Kph"
+        },
+        "value": {
+          "name": "VehicleSpeed_Kph",
+          "kind": "application_type",
+          "unit": "kph",
+          "conversion": {
+            "factor": 0.1,
+            "offset": 0.0
+          },
+          "range": {
+            "min": 0.0,
+            "max": 300.0
+          },
+          "description": "Vehicle speed, physical view"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "mapping_sets",
+          "element": "PhysicalMapping"
+        },
+        "value": {
+          "name": "PhysicalMapping",
+          "maps": [
+            {
+              "application": "VehicleSpeed_Kph",
+              "implementation": "float32"
+            }
+          ],
+          "description": "Physical types and the implementation types that store them"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "VehicleSpeed_Kph"
+          },
+          "after": {
+            "name": "VehicleSpeed_Kph",
+            "kind": "application_type",
+            "unit": "kph",
+            "conversion": {
+              "factor": 0.1,
+              "offset": 0.0,
+              "limits": null
+            },
+            "range": {
+              "min": 0.0,
+              "max": 300.0
+            },
+            "unit_ref": null,
+            "compu_method_ref": null,
+            "data_constr_ref": null,
+            "description": "Vehicle speed, physical view",
+            "package": null
+          },
+          "summary": "application_types: + VehicleSpeed_Kph"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "mapping_sets",
+            "element": "PhysicalMapping"
+          },
+          "after": {
+            "name": "PhysicalMapping",
+            "maps": [
+              {
+                "application": "VehicleSpeed_Kph",
+                "implementation": "float32"
+              }
+            ],
+            "description": "Physical types and the implementation types that store them",
+            "package": null
+          },
+          "summary": "mapping_sets: + PhysicalMapping"
+        }
+      ]
+    },
+    "notes": "`conversion` and `range` are **nested member kinds**, not maps: the contract declares `kind:application_types.conversion` with `factor` and `offset` and `kind:application_types.range` with `min` and `max`, so the payload's keys are checked and a third one is refused — which a `map[string, number]` could not have done. Both are optional and both are omitted on disk at their default, so a type declaring none of the three round-trips byte-identically; `conversion: {}` would be the **identity** conversion and therefore a declaration, where a blank `unit` is no unit. The set's own `maps` is a collection identified by `application` rather than by a `name`, which is why a pair is addressed by the application type it maps. Nothing here checks that the pair's two sides name types of the kinds each side admits, or that a component's ports are covered: those are `mapping-set.unknown-application`, `.unknown-implementation` and `data-type.application-type-unmapped`, and all three are pass D's — `negative/consistency-violation-application-type-unmapped.json` is the last one's refusal. No port in this model speaks the new type yet, so the staged result is consistent."
+  }
+}

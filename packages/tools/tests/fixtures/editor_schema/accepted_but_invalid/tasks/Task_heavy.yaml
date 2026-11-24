@@ -1,0 +1,6 @@
+name: Task_heavy
+period: 0.02
+priority: 4
+partition: PARTITION0
+wcet: 18000us
+description: 90 percent of CORE0 on its own, against a strict 70 percent budget

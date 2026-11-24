@@ -1,0 +1,103 @@
+{
+  "id": "fits-two-verdicts",
+  "function": "MCP `resource_report`",
+  "finding": {
+    "release": "0.19.0",
+    "row": 5
+  },
+  "tier": "generated-small",
+  "specimen": "scenario-fits-two-verdicts",
+  "class": "normal",
+  "target": {
+    "memory": "threshold_gap_memory",
+    "gap_bytes": "threshold_gap_bytes",
+    "over_size_bytes": "over_size_bytes"
+  },
+  "thresholds": {},
+  "steps": [
+    {
+      "id": "in-the-gap",
+      "mcp": "resource_report",
+      "arguments": {
+        "fits": {
+          "memory": {
+            "$target": "memory"
+          },
+          "bytes": {
+            "$target": "gap_bytes"
+          }
+        }
+      }
+    },
+    {
+      "id": "over-the-size",
+      "mcp": "resource_report",
+      "arguments": {
+        "fits": {
+          "memory": {
+            "$target": "memory"
+          },
+          "bytes": {
+            "$target": "over_size_bytes"
+          }
+        }
+      }
+    },
+    {
+      "id": "zero",
+      "mcp": "resource_report",
+      "arguments": {
+        "fits": {
+          "memory": {
+            "$target": "memory"
+          },
+          "bytes": 0
+        }
+      }
+    }
+  ],
+  "expectations": [
+    {
+      "step": "in-the-gap",
+      "at": "fits",
+      "literal_equals": false,
+      "because": "the smallest whole amount over size x threshold breaks the budget: fits is the threshold's verdict"
+    },
+    {
+      "step": "in-the-gap",
+      "at": "within_threshold.fits",
+      "literal_equals": false,
+      "because": "the amount is over size x threshold by one byte at most"
+    },
+    {
+      "step": "in-the-gap",
+      "at": "within_size.fits",
+      "literal_equals": true,
+      "because": "the amount is within the size, the case the two verdicts split on"
+    },
+    {
+      "step": "over-the-size",
+      "at": "fits",
+      "literal_equals": false,
+      "because": "an amount over the size is over size x threshold too"
+    },
+    {
+      "step": "over-the-size",
+      "at": "within_size.fits",
+      "literal_equals": false,
+      "because": "the smallest whole amount over the size does not fit it"
+    },
+    {
+      "step": "zero",
+      "at": "within_threshold.fits",
+      "literal_equals": true,
+      "because": "nothing more fits a memory whose use is within size x threshold"
+    },
+    {
+      "step": "zero",
+      "at": "within_size.fits",
+      "literal_equals": true,
+      "because": "nothing more fits a memory whose use is within its size"
+    }
+  ]
+}

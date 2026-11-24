@@ -1,0 +1,40 @@
+{
+  "name": "identity-conflict-duplicate-data-type",
+  "description": "A `create` whose identity is already taken in the staged result. The layer that had no authoring tool at all gets the same identity guarantee as every other one, from the registry rather than from a per-tool pre-check.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, whose `base_types` layer (`data_types/base/`) already holds the base type `uint16_base` (16 bits, encoding NONE).",
+    "existing_elements": [{ "layer": "base_types", "element": "uint16_base" }],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        { "operation": "create", "address": { "layer": "base_types", "element": "uint16_base" } }
+      ]
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Add a 16-bit unsigned base type.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": { "layer": "base_types", "element": "uint16_base" },
+        "value": {
+          "name": "uint16_base",
+          "kind": "base_type",
+          "size": 16,
+          "encoding": "NONE",
+          "native_declaration": "unsigned short"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "identity-conflict",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [{ "layer": "base_types", "element": "uint16_base" }],
+    "notes": "`identity-conflict` covers both forms: an identity already taken in the staged result, and two operations of the same change set claiming one. A `create` never silently becomes an overwrite — changing an existing element is an `update`, which is a different operation and a different approved scope entry."
+  }
+}

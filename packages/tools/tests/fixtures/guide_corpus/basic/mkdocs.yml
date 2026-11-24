@@ -1,0 +1,12 @@
+# A small guide for packages/tools/tests/test_guide_corpus.py: the corpus producer reads
+# its Markdown configuration from this file, as it reads the real guide's from
+# the repository's mkdocs.yml. The same extension list as the real one.
+site_name: Fixture Guide
+docs_dir: guide
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true

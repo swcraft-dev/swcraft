@@ -1,0 +1,37 @@
+name: OracleSwc
+type: application
+description: One runnable started by an init event and a call, writing a data element and calling an operation asynchronously, and one started when that call returns.
+ports:
+- name: pData
+  direction: provide
+  interface: IOracleData
+- name: rControl
+  direction: require
+  interface: IOracleControl
+- name: rData
+  direction: require
+  interface: IOracleData
+  measures:
+    value: Range check on reception.
+- name: pService
+  direction: provide
+  interface: IOracleService
+runnables:
+- name: OracleRun
+  events:
+  - type: init
+  - type: operation
+    port: pService
+    operation: Serve
+  writes:
+  - port: pData
+    element: value
+  calls:
+  - port: rControl
+    operation: Apply
+    asynchronous: true
+- name: OracleApplied
+  events:
+  - type: call_returned
+    port: rControl
+    operation: Apply

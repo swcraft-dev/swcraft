@@ -1,0 +1,59 @@
+{
+  "id": "10-import-component",
+  "task": 10,
+  "group": "mixed",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Import the component in imports/BrakeLightController.arxml. It needs 512 bytes of RAM. Add it to the Chassis composition and connect the brake subsystem's pPermittedBrakeAction to its rPermittedBrakeAction.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "swc",
+        "name": "BrakeLightController",
+        "has": {
+          "ports": [
+            {
+              "name": "rPermittedBrakeAction",
+              "direction": "require",
+              "interface": "IPermittedBrakeAction"
+            }
+          ],
+          "runnables": [
+            {
+              "name": "UpdateBrakeLight"
+            }
+          ],
+          "memory": {
+            "RAM": 512
+          }
+        }
+      },
+      {
+        "layer": "compositions",
+        "name": "Chassis",
+        "has": {
+          "members": [
+            {
+              "type": "BrakeLightController"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "connectors",
+        "has": {
+          "from": {
+            "composition": "BrakeSubsystem",
+            "port": "pPermittedBrakeAction"
+          },
+          "to": {
+            "swc": "BrakeLightController",
+            "port": "rPermittedBrakeAction"
+          }
+        }
+      }
+    ]
+  },
+  "note": "The export was made by SWCraft from a scratch copy of the bench with the component added (generate arxml --component BrakeLightController); its interface and types are the bench's own, so the import reuses them. A component export carries no memory budget, which is why the prompt states the RAM: without it check-model fails."
+}

@@ -1,0 +1,8 @@
+name: Example_to_Consumer
+from:
+  swc: ExampleSWC
+  port: pOut
+to:
+  swc: ExampleConsumerSWC
+  port: rIn
+description: ExampleSWC provides IExample data to ExampleConsumerSWC

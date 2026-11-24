@@ -1,0 +1,161 @@
+{
+  "name": "create-swc-with-ports-and-runnables",
+  "description": "One `create` carrying an SWC's complete declared payload — group, ports, runnables with their events, and the memory budget — where the current surface needs `add_swc`, `add_port`, `add_runnable` and `set_swc_memory_budget` as four separately committed writes.",
+  "kind": "example",
+  "context": {
+    "summary": "A model that already declares the `IVehicleSpeed` interface and the `RAM0` memory. Because a memory is declared, every SWC is a consumer of it, so the new component must carry a `RAM0` budget or the resource check refuses the staged result. The component names the requirement it satisfies in its own payload (`satisfies`, contract `11.0.0`), so the trace link is part of the one `create` rather than a second operation.",
+    "existing_elements": [
+      {
+        "layer": "interfaces",
+        "element": "IVehicleSpeed"
+      },
+      {
+        "layer": "hardware",
+        "element": "RAM0"
+      },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_001"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "SpeedSensorSWC"
+          }
+        }
+      ]
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:4b81ce20f7a6d539",
+    "intent": "Add the speed sensor component with its providing port, its cyclic runnable and its RAM0 budget.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "SpeedSensorSWC"
+        },
+        "value": {
+          "name": "SpeedSensorSWC",
+          "group": "sensors",
+          "type": "application",
+          "description": "Reads the wheel speed sensors and publishes the vehicle speed",
+          "ports": [
+            {
+              "name": "pSpeed",
+              "direction": "provide",
+              "interface": "IVehicleSpeed",
+              "description": "Publishes the measured vehicle speed",
+              "measures": {}
+            }
+          ],
+          "runnables": [
+            {
+              "name": "SpeedSensorRun",
+              "min_start_interval": 0.01,
+              "events": [
+                {
+                  "type": "timing",
+                  "period": 0.01
+                }
+              ]
+            }
+          ],
+          "memory": {
+            "RAM0": 1024
+          },
+          "handle_termination_and_restart": "no_support",
+          "satisfies": [
+            "REQ_EXAMPLE_001@1"
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:4b81ce20f7a6d539",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "SpeedSensorSWC"
+          },
+          "after": {
+            "name": "SpeedSensorSWC",
+            "group": "sensors",
+            "type": "application",
+            "description": "Reads the wheel speed sensors and publishes the vehicle speed",
+            "external": false,
+            "external_ref": "",
+            "external_dest": "",
+            "ports": [
+              {
+                "name": "pSpeed",
+                "direction": "provide",
+                "interface": "IVehicleSpeed",
+                "observed_interface": null,
+                "description": "Publishes the measured vehicle speed",
+                "measures": {},
+                "com_specs": [],
+                "satisfies": []
+              }
+            ],
+            "runnables": [
+              {
+                "name": "SpeedSensorRun",
+                "min_start_interval": 0.01,
+                "concurrent": false,
+                "events": [
+                  {
+                    "type": "timing",
+                    "period": 0.01,
+                    "disabled_modes": [],
+                    "name": null
+                  }
+                ],
+                "reads": [],
+                "writes": [],
+                "calls": [],
+                "reads_variables": [],
+                "writes_variables": [],
+                "can_enter": [],
+                "runs_inside": [],
+                "description": "",
+                "symbol": null,
+                "wcet": null,
+                "wcet_type": null,
+                "satisfies": []
+              }
+            ],
+            "variables": [],
+            "exclusive_areas": [],
+            "memory": {
+              "RAM0": 1024
+            },
+            "asil": null,
+            "handle_termination_and_restart": "no_support",
+            "data_type_mappings": [],
+            "behavior_name": null,
+            "package": null,
+            "satisfies": [
+              "REQ_EXAMPLE_001@1"
+            ]
+          },
+          "summary": "swc: + SpeedSensorSWC"
+        }
+      ]
+    },
+    "notes": "The `group` is payload, so the create needs no location parameter and no path ever crosses the boundary. One operation, one delta entry, one reviewed unit — as against four writes each of which is committed before the next one is proposed."
+  }
+}

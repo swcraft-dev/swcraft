@@ -1,0 +1,8 @@
+name: Root
+title: Root composition
+root: true
+description: The root every project owes; the one component stands in it once.
+
+members:
+  - name: SignalsSwc
+    type: SignalsSwc

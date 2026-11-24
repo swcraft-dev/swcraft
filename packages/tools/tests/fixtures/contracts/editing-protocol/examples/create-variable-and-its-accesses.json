@@ -1,0 +1,250 @@
+{
+  "name": "create-variable-and-its-accesses",
+  "description": "An inter-runnable variable and a runnable's two accesses to it, authored with no new tool and no new addressing (contract `12.1.0`): the variable is a `create` at its `field`-identified member address under the component's `variables`, `{member: <name>}`, and each access a `create` at its own member address under the runnable's `reads_variables` or `writes_variables`, identified by the `variable` it names. The runnable exists already, so the delta reports each of the three creates as its own reviewed entry.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` declares no variable, and its one runnable, `ExampleRun`, accesses none. The variable is implementation-typed by the base's `uint8` and carries an `init`, so `check-model`'s read-without-init warning has nothing to say, and the safety rules read no variable, so the change set asks no safety question. One runnable reading and writing one variable is a shape SWCraft does not judge: no order of execution is modelled.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "variables"
+              },
+              {
+                "member": "ExampleState"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "reads_variables"
+              },
+              {
+                "member": "ExampleState"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "writes_variables"
+              },
+              {
+                "member": "ExampleState"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope names the three entries the delta reports, one per member the change set adds."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Keep ExampleRun's last output in a variable it reads back on its next run.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "variables"
+            },
+            {
+              "member": "ExampleState"
+            }
+          ]
+        },
+        "value": {
+          "name": "ExampleState",
+          "access": "explicit",
+          "implementation_type": "uint8",
+          "init": 0,
+          "description": "The last value ExampleRun wrote, read back on its next run."
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "reads_variables"
+            },
+            {
+              "member": "ExampleState"
+            }
+          ]
+        },
+        "value": {
+          "variable": "ExampleState"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "writes_variables"
+            },
+            {
+              "member": "ExampleState"
+            }
+          ]
+        },
+        "value": {
+          "variable": "ExampleState",
+          "name": "WV_State"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "reads_variables"
+              },
+              {
+                "member": "ExampleState"
+              }
+            ]
+          },
+          "after": {
+            "variable": "ExampleState",
+            "name": null
+          },
+          "summary": "swc/ExampleSWC: + runnables[ExampleRun].reads_variables[ExampleState]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "writes_variables"
+              },
+              {
+                "member": "ExampleState"
+              }
+            ]
+          },
+          "after": {
+            "variable": "ExampleState",
+            "name": "WV_State"
+          },
+          "summary": "swc/ExampleSWC: + runnables[ExampleRun].writes_variables[ExampleState]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "variables"
+              },
+              {
+                "member": "ExampleState"
+              }
+            ]
+          },
+          "after": {
+            "name": "ExampleState",
+            "access": "explicit",
+            "application_type": null,
+            "implementation_type": "uint8",
+            "init": 0,
+            "description": "The last value ExampleRun wrote, read back on its next run.",
+            "sw_calibration_access": null
+          },
+          "summary": "swc/ExampleSWC: + variables[ExampleState]"
+        }
+      ]
+    },
+    "notes": "A variable is identified by its `name` and an access by its `variable`, so a variable renamed in place is `immutable-field` and a rename is a remove and a create, with every access naming it repointed in the same change set; the variable's `access` is an ordinary field `update`. The read states no `name`, so it is written as the derived `RV_ExampleState`; the write states `WV_State`, written as it is. Each list is written only while non-empty, so the file this commits gains `variables` after `runnables` and the two access lists after the runnable's events, and a component without them reads exactly as before."
+  }
+}

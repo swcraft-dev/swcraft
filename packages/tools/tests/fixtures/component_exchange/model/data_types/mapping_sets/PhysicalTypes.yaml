@@ -1,0 +1,6 @@
+name: PhysicalTypes
+maps:
+- application: Distance_T
+  implementation: float32
+- application: Velocity_T
+  implementation: Speed_T

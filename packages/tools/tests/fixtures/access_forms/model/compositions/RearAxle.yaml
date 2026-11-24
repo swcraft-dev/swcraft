@@ -1,0 +1,6 @@
+name: RearAxle
+title: Rear axle
+description: The second occurrence of the wheel sensor; no task maps its runnable.
+members:
+- name: Sensor
+  type: WheelSensor

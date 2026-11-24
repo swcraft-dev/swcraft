@@ -1,0 +1,133 @@
+{
+  "name": "create-data-received-event",
+  "description": "Contract `12.3.0`'s fourth event kind, authored with no new tool and no new addressing: a data-received event is a `create` at its own `whole_value` member address under a runnable's `events`, `{member: {type: data, port, element}}`, the value the address names. `disabled_modes` and a stated `name` join the identity only when set, so an event that disables no mode and states none is addressed by the three fields alone. The runnable exists already, so the delta reports the create as its own reviewed entry.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleConsumerSWC` requires `IExample` through `rIn`, and its one runnable, `ExampleConsumerRun`, is started by a 10 ms timing event. A data-received event beside a timing event on one runnable is a shape `check-model` does not judge (the standard's own example of a runnable started both ways), and the safety rules read no event, so the change set asks no safety question.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleConsumerRun"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleConsumerRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "data",
+                  "port": "rIn",
+                  "element": "value"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope names the one entry the delta reports."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Start ExampleConsumerRun whenever a new value arrives on rIn, beside its 10 ms timing event.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleConsumerRun"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "data",
+                "port": "rIn",
+                "element": "value"
+              }
+            }
+          ]
+        },
+        "value": {
+          "type": "data",
+          "port": "rIn",
+          "element": "value"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleConsumerRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "data",
+                  "port": "rIn",
+                  "element": "value"
+                }
+              }
+            ]
+          },
+          "after": {
+            "type": "data",
+            "port": "rIn",
+            "element": "value",
+            "disabled_modes": [],
+            "name": null
+          },
+          "summary": "swc/ExampleConsumerSWC: + runnables[ExampleConsumerRun].events[{type: data, port: rIn, element: value}]"
+        }
+      ]
+    },
+    "notes": "A data-received event is a whole value: its identity is every field off its default, so a member `update` is `immutable-field` and a replacement is a remove and a create; an event that disables a mode is addressed with its `disabled_modes`, and one that states a name with its `name`. The file this commits gains the event after the timing event in the runnable's `events`, written as `type`, `port`, `element`, then `disabled_modes` only while non-empty and a stated `name` last."
+  }
+}

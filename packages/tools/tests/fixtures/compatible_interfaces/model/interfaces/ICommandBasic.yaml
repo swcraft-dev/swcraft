@@ -1,0 +1,13 @@
+name: ICommandBasic
+kind: client_server
+description: >-
+  The narrower client-server interface: two of `ICommandFull`'s three
+  operations, and `Reset`'s one argument differs in **name** while agreeing in
+  direction and resolved type — the pair `[constr_1076]` calls compatible.
+operations:
+  - name: Start
+  - name: Reset
+    arguments:
+      - name: id
+        direction: in
+        implementation_type: Tally

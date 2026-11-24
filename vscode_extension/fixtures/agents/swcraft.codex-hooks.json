@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^(Bash|apply_patch|Edit|Write)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "swcraft guard --host codex",
+            "timeout": 10,
+            "statusMessage": "SWCraft model guard"
+          }
+        ]
+      }
+    ]
+  }
+}

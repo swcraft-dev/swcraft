@@ -1,0 +1,479 @@
+{
+  "name": "discover-layer-hardware",
+  "description": "A layer-narrowed `discover` over `hardware/`, the layer that carries the processor, its cores, the partitions tasks run in and its memories. It is the whole inventory for the layer `Task.partition`, a partition's `core` and the keys of `SWComponent.memory` resolve against — four kinds discriminated on `kind` since contract `9.0.0`, one identity namespace across all four — and it is byte-equal to this layer's entry in the project-wide answer, because narrowing selects and never abridges.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, whose `hardware/` layer declares the processor `CPU`, the core `CORE0`, the partition `PARTITION0` on it and the memory `RAM0`. `Task_10ms` runs in `PARTITION0`, so on `CORE0`, and both components budget against `RAM0`.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current",
+    "notes": "Since contract `2.0.0` no layer is optional, so `optional` is `false` here and everywhere, and this default `summary` form omits it (absent means `false`; `form: \"full\"` spells it out); `present` remains a probe of THIS project and answers `false` for a project that has not created the directory yet (`examples/discover-layer-hardware-absent.json`)."
+  },
+  "input": {
+    "operation": "discover",
+    "layer": "hardware"
+  },
+  "expected": {
+    "response": {
+      "response": "discover",
+      "project": {
+        "name": "swcraft-basic-example",
+        "arxml_version": "4.2.2",
+        "swcraft_version": "0.24.0"
+      },
+      "baseline": "rev1:kk7N755-pYf2txfvyVl9Kw",
+      "reads": {
+        "forms": [
+          "summary",
+          "full",
+          "index"
+        ],
+        "default_form": {
+          "layer": "summary",
+          "collection": "summary",
+          "element": "full",
+          "field": "full"
+        },
+        "budget_wire_bytes": 80000,
+        "hint_page_size": 50,
+        "discover": {
+          "forms": [
+            "summary",
+            "full",
+            "baseline"
+          ],
+          "default_form": "summary"
+        },
+        "derived": [
+          {
+            "name": "connection_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string"
+              }
+            }
+          },
+          {
+            "name": "base_type",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "runnables.reads",
+                "runnables.writes"
+              ]
+            },
+            "rows": "one",
+            "shape": {
+              "implementation": "string|null",
+              "base": "string|null"
+            }
+          },
+          {
+            "name": "effective_level",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one",
+            "shape": {
+              "level": "string",
+              "rating": "string"
+            }
+          },
+          {
+            "name": "partitions",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one per value",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "crossing_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              }
+            }
+          },
+          {
+            "name": "unconnected",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "ports"
+              ]
+            },
+            "rows": "one per value",
+            "shape": {
+              "direction": "string",
+              "interface": "string|null"
+            }
+          },
+          {
+            "name": "core",
+            "at": {
+              "layer": "tasks"
+            },
+            "rows": "one",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "realised_by",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null"
+            }
+          },
+          {
+            "name": "allocation",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one",
+            "shape": {
+              "sites": "integer",
+              "elements": "integer",
+              "allocated": "boolean|null"
+            }
+          },
+          {
+            "name": "stale_links",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null",
+              "current": "integer"
+            }
+          }
+        ],
+        "join": {
+          "row_ceiling": 50000,
+          "max_entries": 8
+        }
+      },
+      "form": "summary",
+      "layers": [
+        {
+          "layer": "hardware",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "processor",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "processor"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "core",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "core"
+                  ]
+                },
+                {
+                  "name": "threshold",
+                  "type": "number",
+                  "required": true,
+                  "unit": "fraction"
+                },
+                {
+                  "name": "enforcement",
+                  "type": "string",
+                  "enum": [
+                    "strict",
+                    "advisory"
+                  ]
+                },
+                {
+                  "name": "asil_capability",
+                  "type": "string",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ]
+                },
+                {
+                  "name": "hw_id",
+                  "type": "integer"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "memory",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "memory"
+                  ]
+                },
+                {
+                  "name": "type",
+                  "type": "string",
+                  "required": true,
+                  "enum": [
+                    "RAM",
+                    "ROM",
+                    "EEPROM",
+                    "Flash"
+                  ]
+                },
+                {
+                  "name": "size",
+                  "type": "integer",
+                  "required": true,
+                  "unit": "bytes"
+                },
+                {
+                  "name": "accessible",
+                  "type": "list[string]",
+                  "required": true,
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                },
+                {
+                  "name": "threshold",
+                  "type": "number",
+                  "required": true,
+                  "unit": "fraction"
+                },
+                {
+                  "name": "enforcement",
+                  "type": "string",
+                  "enum": [
+                    "strict",
+                    "advisory"
+                  ]
+                },
+                {
+                  "name": "asil_capability",
+                  "type": "string",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "partition",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "partition"
+                  ]
+                },
+                {
+                  "name": "core",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "hardware",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "asil",
+                  "type": "string",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "QM(A)",
+                    "QM(B)",
+                    "QM(C)",
+                    "QM(D)",
+                    "A(B)",
+                    "A(C)",
+                    "A(D)",
+                    "B(B)",
+                    "B(C)",
+                    "B(D)",
+                    "C(C)",
+                    "C(D)",
+                    "D(D)"
+                  ]
+                },
+                {
+                  "name": "trust",
+                  "type": "string",
+                  "enum": [
+                    "non_trusted",
+                    "trusted_with_protection",
+                    "trusted"
+                  ]
+                },
+                {
+                  "name": "coexistence",
+                  "type": "string"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "notes": "`name` is unique across all four kinds, not per kind: a task names its partition, a partition its core and a component its memories by name alone, so one name must mean one element. `accessible` is a list of core names whose members are addressed by their whole value, which is why discovery publishes `member_identity: \"whole_value\"` for it — the same collection shape `swc.satisfies` has. `type` and `hw_id` are published with no rule behind them by decision: `type` records what the memory is for a reader and all four literals are budgeted identically, and `hw_id` is the vendor's physical core number, which nothing checks."
+  }
+}

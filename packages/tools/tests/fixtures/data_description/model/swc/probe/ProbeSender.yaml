@@ -1,0 +1,16 @@
+name: ProbeSender
+type: application
+ports:
+- name: pSignals
+  direction: provide
+  interface: IProbeSignals
+data_type_mappings:
+- ProbeMaps
+runnables:
+- name: ProbeSend
+  events:
+  - type: timing
+    period: 0.01
+handle_termination_and_restart: no_support
+satisfies:
+- REQ-PROBE-001@1

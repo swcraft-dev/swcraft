@@ -1,0 +1,3 @@
+# A team that writes the requirement in the title: two fields read the same key.
+fields:
+  description: title

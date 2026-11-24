@@ -1,0 +1,137 @@
+{
+  "id": "02-brake-data-logger",
+  "task": 2,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Add a data logger to the model: 1. A new application component WlDataLogger with a require port rLog (interface If0471abcdefghij) and a runnable LogSnapshot: it runs every 0.1 s and reads the data element D1 through rLog. RAM 1024 in Me4abc and 0 in Me1abc, Me2abc and Me3abc. The runnable satisfies Rq04abcdef@1. 2. Add WlDataLogger as a member of the composition Root. 3. Remove the connector Conn1450abcdefghij and add the connector WlLoggerConnector from Swc150abcdefghi.P10 to WlDataLogger.rLog. 4. Put WlDataLogger.LogSnapshot into the task Ts30abcde. 5. Remove the satisfies link to Rq07abcdef@1 from the port Swc150abcdefghi.P10. After the changes run check-model.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "swc",
+        "name": "WlDataLogger",
+        "has": {
+          "type": "application",
+          "ports": [
+            {
+              "name": "rLog",
+              "direction": "require",
+              "interface": "If0471abcdefghij"
+            }
+          ],
+          "runnables": [
+            {
+              "name": "LogSnapshot",
+              "events": [
+                {
+                  "type": "timing",
+                  "period": 0.1
+                }
+              ],
+              "reads": [
+                {
+                  "port": "rLog",
+                  "element": "D1"
+                }
+              ],
+              "satisfies": [
+                "Rq04abcdef@1"
+              ]
+            }
+          ],
+          "memory": {
+            "Me1abc": 0,
+            "Me2abc": 0,
+            "Me3abc": 0,
+            "Me4abc": 1024
+          }
+        }
+      },
+      {
+        "layer": "compositions",
+        "name": "Root",
+        "has": {
+          "members": [
+            {
+              "type": "WlDataLogger"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn1450abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "WlLoggerConnector",
+        "has": {
+          "from": {
+            "swc": "Swc150abcdefghi",
+            "port": "P10"
+          },
+          "to": {
+            "swc": "WlDataLogger",
+            "port": "rLog"
+          }
+        }
+      },
+      {
+        "any_of": [
+          {
+            "layer": "tasks",
+            "name": "Ts30abcde",
+            "has": {
+              "runnables": [
+                {
+                  "swc": "WlDataLogger",
+                  "runnable": "LogSnapshot"
+                }
+              ]
+            }
+          },
+          {
+            "layer": "tasks",
+            "name": "Ts30abcde",
+            "has": {
+              "runnables": [
+                {
+                  "instance": "WlDataLogger",
+                  "runnable": "LogSnapshot"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "name": "Swc150abcdefghi",
+        "has": {
+          "ports": [
+            {
+              "name": "P10"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "Swc150abcdefghi",
+        "lacks": {
+          "ports": [
+            {
+              "name": "P10",
+              "satisfies": [
+                "Rq07abcdef@1"
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "note": "The showcase task 02 transposed: the maintainer's five steps, on the large bench's elements. Ts30abcde runs in Pa4ab, whose memory is Me4abc; Me1abc, Me2abc and Me3abc are strict, so the component declares 0 for each."
+}

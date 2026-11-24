@@ -1,0 +1,9 @@
+name: InitMismatch
+kind: sender_receiver
+description: The init value is a list where the declared primitive takes a scalar
+data_elements:
+  - name: level
+    implementation_type: uint8
+    init:
+      - 1
+      - 2

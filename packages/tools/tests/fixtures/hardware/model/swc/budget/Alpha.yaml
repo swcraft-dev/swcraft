@@ -1,0 +1,7 @@
+name: Alpha
+type: application
+description: "Declares both memory pools."
+memory:
+  RAM: 1024
+  ROM: 600
+handle_termination_and_restart: no_support

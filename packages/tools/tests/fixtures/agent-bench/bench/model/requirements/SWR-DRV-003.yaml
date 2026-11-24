@@ -1,0 +1,9 @@
+id: SWR-DRV-003
+title: Brake diagnostics display
+description: The instrument cluster shall show brake diagnostics to the driver.
+req_type: req
+version: 1
+source: external
+document: SRS Driver Information
+baseline: '1.0'
+revision: '1'

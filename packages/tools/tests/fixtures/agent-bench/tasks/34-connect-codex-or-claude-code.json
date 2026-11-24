@@ -1,0 +1,91 @@
+{
+  "id": "34-connect-codex-or-claude-code",
+  "task": 34,
+  "group": "guide-question",
+  "kind": "guide",
+  "status": "ready",
+  "prompt": "How do I connect Codex or Claude Code in VS Code to my SWCraft project?",
+  "expect": {
+    "model": "unchanged",
+    "guide": {
+      "sections": [
+        "vscode#codex-and-claude-code-in-vs-code"
+      ],
+      "must": [
+        {
+          "id": "claude-server-file",
+          "any_of": [
+            ".mcp.json"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "codex-server-file",
+          "any_of": [
+            ".codex/config.toml"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "variable",
+          "any_of": [
+            "SWCRAFT_REVIEW"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "panel",
+          "any_of": [
+            "panel"
+          ],
+          "case_sensitive": false
+        }
+      ],
+      "must_not": [
+        {
+          "id": "absolute-path",
+          "any_of": [
+            "absolute path to swcraft.yaml",
+            "absolute path to your swcraft.yaml",
+            "absolute path to the project",
+            "absolute path to your project",
+            "absolute path of your project",
+            "absolute path to the manifest",
+            "absolute path of the manifest",
+            "full path to swcraft.yaml",
+            "full path to your swcraft.yaml",
+            "use an absolute path",
+            "/path/to/",
+            "--project /",
+            "\"--project\", \"/"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "elicit-value",
+          "any_of": [
+            "\"SWCRAFT_REVIEW\": \"elicit\"",
+            "\"SWCRAFT_REVIEW\":\"elicit\"",
+            "SWCRAFT_REVIEW = \"elicit\"",
+            "SWCRAFT_REVIEW=elicit",
+            "SWCRAFT_REVIEW to elicit"
+          ],
+          "case_sensitive": false
+        }
+      ]
+    },
+    "calls": {
+      "forbidden": [
+        "change_set",
+        "build",
+        "validate",
+        "export_component",
+        "import_component"
+      ]
+    }
+  },
+  "reference": {
+    "runs": "candidate builds only: a build without the guide tool fails the read and cited criteria by construction, so a guide question is never run on a baseline",
+    "baseline": "0.22.0's guide has no section on Codex or Claude Code in VS Code (its vscode.md has Another chat client, the hand-written server line with an absolute manifest path), so the question is new with the section and has no baseline answer. The MUSTs are the two files that hold the clients' server line (.mcp.json for Claude Code, .codex/config.toml for Codex) and the review mode they set, SWCRAFT_REVIEW with panel; the other three files Onboard Project writes (.claude/settings.json, AGENTS.md, CLAUDE.md) are not required, since a task holds at most four MUST entries and those two carry the connection. The MUST NOTs: an instruction to give an absolute manifest path (the project's own files name swcraft.yaml relative, and both clients' files ship) and elicit given as the value, in a configuration or assignment form; what they do not reach: a paraphrase of either outside these strings, and the guide's own terminal alternative for Claude Code (SWCRAFT_REVIEW set to elicit at local scope), which no string here matches."
+  }
+}

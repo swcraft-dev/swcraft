@@ -1,0 +1,105 @@
+{
+  "name": "read-model-map",
+  "description": "A `read` with no address answers the bounded model map: the baseline token, every declared layer's element count, and the identities of each layer holding at most fifty elements, each exactly as that layer's `index` read publishes them.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model: no layer holds more than twelve elements, so every layer is listed.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      }
+    ],
+    "notes": "The map is orientation, never enumeration: a layer over fifty elements is counted and not listed, and its names come by a filtered or paged `index` read."
+  },
+  "input": {
+    "operation": "read"
+  },
+  "expected": {
+    "response": {
+      "response": "map",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "counts": {
+        "swc": 2,
+        "interfaces": 2,
+        "connectors": 1,
+        "application_types": 0,
+        "implementation_types": 12,
+        "base_types": 12,
+        "requirements": 1,
+        "compositions": 1,
+        "tasks": 1,
+        "sequences": 1,
+        "hardware": 4,
+        "mapping_sets": 0,
+        "units": 0,
+        "compu_methods": 0,
+        "data_constraints": 0
+      },
+      "layers": {
+        "swc": [
+          "ExampleConsumerSWC",
+          "ExampleSWC"
+        ],
+        "interfaces": [
+          "IExample",
+          "IDiagnosticService"
+        ],
+        "connectors": [
+          "Example_to_Consumer"
+        ],
+        "application_types": [],
+        "implementation_types": [
+          "bool",
+          "boolean",
+          "float32",
+          "float64",
+          "int16",
+          "int32",
+          "int64",
+          "int8",
+          "uint16",
+          "uint32",
+          "uint64",
+          "uint8"
+        ],
+        "base_types": [
+          "bool_base",
+          "boolean_base",
+          "float32_base",
+          "float64_base",
+          "int16_base",
+          "int32_base",
+          "int64_base",
+          "int8_base",
+          "uint16_base",
+          "uint32_base",
+          "uint64_base",
+          "uint8_base"
+        ],
+        "requirements": [
+          "REQ_EXAMPLE_001"
+        ],
+        "compositions": [
+          "Root"
+        ],
+        "tasks": [
+          "Task_10ms"
+        ],
+        "sequences": [
+          "task10ms_consumer_cycle"
+        ],
+        "hardware": [
+          "CPU",
+          "CORE0",
+          "RAM0",
+          "PARTITION0"
+        ],
+        "mapping_sets": [],
+        "units": [],
+        "compu_methods": [],
+        "data_constraints": []
+      }
+    }
+  }
+}

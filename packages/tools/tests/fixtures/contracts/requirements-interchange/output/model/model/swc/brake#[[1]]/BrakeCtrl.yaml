@@ -1,0 +1,21 @@
+name: BrakeCtrl
+type: application
+description: The brake controller.
+ports:
+- name: pBrakeReq
+  direction: provide
+  interface: IBrakeRequest
+  description: The brake request to the actuator.
+  satisfies:
+  - SYS_001@2
+  - AR_001@1
+runnables:
+- name: BrakeRun
+  min_start_interval: 0.01
+  events:
+  - type: timing
+    period: 0.01
+  satisfies:
+  - SYS_002@2
+  - SYS_REQ[13]@1
+handle_termination_and_restart: no_support

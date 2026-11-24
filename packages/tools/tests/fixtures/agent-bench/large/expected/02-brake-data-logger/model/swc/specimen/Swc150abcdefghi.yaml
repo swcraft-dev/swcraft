@@ -1,0 +1,108 @@
+name: Swc150abcdefghi
+type: application
+description: Takes part in supply voltage monitoring.
+ports:
+- name: P1
+  direction: require
+  interface: If0021abcdefghij
+- name: P2
+  direction: require
+  interface: If0021abcdefghij
+  satisfies:
+  - Rq15abcdef@1
+- name: P3
+  direction: require
+  interface: If0022abcdefghij
+  satisfies:
+  - Rq14abcdef@1
+- name: P4
+  direction: require
+  interface: If0022abcdefghij
+  satisfies:
+  - Rq13abcdef@1
+- name: P5
+  direction: require
+  interface: If0023abcdefghij
+  satisfies:
+  - Rq12abcdef@1
+- name: P6
+  direction: require
+  interface: If0023abcdefghij
+  satisfies:
+  - Rq11abcdef@1
+- name: P7
+  direction: provide
+  interface: If0243abcdefghij
+  satisfies:
+  - Rq10abcdef@1
+- name: P8
+  direction: provide
+  interface: If0319abcdefghij
+  satisfies:
+  - Rq09abcdef@1
+- name: P9
+  direction: provide
+  interface: If0395abcdefghij
+  satisfies:
+  - Rq08abcdef@1
+- name: P10
+  direction: provide
+  interface: If0471abcdefghij
+- name: P11
+  direction: provide
+  interface: If0547abcdefghij
+  satisfies:
+  - Rq06abcdef@1
+- name: P12
+  direction: provide
+  interface: If0623abcdefghij
+  satisfies:
+  - Rq05abcdef@1
+- name: P13
+  direction: provide
+  interface: If0699abcdefghij
+  satisfies:
+  - Rq04abcdef@1
+runnables:
+- name: R1
+  events:
+  - type: timing
+    period: 0.05
+  reads:
+  - port: P1
+    element: D1
+  - port: P2
+    element: D1
+  - port: P3
+    element: D1
+  - port: P4
+    element: D1
+  - port: P5
+    element: D1
+  - port: P6
+    element: D1
+  writes:
+  - port: P7
+    element: D1
+  - port: P8
+    element: D1
+  - port: P9
+    element: D1
+  - port: P10
+    element: D1
+  - port: P11
+    element: D1
+  - port: P12
+    element: D1
+  - port: P13
+    element: D1
+  calls: []
+memory:
+  Me1abc: 0
+  Me2abc: 0
+  Me3abc: 0
+  Me4abc: 2048
+asil: QM
+handle_termination_and_restart: no_support
+satisfies:
+- Rq20abcdef@1

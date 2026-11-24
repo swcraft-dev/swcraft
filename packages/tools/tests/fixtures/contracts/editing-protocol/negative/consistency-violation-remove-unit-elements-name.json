@@ -1,0 +1,99 @@
+{
+  "name": "consistency-violation-remove-unit-elements-name",
+  "description": "A change set that removes the unit `ProbeNewtonMetre` while the application type `ProbeTorque` names it by `unit_ref` and the linear method `ProbeTorqueScale` by `unit`. Removing a referenced element leaves each reference naming nothing, which pass D answers with the undeclared-target rules (`rule:data-type.unknown-unit` and `rule:compu-method.unknown-unit`) — one address per referrer.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model plus contract `8.0.0`'s data description elements: the unit `ProbeNewtonMetre` (`data_types/units/`), the linear compu method `ProbeTorqueScale` naming it and the texttable `ProbeGearTable` with two entries (`data_types/compu_methods/`), and the data constraint `ProbeTorqueLimits` (`data_types/constraints/`); the application type `ProbeTorque` names the unit, the method and the constraint, and the enumeration `ProbeGear` and the value type `ProbeGearRaw` (over the base's `uint8_base`) share the table.",
+    "existing_elements": [
+      {
+        "layer": "units",
+        "element": "ProbeNewtonMetre"
+      },
+      {
+        "layer": "compu_methods",
+        "element": "ProbeTorqueScale"
+      },
+      {
+        "layer": "compu_methods",
+        "element": "ProbeGearTable"
+      },
+      {
+        "layer": "data_constraints",
+        "element": "ProbeTorqueLimits"
+      },
+      {
+        "layer": "application_types",
+        "element": "ProbeTorque"
+      },
+      {
+        "layer": "application_types",
+        "element": "ProbeGear"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "ProbeGearRaw"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "units",
+            "element": "ProbeNewtonMetre"
+          }
+        }
+      ],
+      "notes": "The scope covers every operation exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Drop the probe torque unit.",
+    "operations": [
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "units",
+          "element": "ProbeNewtonMetre"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "application_types",
+        "element": "ProbeTorque",
+        "path": [
+          {
+            "field": "unit_ref"
+          }
+        ]
+      }
+    ],
+    "additional": [
+      {
+        "expected_error": "consistency-violation",
+        "failure_class": "invalid",
+        "addresses": [
+          {
+            "layer": "compu_methods",
+            "element": "ProbeTorqueScale",
+            "path": [
+              {
+                "field": "unit"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "notes": "No reference is cleared for the author: a removal that leaves a referrer is refused whole and the model is unchanged. Clearing the two references in the same change set — or removing the referrers — is the repair."
+  }
+}

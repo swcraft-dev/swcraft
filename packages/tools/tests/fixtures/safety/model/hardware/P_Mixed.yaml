@@ -1,0 +1,5 @@
+name: P_Mixed
+kind: partition
+core: CORE0
+asil: D
+description: Task_Mixed's partition, rated D on CORE0 (capability B).

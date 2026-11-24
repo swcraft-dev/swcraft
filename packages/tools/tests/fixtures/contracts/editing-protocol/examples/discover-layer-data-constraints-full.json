@@ -1,0 +1,271 @@
+{
+  "name": "discover-layer-data-constraints-full",
+  "description": "The `data_constraints` layer's descriptor at `form: \"full\"` — the one form that carries the descriptor PROSE, asked for one layer at a time because the project-wide `full` discovery is REFUSED with `over-budget` on every project (`negative/discover-project-full-over-budget.json`), and the refusal's second step is exactly this request. Together the fifteen per-layer `full` vectors replay every layer, kind and field annotation the model contract ships, verbatim, which is where the shipped-prose oracle (`packages/tools/tests/test_model_contract_conformance.py`) rides: rewording an annotation in the contract is a protocol-output change, and this is the output it changes. Of this layer: the `data_constraints` layer contract `8.0.0` added for the physical limits a type names by reference, stored in `data_types/constraints/`, with exactly one kind, `data_constr`, and therefore no discriminator. An application type's `data_constr_ref` is resolved in this layer alone.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` shape of a SWCraft project: fifteen scaffolded layers, `data_constraints` among them and empty in `data_types/constraints/`. Nothing about the response depends on which elements are in the layer: the inventory is derived from the model contract through the registry, not from the files.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "discover",
+    "layer": "data_constraints",
+    "form": "full"
+  },
+  "expected": {
+    "response": {
+      "response": "discover",
+      "project": {
+        "name": "swcraft-basic-example",
+        "arxml_version": "4.2.2",
+        "swcraft_version": "0.24.0"
+      },
+      "baseline": "rev1:kk7N755-pYf2txfvyVl9Kw",
+      "reads": {
+        "forms": [
+          "summary",
+          "full",
+          "index"
+        ],
+        "default_form": {
+          "layer": "summary",
+          "collection": "summary",
+          "element": "full",
+          "field": "full"
+        },
+        "budget_wire_bytes": 80000,
+        "hint_page_size": 50,
+        "discover": {
+          "forms": [
+            "summary",
+            "full",
+            "baseline"
+          ],
+          "default_form": "summary"
+        },
+        "derived": [
+          {
+            "name": "connection_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string"
+              }
+            }
+          },
+          {
+            "name": "base_type",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "runnables.reads",
+                "runnables.writes"
+              ]
+            },
+            "rows": "one",
+            "shape": {
+              "implementation": "string|null",
+              "base": "string|null"
+            }
+          },
+          {
+            "name": "effective_level",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one",
+            "shape": {
+              "level": "string",
+              "rating": "string"
+            }
+          },
+          {
+            "name": "partitions",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one per value",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "crossing_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              }
+            }
+          },
+          {
+            "name": "unconnected",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "ports"
+              ]
+            },
+            "rows": "one per value",
+            "shape": {
+              "direction": "string",
+              "interface": "string|null"
+            }
+          },
+          {
+            "name": "core",
+            "at": {
+              "layer": "tasks"
+            },
+            "rows": "one",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "realised_by",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null"
+            }
+          },
+          {
+            "name": "allocation",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one",
+            "shape": {
+              "sites": "integer",
+              "elements": "integer",
+              "allocated": "boolean|null"
+            }
+          },
+          {
+            "name": "stale_links",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null",
+              "current": "integer"
+            }
+          }
+        ],
+        "join": {
+          "row_ceiling": 50000,
+          "max_entries": 8
+        }
+      },
+      "form": "full",
+      "layers": [
+        {
+          "layer": "data_constraints",
+          "optional": false,
+          "present": true,
+          "identity_field": "name",
+          "description": "Data constraints, one file each under `data_types/constraints/`: the physical limits a value is declared within, an element a type names by reference. One kind, `data_constr`, which an application type names as its `data_constr_ref`. The directory is mandatory and may be empty.",
+          "element_kinds": [
+            {
+              "kind": "data_constr",
+              "description": "A data constraint, emitted as a `DATA-CONSTR` in `/DataTypes/Constraints` with one rule of `PHYS-CONSTRS`: the physical limits an application type is declared within. An application type names one by its `data_constr_ref`, in place of an inline `range`. It holds no internal limits.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The data constraint's identity; the file is named from it (`data_types/constraints/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the data constraints, must not be blank, and immutable; an element of another layer may carry the same name."
+                },
+                {
+                  "name": "min",
+                  "type": "number",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The lower physical limit; omitted or `null` when there is none. An integer is held as the integer it is; NaN and ±Infinity are refused."
+                },
+                {
+                  "name": "max",
+                  "type": "number",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The upper physical limit; omitted or `null` when there is none. An integer is held as the integer it is; NaN and ±Infinity are refused."
+                },
+                {
+                  "name": "level",
+                  "type": "integer",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The rule's `CONSTR-LEVEL`, the category of the constraint (the lower the level, the more stringent the check); omitted or `null` when the rule states none."
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the data constraint. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none."
+                },
+                {
+                  "name": "package",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The one sub-package of `/DataTypes/Constraints`, its layer's package, this data constraint is emitted in, a single SHORT-NAME segment: the data constraint and every reference to it take `/DataTypes/Constraints/{package}/`. Absent means `/DataTypes/Constraints` itself. It is held to the AUTOSAR Identifier rule."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "notes": "The same document the default form answers with `description` restored on the layer, on every kind and on every field that declares one, and with the three descriptor booleans spelled out where the default form omits them at `false` — `optional` on the layer, `required` and `immutable` on every field. Nothing else is restored, because nothing else is left out. `baseline` is the stand-in token every vector carries; a harness replaces it with the project's own."
+  }
+}

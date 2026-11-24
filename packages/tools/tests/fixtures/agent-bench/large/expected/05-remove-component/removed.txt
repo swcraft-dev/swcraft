@@ -1,0 +1,14 @@
+model/swc/specimen/Swc076abcdefghij.yaml
+model/connectors/Conn0471abcdefghij.yaml
+model/connectors/Conn0472abcdefghij.yaml
+model/connectors/Conn0473abcdefghij.yaml
+model/connectors/Conn0474abcdefghij.yaml
+model/connectors/Conn0475abcdefghij.yaml
+model/connectors/Conn0476abcdefghij.yaml
+model/connectors/Conn0929abcdefghij.yaml
+model/connectors/Conn0930abcdefghij.yaml
+model/connectors/Conn0931abcdefghij.yaml
+model/connectors/Conn0932abcdefghij.yaml
+model/connectors/Conn0933abcdefghij.yaml
+model/connectors/Conn0934abcdefghij.yaml
+model/connectors/Conn0935abcdefghij.yaml

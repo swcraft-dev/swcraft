@@ -1,0 +1,6 @@
+name: BrakeTorqueIf
+kind: sender_receiver
+description: The brake torque the controller asks of the actuator.
+data_elements:
+- name: torque
+  implementation_type: uint16

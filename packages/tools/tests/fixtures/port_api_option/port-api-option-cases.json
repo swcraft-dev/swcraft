@@ -1,0 +1,900 @@
+{
+  "description": "Hand-built PORT-API-OPTION cases with invented names, read by the importer's suite (packages/tools/tests/test_port_api_option_import.py) and by the input/output oracle comparator's, so the two restatements of one predicate cannot drift. {component} is the component's path. A port's fate: kept; kept-with-desc-line (kept, with a descriptive report line under DESC); skipped (a PR port); no-interface (a P- or R-port stating no interface, which the mapper skips); duplicate (a second port of one name). A verdict: the first reason that holds -- attribute, no-reference, names-no-port, wrong-dest, unkept, second, child, flag, or off (both features off, exactly the three children, on a kept port: a line too since 2026-10-07, no text of the standard giving an absent option a default) -- with its key: anchor (the PORT-REF's text as written) or shared ({behaviour}/PORT-API-OPTIONS).",
+  "cases": [
+    {
+      "id": "false-false",
+      "note": "both flags false, exactly the three children, on a kept port",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "off",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "zero-zero",
+      "note": "0 is AR:BOOLEAN's other false spelling",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>0</ENABLE-TAKE-ADDRESS><INDIRECT-API>0</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "off",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "false-and-zero-on-a-require-port",
+      "note": "the children's order is not judged",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><INDIRECT-API>0</INDIRECT-API><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><PORT-REF DEST=\"R-PORT-PROTOTYPE\">{component}/rBeta</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "off",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "padded-false",
+      "note": "a padded false matches no alternative of the pattern",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS> false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "flag",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "true",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>true</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "flag",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "one",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>1</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "flag",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "empty-flag",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS/><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "flag",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "absent-flag",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "flag",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "no-flag",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "flag",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "flag-twice",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "flag",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "empty-extra-child",
+      "note": "a child beyond the three, empty",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF><PORT-ARG-VALUES/></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "child",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "extra-child-with-content",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF><PORT-ARG-VALUES><PORT-DEFINED-ARGUMENT-VALUE/></PORT-ARG-VALUES></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "child",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "error-handling",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF><ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "child",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "port-ref-twice",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "child",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "base-on-the-reference",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\" BASE=\"Components\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "attribute",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "index-on-the-reference",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\" INDEX=\"1\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "attribute",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "s-on-the-option",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION S=\"x\"><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "attribute",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "t-on-the-reference",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\" T=\"2026-10-02T00:00:00\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "attribute",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "s-on-a-flag",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS S=\"x\">false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "attribute",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "dangling-reference",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pGone</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "names-no-port",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "padded-reference",
+      "note": "the reference is compared as written; its line is keyed at the padded text",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\"> {component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "names-no-port",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "wrong-dest",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"R-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "wrong-dest",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "no-reference",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "no-reference",
+          "key": "shared"
+        }
+      ]
+    },
+    {
+      "id": "empty-reference",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\"></PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "no-reference",
+          "key": "shared"
+        }
+      ]
+    },
+    {
+      "id": "second-option-for-one-port",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>",
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "off",
+          "key": "anchor"
+        },
+        {
+          "verdict": "second",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "second-after-a-differing-first",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF><PORT-ARG-VALUES/></PORT-API-OPTION>",
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "child",
+          "key": "anchor"
+        },
+        {
+          "verdict": "second",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "two-ports",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>",
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"R-PORT-PROTOTYPE\">{component}/rBeta</PORT-REF><PORT-ARG-VALUES/></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "off",
+          "key": "anchor"
+        },
+        {
+          "verdict": "child",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "pr-port",
+      "note": "",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "prGamma",
+          "kind": "PR-PORT-PROTOTYPE",
+          "fate": "skipped"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"PR-PORT-PROTOTYPE\">{component}/prGamma</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "unkept",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "skipped-port",
+      "note": "a P-port the mapper skips: it states no interface",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "pDelta",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "no-interface"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pDelta</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "unkept",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "skipped-r-port",
+      "note": "an R-port the mapper skips: it states no interface",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "no-interface"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"R-PORT-PROTOTYPE\">{component}/rBeta</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "unkept",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "same-named-ports-of-two-kinds",
+      "note": "the one whose kind carries the duplicate's entry is unkept, the other kept",
+      "ports": [
+        {
+          "name": "pDup",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "pDup",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "duplicate"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pDup</PORT-REF></PORT-API-OPTION>",
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"R-PORT-PROTOTYPE\">{component}/pDup</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "off",
+          "key": "anchor"
+        },
+        {
+          "verdict": "unkept",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "kept-port-with-a-descriptive-line",
+      "note": "an entry at the port's path under another tag leaves it kept",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept-with-desc-line"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "off",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "foreign-namespace-flag",
+      "note": "a flag outside the AUTOSAR namespace is a child beyond the three, never a flag",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><x:ENABLE-TAKE-ADDRESS xmlns:x=\"urn:invented-vendor\">false</x:ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "child",
+          "key": "anchor"
+        }
+      ]
+    },
+    {
+      "id": "foreign-namespace-port-ref",
+      "note": "a PORT-REF outside the AUTOSAR namespace is no PORT-REF, so the option keys at the shared key",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<PORT-API-OPTION><ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS><INDIRECT-API>false</INDIRECT-API><x:PORT-REF xmlns:x=\"urn:invented-vendor\" DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</x:PORT-REF></PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "no-reference",
+          "key": "shared"
+        }
+      ]
+    },
+    {
+      "id": "foreign-namespace-option",
+      "note": "an option outside the AUTOSAR namespace: nothing of it is read, so it has no PORT-REF",
+      "ports": [
+        {
+          "name": "pAlpha",
+          "kind": "P-PORT-PROTOTYPE",
+          "fate": "kept"
+        },
+        {
+          "name": "rBeta",
+          "kind": "R-PORT-PROTOTYPE",
+          "fate": "kept"
+        }
+      ],
+      "options": [
+        "<x:PORT-API-OPTION xmlns:x=\"urn:invented-vendor\"><x:ENABLE-TAKE-ADDRESS>false</x:ENABLE-TAKE-ADDRESS><x:INDIRECT-API>false</x:INDIRECT-API><x:PORT-REF DEST=\"P-PORT-PROTOTYPE\">{component}/pAlpha</x:PORT-REF></x:PORT-API-OPTION>"
+      ],
+      "verdicts": [
+        {
+          "verdict": "no-reference",
+          "key": "shared"
+        }
+      ]
+    }
+  ]
+}

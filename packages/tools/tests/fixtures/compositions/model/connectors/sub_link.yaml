@@ -1,0 +1,13 @@
+name: sub_link
+composition: Sub
+from:
+  swc: Beta
+  port: pInner
+to:
+  swc: Gamma
+  port: rInner
+description: >-
+  The assembly connector drawn inside `Sub`. Its `from` endpoint names the TYPE
+  `Beta`; the member of that type inside `Sub` is `Alpha`, so the emitted
+  CONTEXT-COMPONENT-REF ends at `.../Sub/Alpha` and the TARGET-P-PORT-REF at
+  `.../Beta/pInner`.

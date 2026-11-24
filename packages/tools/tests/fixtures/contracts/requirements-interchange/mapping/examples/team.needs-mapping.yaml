@@ -1,0 +1,15 @@
+# team.needs-mapping.yaml - how the requirements team's needs map to SWCraft's.
+types:                 # the team's need type (the directive name) -> req | spec | ignore
+  sysreq: req
+  swreq: req
+  spec: spec
+  test: ignore
+fields:                # SWCraft's field <- the team's need key
+  description: content # the default, written out only to show the shape
+  asil: safety
+  derived_from: parent
+  document: docname
+  revision: rev
+  status: state
+removed_status: [rejected, obsolete]   # these statuses remove the requirement; default [rejected]
+ignore: [verifies, component, reviewer] # the team's own keys SWCraft does not hold

@@ -1,0 +1,4 @@
+# Only the fields: the types stay req and spec, the removal stays [rejected].
+fields:
+  asil: safety
+  derived_from: parent

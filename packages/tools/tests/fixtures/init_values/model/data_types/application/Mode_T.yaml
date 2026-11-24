@@ -1,0 +1,7 @@
+name: Mode_T
+kind: enum
+literals:
+- name: 'OFF'
+  value: 0
+- name: 'ON'
+  value: 1

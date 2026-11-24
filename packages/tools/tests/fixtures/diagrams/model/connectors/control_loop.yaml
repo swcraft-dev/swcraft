@@ -1,0 +1,8 @@
+name: control_loop
+composition: Chassis
+from:
+  swc: Controller
+  port: pLoop
+to:
+  swc: Controller
+  port: rLoop

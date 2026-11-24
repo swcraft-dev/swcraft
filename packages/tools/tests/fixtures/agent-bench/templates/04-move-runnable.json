@@ -1,0 +1,10 @@
+{
+  "id": "04-move-runnable",
+  "task": 4,
+  "group": "model-change",
+  "kind": "change",
+  "binding": "move_a_runnable",
+  "oracle": "structural",
+  "prompt": "Move the runnable {{runnable}} of {{component}} from {{from_task}} to {{to_task}}.",
+  "note": "The first pair of tasks in one partition with one period whose first task holds a runnable entry no sequence step names and the second task takes with no coexistence argument added: it declares one, or every component it schedules after the move is at one effective ASIL, so check-model accepts the move and no sequence has to follow it. The component is named as the entry names it, by type or by instance path, and the entry keeps that shape."
+}

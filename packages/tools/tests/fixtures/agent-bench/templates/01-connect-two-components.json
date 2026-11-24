@@ -1,0 +1,10 @@
+{
+  "id": "01-connect-two-components",
+  "task": 1,
+  "group": "model-change",
+  "kind": "change",
+  "binding": "connect_two_components",
+  "oracle": "structural",
+  "prompt": "Add a sender port {{provider_port}} (interface {{interface}}) to {{provider}} and a receiver port {{requirer_port}} with the same interface to {{requirer}}, and connect the two.",
+  "note": "The sender-receiver interface the most component ports name, the component with the most ports as the provider, and as the requirer the component with the most ports sharing a composition with it (any other component when none does). The right run wires the connector inside the first shared composition. The connector's name is not asserted, as in the committed task 01."
+}

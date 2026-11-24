@@ -1,0 +1,5 @@
+name: IWlPadWear
+kind: sender_receiver
+data_elements:
+- name: padWear
+  application_type: WlPadWear_Pct

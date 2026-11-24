@@ -1,0 +1,10 @@
+id: SWR-THP-009
+title: Temperature sensor fault
+description: A brake temperature sensor fault shall set the thermal protection status
+  to unknown.
+req_type: req
+version: 1
+source: external
+document: SRS Thermal Protection
+baseline: '1.0'
+revision: '1'

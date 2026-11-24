@@ -1,0 +1,220 @@
+{
+  "name": "remove-swc-with-dependents",
+  "description": "A `remove` of a whole component with `with_dependents: true`: the server states the unlinking itself, as ordinary removals run after the client's, and the delta marks each of its rows `origin: \"server\"` — the connector with an end on the component, its member of the root composition, its task runnable entry and the sequence whose last step it was, removed whole. The approved scope covers the server's rows like the client's: a scope that did not would refuse the set `unauthorized-delta`.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleConsumerSWC` is the `to` end of `Example_to_Consumer`, a member of `Root`, runs in `Task_10ms` and is the one step of `task10ms_consumer_cycle`.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "connectors",
+        "element": "Example_to_Consumer"
+      },
+      {
+        "layer": "compositions",
+        "element": "Root",
+        "path": [
+          {
+            "field": "members"
+          },
+          {
+            "member": "ExampleConsumerSWC"
+          }
+        ]
+      },
+      {
+        "layer": "tasks",
+        "element": "Task_10ms"
+      },
+      {
+        "layer": "sequences",
+        "element": "task10ms_consumer_cycle"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC"
+          }
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "connectors",
+            "element": "Example_to_Consumer"
+          }
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "compositions",
+            "element": "Root",
+            "path": [
+              {
+                "field": "members"
+              },
+              {
+                "member": "ExampleConsumerSWC"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "tasks",
+            "element": "Task_10ms",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": {
+                  "swc": "ExampleConsumerSWC",
+                  "runnable": "ExampleConsumerRun"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "sequences",
+            "element": "task10ms_consumer_cycle"
+          }
+        }
+      ],
+      "notes": "One entry per delta row, the server's included: they are judged by both gates like the client's own. The task entry is approved in its short spelling; scope coverage compares reduced addresses."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Remove ExampleConsumerSWC and everything that refers to it.",
+    "operations": [
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC"
+        },
+        "with_dependents": true
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC"
+          },
+          "before": {
+            "name": "ExampleConsumerSWC",
+            "group": "example",
+            "ports": 1,
+            "runnables": 1,
+            "variables": 0,
+            "exclusive_areas": 0,
+            "memory": 1,
+            "data_type_mappings": 0,
+            "satisfies": 1
+          },
+          "summary": "swc: - ExampleConsumerSWC",
+          "before_form": "summary"
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "connectors",
+            "element": "Example_to_Consumer"
+          },
+          "before": {
+            "name": "Example_to_Consumer"
+          },
+          "summary": "connectors: - Example_to_Consumer",
+          "origin": "server",
+          "before_form": "summary"
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "compositions",
+            "element": "Root",
+            "path": [
+              {
+                "field": "members"
+              },
+              {
+                "member": "ExampleConsumerSWC"
+              }
+            ]
+          },
+          "before": {
+            "name": "ExampleConsumerSWC",
+            "type": "ExampleConsumerSWC",
+            "composition": null,
+            "description": "The consumer of IExample."
+          },
+          "summary": "compositions/Root: - members[ExampleConsumerSWC]",
+          "origin": "server"
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "tasks",
+            "element": "Task_10ms",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": {
+                  "swc": "ExampleConsumerSWC",
+                  "instance": null,
+                  "runnable": "ExampleConsumerRun"
+                }
+              }
+            ]
+          },
+          "before": {
+            "swc": "ExampleConsumerSWC",
+            "instance": null,
+            "runnable": "ExampleConsumerRun"
+          },
+          "summary": "tasks/Task_10ms: - runnables[{swc: ExampleConsumerSWC, instance: None, runnable: Example…]",
+          "origin": "server"
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "sequences",
+            "element": "task10ms_consumer_cycle"
+          },
+          "before": {
+            "name": "task10ms_consumer_cycle",
+            "task": "Task_10ms",
+            "steps": 1
+          },
+          "summary": "sequences: - task10ms_consumer_cycle",
+          "origin": "server",
+          "before_form": "summary"
+        }
+      ]
+    },
+    "notes": "Without the flag the same remove is refused `broken-reference` naming every referrer. The requirement `ExampleConsumerSWC` satisfies is not touched: a requirement names no component. The audit's `change_set_staged` record lists the four server removals under `server_operations`, beside the client's one under `operations`."
+  }
+}

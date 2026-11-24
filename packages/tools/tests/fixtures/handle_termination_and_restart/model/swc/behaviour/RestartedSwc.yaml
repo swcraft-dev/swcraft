@@ -1,0 +1,8 @@
+name: RestartedSwc
+type: application
+ports:
+- name: pSignal
+  direction: provide
+  interface: ISignal
+runnables: []
+handle_termination_and_restart: can_be_terminated_and_restarted

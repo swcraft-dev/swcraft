@@ -1,0 +1,43 @@
+{
+  "id": "21-requirements-about-a-topic",
+  "task": 21,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Find the requirements about supply voltage.",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "mentions_all": [
+        "Rq01abcdefghijk",
+        "Rq03abcdef"
+      ],
+      "mentions_none": [
+        "Rq02abcdef",
+        "Rq04abcdef",
+        "Rq05abcdef",
+        "Rq06abcdef",
+        "Rq07abcdef",
+        "Rq08abcdef",
+        "Rq09abcdef",
+        "Rq10abcdef",
+        "Rq11abcdef",
+        "Rq12abcdef",
+        "Rq13abcdef",
+        "Rq14abcdef",
+        "Rq15abcdef",
+        "Rq17abcdef",
+        "Rq18abcdef",
+        "Rq20abcdef"
+      ]
+    }
+  },
+  "reference": {
+    "rule": "A requirement is about the phrase when its title or its description holds the phrase's words adjacent and in order, as whole words, case-insensitive, each word optionally followed by a plural s. The reply must name every such requirement; it must name none whose text holds none of the phrase's words (supply, voltage). Rq16abcdef (voltage alone) and Rq19abcdef (supply alone) are neither required nor refused.",
+    "matches": [
+      "Rq01abcdefghijk",
+      "Rq03abcdef"
+    ],
+    "computed_by": "the rule over every requirement's title and description, read through the product's loader; no query derivation searches text, so the test recomputes it from the loaded model"
+  }
+}

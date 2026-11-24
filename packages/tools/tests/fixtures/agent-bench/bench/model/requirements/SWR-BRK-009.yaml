@@ -1,0 +1,10 @@
+id: SWR-BRK-009
+title: Brake controller start
+description: The brake controller shall be ready to process a brake request 50 ms
+  after start.
+req_type: req
+version: 1
+source: external
+document: SRS Brake Control
+baseline: '1.0'
+revision: '1'

@@ -1,0 +1,9 @@
+id: SWR-DRV-008
+title: Operating state start
+description: The operating state shall be valid 100 ms after ignition on.
+req_type: req
+version: 1
+source: external
+document: SRS Driver Information
+baseline: '1.0'
+revision: '1'

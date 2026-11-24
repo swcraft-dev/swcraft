@@ -1,0 +1,6 @@
+id: SR-1
+title: Brake temperature
+description: The brake temperature shall be supervised.
+version: 1
+source: external
+document: Brake Spec

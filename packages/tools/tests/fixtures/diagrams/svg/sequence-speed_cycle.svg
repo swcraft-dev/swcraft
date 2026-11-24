@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="614.6" height="296" viewBox="0 0 614.6 296" font-family="Helvetica, Arial, sans-serif" data-view="sequence-speed_cycle">
+<title>speed_cycle — sequence diagram</title>
+<defs><marker id="swcraft-arrow" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 8 4 L 0 8 z" fill="#555555"/></marker><marker id="swcraft-arrow-open" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 8 4 L 0 8" fill="none" stroke="#555555" stroke-width="1.2"/></marker><marker id="swcraft-arrow-lit" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 8 4 L 0 8 z" fill="#1a5fb4"/></marker><marker id="swcraft-arrow-open-lit" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 8 4 L 0 8" fill="none" stroke="#1a5fb4" stroke-width="1.2"/></marker></defs>
+<rect class="background" width="100%" height="100%" fill="white"/>
+<g class="frame">
+<g class="frame" data-role="frame" data-name="speed_cycle"><title>sequence speed_cycle
+Speed cycle
+task Task_10ms</title><rect x="10" y="10" width="594.6" height="276" rx="4" fill="#fafafa" stroke="#333333" stroke-width="1.5"/></g>
+</g>
+<g class="lifelines">
+<g class="lifeline task" data-role="lifeline" data-name="Task_10ms" data-kind="task"><title>Task_10ms (task, every 10 ms)</title><rect x="30" y="44" width="100" height="40" rx="3" fill="#eeeeee" stroke="#333333" stroke-width="1"/><line x1="80" y1="84" x2="80" y2="276" stroke="#555555" stroke-width="1" stroke-dasharray="5 4"/></g>
+<g class="lifeline component" data-role="lifeline" data-name="Sensor" data-kind="component"><title>Sensor (component)</title><rect x="170" y="44" width="100" height="40" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/><line x1="220" y1="84" x2="220" y2="276" stroke="#555555" stroke-width="1" stroke-dasharray="5 4"/></g>
+<g class="lifeline component" data-role="lifeline" data-name="Controller" data-kind="component"><title>Controller (component)</title><rect x="344.8" y="44" width="100" height="40" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/><line x1="394.8" y1="84" x2="394.8" y2="276" stroke="#555555" stroke-width="1" stroke-dasharray="5 4"/></g>
+</g>
+<g class="activations">
+<rect class="activation-bar" data-lifeline="Sensor" x="215" y="122" width="10" height="46" fill="white" stroke="#222222" stroke-width="1"/>
+<rect class="activation-bar" data-lifeline="Controller" x="389.8" y="194" width="10" height="60" fill="white" stroke="#222222" stroke-width="1"/>
+</g>
+<g class="messages">
+<g class="message activation" data-role="activation" data-name="SensorRun" data-source="Task_10ms" data-target="Sensor"><title>activation Task_10ms -&gt; Sensor: SensorRun</title><path d="M 80 122 L 211 122" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#swcraft-arrow)"/></g>
+<g class="message data" data-role="data" data-name="pSpeed -&gt; rSpeed : ISpeed" data-source="Sensor" data-target="Controller"><title>data Sensor -&gt; Controller: pSpeed -&gt; rSpeed : ISpeed
+· speed: uint8</title><path d="M 225 158 L 390.8 158" fill="none" stroke="#555555" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#swcraft-arrow-open)"/></g>
+<g class="message activation" data-role="activation" data-name="ControlRun — closes the loop" data-source="Task_10ms" data-target="Controller"><title>activation Task_10ms -&gt; Controller: ControlRun — closes the loop</title><path d="M 80 194 L 385.8 194" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#swcraft-arrow)"/></g>
+<g class="message data" data-role="data" data-name="pLoop -&gt; rLoop : ISpeed" data-source="Controller" data-target="Controller"><title>data Controller -&gt; Controller: pLoop -&gt; rLoop : ISpeed
+· speed: uint8</title><path d="M 399.8 230 L 429.8 230 L 429.8 244 L 403.8 244" fill="none" stroke="#555555" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#swcraft-arrow-open)"/></g>
+</g>
+<g class="labels">
+<text class="frame-label" x="18" y="30" font-size="12" data-kind="sequence" font-weight="bold">sd speed_cycle — Speed cycle</text>
+<text class="lifeline-label" x="80" y="61" font-size="12" data-kind="task" text-anchor="middle" font-weight="600">Task_10ms</text>
+<text class="lifeline-detail" x="80" y="76" font-size="10" text-anchor="middle" fill="#444444">every 10 ms</text>
+<text class="lifeline-label" x="220" y="68" font-size="12" data-kind="component" text-anchor="middle" font-weight="600">Sensor</text>
+<text class="lifeline-label" x="394.8" y="68" font-size="12" data-kind="component" text-anchor="middle" font-weight="600">Controller</text>
+<text class="message-label" x="147.5" y="114" font-size="10" text-anchor="middle" fill="#333333">SensorRun</text>
+<text class="message-label" x="309.9" y="150" font-size="10" text-anchor="middle" fill="#333333">pSpeed -&gt; rSpeed : ISpeed</text>
+<text class="message-label" x="234.9" y="186" font-size="10" text-anchor="middle" fill="#333333">ControlRun — closes the loop</text>
+<text class="message-label" x="435.8" y="222" font-size="10" fill="#333333">pLoop -&gt; rLoop : ISpeed</text>
+</g>
+</svg>

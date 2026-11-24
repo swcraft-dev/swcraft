@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: a same-name application/implementation pair whose
+  application side carries PHYSICS — a unit, a one-scale LINEAR conversion and
+  a physical range.
+
+  Both declarations are kept, because they say two different
+  things. Each keeps the declared name in its own layer, the application type
+  is what the data prototypes reference, and nothing is renamed.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>BaseTypes</SHORT-NAME>
+          <ELEMENTS>
+            <SW-BASE-TYPE>
+              <SHORT-NAME>Word</SHORT-NAME>
+              <CATEGORY>FIXED_LENGTH</CATEGORY>
+              <BASE-TYPE-SIZE>16</BASE-TYPE-SIZE>
+              <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+              <NATIVE-DECLARATION>uint16</NATIVE-DECLARATION>
+            </SW-BASE-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>ImplTypes</SHORT-NAME>
+          <ELEMENTS>
+            <IMPLEMENTATION-DATA-TYPE>
+              <SHORT-NAME>Speed</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/BaseTypes/Word</BASE-TYPE-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </IMPLEMENTATION-DATA-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>AppTypes</SHORT-NAME>
+          <ELEMENTS>
+            <UNIT>
+              <SHORT-NAME>SpeedUnit</SHORT-NAME>
+              <DISPLAY-NAME>km/h</DISPLAY-NAME>
+            </UNIT>
+            <COMPU-METHOD>
+              <SHORT-NAME>SpeedCompu</SHORT-NAME>
+              <CATEGORY>LINEAR</CATEGORY>
+              <COMPU-INTERNAL-TO-PHYS>
+                <COMPU-SCALES>
+                  <COMPU-SCALE>
+                    <COMPU-RATIONAL-COEFFS>
+                      <COMPU-NUMERATOR>
+                        <V>0</V>
+                        <V>0.1</V>
+                      </COMPU-NUMERATOR>
+                      <COMPU-DENOMINATOR>
+                        <V>1</V>
+                      </COMPU-DENOMINATOR>
+                    </COMPU-RATIONAL-COEFFS>
+                  </COMPU-SCALE>
+                </COMPU-SCALES>
+              </COMPU-INTERNAL-TO-PHYS>
+            </COMPU-METHOD>
+            <DATA-CONSTR>
+              <SHORT-NAME>SpeedRange</SHORT-NAME>
+              <DATA-CONSTR-RULES>
+                <DATA-CONSTR-RULE>
+                  <PHYS-CONSTRS>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">400</UPPER-LIMIT>
+                  </PHYS-CONSTRS>
+                </DATA-CONSTR-RULE>
+              </DATA-CONSTR-RULES>
+            </DATA-CONSTR>
+            <APPLICATION-PRIMITIVE-DATA-TYPE>
+              <SHORT-NAME>Speed</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <COMPU-METHOD-REF DEST="COMPU-METHOD">/Acme/AppTypes/SpeedCompu</COMPU-METHOD-REF>
+                    <DATA-CONSTR-REF DEST="DATA-CONSTR">/Acme/AppTypes/SpeedRange</DATA-CONSTR-REF>
+                    <UNIT-REF DEST="UNIT">/Acme/AppTypes/SpeedUnit</UNIT-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </APPLICATION-PRIMITIVE-DATA-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Mappings</SHORT-NAME>
+          <ELEMENTS>
+            <DATA-TYPE-MAPPING-SET>
+              <SHORT-NAME>TypeMaps</SHORT-NAME>
+              <DATA-TYPE-MAPS>
+                <DATA-TYPE-MAP>
+                  <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/AppTypes/Speed</APPLICATION-DATA-TYPE-REF>
+                  <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/ImplTypes/Speed</IMPLEMENTATION-DATA-TYPE-REF>
+                </DATA-TYPE-MAP>
+              </DATA-TYPE-MAPS>
+            </DATA-TYPE-MAPPING-SET>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Interfaces</SHORT-NAME>
+          <ELEMENTS>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>ISpeed</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>speed</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/AppTypes/Speed</TYPE-TREF>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>SpeedSwc</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>pSpeed</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Interfaces/ISpeed</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

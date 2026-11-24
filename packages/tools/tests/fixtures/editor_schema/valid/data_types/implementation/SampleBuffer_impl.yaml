@@ -1,0 +1,6 @@
+name: SampleBuffer_impl
+kind: implementation_array
+element_type: WheelSpeedValue_T
+length: 8
+element_name: Element
+description: Hand-built implementation array fixture — the corpus declares no implementation array

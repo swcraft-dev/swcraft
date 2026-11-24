@@ -1,0 +1,107 @@
+{
+  "id": "31-import-a-component",
+  "task": 31,
+  "group": "guide-question",
+  "kind": "guide",
+  "status": "ready",
+  "prompt": "A supplier sent me a component as an ARXML file. How do I bring it into my model?",
+  "expect": {
+    "model": "unchanged",
+    "guide": {
+      "sections": [
+        "how-to/import-a-component",
+        "how-to/import-a-component#steps",
+        "how-to/import-a-component#plan-the-import",
+        "how-to/import-a-component#import-it-and-wire-it-in",
+        "cli#exchanging-with-other-tools",
+        "cli#what-the-project-already-has",
+        "vscode#importing-a-component"
+      ],
+      "must": [
+        {
+          "id": "command",
+          "any_of": [
+            "import component",
+            "import_component"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "dry-run",
+          "one_of": [
+            [
+              {
+                "id": "flag",
+                "any_of": [
+                  "--dry-run"
+                ],
+                "case_sensitive": true
+              }
+            ],
+            [
+              {
+                "id": "panel",
+                "any_of": [
+                  "Import Component"
+                ],
+                "case_sensitive": true
+              }
+            ],
+            [
+              {
+                "id": "assistant",
+                "any_of": [
+                  "import_component"
+                ],
+                "case_sensitive": true
+              },
+              {
+                "id": "change-set",
+                "any_of": [
+                  "change_set"
+                ],
+                "case_sensitive": true
+              }
+            ]
+          ]
+        }
+      ],
+      "must_not": [
+        {
+          "id": "copy-files",
+          "any_of": [
+            "copy the ARXML file into the model",
+            "copy the ARXML into the model",
+            "copy the file into model/",
+            "copy it into model/"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "auto-wire",
+          "any_of": [
+            "automatically connect",
+            "automatically wire",
+            "wires it in automatically",
+            "connected automatically",
+            "wired automatically"
+          ],
+          "case_sensitive": false
+        }
+      ]
+    },
+    "calls": {
+      "forbidden": [
+        "change_set",
+        "build",
+        "validate",
+        "export_component",
+        "import_component"
+      ]
+    }
+  },
+  "reference": {
+    "runs": "candidate builds only: a build without the guide tool fails the read and cited criteria by construction, so a guide question is never run on a baseline",
+    "baseline": "76a5f6532's guide has no How-to; its cli.md (Exchanging with other tools: swcraft import component, --dry-run first, every time; What the project already has: reused interfaces) and its agent profile (Tool Usage Rules, rule 7: discover, import_component, change_set) answer command, plan-first and reuse. Wire-in is the How-to's; on the baseline it follows from the model (a component no composition holds is no part of the architecture) and from rule 7's companion operations."
+  }
+}

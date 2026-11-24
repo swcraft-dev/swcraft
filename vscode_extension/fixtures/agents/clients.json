@@ -1,0 +1,70 @@
+{
+  "$comment": "The chat clients a project can be set up for, one row each: swcraft init --client and Onboard Project read this file. Paths are relative to the vehicle-architecture template. A row's preselectInHosts names the editor hosts (vscode.env.uriScheme) in which Onboard Project pre-picks it instead of the default; swcraft init has no host and keeps the default. Read by swcraft_tools.agent_clients and by the extension's onboarding (a byte-equal copy among its assets).",
+  "template": "vehicle-architecture",
+  "default": ["copilot"],
+  "clients": [
+    {
+      "name": "copilot",
+      "label": "GitHub Copilot",
+      "files": [
+        ".github/agents/swcraft-architect.agent.md",
+        ".github/copilot-instructions.md",
+        ".github/hooks/swcraft.json"
+      ],
+      "hook": ".github/hooks/swcraft.json",
+      "server": null,
+      "guideSection": "vscode.md#talking-to-the-model"
+    },
+    {
+      "name": "codex",
+      "label": "Codex (OpenAI)",
+      "files": ["AGENTS.md", ".codex/config.toml", ".codex/hooks.json"],
+      "hook": ".codex/hooks.json",
+      "server": ".codex/config.toml",
+      "guideSection": "vscode.md#codex-and-claude-code-in-vs-code"
+    },
+    {
+      "name": "claude",
+      "label": "Claude Code (Anthropic)",
+      "files": ["CLAUDE.md", "AGENTS.md", ".mcp.json", ".claude/settings.json"],
+      "hook": ".claude/settings.json",
+      "server": ".mcp.json",
+      "guideSection": "vscode.md#codex-and-claude-code-in-vs-code"
+    },
+    {
+      "name": "kiro",
+      "label": "Kiro",
+      "files": [".kiro/settings/mcp.json", ".kiro/steering/swcraft.md", ".kiro/hooks/swcraft-guard.json"],
+      "hook": ".kiro/hooks/swcraft-guard.json",
+      "server": ".kiro/settings/mcp.json",
+      "guideSection": "kiro.md#kiro",
+      "preselectInHosts": ["kiro"]
+    }
+  ],
+  "conflicts": [
+    {
+      "clients": ["copilot", "claude"],
+      "warning": "Copilot also reads .mcp.json, so it may list the SWCraft server twice; see the guide's \"Codex and Claude Code in VS Code\" section (In VS Code).",
+      "guideSection": "vscode.md#codex-and-claude-code-in-vs-code"
+    },
+    {
+      "clients": ["kiro", "codex"],
+      "warning": "Kiro also reads AGENTS.md, so it reads SWCraft's instructions twice, the second time cut short; see the guide's \"In Kiro\" page.",
+      "guideSection": "kiro.md#kiro-with-codex-or-claude-code"
+    },
+    {
+      "clients": ["kiro", "claude"],
+      "warning": "Kiro also reads AGENTS.md, so it reads SWCraft's instructions twice, the second time cut short; see the guide's \"In Kiro\" page.",
+      "guideSection": "kiro.md#kiro-with-codex-or-claude-code"
+    }
+  ],
+  "copilotCompanionSettings": {
+    "file": ".vscode/settings.json",
+    "with": "copilot",
+    "anyOf": ["codex", "claude"],
+    "settings": {
+      "chat.useAgentsMdFile": false,
+      "chat.useClaudeMdFile": false
+    }
+  }
+}

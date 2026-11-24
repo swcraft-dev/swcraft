@@ -1,0 +1,154 @@
+{
+  "name": "invalid-identifier-operation-event-pair-overflow",
+  "description": "An operation event whose port and operation are both legal AUTOSAR `Identifier`s and whose generated event name is not. The exporter names the event `OIT_{port}_{operation}` (contract `7.7.0`): the two declared names get 123 characters between them, and a 67-character port beside a 57-character operation is 124, so the emitted name is 129 — one over the 128-character limit. The rule is checked on what is emitted, not on what is declared, and the refusal addresses the event as the whole value it is, never the runnable.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` and `IDiagnosticService` are in the base; the change set declares the long operation on the interface, the long provide port on the component and a runnable started by a call of that operation through that port. Every declared name is legal on its own and every reference resolves, so the only thing wrong is the name the exporter would generate: `OIT_` plus the port, `_` and the operation.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IDiagnosticService"
+      }
+    ],
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Serve the calibration-channel DTC status read from ExampleSWC.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "IDiagnosticService",
+          "path": [
+            {
+              "field": "operations"
+            },
+            {
+              "member": "ReadDtcStatusOfTheRawUnfilteredMeasurementCalibrationData"
+            }
+          ]
+        },
+        "value": {
+          "name": "ReadDtcStatusOfTheRawUnfilteredMeasurementCalibrationData",
+          "arguments": [
+            {
+              "name": "dtc_id",
+              "direction": "in",
+              "implementation_type": "uint16"
+            },
+            {
+              "name": "status",
+              "direction": "out",
+              "implementation_type": "uint8"
+            }
+          ]
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "ports"
+            },
+            {
+              "member": "pDiagnosticServiceForTheFrontLeftWheelSpeedSensorCalibrationChannel"
+            }
+          ]
+        },
+        "value": {
+          "name": "pDiagnosticServiceForTheFrontLeftWheelSpeedSensorCalibrationChannel",
+          "direction": "provide",
+          "interface": "IDiagnosticService"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ServeCalibrationStatus"
+            }
+          ]
+        },
+        "value": {
+          "name": "ServeCalibrationStatus"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ServeCalibrationStatus"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "operation",
+                "port": "pDiagnosticServiceForTheFrontLeftWheelSpeedSensorCalibrationChannel",
+                "operation": "ReadDtcStatusOfTheRawUnfilteredMeasurementCalibrationData"
+              }
+            }
+          ]
+        },
+        "value": {
+          "type": "operation",
+          "port": "pDiagnosticServiceForTheFrontLeftWheelSpeedSensorCalibrationChannel",
+          "operation": "ReadDtcStatusOfTheRawUnfilteredMeasurementCalibrationData"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "invalid-identifier",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ServeCalibrationStatus"
+          },
+          {
+            "field": "events"
+          },
+          {
+            "member": {
+              "type": "operation",
+              "port": "pDiagnosticServiceForTheFrontLeftWheelSpeedSensorCalibrationChannel",
+              "operation": "ReadDtcStatusOfTheRawUnfilteredMeasurementCalibrationData"
+            }
+          }
+        ]
+      }
+    ],
+    "notes": "`OIT_{port}_{operation}` is the one generated event form derived from **two** declared names, like `Call_{port}_{operation}` before it, so neither name has a budget of its own: this port is legal beside a 56-character operation and illegal beside this one. The message therefore names both, states the joint budget and suggests shortening the longer, and the address is the event rather than the runnable, because the runnable's own name generates nothing here. The overhead is read off the final name, after the writer's collision suffix, so two distinct pairs deriving one base name are each charged the suffix too; this vector has one pair and no suffix."
+  }
+}

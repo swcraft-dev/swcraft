@@ -1,0 +1,113 @@
+{
+  "name": "read-base-types-layer",
+  "description": "A layer-granularity `read` of `base_types`, the layer contract `8.0.0` gave the base types, stored in `data_types/base/`. It answers the base's twelve base types and nothing of the pair the model also declares: a base type is the one kind of its layer, which carries no discriminator and keeps `kind: base_type` as an ordinary literal.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model plus one name declared in two layers: the application type `SyntheticTorque` (`data_types/application/`) and the implementation type `SyntheticTorque` (`data_types/implementation/`), a value type over the base's `float32_base`, each stating its bounds inline, and the mapping set `SyntheticTorqueMapping` (`data_types/mapping_sets/`) that pairs them. The base's twelve base types (`data_types/base/`) and twelve value types are unchanged.",
+    "existing_elements": [
+      {
+        "layer": "application_types",
+        "element": "SyntheticTorque"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "SyntheticTorque"
+      },
+      {
+        "layer": "mapping_sets",
+        "element": "SyntheticTorqueMapping"
+      }
+    ],
+    "notes": "No `form` is stated, so the layer answers `summary`. `read-data-types-layer-filtered` and `read-data-types-layer-paged` read the same layer narrowed by `where` and by a page."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "base_types"
+    }
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "base_types"
+      },
+      "form": "summary",
+      "value": [
+        {
+          "name": "bool_base",
+          "kind": "base_type",
+          "size": 8,
+          "encoding": "BOOLEAN"
+        },
+        {
+          "name": "boolean_base",
+          "kind": "base_type",
+          "size": 8,
+          "encoding": "BOOLEAN"
+        },
+        {
+          "name": "float32_base",
+          "kind": "base_type",
+          "size": 32,
+          "encoding": "IEEE754"
+        },
+        {
+          "name": "float64_base",
+          "kind": "base_type",
+          "size": 64,
+          "encoding": "IEEE754"
+        },
+        {
+          "name": "int16_base",
+          "kind": "base_type",
+          "size": 16,
+          "encoding": "2C"
+        },
+        {
+          "name": "int32_base",
+          "kind": "base_type",
+          "size": 32,
+          "encoding": "2C"
+        },
+        {
+          "name": "int64_base",
+          "kind": "base_type",
+          "size": 64,
+          "encoding": "2C"
+        },
+        {
+          "name": "int8_base",
+          "kind": "base_type",
+          "size": 8,
+          "encoding": "2C"
+        },
+        {
+          "name": "uint16_base",
+          "kind": "base_type",
+          "size": 16,
+          "encoding": "NONE"
+        },
+        {
+          "name": "uint32_base",
+          "kind": "base_type",
+          "size": 32,
+          "encoding": "NONE"
+        },
+        {
+          "name": "uint64_base",
+          "kind": "base_type",
+          "size": 64,
+          "encoding": "NONE"
+        },
+        {
+          "name": "uint8_base",
+          "kind": "base_type",
+          "size": 8,
+          "encoding": "NONE"
+        }
+      ]
+    },
+    "notes": "The twelve answer in the readers' ordinal identity order, which is why `int8_base` follows `int64_base`."
+  }
+}

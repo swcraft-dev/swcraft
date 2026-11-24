@@ -1,0 +1,16 @@
+name: InstrumentCluster
+type: application
+ports:
+- name: rThermalProtectionStatus
+  direction: require
+  interface: IThermalProtectionStatus
+runnables:
+- name: UpdateThermalStatus
+  events:
+  - type: timing
+    period: 0.1
+memory:
+  RAM: 1536
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_SHOWCASE_BASELINE_002@1

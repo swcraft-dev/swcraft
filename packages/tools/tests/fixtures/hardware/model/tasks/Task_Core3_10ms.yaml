@@ -1,0 +1,5 @@
+name: Task_Core3_10ms
+period: 0.01
+priority: 15
+partition: PARTITION3
+wcet: 8000us

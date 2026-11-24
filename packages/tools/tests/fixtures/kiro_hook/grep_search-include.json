@@ -1,0 +1,13 @@
+{
+  "session_id": "sess_4aa21d6a-4cdf-4468-a19a-6555f8c902bd",
+  "hook_event_name": "PreToolUse",
+  "cwd": "/project",
+  "tool_name": "grep_search",
+  "tool_input": {
+    "query": "alpha",
+    "caseSensitive": null,
+    "excludePattern": null,
+    "explanation": "Step 3: Search for query alpha in notes directory",
+    "includePattern": "notes/**"
+  }
+}

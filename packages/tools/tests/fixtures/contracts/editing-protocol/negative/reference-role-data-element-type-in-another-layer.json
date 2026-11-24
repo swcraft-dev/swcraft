@@ -1,0 +1,75 @@
+{
+  "name": "reference-role-data-element-type-in-another-layer",
+  "description": "A data element whose `implementation_type` names a type the model declares only in `application_types`. Since contract `8.0.0` a type field is resolved in the layer it targets alone, so a name declared in the other layer resolves to nothing there: the undeclared-type rule answers it (`interface.data-element-undeclared-type`), with the code every undeclared-target rule answers. The sibling of `reference-role-value-type-base-in-another-layer`, one role over.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model plus the application type `SyntheticTorque`. No implementation type of that name exists. The change set creates an interface whose one data element names it as an implementation type.",
+    "existing_elements": [
+      {
+        "layer": "application_types",
+        "element": "SyntheticTorque"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "ISyntheticTorque"
+          }
+        }
+      ],
+      "notes": "The scope covers every create exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Carry the synthetic torque on the bus.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "ISyntheticTorque"
+        },
+        "value": {
+          "name": "ISyntheticTorque",
+          "kind": "sender_receiver",
+          "data_elements": [
+            {
+              "name": "torque",
+              "implementation_type": "SyntheticTorque"
+            }
+          ],
+          "description": "The synthetic torque on the bus"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "broken-reference",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "interfaces",
+        "element": "ISyntheticTorque",
+        "path": [
+          {
+            "field": "data_elements"
+          },
+          {
+            "member": "torque"
+          },
+          {
+            "field": "implementation_type"
+          }
+        ]
+      }
+    ],
+    "notes": "One address, the referrer's field, and never the target, which the layer the field targets does not declare. Either repair clears it: state the side the name is declared in (`application_type: SyntheticTorque`), or declare an implementation type of that name — which is legal since contract `8.0.0`, where it was an identity conflict before."
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "name": "consistency-violation-consumer-above-element",
+  "description": "A component rated ABOVE an element it consumes, with no measure declared for it. This is ISO 26262-9's coexistence shape read one way round: a higher-integrity consumer taking data from a lower-integrity source is admissible on an argument, and the refusal names the port's `measures` field as one of the repairs. `examples/create-port-measure.json` is the accepted half.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model with `REQ_EXAMPLE_001` already allocated at ASIL D, so both components derive D. The change set rates `IExample.value` at ASIL A — below the consumer that takes it through `rIn`, which declares no measure.",
+    "existing_elements": [
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_001"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "interfaces",
+            "element": "IExample",
+            "path": [
+              {
+                "field": "data_elements"
+              },
+              {
+                "member": "value"
+              },
+              {
+                "field": "asil"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly, so the refusal is the model rule. The provider is not reported beside the consumer: `ExampleSWC` is at D and the element at A, and an element BELOW its producer is legitimate. Four addresses come back and they are four repairs the rule does not choose between — raise the element, lower the consumer's derived level by re-allocating the requirement, or declare the measure that answers it."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:37q42HcBvIyq2eAGhTOAzA",
+    "intent": "Rate the vehicle-speed signal at ASIL A.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "interfaces",
+          "element": "IExample",
+          "path": [
+            {
+              "field": "data_elements"
+            },
+            {
+              "member": "value"
+            },
+            {
+              "field": "asil"
+            }
+          ]
+        },
+        "value": "A"
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "asil"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "ports"
+          },
+          {
+            "member": "rIn"
+          },
+          {
+            "field": "measures"
+          }
+        ]
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample",
+        "path": [
+          {
+            "field": "data_elements"
+          },
+          {
+            "member": "value"
+          },
+          {
+            "field": "asil"
+          }
+        ]
+      },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_001",
+        "path": [
+          {
+            "field": "asil"
+          }
+        ]
+      }
+    ],
+    "notes": "Four addresses, and the fourth is the one this rule exists for: the port's own `measures` field, where the argument that answers the finding is written. `examples/create-port-measure.json` is that answer accepted. The allocating requirement is named here where the provider vector names none, because this component's level is DERIVED from a requirement that really does allocate one — so re-allocating it is a repair. What the refusal does not reach: it compares two declarations and says nothing about whether either is right."
+  }
+}

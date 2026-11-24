@@ -1,0 +1,307 @@
+{
+  "name": "create-implementation-composites-and-composite-map",
+  "description": "Contract `7.8.0`'s three implementation kinds through the generic change set: an `implementation_record` (a `STRUCTURE` with ordered `elements`), an `implementation_array` (a `FIXED-SIZE` `ARRAY` of one `element_type`, its sub-element named by `element_name`) and a `pointer` (a `DATA_REFERENCE` to a `target`), beside an application `record` and the mapping set that pairs it with the implementation record. No new tool, no new address form and no new scope vocabulary: the registry is derived from the contract, so the kinds are authored the way `create-data-type-alias` authored the first one.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, whose `implementation_types` layer (`data_types/implementation/`) holds the value type `uint16` and whose `data_types/mapping_sets/` directory is present and empty. None of the six elements the change set creates exists, and no port in the model speaks the new application types, so nothing has to be mapped and the one composite pair is mapped because a map may name a record, not because one must.",
+    "existing_elements": [
+      {
+        "layer": "implementation_types",
+        "element": "uint16"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "WheelSpeed_Kph"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "WheelSpeeds"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "WheelSpeeds_T"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "WheelSpeedHistory_T"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "WheelSpeeds_Ptr"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "mapping_sets",
+            "element": "WheelSpeedMapping"
+          }
+        }
+      ],
+      "notes": "Six element addresses in three layers, each named by operation and address. A kind added by a contract bump needs no scope vocabulary of its own, and nothing in the scope names a kind."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Carry the four wheel speeds as one structure, keep a short history of them and pass them by reference.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "application_types",
+          "element": "WheelSpeed_Kph"
+        },
+        "value": {
+          "name": "WheelSpeed_Kph",
+          "kind": "application_type",
+          "unit": "kph"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "application_types",
+          "element": "WheelSpeeds"
+        },
+        "value": {
+          "name": "WheelSpeeds",
+          "kind": "record",
+          "fields": [
+            {
+              "name": "front",
+              "type": "WheelSpeed_Kph"
+            },
+            {
+              "name": "rear",
+              "type": "WheelSpeed_Kph"
+            }
+          ]
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "implementation_types",
+          "element": "WheelSpeeds_T"
+        },
+        "value": {
+          "name": "WheelSpeeds_T",
+          "kind": "implementation_record",
+          "elements": [
+            {
+              "name": "front",
+              "type": "uint16"
+            },
+            {
+              "name": "rear",
+              "type": "uint16"
+            }
+          ],
+          "description": "The wheel speeds as the RTE stores them"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "implementation_types",
+          "element": "WheelSpeedHistory_T"
+        },
+        "value": {
+          "name": "WheelSpeedHistory_T",
+          "kind": "implementation_array",
+          "element_type": "WheelSpeeds_T",
+          "length": 8,
+          "element_name": "Sample"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "implementation_types",
+          "element": "WheelSpeeds_Ptr"
+        },
+        "value": {
+          "name": "WheelSpeeds_Ptr",
+          "kind": "pointer",
+          "target": "WheelSpeeds_T"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "mapping_sets",
+          "element": "WheelSpeedMapping"
+        },
+        "value": {
+          "name": "WheelSpeedMapping",
+          "maps": [
+            {
+              "application": "WheelSpeed_Kph",
+              "implementation": "uint16"
+            },
+            {
+              "application": "WheelSpeeds",
+              "implementation": "WheelSpeeds_T"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "WheelSpeed_Kph"
+          },
+          "after": {
+            "name": "WheelSpeed_Kph",
+            "kind": "application_type",
+            "unit": "kph",
+            "conversion": null,
+            "range": null,
+            "unit_ref": null,
+            "compu_method_ref": null,
+            "data_constr_ref": null,
+            "description": "",
+            "package": null
+          },
+          "summary": "application_types: + WheelSpeed_Kph"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "WheelSpeeds"
+          },
+          "after": {
+            "name": "WheelSpeeds",
+            "kind": "record",
+            "fields": [
+              {
+                "name": "front",
+                "type": "WheelSpeed_Kph",
+                "description": ""
+              },
+              {
+                "name": "rear",
+                "type": "WheelSpeed_Kph",
+                "description": ""
+              }
+            ],
+            "description": "",
+            "package": null
+          },
+          "summary": "application_types: + WheelSpeeds"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "WheelSpeedHistory_T"
+          },
+          "after": {
+            "name": "WheelSpeedHistory_T",
+            "kind": "implementation_array",
+            "element_type": "WheelSpeeds_T",
+            "length": 8,
+            "element_name": "Sample",
+            "description": "",
+            "package": null
+          },
+          "summary": "implementation_types: + WheelSpeedHistory_T"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "WheelSpeeds_Ptr"
+          },
+          "after": {
+            "name": "WheelSpeeds_Ptr",
+            "kind": "pointer",
+            "target": "WheelSpeeds_T",
+            "description": "",
+            "package": null
+          },
+          "summary": "implementation_types: + WheelSpeeds_Ptr"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "WheelSpeeds_T"
+          },
+          "after": {
+            "name": "WheelSpeeds_T",
+            "kind": "implementation_record",
+            "elements": [
+              {
+                "name": "front",
+                "type": "uint16",
+                "description": ""
+              },
+              {
+                "name": "rear",
+                "type": "uint16",
+                "description": ""
+              }
+            ],
+            "description": "The wheel speeds as the RTE stores them",
+            "package": null
+          },
+          "summary": "implementation_types: + WheelSpeeds_T"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "mapping_sets",
+            "element": "WheelSpeedMapping"
+          },
+          "after": {
+            "name": "WheelSpeedMapping",
+            "maps": [
+              {
+                "application": "WheelSpeed_Kph",
+                "implementation": "uint16"
+              },
+              {
+                "application": "WheelSpeeds",
+                "implementation": "WheelSpeeds_T"
+              }
+            ],
+            "description": "",
+            "package": null
+          },
+          "summary": "mapping_sets: + WheelSpeedMapping"
+        }
+      ]
+    },
+    "notes": "Each `after` is the element as it will be written, every declared field present. `elements` is a collection identified by `name`, so a later member edit is addressed `{field: elements}, {member: front}`; `length` and `element_name` are scalars. The staged result is consistent because every role resolves to a kind it admits: each element's `type` and the array's `element_type` name an implementation type, the pointer's `target` names one, and the record's two fields name an application type. The composite pair is judged by SWCraft's positional check of a composite map, not by a constraint the standard states in full: the category, the member count and each member by position (a scalar member by its category only). Member names are not judged, so `front` and `rear` would pair with elements named otherwise; that the two sides share them here is the source's convention, not a condition. A map onto the pointer is never legal (`negative/consistency-violation-mapping-set-pointer-mapped.json`). The real model is still byte-identical at this point."
+  }
+}

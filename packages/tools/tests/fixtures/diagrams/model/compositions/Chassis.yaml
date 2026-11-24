@@ -1,0 +1,28 @@
+name: Chassis
+title: Chassis
+description: Three members, two boundary ports and a delegation in each direction.
+ports:
+  - name: rDiag
+    direction: require
+    interface: IDiag
+  - name: pSpeedOut
+    direction: provide
+    interface: ISpeed
+    description: The speed the chassis publishes.
+members:
+  - name: Sensor
+    type: Sensor
+  - name: Controller
+    type: Controller
+  - name: Logger
+    type: Logger
+delegations:
+  - name: Chassis_rDiag
+    port: rDiag
+    member: Controller
+    member_port: rDiag
+  - name: Chassis_pSpeedOut
+    port: pSpeedOut
+    member: Controller
+    member_port: pSpeedOut
+    description: The provide-side delegation.

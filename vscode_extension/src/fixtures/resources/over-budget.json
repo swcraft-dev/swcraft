@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "findings": {
+    "errors": 1,
+    "informational": 1
+  },
+  "topology": [
+    {
+      "rule": "hardware.undeclared-partition",
+      "message": "Task 'Task_lost' runs in partition 'NOWHERE', which no hardware element declares (declared partitions: PARTITION0)."
+    }
+  ],
+  "fit": null,
+  "cores": [
+    {
+      "name": "CORE0",
+      "kind": "core",
+      "enforcement": "strict",
+      "utilization": "80.00%",
+      "limit": "70.00%",
+      "headroom": "-10.00%",
+      "physical_headroom": "20.00%",
+      "status": "over budget",
+      "consumers": [
+        {
+          "name": "Task_10ms",
+          "layer": "tasks",
+          "amount": "50.00%",
+          "declared": true,
+          "detail": "wcet 5000us / period 0.01s"
+        },
+        {
+          "name": "Task_20ms",
+          "layer": "tasks",
+          "amount": "30.00%",
+          "declared": true,
+          "detail": "wcet 6000us / period 0.02s"
+        }
+      ],
+      "findings": [
+        {
+          "severity": "error",
+          "code": "threshold_breach",
+          "message": "CPU core 'CORE0' utilization 80.00% exceeds its threshold of 70.00%.",
+          "subjects": [
+            {
+              "layer": "hardware",
+              "element": "CORE0",
+              "path": [
+                {
+                  "field": "threshold"
+                }
+              ]
+            },
+            {
+              "layer": "tasks",
+              "element": "Task_10ms",
+              "path": [
+                {
+                  "field": "wcet"
+                }
+              ]
+            },
+            {
+              "layer": "tasks",
+              "element": "Task_20ms",
+              "path": [
+                {
+                  "field": "wcet"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "memories": [
+    {
+      "name": "RAM",
+      "kind": "memory",
+      "enforcement": "advisory",
+      "size": 4096,
+      "used": "4000",
+      "limit": "3276",
+      "headroom": "-724",
+      "physical_headroom": "96",
+      "status": "over budget",
+      "consumers": [
+        {
+          "name": "Alpha",
+          "layer": "swc",
+          "amount": "4000 bytes",
+          "declared": true,
+          "detail": ""
+        }
+      ],
+      "findings": [
+        {
+          "severity": "info",
+          "code": "threshold_breach",
+          "message": "Memory 'RAM' consumption 4000 bytes exceeds its budget of 3276.8 bytes (size 4096 bytes x threshold 0.8).",
+          "subjects": [
+            {
+              "layer": "hardware",
+              "element": "RAM",
+              "path": [
+                {
+                  "field": "size"
+                }
+              ]
+            },
+            {
+              "layer": "swc",
+              "element": "Alpha",
+              "path": [
+                {
+                  "field": "memory"
+                },
+                {
+                  "key": "RAM"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

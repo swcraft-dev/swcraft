@@ -1,0 +1,7 @@
+name: speedLink
+from:
+  swc: SensorSwc
+  port: pSpeed
+to:
+  swc: ActuatorSwc
+  port: rSpeed

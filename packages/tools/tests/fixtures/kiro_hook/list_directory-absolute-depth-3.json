@@ -1,0 +1,11 @@
+{
+  "session_id": "sess_09c936af-bf43-42f2-a9d0-4774261db103",
+  "hook_event_name": "PreToolUse",
+  "cwd": "/project",
+  "tool_name": "list_directory",
+  "tool_input": {
+    "path": "/project/notes",
+    "explanation": "Step 2 of tool test: list notes directory with depth 3",
+    "depth": 3
+  }
+}

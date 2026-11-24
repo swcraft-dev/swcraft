@@ -1,0 +1,9 @@
+id: AS_001
+title: Brake request frame
+description: The brake request is one unsigned byte, 0 to 100 percent.
+req_type: spec
+version: 1
+source: architecture
+derived_from:
+- SYS_003
+asil: C

@@ -1,0 +1,22 @@
+{
+  "current_version": "SRS-2.3",
+  "versions": {
+    "SRS-2.3": {
+      "needs": {
+        "SWR-12": {
+          "id": "SWR-12",
+          "title": "Wheel speed plausibility",
+          "content": "The software shall reject a wheel speed above 400 km/h.",
+          "type": "req",
+          "status": "approved",
+          "asil": "B(D)",
+          "document": "SRS Brake Control",
+          "revision": "7",
+          "derived_from": [
+            "SG-1"
+          ]
+        }
+      }
+    }
+  }
+}

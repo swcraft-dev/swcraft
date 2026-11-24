@@ -1,0 +1,88 @@
+{
+  "id": "sender-receiver-table-paged",
+  "function": "Recipe: The sender-receiver table",
+  "finding": {
+    "release": "0.19.1",
+    "row": 1
+  },
+  "tier": "generated-small",
+  "specimen": "scenario-sender-receiver-table-paged",
+  "class": "boundary-at-scale",
+  "thresholds": {
+    "table_page_rows": {
+      "value": 5,
+      "because": "the sender-receiver table's page: a row carries about thirteen identities, so five rows and the echoed request stay under the spill bound"
+    },
+    "two_pages": {
+      "value": 10,
+      "because": "two pages of five: the table must hold more than this for a replay's row bound to be a check the answer can fail"
+    },
+    "host_spill_bytes": {
+      "value": 8192,
+      "because": "VS Code spills an answer larger than 8 192 bytes to a file (measured 2026-10-24)"
+    }
+  },
+  "steps": [
+    {
+      "id": "page",
+      "recipe": "The sender-receiver table",
+      "request": 0
+    },
+    {
+      "id": "next",
+      "recipe": "The sender-receiver table",
+      "request": 0,
+      "continues": "page"
+    }
+  ],
+  "expectations": [
+    {
+      "step": "page",
+      "at": "value.identities",
+      "rows_at_most": "table_page_rows",
+      "because": "a listing recipe answers one page, never every row (findings after 0.19.1)"
+    },
+    {
+      "step": "page",
+      "bytes_at_most": "host_spill_bytes",
+      "because": "the page fits the host's answer before it spills to a file"
+    },
+    {
+      "step": "page",
+      "at": "page.total",
+      "count_equals": {
+        "locator": "sender_receiver_rows"
+      },
+      "because": "the page states the table's whole row count, read off the model's files: per connector, each write of the provider matched by a read of the requester of the same data element"
+    },
+    {
+      "step": "page",
+      "at": "page.total",
+      "count_above": "two_pages",
+      "because": "the precondition: more than one page follows the first, so a replay that answered every remaining row would fail its row bound"
+    },
+    {
+      "step": "page",
+      "at": "page.next",
+      "present": true,
+      "because": "the page carries the after that asks for the rest"
+    },
+    {
+      "step": "next",
+      "at": "value.identities",
+      "disjoint_from": "page",
+      "because": "replaying the first page's after (which that page must state as truncated) answers rows the first page does not list"
+    },
+    {
+      "step": "next",
+      "at": "value.identities",
+      "rows_at_most": "table_page_rows",
+      "because": "a continued page is a page too: replaying the cursor answers at most the next page, never every row after it"
+    },
+    {
+      "step": "next",
+      "bytes_at_most": "host_spill_bytes",
+      "because": "the continued page fits the host's answer too"
+    }
+  ]
+}

@@ -1,0 +1,358 @@
+{
+  "name": "rename-swc-via-remove-create-and-reference-updates",
+  "description": "The identity case: there is no `rename` operation. Renaming `ExampleSWC` to `SpeedSensorSWC` is a `remove`, a `create` and explicit operations for each referring element, all in one change set, so every element the rename touches appears in the reviewed delta instead of being cascaded into on the client's behalf. Since contract `4.0.0` the root composition is one of those referring elements: its member instantiates the component type, and a member naming a type the model no longer declares is `rule:composition.member-unknown-type`.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `swcraft impact ExampleSWC` reports two referrers: the connector `Example_to_Consumer`, whose `from.swc` names it, and — since contract `4.0.0` — the root composition `Root`, whose member of that name instantiates it. The requirement `REQ_EXAMPLE_001` is no referrer since contract `11.0.0`: the component names it in its own `satisfies`, so the link travels inside the component's `create` payload and no requirement moves. No task and no sequence maps a runnable of this component.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "connectors",
+        "element": "Example_to_Consumer"
+      },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_001"
+      },
+      {
+        "layer": "compositions",
+        "element": "Root"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "SpeedSensorSWC"
+          }
+        },
+        {
+          "operation": "update",
+          "address": {
+            "layer": "connectors",
+            "element": "Example_to_Consumer",
+            "path": [
+              {
+                "field": "from"
+              },
+              {
+                "field": "swc"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "compositions",
+            "element": "Root",
+            "path": [
+              {
+                "field": "members"
+              },
+              {
+                "member": "ExampleSWC"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "compositions",
+            "element": "Root",
+            "path": [
+              {
+                "field": "members"
+              },
+              {
+                "member": "SpeedSensorSWC"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope names the two referring elements explicitly. A dedicated `rename` would have had to edit them without ever naming them, which is the reason the operation was rejected. The requirement the component satisfies is not among them: since contract `11.0.0` the link lives in the component (`satisfies`), so it is carried by the component's own `create` payload and the requirement file does not change. The composition member takes two entries because a member is identified by its own `name`, and this rename renames the member as well as retargeting it, so the pair is a removal and an addition rather than an `update` of `type`."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Rename ExampleSWC to SpeedSensorSWC and carry its two referrers with it.",
+    "operations": [
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "SpeedSensorSWC"
+        },
+        "value": {
+          "name": "SpeedSensorSWC",
+          "group": "example",
+          "type": "application",
+          "description": "Example software component for testing and demonstration",
+          "ports": [
+            {
+              "name": "pOut",
+              "direction": "provide",
+              "interface": "IExample",
+              "description": "Example output port providing data",
+              "measures": {}
+            }
+          ],
+          "runnables": [
+            {
+              "name": "ExampleRun",
+              "min_start_interval": 0.01,
+              "events": [
+                {
+                  "type": "timing",
+                  "period": 0.01
+                }
+              ]
+            }
+          ],
+          "memory": {
+            "RAM0": 2048
+          },
+          "handle_termination_and_restart": "no_support",
+          "satisfies": [
+            "REQ_EXAMPLE_001@1"
+          ]
+        }
+      },
+      {
+        "operation": "update",
+        "address": {
+          "layer": "connectors",
+          "element": "Example_to_Consumer",
+          "path": [
+            {
+              "field": "from"
+            },
+            {
+              "field": "swc"
+            }
+          ]
+        },
+        "value": "SpeedSensorSWC"
+      },
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "compositions",
+          "element": "Root",
+          "path": [
+            {
+              "field": "members"
+            },
+            {
+              "member": "ExampleSWC"
+            }
+          ]
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "compositions",
+          "element": "Root",
+          "path": [
+            {
+              "field": "members"
+            },
+            {
+              "member": "SpeedSensorSWC"
+            }
+          ]
+        },
+        "value": {
+          "name": "SpeedSensorSWC",
+          "type": "SpeedSensorSWC",
+          "description": "The provider of IExample."
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC"
+          },
+          "before": {
+            "name": "ExampleSWC",
+            "group": "example",
+            "ports": 1,
+            "runnables": 1,
+            "variables": 0,
+            "exclusive_areas": 0,
+            "memory": 1,
+            "data_type_mappings": 0,
+            "satisfies": 1
+          },
+          "summary": "swc: - ExampleSWC",
+          "before_form": "summary"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "SpeedSensorSWC"
+          },
+          "after": {
+            "name": "SpeedSensorSWC",
+            "group": "example",
+            "type": "application",
+            "description": "Example software component for testing and demonstration",
+            "external": false,
+            "external_ref": "",
+            "external_dest": "",
+            "ports": [
+              {
+                "name": "pOut",
+                "direction": "provide",
+                "interface": "IExample",
+                "observed_interface": null,
+                "description": "Example output port providing data",
+                "measures": {},
+                "com_specs": [],
+                "satisfies": []
+              }
+            ],
+            "runnables": [
+              {
+                "name": "ExampleRun",
+                "min_start_interval": 0.01,
+                "concurrent": false,
+                "events": [
+                  {
+                    "type": "timing",
+                    "period": 0.01,
+                    "disabled_modes": [],
+                    "name": null
+                  }
+                ],
+                "reads": [],
+                "writes": [],
+                "calls": [],
+                "reads_variables": [],
+                "writes_variables": [],
+                "can_enter": [],
+                "runs_inside": [],
+                "description": "",
+                "symbol": null,
+                "wcet": null,
+                "wcet_type": null,
+                "satisfies": []
+              }
+            ],
+            "variables": [],
+            "exclusive_areas": [],
+            "memory": {
+              "RAM0": 2048
+            },
+            "asil": null,
+            "handle_termination_and_restart": "no_support",
+            "data_type_mappings": [],
+            "behavior_name": null,
+            "package": null,
+            "satisfies": [
+              "REQ_EXAMPLE_001@1"
+            ]
+          },
+          "summary": "swc: + SpeedSensorSWC"
+        },
+        {
+          "operation": "update",
+          "address": {
+            "layer": "connectors",
+            "element": "Example_to_Consumer",
+            "path": [
+              {
+                "field": "from"
+              },
+              {
+                "field": "swc"
+              }
+            ]
+          },
+          "before": "ExampleSWC",
+          "after": "SpeedSensorSWC",
+          "summary": "connectors/Example_to_Consumer: ~ from.swc ExampleSWC -> SpeedSensorSWC"
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "compositions",
+            "element": "Root",
+            "path": [
+              {
+                "field": "members"
+              },
+              {
+                "member": "ExampleSWC"
+              }
+            ]
+          },
+          "before": {
+            "name": "ExampleSWC",
+            "type": "ExampleSWC",
+            "composition": null,
+            "description": "The provider of IExample."
+          },
+          "summary": "compositions/Root: - members[ExampleSWC]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "compositions",
+            "element": "Root",
+            "path": [
+              {
+                "field": "members"
+              },
+              {
+                "member": "SpeedSensorSWC"
+              }
+            ]
+          },
+          "after": {
+            "name": "SpeedSensorSWC",
+            "type": "SpeedSensorSWC",
+            "composition": null,
+            "description": "The provider of IExample."
+          },
+          "summary": "compositions/Root: + members[SpeedSensorSWC]"
+        }
+      ]
+    },
+    "notes": "Without the reference operations the change set would be refused with `broken-reference` naming both referrers, because references are validated against the staged result. The identity `name` is fixed at `create` and immutable afterwards, so there is no shorter way to say this — and that is the point: the delta the user approves is exactly the set of elements the rename edits. Note the two shapes a reference update takes: the connector's endpoint is an object field, so retargeting it is an ordinary `update` at `{field: \"from\"}, {field: \"swc\"}`, while the root's member is identified by its own `name`, so retargeting it is a `remove` plus a `create` at the member addresses. No requirement moves: since contract `11.0.0` the trace link is the component's own `satisfies`, carried inside its `create` payload. The change set is legal precisely because the two SWC identities DIFFER: the protocol bans same-identity replacement globally, for every uniquely identified element and member, so a `remove` and a `create` at the SAME identity is refused as `identity-conflict` (`negative/identity-conflict-same-identity-group-move.json`) — a group move is one instance of that ban, and renaming in place is another. The member pair above is outside it for the same reason the two SWC identities are: its two member names differ."
+  }
+}

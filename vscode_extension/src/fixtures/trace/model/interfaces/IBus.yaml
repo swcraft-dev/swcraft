@@ -1,0 +1,6 @@
+name: IBus
+kind: external_interface
+external_ref: /Outside/IBus
+external_dest: SENDER-RECEIVER-INTERFACE
+data_elements:
+- frame

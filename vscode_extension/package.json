@@ -1,0 +1,828 @@
+{
+  "name": "swcraft-vscode",
+  "displayName": "SWCraft",
+  "description": "VS Code integration for SWCraft: project detection, the SWCraft MCP server for Agent mode, toolchain install and health, CLI passthrough commands, and the model check's findings in the Problems panel. Never writes an architecture model file directly: a quick fix is an edit of the open buffer the user applies and saves.",
+  "version": "0.24.0",
+  "publisher": "swcraft-local",
+  "icon": "media/icon-128-color.png",
+  "private": true,
+  "license": "Apache-2.0",
+  "engines": {
+    "vscode": "^1.110.0"
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "SWCraft runs code against the folder. Every command that reaches the model spawns the installed `swcraft` executable with the workspace's own manifest and model as its input, and the extension registers an MCP server that starts a second process against that same workspace. Trust the folder to get the SWCraft view and its commands back."
+    },
+    "virtualWorkspaces": {
+      "supported": false,
+      "description": "SWCraft spawns the `swcraft` CLI as a local process against on-disk paths, so it needs a workspace backed by a real file system."
+    }
+  },
+  "categories": [
+    "Programming Languages",
+    "Visualization",
+    "AI",
+    "Extension Packs"
+  ],
+  "activationEvents": [
+    "workspaceContains:swcraft.yaml",
+    "onCommand:swcraft.onboardProject",
+    "onCommand:swcraft.openGuide",
+    "onCommand:swcraft.installToolchain",
+    "onCommand:swcraft.updateToolchain",
+    "onUri"
+  ],
+  "extensionPack": [
+    "redhat.vscode-yaml",
+    "redhat.vscode-xml"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "SWCraft",
+      "properties": {
+        "swcraft.executable": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Absolute path to the swcraft executable to run. Leave empty to use the workstation installation (%LOCALAPPDATA%\\SWCraft\\current\\Scripts\\swcraft.exe on Windows, ~/.swcraft/current/bin/swcraft elsewhere). Set it only for development against a SWCraft checkout, e.g. /path/to/swcraft/.venv/bin/swcraft; when it is set, nothing else is looked for."
+        },
+        "swcraft.experiments.allocation.config": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "markdownDescription": "The configuration file the **Allocation (CARMA)** experiment runs with: a path relative to the project directory, passed to `swcraft experiment allocation` as `--config`. Leave empty to run the experiment with its defaults."
+        },
+        "swcraft.experiments.trace.config": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "markdownDescription": "The configuration file the **Trace Links** search runs with: a path relative to the project directory, passed to `swcraft experiment trace` as `--config`. Leave empty to search with the defaults (every document reviewed)."
+        },
+        "swcraft.requirementsImport.mapping": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "markdownDescription": "The mapping file **Import Requirements** last used: how the requirements team's need types and field names map to SWCraft's, passed to `swcraft import requirements` as `--mapping`. A path relative to the project directory, or an absolute path for a file outside it. The import writes it when a mapping file is picked and clears it when *SWCraft's own names* is picked; leave empty to import with SWCraft's own names. Only the workspace folder's own value (its `.vscode/settings.json`) is read: a value in your user settings is not used."
+        },
+        "swcraft.testTables.annotations": {
+          "type": "string",
+          "scope": "resource",
+          "markdownDescription": "The test team's annotations folder **Test Tables** last used: the folder of the test team's columns, passed to `swcraft generate test-tables` as `--annotations`. A path relative to the project directory, or an absolute path for a folder outside it. Asked on the first press and written here; an empty value means *none yet* (generate without annotations), and no value at all means the next press asks. Only the workspace folder's own value (its `.vscode/settings.json`) is read: a value in your user settings is not used."
+        },
+        "swcraft.metricsSince": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "scope": "resource",
+          "markdownDescription": "The git revisions **Architecture Metrics** compares the working tree against, each passed to `swcraft metrics` as one `--since`: the first is the base, the others are points of the series, in this order. Leave empty to compare against `HEAD`; when `HEAD` cannot be read, the report says why and still shows the state."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "swcraft.build",
+        "title": "SWCraft: Build"
+      },
+      {
+        "command": "swcraft.checkModel",
+        "title": "SWCraft: Check Model"
+      },
+      {
+        "command": "swcraft.diagrams",
+        "title": "SWCraft: Diagrams"
+      },
+      {
+        "command": "swcraft.showInDiagram",
+        "title": "SWCraft: Show in Diagram"
+      },
+      {
+        "command": "swcraft.testTables",
+        "title": "SWCraft: Test Tables"
+      },
+      {
+        "command": "swcraft.exportComponent",
+        "title": "SWCraft: Export Component"
+      },
+      {
+        "command": "swcraft.importComponent",
+        "title": "SWCraft: Import Component"
+      },
+      {
+        "command": "swcraft.importRequirements",
+        "title": "SWCraft: Import Requirements"
+      },
+      {
+        "command": "swcraft.experimentAllocation",
+        "title": "SWCraft: Allocation Experiment (CARMA)"
+      },
+      {
+        "command": "swcraft.experimentTrace",
+        "title": "SWCraft: Trace Link Search…"
+      },
+      {
+        "command": "swcraft.traceMarkStrong",
+        "title": "Mark Strong",
+        "category": "SWCraft",
+        "icon": "$(checklist)"
+      },
+      {
+        "command": "swcraft.traceClear",
+        "title": "Clear",
+        "category": "SWCraft",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "swcraft.traceApply",
+        "title": "Apply…",
+        "category": "SWCraft",
+        "icon": "$(check-all)"
+      },
+      {
+        "command": "swcraft.traceOpenReport",
+        "title": "Open Report",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.traceOpenProposals",
+        "title": "Open Proposals File",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.traceAccept",
+        "title": "Accept (Tick)",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.traceReject",
+        "title": "Reject",
+        "category": "SWCraft",
+        "icon": "$(close)"
+      },
+      {
+        "command": "swcraft.traceUndoReject",
+        "title": "Undo Reject",
+        "category": "SWCraft",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "swcraft.traceOpenElement",
+        "title": "Open Element",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.traceChooseElement",
+        "title": "Choose Another Element…",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.traceRemoveChoice",
+        "title": "Remove Choice",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.traceNewSearch",
+        "title": "New Search…",
+        "category": "SWCraft",
+        "icon": "$(search)"
+      },
+      {
+        "command": "swcraft.traceChooseMode",
+        "title": "Choose Documents…",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.traceOtherElement",
+        "title": "Any Element of the Model…",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.traceOpenRequirement",
+        "title": "Open Requirement",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.reviewOpen",
+        "title": "Open Review",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.reviewRefresh",
+        "title": "Refresh",
+        "category": "SWCraft",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "swcraft.onboardProject",
+        "title": "SWCraft: Onboard Project"
+      },
+      {
+        "command": "swcraft.changeReport",
+        "title": "SWCraft: Change Report"
+      },
+      {
+        "command": "swcraft.impact",
+        "title": "SWCraft: Impact of This Element",
+        "icon": "$(references)"
+      },
+      {
+        "command": "swcraft.resourceReport",
+        "title": "SWCraft: Resource Report"
+      },
+      {
+        "command": "swcraft.metrics",
+        "title": "SWCraft: Architecture Metrics"
+      },
+      {
+        "command": "swcraft.resourcesRefresh",
+        "title": "Refresh",
+        "category": "SWCraft",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "swcraft.resourcesOpen",
+        "title": "Open Element",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.impactRefresh",
+        "title": "Refresh",
+        "category": "SWCraft",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "swcraft.impactOpen",
+        "title": "Open Element",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.checkEditorTooling",
+        "title": "Check Editor Tooling",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.openGuide",
+        "title": "Open Guide",
+        "category": "SWCraft"
+      },
+      {
+        "command": "swcraft.installToolchain",
+        "title": "SWCraft: Install Toolchain"
+      },
+      {
+        "command": "swcraft.updateToolchain",
+        "title": "SWCraft: Update Toolchain"
+      }
+    ],
+    "mcpServerDefinitionProviders": [
+      {
+        "id": "swcraft.mcp",
+        "label": "SWCraft"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "swcraft",
+          "title": "SWCraft",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "swcraft": [
+        {
+          "id": "swcraftView",
+          "name": "SWCraft"
+        },
+        {
+          "id": "swcraftTrace",
+          "name": "Trace Links",
+          "when": "swcraft.trace.available"
+        },
+        {
+          "id": "swcraftResources",
+          "name": "Resources",
+          "when": "swcraft.resources.available",
+          "visibility": "collapsed"
+        },
+        {
+          "id": "swcraftImpact",
+          "name": "Impact",
+          "when": "swcraft.impact.available",
+          "visibility": "collapsed"
+        },
+        {
+          "id": "swcraftReview",
+          "name": "Pending Change Sets",
+          "when": "swcraft.review.available"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "swcraftReview",
+        "contents": "No change set is waiting for your review.\nA change set waits here when an assistant whose SWCraft server runs with the panel review (`SWCRAFT_REVIEW=panel`) proposes one. Its review tab opens by itself; this list reopens a tab you closed unanswered."
+      },
+      {
+        "view": "swcraftResources",
+        "contents": "A green Build fills this view with each core's and memory's budget, use and headroom. Resource Report fills it without building and opens the report in a tab.\n[Resource Report](command:swcraft.resourceReport)"
+      },
+      {
+        "view": "swcraftImpact",
+        "contents": "Ask what depends on an element: open its file and choose SWCraft: Impact of This Element from the editor's context menu or the Command Palette."
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "swcraft.traceMarkStrong",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceClear",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceApply",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceOpenReport",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceOpenProposals",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceAccept",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceReject",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceUndoReject",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceOpenElement",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceChooseElement",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceRemoveChoice",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceNewSearch",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceChooseMode",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceOtherElement",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.traceOpenRequirement",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.reviewOpen",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.reviewRefresh",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.resourcesRefresh",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.resourcesOpen",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.impact",
+          "when": "swcraft.activeEditorIsLayerFile"
+        },
+        {
+          "command": "swcraft.showInDiagram",
+          "when": "swcraft.activeEditorIsLayerFile"
+        },
+        {
+          "command": "swcraft.impactRefresh",
+          "when": "false"
+        },
+        {
+          "command": "swcraft.impactOpen",
+          "when": "false"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "swcraft.traceApply",
+          "when": "view == swcraftView && viewItem == trace.root && swcraft.trace.pending && !swcraft.trace.busy",
+          "group": "inline"
+        },
+        {
+          "command": "swcraft.traceApply",
+          "when": "view == swcraftView && viewItem == trace.root && swcraft.trace.pending && !swcraft.trace.busy",
+          "group": "1_trace@1"
+        },
+        {
+          "command": "swcraft.traceNewSearch",
+          "when": "view == swcraftView && viewItem == trace.root && !swcraft.trace.busy",
+          "group": "1_trace@2"
+        },
+        {
+          "command": "swcraft.traceClear",
+          "when": "view == swcraftView && viewItem == trace.root && swcraft.trace.loaded && !swcraft.trace.busy",
+          "group": "1_trace@3"
+        },
+        {
+          "command": "swcraft.traceOpenReport",
+          "when": "view == swcraftView && viewItem == trace.root && swcraft.trace.loaded",
+          "group": "2_files@1"
+        },
+        {
+          "command": "swcraft.traceOpenProposals",
+          "when": "view == swcraftView && viewItem == trace.root && swcraft.trace.loaded",
+          "group": "2_files@2"
+        },
+        {
+          "command": "swcraft.traceChooseMode",
+          "when": "view == swcraftView && viewItem =~ /^trace\\.mode\\./ && !swcraft.trace.busy",
+          "group": "1_trace@1"
+        },
+        {
+          "command": "swcraft.traceMarkStrong",
+          "when": "view == swcraftView && viewItem == trace.mode.review && swcraft.trace.loaded && !swcraft.trace.busy",
+          "group": "1_trace@2"
+        },
+        {
+          "command": "swcraft.traceAccept",
+          "when": "view == swcraftTrace && viewItem == trace.row.open && !swcraft.trace.busy",
+          "group": "1_decide@1"
+        },
+        {
+          "command": "swcraft.traceReject",
+          "when": "view == swcraftTrace && viewItem == trace.row.open && !swcraft.trace.busy",
+          "group": "1_decide@2"
+        },
+        {
+          "command": "swcraft.traceReject",
+          "when": "view == swcraftTrace && viewItem == trace.row.open && !swcraft.trace.busy",
+          "group": "inline"
+        },
+        {
+          "command": "swcraft.traceUndoReject",
+          "when": "view == swcraftTrace && viewItem == trace.row.rejected && !swcraft.trace.busy",
+          "group": "1_decide@3"
+        },
+        {
+          "command": "swcraft.traceUndoReject",
+          "when": "view == swcraftTrace && viewItem == trace.row.rejected && !swcraft.trace.busy",
+          "group": "inline"
+        },
+        {
+          "command": "swcraft.traceRemoveChoice",
+          "when": "view == swcraftTrace && viewItem == trace.chosen && !swcraft.trace.busy",
+          "group": "1_decide@4"
+        },
+        {
+          "command": "swcraft.traceChooseElement",
+          "when": "view == swcraftTrace && viewItem == trace.requirement && !swcraft.trace.busy",
+          "group": "1_decide@5"
+        },
+        {
+          "command": "swcraft.traceOtherElement",
+          "when": "view == swcraftTrace && viewItem == trace.other && !swcraft.trace.busy",
+          "group": "1_decide@6"
+        },
+        {
+          "command": "swcraft.traceOpenElement",
+          "when": "view == swcraftTrace && viewItem =~ /^trace\\.(row|chosen|awaiting|linked|done)/",
+          "group": "2_open@1"
+        },
+        {
+          "command": "swcraft.traceOpenRequirement",
+          "when": "view == swcraftTrace && viewItem =~ /^trace\\.requirement/",
+          "group": "2_open@2"
+        },
+        {
+          "command": "swcraft.impact",
+          "when": "view == swcraftImpact && viewItem == impact.dependent && !swcraft.impact.busy",
+          "group": "inline"
+        },
+        {
+          "command": "swcraft.impact",
+          "when": "view == swcraftImpact && viewItem == impact.dependent && !swcraft.impact.busy",
+          "group": "1_impact@1"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "swcraft.openGuide",
+          "when": "view == swcraftView",
+          "group": "9_help@1"
+        },
+        {
+          "command": "swcraft.checkEditorTooling",
+          "when": "view == swcraftView",
+          "group": "9_help@2"
+        },
+        {
+          "command": "swcraft.traceApply",
+          "when": "view == swcraftTrace && swcraft.trace.pending && !swcraft.trace.busy",
+          "group": "navigation@1"
+        },
+        {
+          "command": "swcraft.traceMarkStrong",
+          "when": "view == swcraftTrace && swcraft.trace.mode == review && swcraft.trace.loaded && !swcraft.trace.busy",
+          "group": "navigation@2"
+        },
+        {
+          "command": "swcraft.traceNewSearch",
+          "when": "view == swcraftTrace && !swcraft.trace.busy",
+          "group": "1_search@1"
+        },
+        {
+          "command": "swcraft.traceClear",
+          "when": "view == swcraftTrace && swcraft.trace.loaded && !swcraft.trace.busy",
+          "group": "1_search@2"
+        },
+        {
+          "command": "swcraft.traceOpenReport",
+          "when": "view == swcraftTrace && swcraft.trace.loaded",
+          "group": "2_files@1"
+        },
+        {
+          "command": "swcraft.traceOpenProposals",
+          "when": "view == swcraftTrace && swcraft.trace.loaded",
+          "group": "2_files@2"
+        },
+        {
+          "command": "swcraft.reviewRefresh",
+          "when": "view == swcraftReview",
+          "group": "navigation@1"
+        },
+        {
+          "command": "swcraft.resourcesRefresh",
+          "when": "view == swcraftResources && !swcraft.resources.busy",
+          "group": "navigation@1"
+        },
+        {
+          "command": "swcraft.impact",
+          "when": "view == swcraftImpact && !swcraft.impact.busy",
+          "group": "navigation@1"
+        },
+        {
+          "command": "swcraft.impactRefresh",
+          "when": "view == swcraftImpact && swcraft.impact.loaded && !swcraft.impact.busy",
+          "group": "navigation@2"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "swcraft.impact",
+          "when": "swcraft.activeEditorIsLayerFile",
+          "group": "1_swcraft@1"
+        },
+        {
+          "command": "swcraft.showInDiagram",
+          "when": "swcraft.activeEditorIsLayerFile",
+          "group": "1_swcraft@2"
+        }
+      ]
+    },
+    "walkthroughs": [
+      {
+        "id": "swcraftFirstHour",
+        "title": "The first hour with SWCraft",
+        "description": "Find the panel, onboard a project, edit the model with schema help, run the authoritative gate, read the generated diagrams, talk to the model through the agent, and open the guide that came with your install.",
+        "steps": [
+          {
+            "id": "findThePanel",
+            "title": "Find the SWCraft panel",
+            "description": "SWCraft has its own Activity Bar icon — the strip of icons down the far edge of the window — and three sections under it: Model, Experiments (with the Allocation (CARMA) experiment and Trace Links) and Setup, which folds away once the project is set up. Help sits in the `…` at the top of the SWCraft view. If you cannot see the icon, the strip has pushed it into the `…` overflow at its foot.\n[Show the SWCraft view](command:workbench.view.extension.swcraft)",
+            "media": {
+              "markdown": "media/walkthrough/01-panel.md"
+            },
+            "completionEvents": [
+              "onView:swcraftView"
+            ]
+          },
+          {
+            "id": "onboardProject",
+            "title": "Onboard a project",
+            "description": "Point SWCraft at a folder. It runs `swcraft init` if there is no `swcraft.yaml` yet and copies in the agent profile — after checking that the installed `swcraft` actually runs. The MCP server needs no file: this extension registers it.\n[Onboard Project](command:swcraft.onboardProject)",
+            "media": {
+              "markdown": "media/walkthrough/02-onboard.md"
+            },
+            "completionEvents": [
+              "onCommand:swcraft.onboardProject"
+            ]
+          },
+          {
+            "id": "editALayerFile",
+            "title": "Edit a layer file",
+            "description": "One element per file, under the layer directories in `model_root`. The bundled JSON Schemas give you completion, hover and per-file diagnostics through the Red Hat YAML extension the pack installs.",
+            "media": {
+              "markdown": "media/walkthrough/03-edit.md"
+            },
+            "completionEvents": [
+              "onContext:swcraft.activeEditorIsLayerFile"
+            ]
+          },
+          {
+            "id": "validate",
+            "title": "Build — the gate",
+            "description": "`SWCraft: Build` runs what `moon run :build` runs — clean the outputs, check the model, generate the ARXML, the diagrams and the requirements — and ends with `swcraft validate`, which checks the ARXML it generated. The editor's red squiggles are usability assistance; `swcraft validate` is the authoritative gate, and it sees everything a single-file schema cannot.\n[Build](command:swcraft.build)",
+            "media": {
+              "markdown": "media/walkthrough/04-validate.md"
+            },
+            "completionEvents": [
+              "onCommand:swcraft.build"
+            ]
+          },
+          {
+            "id": "seeTheDiagrams",
+            "title": "See the model as diagrams",
+            "description": "`SWCraft: Diagrams` generates the model's diagrams — an internal block diagram and an overview per composition, the nesting of the compositions, the deployment of the tasks on the cores (when the model declares a task) and a sequence diagram per scenario — into `views_root`, and shows their index page in a tab of the editor, with pan, zoom and search; Ctrl+click (Cmd+click on macOS) on a drawn element opens its YAML file beside the diagram. A saved change marks them out of date; press Diagrams again to see it.\n[Diagrams](command:swcraft.diagrams)",
+            "media": {
+              "markdown": "media/walkthrough/05-diagrams.md"
+            },
+            "completionEvents": [
+              "onCommand:swcraft.diagrams"
+            ]
+          },
+          {
+            "id": "talkToTheModel",
+            "title": "Talk to the model",
+            "description": "Open Copilot Chat, pick **SWCraft Architect** from the chat-mode dropdown, and ask for a change. The agent reaches the model only through the SWCraft MCP server, and the first call of each tool asks permission — answer *Allow in this Workspace* once. This step ticks when the Chat view opens; the conversation itself happens where SWCraft cannot see it.\n[Open Copilot Chat](command:workbench.action.chat.open)",
+            "media": {
+              "markdown": "media/walkthrough/06-agent.md"
+            },
+            "completionEvents": [
+              "onCommand:workbench.action.chat.open"
+            ]
+          },
+          {
+            "id": "openTheGuide",
+            "title": "Open the user guide",
+            "description": "The whole guide came with your install. **Open Guide**, in the `…` at the top of the SWCraft view, serves it on this machine and shows it inside VS Code, in an editor tab — search and navigation included, no network needed, and it describes the release you actually have rather than whichever one is newest.\n[Open Guide](command:swcraft.openGuide)",
+            "media": {
+              "markdown": "media/walkthrough/07-guide.md"
+            },
+            "completionEvents": [
+              "onCommand:swcraft.openGuide"
+            ]
+          }
+        ]
+      }
+    ],
+    "languages": [
+      {
+        "id": "xml",
+        "extensions": [
+          ".arxml"
+        ]
+      }
+    ],
+    "yamlValidation": [
+      {
+        "fileMatch": [
+          "swcraft.yaml"
+        ],
+        "url": "./schemas/manifest.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/swc/**/*.yaml"
+        ],
+        "url": "./schemas/swc.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/interfaces/*.yaml"
+        ],
+        "url": "./schemas/interfaces.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/connectors/*.yaml"
+        ],
+        "url": "./schemas/connectors.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/data_types/application/*.yaml"
+        ],
+        "url": "./schemas/application_types.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/data_types/implementation/*.yaml"
+        ],
+        "url": "./schemas/implementation_types.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/data_types/base/*.yaml"
+        ],
+        "url": "./schemas/base_types.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/requirements/*.yaml"
+        ],
+        "url": "./schemas/requirements.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/compositions/*.yaml"
+        ],
+        "url": "./schemas/compositions.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/tasks/*.yaml"
+        ],
+        "url": "./schemas/tasks.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/sequences/*.yaml"
+        ],
+        "url": "./schemas/sequences.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/hardware/*.yaml"
+        ],
+        "url": "./schemas/hardware.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/data_types/mapping_sets/*.yaml"
+        ],
+        "url": "./schemas/mapping_sets.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/data_types/units/*.yaml"
+        ],
+        "url": "./schemas/units.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/data_types/compu_methods/*.yaml"
+        ],
+        "url": "./schemas/compu_methods.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/data_types/constraints/*.yaml"
+        ],
+        "url": "./schemas/data_constraints.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/*needs-mapping.yaml"
+        ],
+        "url": "./schemas/requirements-mapping.schema.json"
+      }
+    ]
+  },
+  "scripts": {
+    "clean": "node scripts/clean.mjs",
+    "build": "node esbuild.mjs",
+    "lint": "node scripts/run-lint.mjs",
+    "test": "node scripts/run-tests.mjs",
+    "test-integration": "node scripts/run-integration-tests.mjs",
+    "package": "node scripts/package-vsix.mjs"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.3",
+    "@types/node": "^22.13.0",
+    "@types/vscode": "^1.110.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,271 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swcraft.dev/contracts/model-contract/binding.schema.json",
+  "title": "SWCraft model-contract language binding",
+  "description": "The meta-schema of `binding.json`, the only artifact of the model-contract set that names Python symbols. It connects stable contract identifiers to the runtime classes, validators and configuration keys that realize them. Every key of every map here is a contract identifier and every value is a Python symbol: the direction is fixed, and nothing in this file may add, hide, rename or structurally reinterpret a contract entry — a binding may only bind.",
+  "$comment": "Deliberately self-contained: no cross-file `$ref`, for the same reason `contract.schema.json` is. Two consequences of the direction above are enforced structurally rather than left to review. First, a binding map's KEYS are prefixed contract identifiers — a Python name may never appear there, so a binding cannot introduce an entry the contract does not declare. Second, `additionalProperties: false` on every binding form means a smuggled key is a rejection rather than an ignored annotation, which is what keeps `binding.json` from growing a second, undeclared vocabulary beside the contract's.",
+  "type": "object",
+  "required": [
+    "kinds",
+    "rules",
+    "relations",
+    "fieldNames",
+    "snapshotAttributes",
+    "deprecations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "kinds": {
+      "description": "Contract element-kind identifier -> the Pydantic class that realizes it. Keyed by the contract identifier because that is what everything else here is addressable by; `swcraft_tools.model_registry` resolves it, and `ModelRegistry.kind_of_model` is the inverse for a caller holding a class.",
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/kindId"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/kindBinding"
+      }
+    },
+    "rules": {
+      "description": "Contract rule identifier -> its executable owner, in one of the four forms below. A rule binds to WHERE IT IS PRODUCED, never to a convenient entry point: the conformance gate checks the binding is honest — the named callable's source must contain the rule identifier literal — so a rule bound to a composing entry point fails rather than reading plausibly.",
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/ruleId"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/ruleBinding"
+      }
+    },
+    "relations": {
+      "description": "Contract FIELD identifier -> the resolver that reads that field's declared relation. Keyed by the field the relation is declared on, because that is where the contract declares it: there is no document-level relation list to key by. Every field carrying a `relation` needs a row and a row naming a field that declares none is refused — both by the kernel registry, which is the reader that sees the contract and the binding together.",
+      "$comment": "The contract declares the RESOLUTION SHAPE (`field-value`, `map-keys`, `list-values`, `versioned-list-values`) and this map names the Python callable that realizes it, which is the same division the binding draws everywhere else: the shape is a model fact, the callable is a language fact.",
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/fieldId"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/relationBinding"
+      }
+    },
+    "fieldNames": {
+      "description": "Contract field identifier -> the Python attribute name, for the fields whose attribute spelling differs from their serialization alias. A contract field identifier always ends in the ALIAS, so this map is the only place the Python spelling exists. Exactly one entry today (`Connector.from_`); a second alias appearing in `schema.py` without a row here fails the gate.",
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/fieldId"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/pythonName"
+      }
+    },
+    "snapshotAttributes": {
+      "description": "Contract layer identifier -> the attribute `ModelSnapshot` holds that layer's elements under. A legacy vocabulary bridge, not a model fact: every attribute but one is the layer's own name and `swc` -> `swcs` is the one that is not. The **key order is load-bearing**: it is the field order of the `ModelSnapshot` and `ModelDiff` adapters (written out and checked against this section), which consumers read positionally as well as by name. That is why it lives here and not in the contract's presentational `displayOrder` — a decision to list layers differently in `diff` and `impact` output must not move a dataclass field. Scheduled for removal with the two adapters it feeds, which is declared in `deprecations` rather than left to prose.",
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/layerId"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/pythonName"
+      }
+    },
+    "deprecations": {
+      "description": "Binding section -> why it is a bridge and when it is deleted. A binding group that exists only to bridge a legacy vocabulary says so here, machine-readably, so its deletion can be planned against this file instead of against a comment.",
+      "$comment": "Required, and empty is legal: the fact under test is that a scheduled removal is DECLARED, not that one exists. This is the same move the coverage declarations make with a `deferred` granularity — a fixed, named, reasoned list that is driven to zero.",
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/bindingSection"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/deprecationDecl"
+      }
+    }
+  },
+  "$defs": {
+    "layerId": {
+      "type": "string",
+      "pattern": "^layer:[a-z][a-z0-9_]*$"
+    },
+    "kindId": {
+      "type": "string",
+      "pattern": "^kind:[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$"
+    },
+    "fieldId": {
+      "$comment": "The last segment is the serialization alias, exactly as in `contract.schema.json` — `Connector.from_` is `field:connectors.connector.from`.",
+      "type": "string",
+      "pattern": "^field:[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$"
+    },
+    "ruleId": {
+      "$comment": "A cross-element rule's identifier is exactly `rule:` plus its existing validator.CONSISTENCY_RULES key, so hyphens are admissible after the prefix.",
+      "type": "string",
+      "pattern": "^rule:[a-z][a-z0-9_-]*(\\.[a-z][a-z0-9_-]*)+$"
+    },
+    "moduleName": {
+      "description": "An importable dotted Python module path.",
+      "type": "string",
+      "pattern": "^[a-z_][a-z0-9_]*(\\.[a-z_][a-z0-9_]*)*$"
+    },
+    "className": {
+      "description": "A Python class name, as spelled in its module.",
+      "type": "string",
+      "pattern": "^[A-Z][A-Za-z0-9_]*$"
+    },
+    "pythonName": {
+      "description": "A Python attribute, function or method name. Leading underscores are admissible: several rules are produced by module-private symbols, and naming the public wrapper instead would be a dishonest binding.",
+      "type": "string",
+      "pattern": "^_{0,2}[a-zA-Z][A-Za-z0-9_]*$"
+    },
+    "bindingSection": {
+      "description": "One of this document's binding maps.",
+      "type": "string",
+      "enum": [
+        "kinds",
+        "rules",
+        "relations",
+        "fieldNames",
+        "snapshotAttributes"
+      ]
+    },
+    "kindBinding": {
+      "description": "The Pydantic class that realizes one contract element kind. `module` and `class` are separate keys rather than one dotted path so the gate can import the module and resolve the attribute without parsing a string it did not write.",
+      "type": "object",
+      "required": [
+        "module",
+        "class"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "module": {
+          "$ref": "#/$defs/moduleName"
+        },
+        "class": {
+          "$ref": "#/$defs/className"
+        }
+      }
+    },
+    "ruleBinding": {
+      "description": "One rule's executable owner, in exactly one of four forms. `oneOf` rather than `anyOf` because that is the intent: a binding that satisfied two forms would be a rule with two owners, which is the ambiguity the honesty check exists to prevent. The guarantee does not rest on the keyword — each of the four branches is closed and each has a required key none of the others admits, so no instance can satisfy two and the `oneOf` is unreachable as a discriminator today (`test_no_rule_binding_can_satisfy_two_forms`). It stays because opening any branch would make it load-bearing again.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/callableBinding"
+        },
+        {
+          "$ref": "#/$defs/methodBinding"
+        },
+        {
+          "$ref": "#/$defs/configBinding"
+        },
+        {
+          "$ref": "#/$defs/tableBinding"
+        }
+      ]
+    },
+    "callableBinding": {
+      "description": "A cross-element rule minted by a module-level callable. The callable must be the one whose source contains the rule identifier, not the entry point that re-raises it: `connector.from-not-provide` binds to `check_connector_compatibility`, never to `check_connector_consistency`.",
+      "type": "object",
+      "required": [
+        "module",
+        "callable"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "module": {
+          "$ref": "#/$defs/moduleName"
+        },
+        "callable": {
+          "$ref": "#/$defs/pythonName"
+        }
+      }
+    },
+    "relationBinding": {
+      "description": "The module-level callable that resolves one declared relation. It is written as `(source_element, field) -> Iterable[target key]` and the kernel registry hands it out already bound to the source field the row is keyed by, so what a traversal holds is `(source_element) -> Iterable[target key]`. Either way it is UNCONDITIONAL: it reports what the source element says, whether or not an element answering to that key exists. That is not a shortcut — it is the behavior `impact.py` documents for an SWC `memory` key naming an undeclared memory, where the missing target is `check_hardware_topology`'s finding (`hardware.undeclared-memory`) and not a hole in the graph.",
+      "type": "object",
+      "required": [
+        "module",
+        "callable"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "module": {
+          "$ref": "#/$defs/moduleName"
+        },
+        "callable": {
+          "$ref": "#/$defs/pythonName"
+        }
+      }
+    },
+    "methodBinding": {
+      "description": "An element-local rule realized by a `@field_validator` / `@model_validator` on one bound class. The class is named by its CONTRACT identifier and resolved through this document's own `kinds` map, so an element-local rule cannot bind to a class the contract does not declare.",
+      "type": "object",
+      "required": [
+        "kind",
+        "method"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/kindId"
+        },
+        "method": {
+          "$ref": "#/$defs/pythonName"
+        }
+      }
+    },
+    "configBinding": {
+      "description": "A `schema-config` rule: a `model_config` key with validation meaning, on the class that carries it. Its `appliesTo` in the contract is derived and gate-checked rather than hand-written, so this binding says only where the key lives.",
+      "type": "object",
+      "required": [
+        "module",
+        "class",
+        "configKey"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "module": {
+          "$ref": "#/$defs/moduleName"
+        },
+        "class": {
+          "$ref": "#/$defs/className"
+        },
+        "configKey": {
+          "$ref": "#/$defs/pythonName"
+        }
+      }
+    },
+    "tableBinding": {
+      "description": "A rule minted by a declared lookup table rather than by a callable. Two tables are bound: `validator._RESOURCE_FINDING_RULES` maps each `resource_analysis` finding code onto a rule identifier, so the three budget rules — `hardware.missing-budget`, `hardware.threshold-breach` and `hardware.rate-monotonic-violation` — exist as its VALUES; and `validator._UNRESOLVED_ENDPOINT_RULES` maps the connector-endpoint field that did not resolve onto its rule, so the three `connector.endpoint-unknown-*` identifiers exist as ITS values. Binding either group to the callable that subscripts the table — `check_resource_budgets`, `check_connector_consistency` — would name a callable whose source does not contain the rule, a dishonest binding, so the table and the key that selects the row are named instead.",
+      "type": "object",
+      "required": [
+        "module",
+        "table",
+        "key"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "module": {
+          "$ref": "#/$defs/moduleName"
+        },
+        "table": {
+          "$ref": "#/$defs/pythonName"
+        },
+        "key": {
+          "description": "The table key whose value is this rule's identifier — a `resource_analysis` finding code, or the connector-endpoint field (`swc`, `composition`, `port`) that did not resolve.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "deprecationDecl": {
+      "description": "A binding section that exists only as a bridge, with the condition under which it is deleted.",
+      "type": "object",
+      "required": [
+        "reason"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "description": "Why the section is a bridge rather than a model fact, and the condition under which it is deleted.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

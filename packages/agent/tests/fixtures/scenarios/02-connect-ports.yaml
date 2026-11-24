@@ -1,0 +1,12 @@
+# Scenario 2 - connect two compatible ports.
+#
+# One change set, so one review question: the connector's exact delta. Staging validates
+# the connector's two ends first. A question with no answer left denies.
+- user: "In the current project, ensure the sender-receiver interface ISpeed exists\
+    \ with data element speed of type float32. Ensure EngineController exists as\
+    \ an application SWC in the engine group with provide port pEngineSpeed on\
+    \ ISpeed. Ensure SpeedDisplay exists as an application SWC in the display\
+    \ group with require port rEngineSpeed on ISpeed. Then connect\
+    \ EngineController.pEngineSpeed to SpeedDisplay.rEngineSpeed with a connector\
+    \ called EngineCtrl_to_SpeedDisplay."
+  approvals: ["y"]

@@ -1,0 +1,6 @@
+id: REQ-INIT-001
+title: Signal initial values
+description: SignalsSwc both provides and requires the interface whose data elements carry initial values.
+req_type: req
+version: 1
+source: architecture

@@ -1,0 +1,3 @@
+fields:
+  derived_from: parent
+ignore: [verifies, parent]

@@ -1,0 +1,10 @@
+id: SWR-BRK-007
+title: Brake request plausibility
+description: The brake request shall be checked for plausibility against the operating
+  state.
+req_type: req
+version: 1
+source: external
+document: SRS Brake Control
+baseline: '1.0'
+revision: '1'

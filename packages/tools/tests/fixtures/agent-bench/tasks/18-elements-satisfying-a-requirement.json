@@ -1,0 +1,49 @@
+{
+  "id": "18-elements-satisfying-a-requirement",
+  "task": 18,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which elements satisfy requirement REQ_BTP_DIAGNOSTICS? List them with their layer.",
+  "note": "The bench mirrors showcase 4fdc642.",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "with_layer": [
+        {
+          "name": "ProcessDiagnosticEvent",
+          "layer": "runnable",
+          "owner": "DiagnosticManager"
+        },
+        {
+          "name": "rThermalProtectionEvent",
+          "layer": "port",
+          "owner": "DiagnosticManager"
+        },
+        {
+          "name": "NvM",
+          "layer": "swc"
+        },
+        {
+          "name": "INvStorage",
+          "layer": "interface"
+        }
+      ],
+      "mentions_none": [
+        "BrakeController",
+        "BrakeThermalProtection",
+        "InstrumentCluster",
+        "Task_100ms",
+        "Core0"
+      ]
+    }
+  },
+  "reference": {
+    "satisfied_by": [
+      "swc DiagnosticManager (via port rThermalProtectionEvent; runnable ProcessDiagnosticEvent)",
+      "swc NvM",
+      "interface INvStorage"
+    ],
+    "computed_by": "swcraft query --dependents REQ_BTP_DIAGNOSTICS --depth 1 --format json"
+  }
+}

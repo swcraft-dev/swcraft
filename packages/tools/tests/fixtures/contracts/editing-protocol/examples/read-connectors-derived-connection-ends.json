@@ -1,0 +1,104 @@
+{
+  "name": "read-connectors-derived-connection-ends",
+  "description": "A computed value on request: `derived: [\"connection_ends\"]` at the `connectors` layer adds to each connector the atomic components and ports its two ends reach, through every delegation between them, as one row per (provider end, requester end) pair. The value is computed by the validator's own resolution of a connector end — the one the connector rules check — and never by a second formula. A read carrying `derived` answers IDENTITY ROWS at an explicit `form: \"index\"`: each row is the identity the `index` form publishes, wrapped as `{\"element\": ...}`, with the values under `\"derived\"`; `discover` publishes the vocabulary, where each name applies and the shape of its value as `reads.derived`.",
+  "kind": "example",
+  "context": {
+    "summary": "The seed of `examples/read-swc-members-path-runnable-writes.json`: `ExampleConsumerSWC` stands in `ConsumerGroup`, a composition one level below the root, behind two delegated boundary ports, so both connectors of the root composition name the composition's ports and their requester ends are reached through the delegations.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "connectors",
+        "element": "Example_to_Consumer"
+      },
+      {
+        "layer": "connectors",
+        "element": "Physical_to_Consumer"
+      },
+      {
+        "layer": "compositions",
+        "element": "ConsumerGroup",
+        "path": [
+          {
+            "field": "delegations"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "notes": "A read takes no scope and writes no audit record."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "connectors"
+    },
+    "form": "index",
+    "derived": [
+      "connection_ends"
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "connectors"
+      },
+      "form": "index",
+      "derived": [
+        "connection_ends"
+      ],
+      "value": {
+        "count": 2,
+        "identities": [
+          {
+            "element": "Example_to_Consumer",
+            "derived": {
+              "connection_ends": {
+                "provider": {
+                  "swc": "ExampleSWC",
+                  "port": "pOut"
+                },
+                "requester": {
+                  "swc": "ExampleConsumerSWC",
+                  "port": "rIn"
+                }
+              }
+            }
+          },
+          {
+            "element": "Physical_to_Consumer",
+            "derived": {
+              "connection_ends": {
+                "provider": {
+                  "swc": "ExampleSWC",
+                  "port": "pPhysical"
+                },
+                "requester": {
+                  "swc": "ExampleConsumerSWC",
+                  "port": "rPhysical"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "notes": "`connection_ends` is set-valued (`rows: \"one per value\"`): a connector whose ends fan out yields one row per provider-requester pair, and one whose end reaches nothing yields no row. A component stub's end IS an end. Identical rows collapse to one, and a page's `next` is the whole row, `derived` included, replayed verbatim as `after`. `derived` without `form: \"index\"` is `schema-violation` from the envelope; a name outside the vocabulary is `unknown-field`, and a name at a set it does not apply at is `schema-violation` (`negative/schema-violation-derived-at-wrong-set.json`)."
+  }
+}

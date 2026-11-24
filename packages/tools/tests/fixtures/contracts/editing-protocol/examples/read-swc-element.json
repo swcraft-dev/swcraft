@@ -1,0 +1,102 @@
+{
+  "name": "read-swc-element",
+  "description": "A generic `read` at element granularity. It replaces `read_swc` without naming the layer in the operation, and answers in exactly the field vocabulary `discover` declared, so a `create` or `update` can be written against the answer without translation.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` is stored under the `example` group, provides `pOut` on `IExample`, runs `ExampleRun` on a 10 ms timing event and consumes 2048 bytes of the `RAM0` memory.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      },
+      {
+        "layer": "hardware",
+        "element": "RAM0"
+      }
+    ],
+    "notes": "A read needs no approved scope, carries no baseline token and produces no audit record."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc",
+      "element": "ExampleSWC"
+    }
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      "form": "full",
+      "value": {
+        "name": "ExampleSWC",
+        "group": "example",
+        "type": "application",
+        "description": "Example software component for testing and demonstration",
+        "external": false,
+        "external_ref": "",
+        "external_dest": "",
+        "ports": [
+          {
+            "name": "pOut",
+            "direction": "provide",
+            "interface": "IExample",
+            "observed_interface": null,
+            "description": "Example output port providing data",
+            "measures": {},
+            "com_specs": [],
+            "satisfies": []
+          }
+        ],
+        "runnables": [
+          {
+            "name": "ExampleRun",
+            "min_start_interval": 0.01,
+            "concurrent": false,
+            "events": [
+              {
+                "type": "timing",
+                "period": 0.01,
+                "disabled_modes": [],
+                "name": null
+              }
+            ],
+            "reads": [],
+            "writes": [],
+            "calls": [],
+            "reads_variables": [],
+            "writes_variables": [],
+            "can_enter": [],
+            "runs_inside": [],
+            "description": "",
+            "symbol": null,
+            "wcet": null,
+            "wcet_type": null,
+            "satisfies": []
+          }
+        ],
+        "variables": [],
+        "exclusive_areas": [],
+        "memory": {
+          "RAM0": 2048
+        },
+        "asil": null,
+        "handle_termination_and_restart": "no_support",
+        "data_type_mappings": [],
+        "behavior_name": null,
+        "package": null,
+        "satisfies": [
+          "REQ_EXAMPLE_001@1"
+        ]
+      }
+    },
+    "notes": "`group` is answered as a declared field, not as a location: `swc/{group}/` is how the registry stores the element, and no directory, file name or path separator appears anywhere in the exchange."
+  }
+}

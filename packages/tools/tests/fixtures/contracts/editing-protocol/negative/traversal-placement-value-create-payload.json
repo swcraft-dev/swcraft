@@ -1,0 +1,82 @@
+{
+  "name": "traversal-placement-value-create-payload",
+  "description": "The SECOND client value that reaches a path component: `swc.group`, which is placement metadata and is persisted as the element's directory. The address is impeccable — `{layer: swc, element: SpeedSensorSWC}`, a legal identity — and the traversal is in the PAYLOAD, where `$defs/identity` cannot reach it. The no-traversal rule covers both values; this is the vector for the one that has no envelope guard.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `SpeedSensorSWC` does not exist, so nothing about this change set is a collision; the only thing wrong with it is where it asks the component to be stored.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "SpeedSensorSWC"
+          }
+        }
+      ],
+      "notes": "The scope covers the requested operation exactly, so the refusal is about the placement value and not about authorization. A scope can never authorize a traversal: the guard is not an authorization question."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Add the speed sensor component.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "SpeedSensorSWC"
+        },
+        "value": {
+          "name": "SpeedSensorSWC",
+          "group": "../../../../tmp/evil",
+          "type": "application",
+          "description": "Reads the wheel speed sensors and publishes the vehicle speed",
+          "handle_termination_and_restart": "no_support"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "SpeedSensorSWC",
+        "path": [
+          {
+            "field": "group"
+          }
+        ]
+      }
+    ],
+    "notes": "`semantic` and not `protocol-schema`: `protocol.schema.json` deliberately does not restate `schema.py`, and a create payload is an open object there — so the envelope admits this request and the registry is what refuses the value. The same code the element identity gets one layer up, which is the point: the two values the no-traversal rule covers answer the same way, at the field the client wrote, and neither is sanitized into a legal one. The rejection happens at BIND time, so nothing is staged, no file is composed and the model stays byte-identical; a `change_set_rejected` record is still written, because a refused change set still happened."
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "consistency-violation-retired-data-types-directory",
+  "description": "A model that keeps element files where contract `8.0.0` no longer reads them: an implementation type directly in `data_types/` and a mapping set in a `mapping_sets/` directory at the model root. The contract's `retiredStorage` table names both directories, and the protocol answers such a model as it answers a model root it cannot read: `consistency-violation`, about the model as a whole and with no element address — no element is at fault, the layout is. Even `discover`, which parses no element, is refused, because every later request would be.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, on the current layout, plus one element file in each retired directory: `data_types/SyntheticTorque.yaml` (a value type) and `mapping_sets/SyntheticTorqueMapping.yaml` (an empty mapping set). Nothing converts a model on the old layout.",
+    "notes": "A retired directory that exists and holds no element file is not refused; the base itself holds `data_types/` as the parent of the three type layers' directories."
+  },
+  "input": {
+    "operation": "discover"
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "notes": "No `addresses`: the refusal names no element. Its message is the kernel's own sentence — the retired directory, the count of its element files and the directories they belong in, all model-root-relative and none of them a path on the machine — one clause per retired directory that holds a file. Every request is refused the same way, `read` and `change_set` included, and the closed error enum does not move."
+  }
+}

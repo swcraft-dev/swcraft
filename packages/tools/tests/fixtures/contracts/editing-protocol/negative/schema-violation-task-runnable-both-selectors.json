@@ -1,0 +1,106 @@
+{
+  "name": "schema-violation-task-runnable-both-selectors",
+  "description": "A task entry that names its component by BOTH `swc` and `instance`. Since contract `9.0.0` an entry states exactly one of the two selectors (`rule:tasks.task_runnable_ref.selector-exactly-one`), and both name what the model declares — the type `ExampleSWC` and the root member of that name — so what refuses is the shape of the payload, not a reference.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. The root composition places `ExampleSWC` once, as the member `ExampleSWC`; `Task_10ms` maps only `ExampleConsumerSWC.ExampleConsumerRun`. The change set adds an entry to `Task_10ms` that states both selectors.",
+    "existing_elements": [
+      {
+        "layer": "tasks",
+        "element": "Task_10ms"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "tasks",
+            "element": "Task_10ms",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": {
+                  "swc": "ExampleSWC",
+                  "instance": "ExampleSWC",
+                  "runnable": "ExampleRun"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the create exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Run ExampleRun in the 10 ms task.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "tasks",
+          "element": "Task_10ms",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": {
+                "swc": "ExampleSWC",
+                "instance": "ExampleSWC",
+                "runnable": "ExampleRun"
+              }
+            }
+          ]
+        },
+        "value": {
+          "swc": "ExampleSWC",
+          "instance": "ExampleSWC",
+          "runnable": "ExampleRun"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "tasks",
+        "element": "Task_10ms",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": {
+              "swc": "ExampleSWC",
+              "instance": "ExampleSWC",
+              "runnable": "ExampleRun"
+            }
+          }
+        ]
+      }
+    ],
+    "notes": "Refused when the payload is bound, at the member the create adds. The two legal repairs are the two selectors: keep the one that names the component as meant and drop the other — `swc` for the type placed once, `instance` for one occurrence by its root-relative path. An entry that states neither is the other half of the same rule."
+  }
+}

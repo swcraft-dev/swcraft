@@ -1,0 +1,428 @@
+{
+ "description": "The canonical layouts (A, then per component c and u) of the relaxed program, recorded on macOS arm64 and asserted on the CI runner.",
+ "recorded_on": "macOS arm64",
+ "cases": [
+  {
+   "name": "topology variant",
+   "configuration": {
+    "counts": [30, 28, 26, 24, 22, 20, 20, 20, 18, 18, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    "fan_outs": [60, 50, 40, 30, 30, 25, 25, 20, 9],
+    "unconnected": 12,
+    "max_on_one": 4,
+    "connectors": 250,
+    "links": 20,
+    "delegations": 30,
+    "compositions": 2
+   },
+   "canonical": {
+    "connectors": 250,
+    "connected": [30, 28, 26, 24, 22, 20, 20, 20, 18, 18, 4, 4, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 0, 0, 0],
+    "unconnected": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 3, 0]
+   }
+  },
+  {
+   "name": "shapes",
+   "configuration": {
+    "counts": [30, 28, 26, 24, 22, 20, 20, 20, 18, 18, 12, 12, 11, 11, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+    "fan_outs": [60, 50, 40, 30, 30, 25, 25, 20, 20, 20, 20, 20],
+    "unconnected": 12,
+    "max_on_one": 4,
+    "connectors": 250,
+    "links": 20,
+    "delegations": 160,
+    "compositions": 3
+   },
+   "canonical": {
+    "connectors": 250,
+    "connected": [30, 28, 26, 24, 22, 20, 20, 20, 18, 18, 12, 12, 11, 11, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 0, 0, 0],
+    "unconnected": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 0, 0]
+   }
+  },
+  {
+   "name": "seed 501",
+   "configuration": {
+    "counts": [12, 5, 2],
+    "fan_outs": [5, 3, 3, 3, 2, 1, 1, 1],
+    "unconnected": 9,
+    "max_on_one": 7,
+    "connectors": 3,
+    "links": 0,
+    "delegations": 6,
+    "compositions": 4
+   },
+   "canonical": {
+    "connectors": 3,
+    "connected": [3, 3, 0],
+    "unconnected": [7, 2, 0]
+   }
+  },
+  {
+   "name": "seed 502",
+   "configuration": {
+    "counts": [9, 5, 2, 1],
+    "fan_outs": [7, 4, 2, 2, 1, 1],
+    "unconnected": 4,
+    "max_on_one": 3,
+    "connectors": 7,
+    "links": 1,
+    "delegations": 1,
+    "compositions": 2
+   },
+   "canonical": {
+    "connectors": 7,
+    "connected": [5, 5, 2, 0],
+    "unconnected": [3, 0, 0, 1]
+   }
+  },
+  {
+   "name": "seed 509",
+   "configuration": {
+    "counts": [6, 5, 3, 1],
+    "fan_outs": [5, 4, 3, 3],
+    "unconnected": 1,
+    "max_on_one": 1,
+    "connectors": 7,
+    "links": 5,
+    "delegations": 4,
+    "compositions": 4
+   },
+   "canonical": {
+    "connectors": 7,
+    "connected": [6, 5, 2, 0],
+    "unconnected": [0, 0, 1, 0]
+   }
+  },
+  {
+   "name": "seed 517",
+   "configuration": {
+    "counts": [6, 5, 5, 3, 3],
+    "fan_outs": [13, 4, 2, 1, 1, 1],
+    "unconnected": 1,
+    "max_on_one": 1,
+    "connectors": 13,
+    "links": 11,
+    "delegations": 4,
+    "compositions": 1
+   },
+   "canonical": {
+    "connectors": 13,
+    "connected": [6, 5, 5, 3, 0],
+    "unconnected": [0, 0, 0, 0, 1]
+   }
+  },
+  {
+   "name": "seed 518",
+   "configuration": {
+    "counts": [14, 4, 4, 2, 2, 2],
+    "fan_outs": [8, 7, 5, 4, 3, 1],
+    "unconnected": 7,
+    "max_on_one": 7,
+    "connectors": 10,
+    "links": 3,
+    "delegations": 7,
+    "compositions": 1
+   },
+   "canonical": {
+    "connectors": 10,
+    "connected": [5, 4, 4, 2, 2, 2],
+    "unconnected": [7, 0, 0, 0, 0, 0]
+   }
+  },
+  {
+   "name": "seed 529",
+   "configuration": {
+    "counts": [5, 5, 1],
+    "fan_outs": [5, 3, 2, 1],
+    "unconnected": 1,
+    "max_on_one": 1,
+    "connectors": 5,
+    "links": 4,
+    "delegations": 3,
+    "compositions": 2
+   },
+   "canonical": {
+    "connectors": 5,
+    "connected": [5, 4, 0],
+    "unconnected": [0, 1, 0]
+   }
+  },
+  {
+   "name": "seed 537",
+   "configuration": {
+    "counts": [13, 3, 1, 1],
+    "fan_outs": [10, 8],
+    "unconnected": 3,
+    "max_on_one": 2,
+    "connectors": 3,
+    "links": 0,
+    "delegations": 9,
+    "compositions": 4
+   },
+   "canonical": {
+    "connectors": 3,
+    "connected": [3, 3, 0, 0],
+    "unconnected": [2, 0, 1, 0]
+   }
+  },
+  {
+   "name": "seed 538",
+   "configuration": {
+    "counts": [11, 6, 3, 2, 0],
+    "fan_outs": [9, 5, 4, 3, 1],
+    "unconnected": 2,
+    "max_on_one": 2,
+    "connectors": 11,
+    "links": 2,
+    "delegations": 3,
+    "compositions": 4
+   },
+   "canonical": {
+    "connectors": 11,
+    "connected": [7, 6, 3, 2, 0],
+    "unconnected": [2, 0, 0, 0, 0]
+   }
+  },
+  {
+   "name": "seed 605",
+   "configuration": {
+    "counts": [7, 4, 4, 4, 4, 3, 3, 3, 2, 1, 1, 1, 1, 1],
+    "fan_outs": [13, 7, 6, 5, 4, 3, 1],
+    "unconnected": 2,
+    "max_on_one": 1,
+    "connectors": 18,
+    "links": 5,
+    "delegations": 10,
+    "compositions": 4
+   },
+   "canonical": {
+    "connectors": 18,
+    "connected": [7, 4, 4, 4, 4, 3, 3, 3, 2, 1, 0, 0, 0, 0],
+    "unconnected": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0]
+   }
+  },
+  {
+   "name": "seed 606",
+   "configuration": {
+    "counts": [12, 5, 5, 5, 5, 3, 3, 3, 2, 2, 2, 1, 1, 1, 1],
+    "fan_outs": [16, 10, 8, 7, 5, 5],
+    "unconnected": 6,
+    "max_on_one": 4,
+    "connectors": 24,
+    "links": 12,
+    "delegations": 11,
+    "compositions": 3
+   },
+   "canonical": {
+    "connectors": 24,
+    "connected": [5, 5, 5, 5, 5, 3, 3, 3, 2, 2, 2, 1, 1, 0, 0],
+    "unconnected": [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]
+   }
+  },
+  {
+   "name": "seed 608",
+   "configuration": {
+    "counts": [9, 5, 5, 5, 4, 4, 3, 3, 1],
+    "fan_outs": [24, 15],
+    "unconnected": 8,
+    "max_on_one": 4,
+    "connectors": 17,
+    "links": 7,
+    "delegations": 7,
+    "compositions": 1
+   },
+   "canonical": {
+    "connectors": 17,
+    "connected": [6, 5, 5, 5, 4, 0, 3, 3, 0],
+    "unconnected": [3, 0, 0, 0, 0, 4, 0, 0, 1]
+   }
+  },
+  {
+   "name": "seed 617",
+   "configuration": {
+    "counts": [14, 6, 6, 5, 3, 3, 2, 2, 1, 1],
+    "fan_outs": [18, 16, 9],
+    "unconnected": 8,
+    "max_on_one": 6,
+    "connectors": 20,
+    "links": 9,
+    "delegations": 7,
+    "compositions": 2
+   },
+   "canonical": {
+    "connectors": 20,
+    "connected": [7, 6, 6, 5, 3, 3, 2, 2, 0, 0],
+    "unconnected": [6, 0, 0, 0, 0, 0, 0, 0, 1, 1]
+   }
+  }
+ ],
+ "stars": {
+  "description": "Per case of `cases`, in its order: the relaxed program's canonical stars, extras and blocks (C_oo, OH, HO, HH), the sequence continued past (A, c, u) as step 2's first-fit builder reads it.",
+  "cases": [
+   {
+    "name": "topology variant",
+    "stars": {
+     "providers": [23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+     "extras": [190, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+     "blocks": [30, 7, 17, 196]
+    }
+   },
+   {
+    "name": "shapes",
+    "stars": {
+     "providers": [30, 28, 22, 0, 0, 0, 0, 0, 0, 0, 12, 12, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+     "extras": [140, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+     "blocks": [30, 0, 74, 146]
+    }
+   },
+   {
+    "name": "seed 501",
+    "stars": {
+     "providers": [3, 0, 0],
+     "extras": [0, 0, 0],
+     "blocks": [0, 0, 3, 0]
+    }
+   },
+   {
+    "name": "seed 502",
+    "stars": {
+     "providers": [4, 1, 0, 0],
+     "extras": [0, 2, 0, 0],
+     "blocks": [2, 1, 4, 0]
+    }
+   },
+   {
+    "name": "seed 509",
+    "stars": {
+     "providers": [6, 0, 0, 0],
+     "extras": [1, 0, 0, 0],
+     "blocks": [7, 0, 0, 0]
+    }
+   },
+   {
+    "name": "seed 517",
+    "stars": {
+     "providers": [6, 0, 0, 0, 0],
+     "extras": [7, 0, 0, 0, 0],
+     "blocks": [13, 0, 0, 0]
+    }
+   },
+   {
+    "name": "seed 518",
+    "stars": {
+     "providers": [5, 4, 0, 0, 0, 0],
+     "extras": [0, 1, 0, 0, 0, 0],
+     "blocks": [5, 0, 5, 0]
+    }
+   },
+   {
+    "name": "seed 529",
+    "stars": {
+     "providers": [3, 1, 0],
+     "extras": [0, 1, 0],
+     "blocks": [5, 0, 0, 0]
+    }
+   },
+   {
+    "name": "seed 537",
+    "stars": {
+     "providers": [3, 0, 0, 0],
+     "extras": [0, 0, 0, 0],
+     "blocks": [0, 0, 3, 0]
+    }
+   },
+   {
+    "name": "seed 538",
+    "stars": {
+     "providers": [6, 1, 0, 0, 0],
+     "extras": [0, 4, 0, 0, 0],
+     "blocks": [4, 1, 6, 0]
+    }
+   },
+   {
+    "name": "seed 605",
+    "stars": {
+     "providers": [7, 4, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+     "extras": [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+     "blocks": [11, 0, 7, 0]
+    }
+   },
+   {
+    "name": "seed 606",
+    "stars": {
+     "providers": [5, 5, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+     "extras": [0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+     "blocks": [19, 0, 5, 0]
+    }
+   },
+   {
+    "name": "seed 608",
+    "stars": {
+     "providers": [6, 5, 3, 0, 0, 0, 0, 0, 0],
+     "extras": [0, 3, 0, 0, 0, 0, 0, 0, 0],
+     "blocks": [11, 0, 6, 0]
+    }
+   },
+   {
+    "name": "seed 617",
+    "stars": {
+     "providers": [7, 6, 1, 0, 0, 0, 0, 0, 0, 0],
+     "extras": [0, 6, 0, 0, 0, 0, 0, 0, 0, 0],
+     "blocks": [13, 0, 7, 0]
+    }
+   }
+  ]
+ },
+ "exact": {
+  "description": "The exact program's canonical layout with its star pieces (component, interface, connectors), as step 3 builds it.",
+  "cases": [
+   {
+    "name": "seed 501",
+    "configuration": {
+     "counts": [12, 5, 2],
+     "fan_outs": [5, 3, 3, 3, 2, 1, 1, 1],
+     "unconnected": 9,
+     "max_on_one": 7,
+     "connectors": 3,
+     "links": 0,
+     "delegations": 6,
+     "compositions": 4
+    },
+    "canonical": {
+     "connectors": 3,
+     "connected": [3, 3, 0],
+     "unconnected": [7, 2, 0],
+     "providers": [3, 0, 0],
+     "extras": [0, 0, 0],
+     "blocks": [0, 0, 3, 0],
+     "pieces": [[0, 0, 1], [0, 0, 1], [0, 1, 1]]
+    }
+   }
+  ]
+ },
+ "unstated": {
+  "description": "The relaxed program's canonical layout with A unstated, every count up to A-bar choosable: the smallest feasible A first.",
+  "cases": [
+   {
+    "name": "seed 501, A unstated",
+    "configuration": {
+     "counts": [12, 5, 2],
+     "fan_outs": [5, 3, 3, 3, 2, 1, 1, 1],
+     "unconnected": 9,
+     "max_on_one": 7,
+     "connectors": null,
+     "links": 0,
+     "delegations": 6,
+     "compositions": 4
+    },
+    "canonical": {
+     "connectors": 2,
+     "connected": [2, 2, 0],
+     "unconnected": [7, 2, 0],
+     "providers": [2, 0, 0],
+     "extras": [0, 0, 0],
+     "blocks": [0, 0, 2, 0]
+    }
+   }
+  ]
+ }
+}

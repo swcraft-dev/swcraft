@@ -1,0 +1,60 @@
+{
+  "name": "consistency-violation-interface-external-incomplete-reference",
+  "description": "An interface stub whose `DEST` is not one a port may name. The stub is admissible on its own — a malformed reference pair loads, so a project carrying one stays readable — and what refuses is the model rule that holds the pair to the port interface `DEST` values both licensed schemas admit.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. The change set creates one interface stub whose `external_dest` is a component type's `DEST`.",
+    "existing_elements": [],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IForeignSpeed"
+          }
+        }
+      ],
+      "notes": "The scope covers the one address exactly, so the refusal is the model rule and not the authorization boundary."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:3c7e19a4b0d25f86",
+    "intent": "Carry the speed interface as a reference into the rest of the delivery.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "IForeignSpeed"
+        },
+        "value": {
+          "name": "IForeignSpeed",
+          "kind": "external_interface",
+          "external_ref": "/Foreign/PortInterfaces/IForeignSpeed",
+          "external_dest": "APPLICATION-SW-COMPONENT-TYPE",
+          "description": "Declared by another file of the same delivery"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "interfaces",
+        "element": "IForeignSpeed",
+        "path": [
+          {
+            "field": "external_dest"
+          }
+        ]
+      }
+    ],
+    "notes": "One address, at the field the repair is about. The admitted set is the eight port interface `DEST` values both licensed schemas list — two of them, `PORT-INTERFACE` and `DATA-INTERFACE`, abstract, which is why the kind is never judged across a stub carrying one — compared as a set and never by suffix. A blank `external_ref` or one that is not an absolute path is the same rule, reported once on the stub and never again on the ports that name it; the rule does not ask whether the target exists, because the model cannot see another file of the delivery."
+  }
+}

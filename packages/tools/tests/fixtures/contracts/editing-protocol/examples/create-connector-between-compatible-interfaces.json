@@ -1,0 +1,342 @@
+{
+  "name": "create-connector-between-compatible-interfaces",
+  "description": "A connector whose two ports name two DIFFERENT interfaces, joined because the required one is satisfied by the provided one: every data element of `IStatusNarrow` has a counterpart of the same name and the same resolved type in `IStatusWide`. The standard's condition (`[constr_1069]` 1(a)) rather than name equality.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, which declares `ExampleSWC`, `ExampleConsumerSWC` and the value types `float32` and `uint8`, and neither of the two interfaces the change set creates. One unit creates both interfaces, a port on each component, and the connector between them.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "float32"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "uint8"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IStatusWide"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IStatusNarrow"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "pStatus"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rStatus"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "connectors",
+            "element": "Status_Wide_to_Narrow"
+          }
+        }
+      ]
+    },
+    "notes": "The two interfaces share no name and the element they share is typed by the same declared value type on both sides, so the same-name short-circuit answers nothing here and the verdict is the widened condition's. Nothing is seeded: the exchange states its own two interfaces, which is what lets a connector between two different interfaces be shown against the unmodified base model."
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:2f8c41a6d0b7e593",
+    "intent": "Join the narrow requirer to the wide provider.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "IStatusWide"
+        },
+        "value": {
+          "name": "IStatusWide",
+          "kind": "sender_receiver",
+          "data_elements": [
+            {
+              "name": "speed",
+              "implementation_type": "float32"
+            },
+            {
+              "name": "level",
+              "implementation_type": "uint8"
+            }
+          ],
+          "description": "Speed with the level beside it"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "IStatusNarrow"
+        },
+        "value": {
+          "name": "IStatusNarrow",
+          "kind": "sender_receiver",
+          "data_elements": [
+            {
+              "name": "speed",
+              "implementation_type": "float32"
+            }
+          ],
+          "description": "Just the speed"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "ports"
+            },
+            {
+              "member": "pStatus"
+            }
+          ]
+        },
+        "value": {
+          "name": "pStatus",
+          "direction": "provide",
+          "interface": "IStatusWide",
+          "description": "Publishes the wide status"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "ports"
+            },
+            {
+              "member": "rStatus"
+            }
+          ]
+        },
+        "value": {
+          "name": "rStatus",
+          "direction": "require",
+          "interface": "IStatusNarrow",
+          "description": "Consumes the narrow status"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "connectors",
+          "element": "Status_Wide_to_Narrow"
+        },
+        "value": {
+          "name": "Status_Wide_to_Narrow",
+          "from": {
+            "swc": "ExampleSWC",
+            "port": "pStatus"
+          },
+          "to": {
+            "swc": "ExampleConsumerSWC",
+            "port": "rStatus"
+          },
+          "description": "ExampleSWC satisfies IStatusNarrow with IStatusWide"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:2f8c41a6d0b7e593",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rStatus"
+              }
+            ]
+          },
+          "after": {
+            "name": "rStatus",
+            "direction": "require",
+            "interface": "IStatusNarrow",
+            "observed_interface": null,
+            "description": "Consumes the narrow status",
+            "measures": {},
+            "com_specs": [],
+            "satisfies": []
+          },
+          "summary": "swc/ExampleConsumerSWC: + ports[rStatus]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "pStatus"
+              }
+            ]
+          },
+          "after": {
+            "name": "pStatus",
+            "direction": "provide",
+            "interface": "IStatusWide",
+            "observed_interface": null,
+            "description": "Publishes the wide status",
+            "measures": {},
+            "com_specs": [],
+            "satisfies": []
+          },
+          "summary": "swc/ExampleSWC: + ports[pStatus]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IStatusNarrow"
+          },
+          "after": {
+            "name": "IStatusNarrow",
+            "kind": "sender_receiver",
+            "data_elements": [
+              {
+                "name": "speed",
+                "application_type": null,
+                "implementation_type": "float32",
+                "init": null,
+                "asil": null,
+                "description": "",
+                "sw_impl_policy": null,
+                "sw_calibration_access": null
+              }
+            ],
+            "description": "Just the speed",
+            "package": null,
+            "is_service": false,
+            "satisfies": []
+          },
+          "summary": "interfaces: + IStatusNarrow"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IStatusWide"
+          },
+          "after": {
+            "name": "IStatusWide",
+            "kind": "sender_receiver",
+            "data_elements": [
+              {
+                "name": "speed",
+                "application_type": null,
+                "implementation_type": "float32",
+                "init": null,
+                "asil": null,
+                "description": "",
+                "sw_impl_policy": null,
+                "sw_calibration_access": null
+              },
+              {
+                "name": "level",
+                "application_type": null,
+                "implementation_type": "uint8",
+                "init": null,
+                "asil": null,
+                "description": "",
+                "sw_impl_policy": null,
+                "sw_calibration_access": null
+              }
+            ],
+            "description": "Speed with the level beside it",
+            "package": null,
+            "is_service": false,
+            "satisfies": []
+          },
+          "summary": "interfaces: + IStatusWide"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "connectors",
+            "element": "Status_Wide_to_Narrow"
+          },
+          "after": {
+            "name": "Status_Wide_to_Narrow",
+            "from": {
+              "swc": "ExampleSWC",
+              "composition": null,
+              "port": "pStatus"
+            },
+            "to": {
+              "swc": "ExampleConsumerSWC",
+              "composition": null,
+              "port": "rStatus"
+            },
+            "composition": null,
+            "description": "ExampleSWC satisfies IStatusNarrow with IStatusWide"
+          },
+          "summary": "connectors: + Status_Wide_to_Narrow"
+        }
+      ]
+    },
+    "notes": "The provided interface carries a data element the required one does not ask for, which is what a subset means and what the exporting tools this project imports from produce routinely. The `status` is `staged`: nothing here is a safety act, so the only thing between this delta and the disk is the host's own approval. The connector carries no `composition` key, so it is drawn in the root — the same shape `examples/create-interface-ports-and-connector.json` states for two ports naming ONE interface, which is the exchange this one is the widened twin of."
+  }
+}

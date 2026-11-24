@@ -1,0 +1,112 @@
+{
+  "name": "create-port-measure",
+  "description": "The declared argument that ANSWERS a finding, and the sixth weakening direction. A consumer rated above the element it takes is reported until the port names the measure that answers it; declaring one makes `safety.consumer-above-element` stop refusing, which is why the host is asked about it separately from the delta. The text is free and nothing verifies it — a deliberate choice, not a gap.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with `REQ_EXAMPLE_001` allocated at ASIL D — so both components derive D — and `IExample.value` rated at ASIL A. The baseline therefore already carries one `safety.consumer-above-element` finding: `ExampleConsumerSWC` at D takes an A-rated element through `rIn` and declares no measure. The change set declares it.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_001"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rIn"
+              },
+              {
+                "field": "measures"
+              },
+              {
+                "key": "value"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly, and with the right verb: a `measures` entry is a MAPPING entry, so it is a `create` at the entry's own KEY — a four-step address ending in `{\"key\": ...}` and never a `{\"member\": ...}`, because a mapping key is unique by construction where a `whole_value` list member is a multiset element. The scope does NOT authorize the safety question: declaring the argument is a `declare_measure`, the sixth weakening direction, and the host answers that once for the whole change set after the delta review — which is why this vector's status is `committed` rather than `staged`. Approving the delta is not approving the argument."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:DPkmAK4jdtM_OVToPlkB3A",
+    "intent": "Record the end-to-end protection that answers the coexistence finding on rIn.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "ports"
+            },
+            {
+              "member": "rIn"
+            },
+            {
+              "field": "measures"
+            },
+            {
+              "key": "value"
+            }
+          ]
+        },
+        "value": "End-to-end protection profile 4 on the received value."
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:jYXkh0fDpUtJlYuCxpn2OA",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rIn"
+              },
+              {
+                "field": "measures"
+              },
+              {
+                "key": "value"
+              }
+            ]
+          },
+          "after": "End-to-end protection profile 4 on the received value.",
+          "summary": "swc/ExampleConsumerSWC: + ports[rIn].measures[value]"
+        }
+      ],
+      "audit_ref": "cs-20260909T200918Z-d672c1"
+    },
+    "notes": "The status is `committed` and not `staged`, and that is the whole point of the vector: declaring the argument is a safety act, so the host was asked a SECOND question after the delta review and answered it. The delta is one `create` at a four-step address ending in a key. The baseline is deliberately a model `check-model` already reports — a consumer at D taking an A-rated element with no measure — because a vector about an exemption cannot start from a clean model, and pass D judges the STAGED result. What nothing here checks is the TEXT: a blank string answers the finding exactly as this sentence does, a deliberate choice and not a gap."
+  }
+}

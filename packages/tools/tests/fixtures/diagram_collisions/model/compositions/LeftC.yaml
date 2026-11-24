@@ -1,0 +1,6 @@
+name: LeftC
+title: LeftC
+description: Holds a member named Sensor of the type SensorA.
+members:
+  - name: Sensor
+    type: SensorA

@@ -1,0 +1,11 @@
+# The navigation smoke fixture's component: one port whose `interface` the
+# smoke test's Go to Definition resolves to interfaces/ISmokeSignal.yaml, and a
+# description whose storage name the document-link assertion follows there.
+# Not a buildable model: no root composition, no hardware.
+name: SmokeSWC
+type: application
+description: The component the definition assertion starts from; its port's interface is interfaces/ISmokeSignal.
+ports:
+- name: rSignal
+  direction: require
+  interface: ISmokeSignal

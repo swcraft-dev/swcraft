@@ -1,0 +1,10 @@
+id: SYS_002
+title: Brake request latency
+description: A brake request shall reach the actuator within 50 ms.
+req_type: req
+version: 3
+source: external
+derived_from:
+- SYS_001@2
+asil: C
+baseline: SYS-2.1

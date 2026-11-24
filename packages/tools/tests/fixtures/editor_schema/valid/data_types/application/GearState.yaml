@@ -1,0 +1,8 @@
+name: GearState
+kind: enum
+literals:
+  - name: PARK
+    value: 0
+  - name: DRIVE
+    value: 1
+description: Hand-built enum fixture — the corpus ships only primitives

@@ -1,0 +1,31 @@
+{
+  "name": "read-data-types-layer-filtered",
+  "description": "A layer-granularity `read` narrowed by `where`, the first answer to the layer that does not fit: two of the twelve base types come back instead of all twelve, and the response is 333 wire bytes against the unfiltered summary's 1 100 (one copy, since 2026-10-09: a tool result is sent once, as its compact document carried as a JSON string; measured 2026-10-09, 610 against 2 014 in the two-copy unit before it). The address is the `base_types` layer, where base types are declared since contract `8.0.0` (stored in `data_types/base/`). The clause is equality over a DECLARED field — `encoding` is published by `discover` on the `base_type` kind, with its enum — and the filter is applied AT THE ADDRESS and BEFORE the form, so what is summarized is the slice rather than the layer. The form is not stated, so the layer's own default (`summary`) still chooses; a filter narrows WHICH things are answered and a form narrows HOW MUCH of each, and the two compose in one request without either knowing about the other. On a large model this is the difference between an answer and an `over-budget` refusal: the same clause over a layer of many interfaces is a slice, where the layer itself can be refused in every form.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. Its `base_types` layer (`data_types/base/`) holds twelve base types and its `implementation_types` layer (`data_types/implementation/`) the twelve value types that rest on them; two of the base types — `float32_base` and `float64_base` — declare `encoding: IEEE754`, the other ten declare `NONE`.",
+    "existing_elements": [
+      { "layer": "base_types", "element": "float32_base" },
+      { "layer": "base_types", "element": "float64_base" }
+    ],
+    "notes": "The filter's vocabulary is the one `discover` publishes and nothing else. A clause naming a field no element kind of the layer declares is refused with `unknown-field` rather than quietly matching nothing — an empty answer and a misspelled field name are the two readings of a silent zero, and only one of them is worth returning. A clause naming a COLLECTION field (`swc.ports`) is refused with `schema-violation`, because a collection is a set with an address of its own and is filtered there; that step is the client's own move and never a hint, since a hint may not change the address."
+  },
+  "input": {
+    "operation": "read",
+    "address": { "layer": "base_types" },
+    "where": [{ "field": "encoding", "equals": "IEEE754" }]
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": { "layer": "base_types" },
+      "form": "summary",
+      "where": [{ "field": "encoding", "equals": "IEEE754" }],
+      "value": [
+        { "name": "float32_base", "kind": "base_type", "size": 32, "encoding": "IEEE754" },
+        { "name": "float64_base", "kind": "base_type", "size": 64, "encoding": "IEEE754" }
+      ]
+    },
+    "notes": "`where` is ECHOED, and only because the request carried one: a `where` is applied exactly as asked or the request is refused, so — unlike `form`, which may be served narrower than it was requested — its presence means \"this is a slice\" and its absence means \"this is everything\". Reading a count off a filtered answer without seeing the filter is the confusion the echo removes. The clauses would be AND-composed if there were more than one; there is deliberately no `or` and no comparison operator, so `size > 16` is served by reading this projection and comparing client-side. An empty result is an ANSWER — `[]` under the same form — and not a refusal: no element carrying that value is a fact about the model."
+  }
+}

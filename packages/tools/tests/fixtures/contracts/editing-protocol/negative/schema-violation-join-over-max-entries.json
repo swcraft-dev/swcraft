@@ -1,0 +1,168 @@
+{
+  "name": "schema-violation-join-over-max-entries",
+  "description": "A read whose `join` carries nine entries, one more than `reads.join.max_entries` (8) admits. Every entry's joined read is computed in full before the join row ceiling is consulted, and again on every page, so the number of entries is capped where the request is parsed: the envelope refuses it (pass A, and `protocol.schema.json`'s `$defs/join` `maxItems`), before the model is consulted. `swcraft query --request` refuses the same request at parse, exit 1.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. Each entry is a well-formed self-join of the `swc` layer on `element` under its own alias, and the same request with eight entries is answered — so the refusal is the entry count alone.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current",
+    "notes": "A read takes no scope and writes no audit record, refused or not."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "form": "index",
+    "join": [
+      {
+        "with": {
+          "address": {
+            "layer": "swc"
+          }
+        },
+        "on": [
+          {
+            "left": "element",
+            "right": "element"
+          }
+        ],
+        "as": "s1"
+      },
+      {
+        "with": {
+          "address": {
+            "layer": "swc"
+          }
+        },
+        "on": [
+          {
+            "left": "element",
+            "right": "element"
+          }
+        ],
+        "as": "s2"
+      },
+      {
+        "with": {
+          "address": {
+            "layer": "swc"
+          }
+        },
+        "on": [
+          {
+            "left": "element",
+            "right": "element"
+          }
+        ],
+        "as": "s3"
+      },
+      {
+        "with": {
+          "address": {
+            "layer": "swc"
+          }
+        },
+        "on": [
+          {
+            "left": "element",
+            "right": "element"
+          }
+        ],
+        "as": "s4"
+      },
+      {
+        "with": {
+          "address": {
+            "layer": "swc"
+          }
+        },
+        "on": [
+          {
+            "left": "element",
+            "right": "element"
+          }
+        ],
+        "as": "s5"
+      },
+      {
+        "with": {
+          "address": {
+            "layer": "swc"
+          }
+        },
+        "on": [
+          {
+            "left": "element",
+            "right": "element"
+          }
+        ],
+        "as": "s6"
+      },
+      {
+        "with": {
+          "address": {
+            "layer": "swc"
+          }
+        },
+        "on": [
+          {
+            "left": "element",
+            "right": "element"
+          }
+        ],
+        "as": "s7"
+      },
+      {
+        "with": {
+          "address": {
+            "layer": "swc"
+          }
+        },
+        "on": [
+          {
+            "left": "element",
+            "right": "element"
+          }
+        ],
+        "as": "s8"
+      },
+      {
+        "with": {
+          "address": {
+            "layer": "swc"
+          }
+        },
+        "on": [
+          {
+            "left": "element",
+            "right": "element"
+          }
+        ],
+        "as": "s9"
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "protocol-schema",
+    "notes": "The cap is published as `reads.join.max_entries`, beside `row_ceiling`; the message names the count and the cap and is not contract. Dropping the ninth entry makes this request answerable."
+  }
+}

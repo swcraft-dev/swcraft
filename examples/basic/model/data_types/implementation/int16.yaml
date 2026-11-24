@@ -1,0 +1,3 @@
+name: int16
+kind: value_type
+base: int16_base

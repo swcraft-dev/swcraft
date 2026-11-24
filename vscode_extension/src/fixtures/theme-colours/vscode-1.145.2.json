@@ -1,0 +1,350 @@
+{
+  "generator": "vscode_extension/scripts/extract-theme-colours.mjs",
+  "vscodeVersion": "1.145.2",
+  "registry": "out/vs/workbench/workbench.desktop.main.js",
+  "ids": [
+    "editor.background",
+    "editor.foreground",
+    "descriptionForeground",
+    "focusBorder",
+    "contrastBorder",
+    "editor.selectionBackground",
+    "editor.findMatchBackground",
+    "editor.findMatchHighlightBackground",
+    "editor.findMatchBorder",
+    "editor.findMatchHighlightBorder",
+    "charts.yellow",
+    "charts.red"
+  ],
+  "themes": {
+    "Light 2026": {
+      "file": "2026-light.json",
+      "kind": "light",
+      "colours": {
+        "editor.background": "#FFFFFF",
+        "editor.foreground": "#202020",
+        "descriptionForeground": "#606060",
+        "focusBorder": "#0069CC",
+        "contrastBorder": null,
+        "editor.selectionBackground": "#0069CC40",
+        "editor.findMatchBackground": "#0069CC40",
+        "editor.findMatchHighlightBackground": "#0069CC1A",
+        "editor.findMatchBorder": null,
+        "editor.findMatchHighlightBorder": null,
+        "charts.yellow": "#667309",
+        "charts.red": "#ad0707"
+      },
+      "sources": {
+        "editor.background": "theme 2026-light.json",
+        "editor.foreground": "theme 2026-light.json",
+        "descriptionForeground": "theme 2026-light.json",
+        "focusBorder": "theme 2026-light.json",
+        "contrastBorder": "registry default of contrastBorder (light) at byte 919505",
+        "editor.selectionBackground": "theme 2026-light.json",
+        "editor.findMatchBackground": "theme 2026-light.json",
+        "editor.findMatchHighlightBackground": "theme 2026-light.json",
+        "editor.findMatchBorder": "registry default of editor.findMatchBorder (light) at byte 926074",
+        "editor.findMatchHighlightBorder": "registry default of editor.findMatchHighlightBorder (light) at byte 926164",
+        "charts.yellow": "theme 2026-light.json",
+        "charts.red": "theme 2026-light.json"
+      },
+      "unresolved": {}
+    },
+    "Dark 2026": {
+      "file": "2026-dark.json",
+      "kind": "dark",
+      "colours": {
+        "editor.background": "#121314",
+        "editor.foreground": "#BBBEBF",
+        "descriptionForeground": "#8C8C8C",
+        "focusBorder": "#3994BCB3",
+        "contrastBorder": null,
+        "editor.selectionBackground": "#276782dd",
+        "editor.findMatchBackground": "#27678290",
+        "editor.findMatchHighlightBackground": "#27678280",
+        "editor.findMatchBorder": null,
+        "editor.findMatchHighlightBorder": null,
+        "charts.yellow": "#E0B97F",
+        "charts.red": "#EF8773"
+      },
+      "sources": {
+        "editor.background": "theme 2026-dark.json",
+        "editor.foreground": "theme 2026-dark.json",
+        "descriptionForeground": "theme 2026-dark.json",
+        "focusBorder": "theme 2026-dark.json",
+        "contrastBorder": "registry default of contrastBorder (dark) at byte 919505",
+        "editor.selectionBackground": "theme 2026-dark.json",
+        "editor.findMatchBackground": "theme 2026-dark.json",
+        "editor.findMatchHighlightBackground": "theme 2026-dark.json",
+        "editor.findMatchBorder": "registry default of editor.findMatchBorder (dark) at byte 926074",
+        "editor.findMatchHighlightBorder": "registry default of editor.findMatchHighlightBorder (dark) at byte 926164",
+        "charts.yellow": "theme 2026-dark.json",
+        "charts.red": "theme 2026-dark.json"
+      },
+      "unresolved": {}
+    },
+    "Dark+": {
+      "file": "dark_plus.json",
+      "kind": "dark",
+      "colours": {
+        "editor.background": "#1E1E1E",
+        "editor.foreground": "#D4D4D4",
+        "focusBorder": "#007FD4",
+        "contrastBorder": null,
+        "editor.selectionBackground": "#264F78",
+        "editor.findMatchBackground": "#515C6A",
+        "editor.findMatchHighlightBackground": "#EA5C0055",
+        "editor.findMatchBorder": null,
+        "editor.findMatchHighlightBorder": null,
+        "charts.yellow": "#CCA700",
+        "charts.red": "#F14C4C"
+      },
+      "sources": {
+        "editor.background": "theme dark_vs.json",
+        "editor.foreground": "theme dark_vs.json",
+        "focusBorder": "registry default of focusBorder (dark) at byte 919403",
+        "contrastBorder": "registry default of contrastBorder (dark) at byte 919505",
+        "editor.selectionBackground": "registry default of editor.selectionBackground (dark) at byte 924895",
+        "editor.findMatchBackground": "registry default of editor.findMatchBackground (dark) at byte 925597",
+        "editor.findMatchHighlightBackground": "registry default of editor.findMatchHighlightBackground (dark) at byte 925760",
+        "editor.findMatchBorder": "registry default of editor.findMatchBorder (dark) at byte 926074",
+        "editor.findMatchHighlightBorder": "registry default of editor.findMatchHighlightBorder (dark) at byte 926164",
+        "charts.yellow": "registry default of charts.yellow (dark) at byte 932129 names editorWarning.foreground <- registry default of editorWarning.foreground (dark) at byte 923957",
+        "charts.red": "registry default of charts.red (dark) at byte 932054 names editorError.foreground <- registry default of editorError.foreground (dark) at byte 923660"
+      },
+      "unresolved": {
+        "descriptionForeground": "registry default of descriptionForeground (dark) at byte 919184: a computed default (Mi(Go,.7)), not evaluated"
+      }
+    },
+    "Dark Modern": {
+      "file": "dark_modern.json",
+      "kind": "dark",
+      "colours": {
+        "editor.background": "#1F1F1F",
+        "editor.foreground": "#CCCCCC",
+        "descriptionForeground": "#9D9D9D",
+        "focusBorder": "#0078D4",
+        "contrastBorder": null,
+        "editor.selectionBackground": "#264F78",
+        "editor.findMatchBackground": "#9E6A03",
+        "editor.findMatchHighlightBackground": "#EA5C0055",
+        "editor.findMatchBorder": null,
+        "editor.findMatchHighlightBorder": null,
+        "charts.yellow": "#CCA700",
+        "charts.red": "#F14C4C"
+      },
+      "sources": {
+        "editor.background": "theme dark_modern.json",
+        "editor.foreground": "theme dark_modern.json",
+        "descriptionForeground": "theme dark_modern.json",
+        "focusBorder": "theme dark_modern.json",
+        "contrastBorder": "registry default of contrastBorder (dark) at byte 919505",
+        "editor.selectionBackground": "registry default of editor.selectionBackground (dark) at byte 924895",
+        "editor.findMatchBackground": "theme dark_modern.json",
+        "editor.findMatchHighlightBackground": "registry default of editor.findMatchHighlightBackground (dark) at byte 925760",
+        "editor.findMatchBorder": "registry default of editor.findMatchBorder (dark) at byte 926074",
+        "editor.findMatchHighlightBorder": "registry default of editor.findMatchHighlightBorder (dark) at byte 926164",
+        "charts.yellow": "registry default of charts.yellow (dark) at byte 932129 names editorWarning.foreground <- registry default of editorWarning.foreground (dark) at byte 923957",
+        "charts.red": "registry default of charts.red (dark) at byte 932054 names editorError.foreground <- registry default of editorError.foreground (dark) at byte 923660"
+      },
+      "unresolved": {}
+    },
+    "Light+": {
+      "file": "light_plus.json",
+      "kind": "light",
+      "colours": {
+        "editor.background": "#FFFFFF",
+        "editor.foreground": "#000000",
+        "descriptionForeground": "#717171",
+        "focusBorder": "#0090F1",
+        "contrastBorder": null,
+        "editor.selectionBackground": "#ADD6FF",
+        "editor.findMatchBackground": "#A8AC94",
+        "editor.findMatchHighlightBackground": "#EA5C0055",
+        "editor.findMatchBorder": null,
+        "editor.findMatchHighlightBorder": null,
+        "charts.yellow": "#BF8803",
+        "charts.red": "#E51400"
+      },
+      "sources": {
+        "editor.background": "theme light_vs.json",
+        "editor.foreground": "theme light_vs.json",
+        "descriptionForeground": "registry default of descriptionForeground (light) at byte 919184",
+        "focusBorder": "registry default of focusBorder (light) at byte 919403",
+        "contrastBorder": "registry default of contrastBorder (light) at byte 919505",
+        "editor.selectionBackground": "registry default of editor.selectionBackground (light) at byte 924895",
+        "editor.findMatchBackground": "registry default of editor.findMatchBackground (light) at byte 925597",
+        "editor.findMatchHighlightBackground": "registry default of editor.findMatchHighlightBackground (light) at byte 925760",
+        "editor.findMatchBorder": "registry default of editor.findMatchBorder (light) at byte 926074",
+        "editor.findMatchHighlightBorder": "registry default of editor.findMatchHighlightBorder (light) at byte 926164",
+        "charts.yellow": "registry default of charts.yellow (light) at byte 932129 names editorWarning.foreground <- registry default of editorWarning.foreground (light) at byte 923957",
+        "charts.red": "registry default of charts.red (light) at byte 932054 names editorError.foreground <- registry default of editorError.foreground (light) at byte 923660"
+      },
+      "unresolved": {}
+    },
+    "Light Modern": {
+      "file": "light_modern.json",
+      "kind": "light",
+      "colours": {
+        "editor.background": "#FFFFFF",
+        "editor.foreground": "#3B3B3B",
+        "descriptionForeground": "#3B3B3B",
+        "focusBorder": "#005FB8",
+        "contrastBorder": null,
+        "editor.selectionBackground": "#ADD6FF",
+        "editor.findMatchBackground": "#A8AC94",
+        "editor.findMatchHighlightBackground": "#EA5C0055",
+        "editor.findMatchBorder": null,
+        "editor.findMatchHighlightBorder": null,
+        "charts.yellow": "#BF8803",
+        "charts.red": "#E51400"
+      },
+      "sources": {
+        "editor.background": "theme light_modern.json",
+        "editor.foreground": "theme light_modern.json",
+        "descriptionForeground": "theme light_modern.json",
+        "focusBorder": "theme light_modern.json",
+        "contrastBorder": "registry default of contrastBorder (light) at byte 919505",
+        "editor.selectionBackground": "registry default of editor.selectionBackground (light) at byte 924895",
+        "editor.findMatchBackground": "registry default of editor.findMatchBackground (light) at byte 925597",
+        "editor.findMatchHighlightBackground": "registry default of editor.findMatchHighlightBackground (light) at byte 925760",
+        "editor.findMatchBorder": "registry default of editor.findMatchBorder (light) at byte 926074",
+        "editor.findMatchHighlightBorder": "registry default of editor.findMatchHighlightBorder (light) at byte 926164",
+        "charts.yellow": "registry default of charts.yellow (light) at byte 932129 names editorWarning.foreground <- registry default of editorWarning.foreground (light) at byte 923957",
+        "charts.red": "registry default of charts.red (light) at byte 932054 names editorError.foreground <- registry default of editorError.foreground (light) at byte 923660"
+      },
+      "unresolved": {}
+    },
+    "Visual Studio Dark": {
+      "file": "dark_vs.json",
+      "kind": "dark",
+      "colours": {
+        "editor.background": "#1E1E1E",
+        "editor.foreground": "#D4D4D4",
+        "focusBorder": "#007FD4",
+        "contrastBorder": null,
+        "editor.selectionBackground": "#264F78",
+        "editor.findMatchBackground": "#515C6A",
+        "editor.findMatchHighlightBackground": "#EA5C0055",
+        "editor.findMatchBorder": null,
+        "editor.findMatchHighlightBorder": null,
+        "charts.yellow": "#CCA700",
+        "charts.red": "#F14C4C"
+      },
+      "sources": {
+        "editor.background": "theme dark_vs.json",
+        "editor.foreground": "theme dark_vs.json",
+        "focusBorder": "registry default of focusBorder (dark) at byte 919403",
+        "contrastBorder": "registry default of contrastBorder (dark) at byte 919505",
+        "editor.selectionBackground": "registry default of editor.selectionBackground (dark) at byte 924895",
+        "editor.findMatchBackground": "registry default of editor.findMatchBackground (dark) at byte 925597",
+        "editor.findMatchHighlightBackground": "registry default of editor.findMatchHighlightBackground (dark) at byte 925760",
+        "editor.findMatchBorder": "registry default of editor.findMatchBorder (dark) at byte 926074",
+        "editor.findMatchHighlightBorder": "registry default of editor.findMatchHighlightBorder (dark) at byte 926164",
+        "charts.yellow": "registry default of charts.yellow (dark) at byte 932129 names editorWarning.foreground <- registry default of editorWarning.foreground (dark) at byte 923957",
+        "charts.red": "registry default of charts.red (dark) at byte 932054 names editorError.foreground <- registry default of editorError.foreground (dark) at byte 923660"
+      },
+      "unresolved": {
+        "descriptionForeground": "registry default of descriptionForeground (dark) at byte 919184: a computed default (Mi(Go,.7)), not evaluated"
+      }
+    },
+    "Visual Studio Light": {
+      "file": "light_vs.json",
+      "kind": "light",
+      "colours": {
+        "editor.background": "#FFFFFF",
+        "editor.foreground": "#000000",
+        "descriptionForeground": "#717171",
+        "focusBorder": "#0090F1",
+        "contrastBorder": null,
+        "editor.selectionBackground": "#ADD6FF",
+        "editor.findMatchBackground": "#A8AC94",
+        "editor.findMatchHighlightBackground": "#EA5C0055",
+        "editor.findMatchBorder": null,
+        "editor.findMatchHighlightBorder": null,
+        "charts.yellow": "#BF8803",
+        "charts.red": "#E51400"
+      },
+      "sources": {
+        "editor.background": "theme light_vs.json",
+        "editor.foreground": "theme light_vs.json",
+        "descriptionForeground": "registry default of descriptionForeground (light) at byte 919184",
+        "focusBorder": "registry default of focusBorder (light) at byte 919403",
+        "contrastBorder": "registry default of contrastBorder (light) at byte 919505",
+        "editor.selectionBackground": "registry default of editor.selectionBackground (light) at byte 924895",
+        "editor.findMatchBackground": "registry default of editor.findMatchBackground (light) at byte 925597",
+        "editor.findMatchHighlightBackground": "registry default of editor.findMatchHighlightBackground (light) at byte 925760",
+        "editor.findMatchBorder": "registry default of editor.findMatchBorder (light) at byte 926074",
+        "editor.findMatchHighlightBorder": "registry default of editor.findMatchHighlightBorder (light) at byte 926164",
+        "charts.yellow": "registry default of charts.yellow (light) at byte 932129 names editorWarning.foreground <- registry default of editorWarning.foreground (light) at byte 923957",
+        "charts.red": "registry default of charts.red (light) at byte 932054 names editorError.foreground <- registry default of editorError.foreground (light) at byte 923660"
+      },
+      "unresolved": {}
+    },
+    "Default High Contrast": {
+      "file": "hc_black.json",
+      "kind": "hcDark",
+      "colours": {
+        "editor.background": "#000000",
+        "editor.foreground": "#FFFFFF",
+        "focusBorder": "#F38518",
+        "contrastBorder": "#6FC3DF",
+        "editor.selectionBackground": "#FFFFFF",
+        "editor.findMatchBackground": null,
+        "editor.findMatchHighlightBackground": null,
+        "editor.findMatchBorder": "#F38518",
+        "editor.findMatchHighlightBorder": "#F38518",
+        "charts.yellow": "#FFD370",
+        "charts.red": "#F48771"
+      },
+      "sources": {
+        "editor.background": "theme hc_black.json",
+        "editor.foreground": "theme hc_black.json",
+        "focusBorder": "registry default of focusBorder (hcDark) at byte 919403",
+        "contrastBorder": "registry default of contrastBorder (hcDark) at byte 919505",
+        "editor.selectionBackground": "theme hc_black.json",
+        "editor.findMatchBackground": "registry default of editor.findMatchBackground (hcDark) at byte 925597",
+        "editor.findMatchHighlightBackground": "registry default of editor.findMatchHighlightBackground (hcDark) at byte 925760",
+        "editor.findMatchBorder": "registry default of editor.findMatchBorder (hcDark) at byte 926074 names contrastActiveBorder <- registry default of contrastActiveBorder (hcDark) at byte 919600 names focusBorder <- registry default of focusBorder (hcDark) at byte 919403",
+        "editor.findMatchHighlightBorder": "registry default of editor.findMatchHighlightBorder (hcDark) at byte 926164 names contrastActiveBorder <- registry default of contrastActiveBorder (hcDark) at byte 919600 names focusBorder <- registry default of focusBorder (hcDark) at byte 919403",
+        "charts.yellow": "registry default of charts.yellow (hcDark) at byte 932129 names editorWarning.foreground <- registry default of editorWarning.foreground (hcDark) at byte 923957",
+        "charts.red": "registry default of charts.red (hcDark) at byte 932054 names editorError.foreground <- registry default of editorError.foreground (hcDark) at byte 923660"
+      },
+      "unresolved": {
+        "descriptionForeground": "registry default of descriptionForeground (hcDark) at byte 919184: a computed default (Mi(Go,.7)), not evaluated"
+      }
+    },
+    "Default High Contrast Light": {
+      "file": "hc_light.json",
+      "kind": "hcLight",
+      "colours": {
+        "editor.foreground": "#292929",
+        "focusBorder": "#006BBD",
+        "contrastBorder": "#0F4A85",
+        "editor.selectionBackground": "#0F4A85",
+        "editor.findMatchBackground": null,
+        "editor.findMatchHighlightBackground": null,
+        "editor.findMatchBorder": "#006BBD",
+        "editor.findMatchHighlightBorder": "#006BBD",
+        "charts.yellow": "#895503",
+        "charts.red": "#B5200D"
+      },
+      "sources": {
+        "editor.foreground": "registry default of editor.foreground (hcLight) at byte 922782 names foreground <- registry default of foreground (hcLight) at byte 918755",
+        "focusBorder": "registry default of focusBorder (hcLight) at byte 919403",
+        "contrastBorder": "registry default of contrastBorder (hcLight) at byte 919505",
+        "editor.selectionBackground": "registry default of editor.selectionBackground (hcLight) at byte 924895",
+        "editor.findMatchBackground": "registry default of editor.findMatchBackground (hcLight) at byte 925597",
+        "editor.findMatchHighlightBackground": "registry default of editor.findMatchHighlightBackground (hcLight) at byte 925760",
+        "editor.findMatchBorder": "registry default of editor.findMatchBorder (hcLight) at byte 926074 names contrastActiveBorder <- registry default of contrastActiveBorder (hcLight) at byte 919600 names focusBorder <- registry default of focusBorder (hcLight) at byte 919403",
+        "editor.findMatchHighlightBorder": "registry default of editor.findMatchHighlightBorder (hcLight) at byte 926164 names contrastActiveBorder <- registry default of contrastActiveBorder (hcLight) at byte 919600 names focusBorder <- registry default of focusBorder (hcLight) at byte 919403",
+        "charts.yellow": "registry default of charts.yellow (hcLight) at byte 932129 names editorWarning.foreground <- registry default of editorWarning.foreground (hcLight) at byte 923957",
+        "charts.red": "registry default of charts.red (hcLight) at byte 932054 names editorError.foreground <- registry default of editorError.foreground (hcLight) at byte 923660"
+      },
+      "unresolved": {
+        "editor.background": "registry default of editor.background (hcLight) at byte 922676: a computed default (et.white), not evaluated",
+        "descriptionForeground": "registry default of descriptionForeground (hcLight) at byte 919184: a computed default (Mi(Go,.7)), not evaluated"
+      }
+    }
+  }
+}

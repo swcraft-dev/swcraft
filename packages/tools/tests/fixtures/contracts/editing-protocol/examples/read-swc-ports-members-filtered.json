@@ -1,0 +1,87 @@
+{
+  "name": "read-swc-ports-members-filtered",
+  "description": "The one question the address vocabulary cannot ask: **every port on one interface, with the component that owns it** — the member slice. `$defs/address` is explicit that a `path` without an `element` is not an address, because a path step is taken INSIDE an element, so this crosses elements and cannot be addressed; `members` is therefore a request KEY, legal at a layer address alone, and it replaces the set the address answers — the layer's elements become every member of the named collection across the layer. Each row is `{element, member}`: the address key that names the owner, then the member as the form publishes it, which together with the sliced field name compose the address of that member (`{layer: swc, element: ExampleSWC, path: [{field: ports}, {member: pOut}]}`). Without it this answer is one read per component plus a client-side join — twenty reads on the 20-component fixture, and on a large model as many reads as it has components, each of which may itself be refused at `full`.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. Its `swc/` layer holds two components, each carrying exactly one port, and both ports are on `IExample` — so the slice answers two rows from two different elements, which is the whole point of the key.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "ports"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "ports"
+          }
+        ]
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      }
+    ],
+    "notes": "The four read keys compose in one request and none of them knows about the others: `members` chooses WHICH SET is answered, `where` WHICH of its members, `limit`/`after` HOW MANY of those, and `form` HOW MUCH of each. `where` here filters the MEMBERS — the vocabulary at a slice is the collection's member kinds, exactly as at a collection address — so a clause naming a field only the owning element declares is `unknown-field`. The rows are in the layer's own published order (the registry's element-kind rank, then reader order) and, inside one element, the order that element carries its members in."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "members": "ports",
+    "where": [
+      {
+        "field": "interface",
+        "equals": "IExample"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "swc"
+      },
+      "form": "summary",
+      "members": "ports",
+      "where": [
+        {
+          "field": "interface",
+          "equals": "IExample"
+        }
+      ],
+      "value": [
+        {
+          "element": "ExampleConsumerSWC",
+          "member": {
+            "name": "rIn",
+            "direction": "require",
+            "interface": "IExample",
+            "measures": 0,
+            "com_specs": 0,
+            "satisfies": 0
+          }
+        },
+        {
+          "element": "ExampleSWC",
+          "member": {
+            "name": "pOut",
+            "direction": "provide",
+            "interface": "IExample",
+            "measures": 0,
+            "com_specs": 0,
+            "satisfies": 0
+          }
+        }
+      ]
+    },
+    "notes": "No `form` is stated, so the set default (`summary`) chooses and each member is published by the collection's own member rule — the same width `read-swc-ports-collection-summary.json` answers one element's ports in, which is why `interface` is present here — a reference to another element is in a summary whether required or not, and is omitted rather than sent as null where it is unset, as on an external component's port — and `description` and `observed_interface` are absent here and present under `form: \"full\"`. `members` is ECHOED for `where`'s reason and one of its own: NOTHING in a row names the collection it came from, so two slices of one layer would otherwise be told apart only by guessing at member fields. The `index` form and the page cursor publish the row MINUS the member — `{\"element\": \"ExampleSWC\", \"member\": \"pOut\"}` — which is what makes a `next` name one member of one element: a member identity alone is not unique across a layer, since two components may each carry a port of the same name. A map collection (`swc.memory`) rows as `{element, key, member}` instead, because a map entry is reached by a `key` step and not a `member` one. `members` at any address but a layer is `schema-violation` — a collection address already answers its own members — a name no element kind of the layer declares is `unknown-field`, and a name that IS declared and is not a collection is `schema-violation`, the mirror of a `where` clause naming a collection field."
+  }
+}

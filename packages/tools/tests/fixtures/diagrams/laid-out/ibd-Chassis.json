@@ -1,0 +1,779 @@
+{
+ "id": "root",
+ "layoutOptions": {
+  "elk.algorithm": "layered",
+  "elk.direction": "RIGHT",
+  "elk.padding": "[top=22,left=22,bottom=22,right=22]",
+  "elk.edgeRouting": "ORTHOGONAL",
+  "elk.hierarchyHandling": "INCLUDE_CHILDREN",
+  "elk.spacing.nodeNode": "40",
+  "elk.layered.spacing.nodeNodeBetweenLayers": "80",
+  "elk.spacing.edgeNode": "20",
+  "elk.layered.spacing.edgeNodeBetweenLayers": "30"
+ },
+ "children": [
+  {
+   "id": "frame",
+   "labels": [
+    {
+     "text": "Chassis",
+     "width": 51.64,
+     "height": 16,
+     "x": 67.9,
+     "y": 5
+    }
+   ],
+   "layoutOptions": {
+    "elk.portConstraints": "FIXED_SIDE",
+    "elk.nodeSize.constraints": "PORTS",
+    "elk.padding": "[top=40,left=90,bottom=40,right=90]",
+    "elk.nodeLabels.placement": "H_LEFT V_TOP INSIDE",
+    "elk.portLabels.placement": "INSIDE NEXT_TO_PORT_IF_POSSIBLE"
+   },
+   "swcraft": {
+    "role": "frame",
+    "name": "Chassis",
+    "title": "Chassis",
+    "description": "Three members, two boundary ports and a delegation in each direction.",
+    "parents": [
+     [
+      "Vehicle",
+      "Chassis"
+     ]
+    ],
+    "opens": {
+     "file": "compositions/Chassis.yaml",
+     "member": null
+    }
+   },
+   "ports": [
+    {
+     "id": "boundary.rDiag",
+     "width": 26,
+     "height": 14,
+     "labels": [
+      {
+       "text": "rDiag",
+       "width": 32.7,
+       "height": 14,
+       "x": 27,
+       "y": 15
+      }
+     ],
+     "layoutOptions": {
+      "elk.port.side": "WEST",
+      "elk.port.borderOffset": "-6",
+      "elk.port.anchor": "(26,7)"
+     },
+     "swcraft": {
+      "role": "port",
+      "owner": null,
+      "name": "rDiag",
+      "direction": "require",
+      "interface": "IDiag",
+      "interfaceKind": "client_server",
+      "interfaceWord": "client-server",
+      "description": "",
+      "opens": {
+       "file": "compositions/Chassis.yaml",
+       "member": "ports/rDiag"
+      }
+     },
+     "x": -20,
+     "y": 124
+    },
+    {
+     "id": "boundary.pSpeedOut",
+     "width": 32,
+     "height": 14,
+     "labels": [
+      {
+       "text": "pSpeedOut",
+       "width": 55.9,
+       "height": 14,
+       "x": -56.9,
+       "y": 15
+      }
+     ],
+     "layoutOptions": {
+      "elk.port.side": "EAST",
+      "elk.port.borderOffset": "-6",
+      "elk.port.anchor": "(0,7)"
+     },
+     "swcraft": {
+      "role": "port",
+      "owner": null,
+      "name": "pSpeedOut",
+      "direction": "provide",
+      "interface": "ISpeed",
+      "interfaceKind": "sender_receiver",
+      "interfaceWord": "sender-receiver",
+      "description": "The speed the chassis publishes.",
+      "opens": {
+       "file": "compositions/Chassis.yaml",
+       "member": "ports/pSpeedOut"
+      }
+     },
+     "x": 810.48,
+     "y": 140
+    }
+   ],
+   "children": [
+    {
+     "id": "member.Sensor",
+     "labels": [
+      {
+       "text": "Sensor",
+       "width": 45.04,
+       "height": 16,
+       "x": 54.48,
+       "y": 5
+      }
+     ],
+     "layoutOptions": {
+      "elk.portConstraints": "FIXED_SIDE",
+      "elk.nodeLabels.placement": "H_CENTER V_TOP INSIDE",
+      "elk.portLabels.placement": "INSIDE NEXT_TO_PORT_IF_POSSIBLE",
+      "elk.nodeSize.constraints": "PORTS PORT_LABELS NODE_LABELS MINIMUM_SIZE",
+      "elk.nodeSize.minimum": "(160,60)",
+      "elk.spacing.portPort": "8"
+     },
+     "ports": [
+      {
+       "id": "port.Sensor.pSpeed",
+       "width": 32,
+       "height": 14,
+       "labels": [
+        {
+         "text": "pSpeed",
+         "width": 38.2,
+         "height": 14,
+         "x": -39.2,
+         "y": 0
+        }
+       ],
+       "layoutOptions": {
+        "elk.port.side": "EAST",
+        "elk.port.borderOffset": "-6",
+        "elk.port.anchor": "(32,7)"
+       },
+       "swcraft": {
+        "role": "port",
+        "owner": "Sensor",
+        "name": "pSpeed",
+        "direction": "provide",
+        "interface": "ISpeed",
+        "interfaceKind": "sender_receiver",
+        "interfaceWord": "sender-receiver",
+        "description": "The filtered speed.",
+        "opens": {
+         "file": "swc/chassis/Sensor.yaml",
+         "member": "ports/pSpeed"
+        }
+       },
+       "x": 154,
+       "y": 35.33
+      },
+      {
+       "id": "port.Sensor.pRaw",
+       "width": 32,
+       "height": 14,
+       "labels": [
+        {
+         "text": "pRaw",
+         "width": 27.2,
+         "height": 14,
+         "x": -28.2,
+         "y": 0
+        }
+       ],
+       "layoutOptions": {
+        "elk.port.side": "EAST",
+        "elk.port.borderOffset": "-6",
+        "elk.port.anchor": "(32,7)"
+       },
+       "swcraft": {
+        "role": "port",
+        "owner": "Sensor",
+        "name": "pRaw",
+        "direction": "provide",
+        "interface": "ISpeed",
+        "interfaceKind": "sender_receiver",
+        "interfaceWord": "sender-receiver",
+        "description": "",
+        "opens": {
+         "file": "swc/chassis/Sensor.yaml",
+         "member": "ports/pRaw"
+        }
+       },
+       "x": 154,
+       "y": 10.67
+      }
+     ],
+     "swcraft": {
+      "role": "member",
+      "name": "Sensor",
+      "type": "Sensor",
+      "kind": "component",
+      "description": "Measures the speed and provides it twice, filtered and raw.",
+      "opens": {
+       "file": "swc/chassis/Sensor.yaml",
+       "member": null
+      }
+     },
+     "$H": 286,
+     "x": 180.34,
+     "y": 142,
+     "width": 160,
+     "height": 60
+    },
+    {
+     "id": "member.Controller",
+     "labels": [
+      {
+       "text": "Controller",
+       "width": 71.44,
+       "height": 16,
+       "x": 67.9,
+       "y": 5
+      }
+     ],
+     "layoutOptions": {
+      "elk.portConstraints": "FIXED_SIDE",
+      "elk.nodeLabels.placement": "H_CENTER V_TOP INSIDE",
+      "elk.portLabels.placement": "INSIDE NEXT_TO_PORT_IF_POSSIBLE",
+      "elk.nodeSize.constraints": "PORTS PORT_LABELS NODE_LABELS MINIMUM_SIZE",
+      "elk.nodeSize.minimum": "(160,60)",
+      "elk.spacing.portPort": "8"
+     },
+     "ports": [
+      {
+       "id": "port.Controller.rSpeed",
+       "width": 30,
+       "height": 14,
+       "labels": [
+        {
+         "text": "rSpeed",
+         "width": 38.2,
+         "height": 14,
+         "x": 31,
+         "y": 0
+        }
+       ],
+       "layoutOptions": {
+        "elk.port.side": "WEST",
+        "elk.port.borderOffset": "-6",
+        "elk.port.anchor": "(0,7)"
+       },
+       "swcraft": {
+        "role": "port",
+        "owner": "Controller",
+        "name": "rSpeed",
+        "direction": "require",
+        "interface": "ISpeed",
+        "interfaceKind": "sender_receiver",
+        "interfaceWord": "sender-receiver",
+        "description": "",
+        "opens": {
+         "file": "swc/chassis/Controller.yaml",
+         "member": "ports/rSpeed"
+        }
+       },
+       "x": -24,
+       "y": 58
+      },
+      {
+       "id": "port.Controller.rRaw",
+       "width": 30,
+       "height": 14,
+       "labels": [
+        {
+         "text": "rRaw",
+         "width": 27.2,
+         "height": 14,
+         "x": 31,
+         "y": 0
+        }
+       ],
+       "layoutOptions": {
+        "elk.port.side": "WEST",
+        "elk.port.borderOffset": "-6",
+        "elk.port.anchor": "(0,7)"
+       },
+       "swcraft": {
+        "role": "port",
+        "owner": "Controller",
+        "name": "rRaw",
+        "direction": "require",
+        "interface": "ISpeed",
+        "interfaceKind": "sender_receiver",
+        "interfaceWord": "sender-receiver",
+        "description": "",
+        "opens": {
+         "file": "swc/chassis/Controller.yaml",
+         "member": "ports/rRaw"
+        }
+       },
+       "x": -24,
+       "y": 34
+      },
+      {
+       "id": "port.Controller.pLoop",
+       "width": 32,
+       "height": 14,
+       "labels": [
+        {
+         "text": "pLoop",
+         "width": 32.7,
+         "height": 14,
+         "x": -33.7,
+         "y": 0
+        }
+       ],
+       "layoutOptions": {
+        "elk.port.side": "EAST",
+        "elk.port.borderOffset": "-6",
+        "elk.port.anchor": "(32,7)"
+       },
+       "swcraft": {
+        "role": "port",
+        "owner": "Controller",
+        "name": "pLoop",
+        "direction": "provide",
+        "interface": "ISpeed",
+        "interfaceKind": "sender_receiver",
+        "interfaceWord": "sender-receiver",
+        "description": "",
+        "opens": {
+         "file": "swc/chassis/Controller.yaml",
+         "member": "ports/pLoop"
+        }
+       },
+       "x": 201.24,
+       "y": 66
+      },
+      {
+       "id": "port.Controller.rLoop",
+       "width": 30,
+       "height": 14,
+       "labels": [
+        {
+         "text": "rLoop",
+         "width": 32.7,
+         "height": 14,
+         "x": 31,
+         "y": 0
+        }
+       ],
+       "layoutOptions": {
+        "elk.port.side": "WEST",
+        "elk.port.borderOffset": "-6",
+        "elk.port.anchor": "(0,7)"
+       },
+       "swcraft": {
+        "role": "port",
+        "owner": "Controller",
+        "name": "rLoop",
+        "direction": "require",
+        "interface": "ISpeed",
+        "interfaceKind": "sender_receiver",
+        "interfaceWord": "sender-receiver",
+        "description": "",
+        "opens": {
+         "file": "swc/chassis/Controller.yaml",
+         "member": "ports/rLoop"
+        }
+       },
+       "x": -24,
+       "y": 82
+      },
+      {
+       "id": "port.Controller.pSpeedOut",
+       "width": 32,
+       "height": 14,
+       "labels": [
+        {
+         "text": "pSpeedOut",
+         "width": 55.9,
+         "height": 14,
+         "x": -56.9,
+         "y": 0
+        }
+       ],
+       "layoutOptions": {
+        "elk.port.side": "EAST",
+        "elk.port.borderOffset": "-6",
+        "elk.port.anchor": "(32,7)"
+       },
+       "swcraft": {
+        "role": "port",
+        "owner": "Controller",
+        "name": "pSpeedOut",
+        "direction": "provide",
+        "interface": "ISpeed",
+        "interfaceKind": "sender_receiver",
+        "interfaceWord": "sender-receiver",
+        "description": "",
+        "opens": {
+         "file": "swc/chassis/Controller.yaml",
+         "member": "ports/pSpeedOut"
+        }
+       },
+       "x": 201.24,
+       "y": 26
+      },
+      {
+       "id": "port.Controller.rDiag",
+       "width": 26,
+       "height": 14,
+       "labels": [
+        {
+         "text": "rDiag",
+         "width": 32.7,
+         "height": 14,
+         "x": 27,
+         "y": 0
+        }
+       ],
+       "layoutOptions": {
+        "elk.port.side": "WEST",
+        "elk.port.borderOffset": "-6",
+        "elk.port.anchor": "(0,7)"
+       },
+       "swcraft": {
+        "role": "port",
+        "owner": "Controller",
+        "name": "rDiag",
+        "direction": "require",
+        "interface": "IDiag",
+        "interfaceKind": "client_server",
+        "interfaceWord": "client-server",
+        "description": "",
+        "opens": {
+         "file": "swc/chassis/Controller.yaml",
+         "member": "ports/rDiag"
+        }
+       },
+       "x": -20,
+       "y": 10
+      }
+     ],
+     "swcraft": {
+      "role": "member",
+      "name": "Controller",
+      "type": "Controller",
+      "kind": "component",
+      "description": "Consumes the speed, feeds its own estimate back to itself and asks the diagnostics.",
+      "opens": {
+       "file": "swc/chassis/Controller.yaml",
+       "member": null
+      }
+     },
+     "$H": 293,
+     "x": 420.34,
+     "y": 114,
+     "width": 207.24,
+     "height": 106
+    },
+    {
+     "id": "member.Logger",
+     "labels": [
+      {
+       "text": "Logger",
+       "width": 45.04,
+       "height": 16,
+       "x": 60.48,
+       "y": 5
+      }
+     ],
+     "layoutOptions": {
+      "elk.portConstraints": "FIXED_SIDE",
+      "elk.nodeLabels.placement": "H_CENTER V_TOP INSIDE",
+      "elk.portLabels.placement": "INSIDE NEXT_TO_PORT_IF_POSSIBLE",
+      "elk.nodeSize.constraints": "PORTS PORT_LABELS NODE_LABELS MINIMUM_SIZE",
+      "elk.nodeSize.minimum": "(160,60)",
+      "elk.spacing.portPort": "8"
+     },
+     "ports": [
+      {
+       "id": "port.Logger.rLog",
+       "width": 30,
+       "height": 14,
+       "labels": [
+        {
+         "text": "rLog",
+         "width": 27.2,
+         "height": 14,
+         "x": 31,
+         "y": 0
+        }
+       ],
+       "layoutOptions": {
+        "elk.port.side": "WEST",
+        "elk.port.borderOffset": "-6",
+        "elk.port.anchor": "(0,7)"
+       },
+       "swcraft": {
+        "role": "port",
+        "owner": "Logger",
+        "name": "rLog",
+        "direction": "require",
+        "interface": "ISpeed",
+        "interfaceKind": "sender_receiver",
+        "interfaceWord": "sender-receiver",
+        "description": "",
+        "opens": {
+         "file": "swc/chassis/Logger.yaml",
+         "member": "ports/rLog"
+        }
+       },
+       "x": -24,
+       "y": 23
+      }
+     ],
+     "swcraft": {
+      "role": "member",
+      "name": "Logger",
+      "type": "Logger",
+      "kind": "component",
+      "description": "Would log the speed; its one port is connected to nothing.",
+      "opens": {
+       "file": "swc/chassis/Logger.yaml",
+       "member": null
+      }
+     },
+     "$H": 308,
+     "x": 204.34,
+     "y": 61,
+     "width": 160,
+     "height": 60
+    }
+   ],
+   "edges": [
+    {
+     "id": "connector.control_loop",
+     "sources": [
+      "port.Controller.pLoop"
+     ],
+     "targets": [
+      "port.Controller.rLoop"
+     ],
+     "swcraft": {
+      "role": "connector",
+      "name": "control_loop",
+      "description": "",
+      "loop": true,
+      "opens": {
+       "file": "connectors/control_loop.yaml",
+       "member": null
+      }
+     },
+     "sections": [
+      {
+       "id": "connector.control_loop_s0",
+       "startPoint": {
+        "x": 653.58,
+        "y": 187
+       },
+       "endPoint": {
+        "x": 396.34,
+        "y": 203
+       },
+       "bendPoints": [
+        {
+         "x": 663.58,
+         "y": 187
+        },
+        {
+         "x": 663.58,
+         "y": 230
+        },
+        {
+         "x": 386.34,
+         "y": 230
+        },
+        {
+         "x": 386.34,
+         "y": 203
+        }
+       ],
+       "incomingShape": "port.Controller.pLoop",
+       "outgoingShape": "port.Controller.rLoop"
+      }
+     ],
+     "container": "frame"
+    },
+    {
+     "id": "connector.raw_link",
+     "sources": [
+      "port.Sensor.pRaw"
+     ],
+     "targets": [
+      "port.Controller.rRaw"
+     ],
+     "swcraft": {
+      "role": "connector",
+      "name": "raw_link",
+      "description": "",
+      "loop": false,
+      "opens": {
+       "file": "connectors/raw_link.yaml",
+       "member": null
+      }
+     },
+     "sections": [
+      {
+       "id": "connector.raw_link_s0",
+       "startPoint": {
+        "x": 366.34,
+        "y": 159.67
+       },
+       "endPoint": {
+        "x": 396.34,
+        "y": 155
+       },
+       "bendPoints": [
+        {
+         "x": 376.34,
+         "y": 159.67
+        },
+        {
+         "x": 376.34,
+         "y": 155
+        }
+       ],
+       "incomingShape": "port.Sensor.pRaw",
+       "outgoingShape": "port.Controller.rRaw"
+      }
+     ],
+     "container": "frame"
+    },
+    {
+     "id": "connector.speed_link",
+     "sources": [
+      "port.Sensor.pSpeed"
+     ],
+     "targets": [
+      "port.Controller.rSpeed"
+     ],
+     "swcraft": {
+      "role": "connector",
+      "name": "speed_link",
+      "description": "The filtered speed into the controller.",
+      "loop": false,
+      "opens": {
+       "file": "connectors/speed_link.yaml",
+       "member": null
+      }
+     },
+     "sections": [
+      {
+       "id": "connector.speed_link_s0",
+       "startPoint": {
+        "x": 366.34,
+        "y": 184.33
+       },
+       "endPoint": {
+        "x": 396.34,
+        "y": 179
+       },
+       "bendPoints": [
+        {
+         "x": 376.34,
+         "y": 184.33
+        },
+        {
+         "x": 376.34,
+         "y": 179
+        }
+       ],
+       "incomingShape": "port.Sensor.pSpeed",
+       "outgoingShape": "port.Controller.rSpeed"
+      }
+     ],
+     "container": "frame"
+    },
+    {
+     "id": "delegation.Chassis_rDiag",
+     "sources": [
+      "boundary.rDiag"
+     ],
+     "targets": [
+      "port.Controller.rDiag"
+     ],
+     "swcraft": {
+      "role": "delegation",
+      "name": "Chassis_rDiag",
+      "description": "",
+      "loop": false,
+      "opens": {
+       "file": "compositions/Chassis.yaml",
+       "member": "delegations/Chassis_rDiag"
+      }
+     },
+     "sections": [
+      {
+       "id": "delegation.Chassis_rDiag_s0",
+       "startPoint": {
+        "x": 6,
+        "y": 131
+       },
+       "endPoint": {
+        "x": 400.34,
+        "y": 131
+       },
+       "incomingShape": "boundary.rDiag",
+       "outgoingShape": "port.Controller.rDiag"
+      }
+     ],
+     "container": "frame"
+    },
+    {
+     "id": "delegation.Chassis_pSpeedOut",
+     "sources": [
+      "port.Controller.pSpeedOut"
+     ],
+     "targets": [
+      "boundary.pSpeedOut"
+     ],
+     "swcraft": {
+      "role": "delegation",
+      "name": "Chassis_pSpeedOut",
+      "description": "The provide-side delegation.",
+      "loop": false,
+      "opens": {
+       "file": "compositions/Chassis.yaml",
+       "member": "delegations/Chassis_pSpeedOut"
+      }
+     },
+     "sections": [
+      {
+       "id": "delegation.Chassis_pSpeedOut_s0",
+       "startPoint": {
+        "x": 653.58,
+        "y": 147
+       },
+       "endPoint": {
+        "x": 810.48,
+        "y": 147
+       },
+       "incomingShape": "port.Controller.pSpeedOut",
+       "outgoingShape": "boundary.pSpeedOut"
+      }
+     ],
+     "container": "frame"
+    }
+   ],
+   "$H": 277,
+   "x": 42,
+   "y": 22,
+   "width": 816.48,
+   "height": 270
+  }
+ ],
+ "$H": 13,
+ "x": 0,
+ "y": 0,
+ "width": 906.48,
+ "height": 314
+}

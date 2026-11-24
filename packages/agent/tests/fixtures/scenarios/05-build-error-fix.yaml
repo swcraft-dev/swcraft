@@ -1,0 +1,6 @@
+# Scenario 5 - self-correction: build, diagnose, repair, rebuild.
+#
+# The repair is one change set, so one review question; `build` asks nothing.
+- user: "Run the build. If it fails, diagnose the error and fix it, then rebuild\
+    \ to confirm it passes."
+  approvals: ["y"]

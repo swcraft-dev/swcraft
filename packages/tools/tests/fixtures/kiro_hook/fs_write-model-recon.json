@@ -1,0 +1,10 @@
+{
+  "session_id": "s",
+  "hook_event_name": "PreToolUse",
+  "cwd": "/project",
+  "tool_name": "fs_write",
+  "tool_input": {
+    "path": "model/hardware/NOTE.yaml",
+    "text": "x: 1"
+  }
+}

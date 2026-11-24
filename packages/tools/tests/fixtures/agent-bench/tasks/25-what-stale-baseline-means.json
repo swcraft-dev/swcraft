@@ -1,0 +1,70 @@
+{
+  "id": "25-what-stale-baseline-means",
+  "task": 25,
+  "group": "guide-question",
+  "kind": "guide",
+  "status": "ready",
+  "prompt": "My change was refused with stale-baseline. What does that mean, and what do I do now?",
+  "expect": {
+    "model": "unchanged",
+    "guide": {
+      "sections": [
+        "how-to/refusals#stale-baseline"
+      ],
+      "must": [
+        {
+          "id": "baseline",
+          "any_of": [
+            "baseline"
+          ],
+          "case_sensitive": true
+        }
+      ],
+      "must_not": [
+        {
+          "id": "auto-rebase",
+          "any_of": [
+            "automatically rebase",
+            "automatically re-base",
+            "rebased for you",
+            "rebases it for you",
+            "automatically merge",
+            "merged for you"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "partial",
+          "any_of": [
+            "partially applied",
+            "partly applied",
+            "half-applied",
+            "half applied"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "requirement-version",
+          "any_of": [
+            "requirement has a newer version",
+            "newer version of the requirement"
+          ],
+          "case_sensitive": false
+        }
+      ]
+    },
+    "calls": {
+      "forbidden": [
+        "change_set",
+        "build",
+        "validate",
+        "export_component",
+        "import_component"
+      ]
+    }
+  },
+  "reference": {
+    "runs": "candidate builds only: a build without the guide tool fails the read and cited criteria by construction, so a guide question is never run on a baseline",
+    "baseline": "76a5f6532's guide has no Refusals page and does not name the code; its agent profile does (Tool Usage Rules, rule 1: the change set's baseline token names the model state, a set whose token no longer matches is refused rather than applied, a committed set returns the new token, a stale one is never re-based), and so does its change_set description (the baseline argument: re-read it after every commit). Every fact holds on its product (editing/staging.py, STALE_BASELINE)."
+  }
+}

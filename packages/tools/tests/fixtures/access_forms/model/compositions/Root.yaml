@@ -1,0 +1,19 @@
+name: Root
+title: Brake system
+root: true
+description: >-
+  Every component once, and the wheel sensor a second time inside the rear
+  axle, so a type has two occurrences.
+members:
+- name: FrontWheelSensor
+  type: WheelSensor
+- name: BrakePedal
+  type: BrakePedal
+- name: BrakeController
+  type: BrakeController
+- name: BrakeActuator
+  type: BrakeActuator
+- name: NvStorage
+  type: NvStorage
+- name: RearAxle
+  composition: RearAxle

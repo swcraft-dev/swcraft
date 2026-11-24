@@ -1,0 +1,6 @@
+id: REQ-OPE-001
+title: A runnable started by a timing event and by an operation call
+description: ServerSwc's one runnable is started periodically and by a client's call of ReadRecord.
+req_type: req
+version: 1
+source: architecture

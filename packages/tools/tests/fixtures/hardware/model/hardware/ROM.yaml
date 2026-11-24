@@ -1,0 +1,12 @@
+name: ROM
+kind: memory
+type: ROM
+size: 1024
+accessible:
+- CORE0
+- CORE1
+- CORE2
+- CORE3
+threshold: 0.8
+enforcement: strict
+description: "Breaching memory — 1000 bytes against an 819.2 byte budget."

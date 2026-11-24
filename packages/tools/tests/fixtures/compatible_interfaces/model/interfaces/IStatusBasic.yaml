@@ -1,0 +1,11 @@
+name: IStatusBasic
+kind: sender_receiver
+description: >-
+  The narrower sender-receiver interface: two of `IStatusFull`'s three elements,
+  written in `Tally` rather than `Count` — the same resolved structure, so the
+  pair is a subset by name (`[constr_1069]` 1(a)).
+data_elements:
+  - name: speed
+    implementation_type: Tally
+  - name: level
+    implementation_type: Tally

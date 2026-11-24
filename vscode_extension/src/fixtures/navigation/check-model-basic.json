@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "findings": [
+    {
+      "rule": "trace.link-needs-confirmation",
+      "severity": "warning",
+      "message": "SWC 'ExampleConsumerSWC' (runnable 'ExampleConsumerRun') satisfies 'REQ_EXAMPLE_001@3', but requirement 'REQ_EXAMPLE_001' is at version 4: confirm the link against version 4 and write 'REQ_EXAMPLE_001@4'.",
+      "subjects": [
+        {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleConsumerRun"
+            },
+            {
+              "field": "satisfies"
+            },
+            {
+              "member": "REQ_EXAMPLE_001@3"
+            }
+          ]
+        }
+      ],
+      "target": "REQ_EXAMPLE_001"
+    },
+    {
+      "rule": "trace.link-needs-confirmation",
+      "severity": "warning",
+      "message": "SWC 'ExampleSWC' satisfies 'REQ_EXAMPLE_001@3', but requirement 'REQ_EXAMPLE_001' is at version 4: confirm the link against version 4 and write 'REQ_EXAMPLE_001@4'.",
+      "subjects": [
+        {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "satisfies"
+            },
+            {
+              "member": "REQ_EXAMPLE_001@3"
+            }
+          ]
+        }
+      ],
+      "target": "REQ_EXAMPLE_001"
+    },
+    {
+      "rule": "trace.link-version-not-stated",
+      "severity": "warning",
+      "message": "SWC 'ExampleSWC' (port 'pOut') satisfies 'REQ_EXAMPLE_001' without a version: requirement 'REQ_EXAMPLE_001' is at version 4; write 'REQ_EXAMPLE_001@4' once the link is confirmed against it.",
+      "subjects": [
+        {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "ports"
+            },
+            {
+              "member": "pOut"
+            },
+            {
+              "field": "satisfies"
+            },
+            {
+              "member": "REQ_EXAMPLE_001"
+            }
+          ]
+        }
+      ],
+      "target": "REQ_EXAMPLE_001"
+    }
+  ]
+}

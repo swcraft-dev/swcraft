@@ -1,0 +1,41 @@
+{
+  "name": "reference-role-value-type-base-in-another-layer",
+  "description": "A `create` of a value type whose `base` names a reference type. The name is declared — `Float32Ref` is in `implementation_types` — but not in the layer a value type's `base` is resolved in: a value type is the implementation type that rests directly on a platform base type, and since contract `8.0.0` base types are a layer of their own, `base_types`, so `value_type.base` is looked up there alone. A name declared in another layer is therefore a name that resolves to nothing, and the assembled staged result breaks `data-type.value-type-undeclared-base`, the `broken-reference` rule `reference-role-value-type-undeclared-base.json` witnesses with a name declared nowhere. The wrong-kind rule this vector pinned until then, `data-type.value-type-base-not-base-type`, is retired: the layer the reference resolves in now says what kind it names.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model plus one reference type, `Float32Ref`, over the value type `float32`, which itself rests on the base type `float32_base`. The change set creates `VehicleSpeed_kph` with `base: Float32Ref`, where `base: float32_base`, a name the `base_types` layer declares, is what the rule admits.",
+    "existing_elements": [
+      { "layer": "base_types", "element": "float32_base" },
+      { "layer": "implementation_types", "element": "Float32Ref" }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [{ "operation": "create", "address": { "layer": "implementation_types", "element": "VehicleSpeed_kph" } }],
+      "notes": "The scope covers the create exactly, so the refusal is the model rule and not the authorization boundary."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Add the VehicleSpeed_kph value type over the float32 reference type.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": { "layer": "implementation_types", "element": "VehicleSpeed_kph" },
+        "value": {
+          "name": "VehicleSpeed_kph",
+          "kind": "value_type",
+          "base": "Float32Ref",
+          "unit": "kph"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "broken-reference",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [{ "layer": "implementation_types", "element": "VehicleSpeed_kph", "path": [{ "field": "base" }] }],
+    "notes": "One address, the referrer's `base` field, because both legal repairs go there: re-point it at a declared base type, or declare the element a `reference_type` instead — which carries no unit and no range, so the payload changes with it. The kind is the element's own `kind` field and is never inferred from what `base` names. The same holds for every other reference of the family whose target kind is now a layer: a reference type whose `base`, or a data element, an argument, a record field or an array element whose type, names a base type resolves in `implementation_types`, which holds no base type, and answers `broken-reference` as well."
+  }
+}

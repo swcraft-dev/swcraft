@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 3,
+  "name": "REQ_EXAMPLE_001",
+  "direction": "dependents",
+  "depth": 1,
+  "matched": {
+    "requirement": [
+      {
+        "layer": "swc",
+        "name": "ExampleConsumerSWC",
+        "detail": "",
+        "details": []
+      },
+      {
+        "layer": "swc",
+        "name": "ExampleSWC",
+        "detail": "",
+        "details": []
+      }
+    ]
+  }
+}

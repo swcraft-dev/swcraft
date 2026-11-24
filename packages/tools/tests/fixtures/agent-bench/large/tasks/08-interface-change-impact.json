@@ -1,0 +1,29 @@
+{
+  "id": "08-interface-change-impact",
+  "task": 8,
+  "group": "question",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "What does a change of If0168abcdefghij affect?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "mentions_all": [
+        "Swc001abcdefghij",
+        "Swc005abcdefghij",
+        "Swc043abcdefghij",
+        "Swc075abcdefghij"
+      ]
+    }
+  },
+  "reference": {
+    "direct": [
+      "Swc001abcdefghij",
+      "Swc005abcdefghij",
+      "Swc043abcdefghij",
+      "Swc075abcdefghij"
+    ],
+    "computed_by": "swcraft impact If0168abcdefghij --depth 1 --format json"
+  },
+  "note": "A right answer names the direct users, the 550-port hub among them; how far 'affect' reaches beyond them is the architect's call."
+}

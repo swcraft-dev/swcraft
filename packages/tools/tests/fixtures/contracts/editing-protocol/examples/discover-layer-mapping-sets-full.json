@@ -1,0 +1,300 @@
+{
+  "name": "discover-layer-mapping-sets-full",
+  "description": "The `mapping_sets` layer's descriptor at `form: \"full\"` — the one form that carries the descriptor PROSE, asked for one layer at a time because the project-wide `full` discovery is REFUSED with `over-budget` on every project (`negative/discover-project-full-over-budget.json`), and the refusal's second step is exactly this request. Together the fifteen per-layer `full` vectors replay every layer, kind and field annotation the model contract ships, verbatim, which is where the shipped-prose oracle (`packages/tools/tests/test_model_contract_conformance.py`) rides: rewording an annotation in the contract is a protocol-output change, and this is the output it changes. Of this layer: the layer contract `7.0.0` added, whose one top-level kind carries a `maps` collection whose members are identified by the `application` field rather than by a `name`, and whose member kind `map` declares two references into one layer — the one shape a `relation` could not express. It is, with `base_types`, `application_types` and the three layers of the forms a type names by reference (`units`, `compu_methods`, `data_constraints`), one of the six layers of a complete project that may legally hold no element at all.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` shape of a SWCraft project: fifteen scaffolded layers, `mapping_sets` among them, stored in `data_types/mapping_sets/` and empty, which is legal — a project whose interfaces are typed by implementation types alone declares no set. Nothing about the response depends on which elements are in the layer: the inventory is derived from the model contract through the registry, not from the files.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "discover",
+    "layer": "mapping_sets",
+    "form": "full"
+  },
+  "expected": {
+    "response": {
+      "response": "discover",
+      "project": {
+        "name": "swcraft-basic-example",
+        "arxml_version": "4.2.2",
+        "swcraft_version": "0.24.0"
+      },
+      "baseline": "rev1:kk7N755-pYf2txfvyVl9Kw",
+      "reads": {
+        "forms": [
+          "summary",
+          "full",
+          "index"
+        ],
+        "default_form": {
+          "layer": "summary",
+          "collection": "summary",
+          "element": "full",
+          "field": "full"
+        },
+        "budget_wire_bytes": 80000,
+        "hint_page_size": 50,
+        "discover": {
+          "forms": [
+            "summary",
+            "full",
+            "baseline"
+          ],
+          "default_form": "summary"
+        },
+        "derived": [
+          {
+            "name": "connection_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string"
+              }
+            }
+          },
+          {
+            "name": "base_type",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "runnables.reads",
+                "runnables.writes"
+              ]
+            },
+            "rows": "one",
+            "shape": {
+              "implementation": "string|null",
+              "base": "string|null"
+            }
+          },
+          {
+            "name": "effective_level",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one",
+            "shape": {
+              "level": "string",
+              "rating": "string"
+            }
+          },
+          {
+            "name": "partitions",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one per value",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "crossing_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              }
+            }
+          },
+          {
+            "name": "unconnected",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "ports"
+              ]
+            },
+            "rows": "one per value",
+            "shape": {
+              "direction": "string",
+              "interface": "string|null"
+            }
+          },
+          {
+            "name": "core",
+            "at": {
+              "layer": "tasks"
+            },
+            "rows": "one",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "realised_by",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null"
+            }
+          },
+          {
+            "name": "allocation",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one",
+            "shape": {
+              "sites": "integer",
+              "elements": "integer",
+              "allocated": "boolean|null"
+            }
+          },
+          {
+            "name": "stale_links",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null",
+              "current": "integer"
+            }
+          }
+        ],
+        "join": {
+          "row_ceiling": 50000,
+          "max_entries": 8
+        }
+      },
+      "form": "full",
+      "layers": [
+        {
+          "layer": "mapping_sets",
+          "optional": false,
+          "present": true,
+          "identity_field": "name",
+          "description": "Data type mapping sets, one file each under `data_types/mapping_sets/`. A set pairs each application type — the physical view of a signal, with its unit, its conversion and its range — with the implementation type that stores it, and a component names the sets its behaviour maps with. Every application type or enumeration a component's ports speak in has to be paired in one of them, because generated code needs to know what stores it. The directory is mandatory and may be empty: a project whose interfaces are typed by implementation types alone needs no set.",
+          "element_kinds": [
+            {
+              "kind": "mapping_set",
+              "description": "One mapping set, emitted as a `DATA-TYPE-MAPPING-SET`. It holds the pairs that say which implementation type stores each application type. A component references the set as a whole, so one set serves every component that names it, and a project is free to keep one set for the whole model or one per domain.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The set's identity; the file is named from it (`data_types/mapping_sets/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the layer, must not be blank, and immutable."
+                },
+                {
+                  "name": "maps",
+                  "type": "list[map]",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The pairs the set declares, addressed by the application type each one maps, which appears at most once in a set. The order is the model's and is the order the pairs are emitted in. An empty list is legal and declares nothing.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "application",
+                    "member_kinds": [
+                      "map"
+                    ]
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the set. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none."
+                },
+                {
+                  "name": "package",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The one sub-package of `/DataTypes/MappingSets`, its layer's package, this mapping set is emitted in, a single SHORT-NAME segment: the mapping set and every reference to it take `/DataTypes/MappingSets/{package}/`. Absent means `/DataTypes/MappingSets` itself. SWCraft's importers record it for an element whose source path is exactly `/DataTypes/MappingSets/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/DataTypes/MappingSets` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule."
+                }
+              ]
+            },
+            {
+              "kind": "map",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "mapping_set",
+                  "field": "maps"
+                }
+              ],
+              "description": "One pair: the application type, and the implementation type that stores it. Both sides name a declared data type by its own name; which kinds each side may name is checked across files, because the answer is in the type's own file and not here.",
+              "fields": [
+                {
+                  "name": "application",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The name of the declared application type, enumeration, record or array this pair maps, an element of the `application_types` layer. It is the pair's identity inside the set, and so immutable.",
+                  "reference": {
+                    "layer": "application_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "implementation",
+                  "type": "string",
+                  "required": true,
+                  "immutable": false,
+                  "description": "The name of the declared value type, reference type, implementation record or implementation array that stores it, and never a pointer. Repointing the pair at another implementation type edits this field; pairing a different application type is a different pair.",
+                  "reference": {
+                    "layer": "implementation_types",
+                    "identity_field": "name"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "notes": "The same document the default form answers with `description` restored on the layer, on every kind and on every field that declares one, and with the three descriptor booleans spelled out where the default form omits them at `false` — `optional` on the layer, `required` and `immutable` on every field. Nothing else is restored, because nothing else is left out. `baseline` is the stand-in token every vector carries; a harness replaces it with the project's own."
+  }
+}

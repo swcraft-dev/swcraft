@@ -1,0 +1,11 @@
+name: TerminatedSwc
+type: application
+ports:
+- name: rSignal
+  direction: require
+  interface: ISignal
+runnables:
+- name: TerminatedInit
+  events:
+  - type: init
+handle_termination_and_restart: can_be_terminated

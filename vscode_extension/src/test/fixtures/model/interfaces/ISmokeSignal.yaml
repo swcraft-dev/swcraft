@@ -1,0 +1,7 @@
+# The navigation smoke fixture's interface: the definition SmokeSWC's port names.
+name: ISmokeSignal
+kind: sender_receiver
+description: The target the definition assertion lands on.
+data_elements:
+- name: value
+  implementation_type: uint8

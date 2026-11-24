@@ -1,0 +1,93 @@
+{
+  "name": "consistency-violation-application-type-unmapped",
+  "description": "A component that stops naming the only mapping set pairing a physical type its ports speak. `[constr_1004]`'s direction: generated code needs to know which implementation type stores an application type, and a component's `data_type_mappings` is where that pairing is declared. Every element and every reference here is admissible — the set still exists, the type still exists — and what refuses is the assembled result.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model with a physical type, the set that stores it, an interface typed by it and `ExampleSWC` carrying a port on that interface and naming the set. The baseline is valid, so the change set CREATES the finding rather than inheriting one.",
+    "existing_elements": [
+      {
+        "layer": "application_types",
+        "element": "VehicleSpeed_Kph"
+      },
+      {
+        "layer": "mapping_sets",
+        "element": "PhysicalMapping"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IPhysicalSpeed"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "data_type_mappings"
+          },
+          {
+            "member": "PhysicalMapping"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "data_type_mappings"
+              },
+              {
+                "member": "PhysicalMapping"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Stop mapping ExampleSWC's data types with PhysicalMapping.",
+    "operations": [
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "data_type_mappings"
+            },
+            {
+              "member": "PhysicalMapping"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "data_type_mappings"
+          }
+        ]
+      }
+    ],
+    "notes": "One address, and the field rather than the removed member: the two legal repairs — name a set that already carries the pair, or add the pair to a set the component names — are both edits to `data_type_mappings` or to a set it names, and the rule chooses neither. `data_type_mappings` is a `whole_value` list, so its member is addressed by its own value and removing one is a `remove` at a four-step address; the address that comes back stops one step higher, at the field, because that is what the repair is about. The rule reports one finding per `(component, type)` whatever the number of ports that reached it, and says nothing about a component whose ports speak no physical type — including one that declares no `data_type_mappings` at all. It abstains wherever another rule owns the defect: a port naming no declared interface, a data element naming no declared type, and a `data_type_mappings` entry naming no declared set are each somebody else's finding, so no second refusal is added for one cause."
+  }
+}

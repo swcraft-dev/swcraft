@@ -1,0 +1,32 @@
+{
+  "id": "09-ram-for-a-component",
+  "task": 9,
+  "group": "question",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Is there enough RAM left on Core0 for a new component that needs 12 KB? Start with yes or no.",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "first_of": {
+        "candidates": [
+          "yes",
+          "no"
+        ],
+        "expected": "no"
+      }
+    }
+  },
+  "reference": {
+    "RAM": {
+      "size": 32768,
+      "threshold": 0.75,
+      "budget": 24576,
+      "consumed": 14336,
+      "headroom": 10240
+    },
+    "requested": "12 KB (12288 or 12000 bytes), more than the 10240 bytes of headroom",
+    "computed_by": "swcraft resource-report"
+  },
+  "note": "The memory RAM is shared by Core0 and Core1 and is enforced strictly at 75 %. The raw free space (18432 bytes) would fit 12 KB, so an answer that ignores the threshold says yes and is wrong."
+}

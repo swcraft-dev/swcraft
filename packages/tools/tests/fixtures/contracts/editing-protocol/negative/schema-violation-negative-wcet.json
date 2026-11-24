@@ -1,0 +1,37 @@
+{
+  "name": "schema-violation-negative-wcet",
+  "description": "A declared field carrying a value the model schema rejects: `Task.wcet` must be a whole number followed by one of `ns`, `us`, `ms`, `s`, and greater than zero. The protocol admits any JSON as a payload on purpose, so the bound is checked by the registry against `schema.py` over the staged result, not by the request shape.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `Task_10ms` declares `wcet: 1200us` — the budget carries its unit, unlike `period`, which is float seconds.",
+    "existing_elements": [{ "layer": "tasks", "element": "Task_10ms" }],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": { "layer": "tasks", "element": "Task_10ms", "path": [{ "field": "wcet" }] }
+        }
+      ]
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Correct the execution-time budget of Task_10ms.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": { "layer": "tasks", "element": "Task_10ms", "path": [{ "field": "wcet" }] },
+        "value": "-1200us"
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [{ "layer": "tasks", "element": "Task_10ms", "path": [{ "field": "wcet" }] }],
+    "notes": "`schema-violation` covers type, bound, enum-member and NaN/±Infinity violations alike. It is the same code a malformed request envelope gets, which is why a `protocol-schema` negative's expectation is pinned to it and this `semantic` one shares it: the code says what was wrong, the `violation_layer` says who is able to notice."
+  }
+}

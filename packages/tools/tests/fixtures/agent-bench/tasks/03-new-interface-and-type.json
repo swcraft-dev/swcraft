@@ -1,0 +1,61 @@
+{
+  "id": "03-new-interface-and-type",
+  "task": 3,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Add a sender-receiver interface IBrakePadWear with one data element padWear of a new application type BrakePadWear_Pct (percent, range 0 to 100). Give BrakeController a provide port pBrakePadWear on it, and map BrakePadWear_Pct to uint8 in BrakeThermalMappings.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "application_types",
+        "name": "BrakePadWear_Pct",
+        "has": {
+          "range": {
+            "min": 0,
+            "max": 100
+          }
+        }
+      },
+      {
+        "layer": "interfaces",
+        "name": "IBrakePadWear",
+        "has": {
+          "kind": "sender_receiver",
+          "data_elements": [
+            {
+              "name": "padWear",
+              "application_type": "BrakePadWear_Pct"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "BrakeController",
+        "has": {
+          "ports": [
+            {
+              "name": "pBrakePadWear",
+              "direction": "provide",
+              "interface": "IBrakePadWear"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "mapping_sets",
+        "name": "BrakeThermalMappings",
+        "has": {
+          "maps": [
+            {
+              "application": "BrakePadWear_Pct",
+              "implementation": "uint8"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

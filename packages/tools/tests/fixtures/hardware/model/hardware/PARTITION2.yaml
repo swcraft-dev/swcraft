@@ -1,0 +1,4 @@
+name: PARTITION2
+kind: partition
+core: CORE2
+description: The one partition on CORE2, without a level.

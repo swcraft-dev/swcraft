@@ -1,0 +1,11 @@
+name: root_link
+from:
+  composition: Sub
+  port: pSignalOut
+to:
+  composition: Sink
+  port: rSignalIn
+description: >-
+  The root's one assembly connector, between two composition-typed endpoints.
+  It names no composition of its own, so it belongs to the root -- resolved
+  where the model is in hand, never written into the file.

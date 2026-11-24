@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: an application primitive over a compu method that
+  is neither TEXTTABLE nor LINEAR.
+
+  RAT_FUNC is a rational function SWCraft's 'conversion' cannot hold, so the
+  type imports with its unit and its range and without its conversion, and the
+  report names the method's own category rather than saying only that something
+  was dropped.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>BaseTypes</SHORT-NAME>
+          <ELEMENTS>
+            <SW-BASE-TYPE>
+              <SHORT-NAME>Word</SHORT-NAME>
+              <CATEGORY>FIXED_LENGTH</CATEGORY>
+              <BASE-TYPE-SIZE>16</BASE-TYPE-SIZE>
+              <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+              <NATIVE-DECLARATION>uint16</NATIVE-DECLARATION>
+            </SW-BASE-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>AppTypes</SHORT-NAME>
+          <ELEMENTS>
+            <UNIT>
+              <SHORT-NAME>FlowUnit</SHORT-NAME>
+              <DISPLAY-NAME>l/min</DISPLAY-NAME>
+            </UNIT>
+            <COMPU-METHOD>
+              <SHORT-NAME>FlowCompu</SHORT-NAME>
+              <CATEGORY>RAT_FUNC</CATEGORY>
+              <COMPU-INTERNAL-TO-PHYS>
+                <COMPU-SCALES>
+                  <COMPU-SCALE>
+                    <COMPU-RATIONAL-COEFFS>
+                      <COMPU-NUMERATOR>
+                        <V>0</V>
+                        <V>1</V>
+                      </COMPU-NUMERATOR>
+                      <COMPU-DENOMINATOR>
+                        <V>1</V>
+                      </COMPU-DENOMINATOR>
+                    </COMPU-RATIONAL-COEFFS>
+                  </COMPU-SCALE>
+                </COMPU-SCALES>
+              </COMPU-INTERNAL-TO-PHYS>
+            </COMPU-METHOD>
+            <DATA-CONSTR>
+              <SHORT-NAME>FlowRange</SHORT-NAME>
+              <DATA-CONSTR-RULES>
+                <DATA-CONSTR-RULE>
+                  <PHYS-CONSTRS>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">60</UPPER-LIMIT>
+                  </PHYS-CONSTRS>
+                </DATA-CONSTR-RULE>
+              </DATA-CONSTR-RULES>
+            </DATA-CONSTR>
+            <APPLICATION-PRIMITIVE-DATA-TYPE>
+              <SHORT-NAME>Flow</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <COMPU-METHOD-REF DEST="COMPU-METHOD">/Acme/AppTypes/FlowCompu</COMPU-METHOD-REF>
+                    <DATA-CONSTR-REF DEST="DATA-CONSTR">/Acme/AppTypes/FlowRange</DATA-CONSTR-REF>
+                    <UNIT-REF DEST="UNIT">/Acme/AppTypes/FlowUnit</UNIT-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+            </APPLICATION-PRIMITIVE-DATA-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Interfaces</SHORT-NAME>
+          <ELEMENTS>
+            <SENDER-RECEIVER-INTERFACE>
+              <SHORT-NAME>IFlow</SHORT-NAME>
+              <IS-SERVICE>false</IS-SERVICE>
+              <DATA-ELEMENTS>
+                <VARIABLE-DATA-PROTOTYPE>
+                  <SHORT-NAME>flow</SHORT-NAME>
+                  <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/AppTypes/Flow</TYPE-TREF>
+                </VARIABLE-DATA-PROTOTYPE>
+              </DATA-ELEMENTS>
+            </SENDER-RECEIVER-INTERFACE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE>
+              <SHORT-NAME>FlowSwc</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE>
+                  <SHORT-NAME>pFlow</SHORT-NAME>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Interfaces/IFlow</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

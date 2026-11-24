@@ -1,0 +1,1599 @@
+{
+ "AR-PACKAGE": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "UUID": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "ADMIN-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ANNOTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "AR-PACKAGES": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "BLUEPRINT-POLICYS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "CATEGORY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DESC": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ELEMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INTRODUCTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "LONG-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "REFERENCE-BASES": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-FRAGMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-PATTERN": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "VARIATION-POINT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "ARGUMENT-DATA-PROTOTYPE": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "UUID": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "ADMIN-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ANNOTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "CATEGORY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DESC": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DIRECTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INTRODUCTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "LONG-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SERVER-ARGUMENT-IMPL-POLICY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-FRAGMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-DATA-DEF-PROPS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TYPE-BLUEPRINTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TYPE-TREF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "VARIATION-POINT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "CLIENT-COM-SPEC": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "OPERATION-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TRANSFORMATION-COM-SPEC-PROPSS": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "CLIENT-SERVER-INTERFACE": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "UUID": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "ADMIN-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ANNOTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "BLUEPRINT-POLICYS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "CATEGORY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DESC": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INTRODUCTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "IS-SERVICE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "LONG-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "OPERATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "POSSIBLE-ERRORS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SERVICE-KIND": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-FRAGMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-PATTERN": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "VARIATION-POINT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "COMPU-SCALE": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "COMPU-CONST": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "COMPU-INVERSE-VALUE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "COMPU-RATIONAL-COEFFS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DESC": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "LOWER-LIMIT": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "MASK": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-LABEL": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SYMBOL": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "UPPER-LIMIT": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "VARIATION-POINT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "DATA-CONSTR-RULE": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "CONSTR-LEVEL": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INTERNAL-CONSTRS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "PHYS-CONSTRS": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "DATA-FILTER": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "DATA-FILTER-TYPE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "MASK": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "MAX": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "MIN": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "OFFSET": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "PERIOD": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "X": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "DATA-RECEIVED-EVENT": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "UUID": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "ACTIVATION-REASON-REPRESENTATION-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ADMIN-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ANNOTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "CATEGORY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DATA-IREF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DESC": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DISABLED-MODE-IREFS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INTRODUCTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "LONG-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-FRAGMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "START-ON-EVENT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "VARIATION-POINT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "DESC": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "L-2": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "EXECUTION-TIME-CONSTRAINT": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "UUID": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "ADMIN-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ANNOTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "CATEGORY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "COMPONENT-IREF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DESC": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "EXECUTABLE-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "EXECUTION-TIME-TYPE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INTRODUCTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "LONG-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "MAXIMUM": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "MINIMUM": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-FRAGMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TIMING-CONDITION-REF": [
+    "4.3.0"
+   ],
+   "TRACE-REFS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "VARIATION-POINT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "IMPLEMENTATION-DATA-TYPE": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "UUID": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "ADMIN-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ANNOTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "BLUEPRINT-POLICYS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "CATEGORY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DESC": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DYNAMIC-ARRAY-SIZE-PROFILE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INTRODUCTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "LONG-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-FRAGMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-PATTERN": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SUB-ELEMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-DATA-DEF-PROPS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SYMBOL-PROPS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TYPE-EMITTER": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "VARIATION-POINT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "IMPLEMENTATION-DATA-TYPE-ELEMENT": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "UUID": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "ADMIN-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ANNOTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ARRAY-SIZE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ARRAY-SIZE-HANDLING": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ARRAY-SIZE-SEMANTICS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "CATEGORY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DESC": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INTRODUCTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "LONG-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-FRAGMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SUB-ELEMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-DATA-DEF-PROPS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "VARIATION-POINT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "L-2": {
+  "attributes": {
+   "L": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "BR": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "E": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "FT": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "IE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SUB": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SUP": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TRACE-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TT": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "XREF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "XREF-TARGET": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "L-4": {
+  "attributes": {
+   "L": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "E": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "IE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SUB": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SUP": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "LONG-NAME": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "L-4": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "NONQUEUED-RECEIVER-COM-SPEC": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "ALIVE-TIMEOUT": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "COMPOSITE-NETWORK-REPRESENTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DATA-ELEMENT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ENABLE-UPDATE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "EXTERNAL-REPLACEMENT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "FILTER": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "HANDLE-DATA-STATUS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "HANDLE-NEVER-RECEIVED": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "HANDLE-OUT-OF-RANGE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "HANDLE-OUT-OF-RANGE-STATUS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "HANDLE-TIMEOUT-TYPE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INIT-VALUE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "MAX-DELTA-COUNTER-INIT": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "MAX-NO-NEW-OR-REPEATED-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "NETWORK-REPRESENTATION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "REPLACE-WITH": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SYNC-COUNTER-INIT": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TIMEOUT-SUBSTITUTION-VALUE": [
+    "4.3.0"
+   ],
+   "TRANSFORMATION-COM-SPEC-PROPSS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "USES-END-TO-END-PROTECTION": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "NONQUEUED-SENDER-COM-SPEC": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "COMPOSITE-NETWORK-REPRESENTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DATA-ELEMENT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "HANDLE-OUT-OF-RANGE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INIT-VALUE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "NETWORK-REPRESENTATION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TRANSMISSION-ACKNOWLEDGE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "USES-END-TO-END-PROTECTION": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "QUEUED-RECEIVER-COM-SPEC": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "COMPOSITE-NETWORK-REPRESENTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DATA-ELEMENT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "EXTERNAL-REPLACEMENT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "HANDLE-OUT-OF-RANGE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "HANDLE-OUT-OF-RANGE-STATUS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "MAX-DELTA-COUNTER-INIT": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "MAX-NO-NEW-OR-REPEATED-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "NETWORK-REPRESENTATION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "QUEUE-LENGTH": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "REPLACE-WITH": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SYNC-COUNTER-INIT": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TRANSFORMATION-COM-SPEC-PROPSS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "USES-END-TO-END-PROTECTION": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "QUEUED-SENDER-COM-SPEC": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "COMPOSITE-NETWORK-REPRESENTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DATA-ELEMENT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "HANDLE-OUT-OF-RANGE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "NETWORK-REPRESENTATION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TRANSMISSION-ACKNOWLEDGE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "USES-END-TO-END-PROTECTION": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "R-MODE-IN-ATOMIC-SWC-INSTANCE-REF": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "CONTEXT-PORT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TARGET-MODE-DECLARATION-REF": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "R-VARIABLE-IN-ATOMIC-SWC-INSTANCE-REF": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "CONTEXT-R-PORT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TARGET-DATA-ELEMENT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "SENDER-RECEIVER-INTERFACE": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "UUID": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "ADMIN-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ANNOTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "BLUEPRINT-POLICYS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "CATEGORY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DATA-ELEMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DESC": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INTRODUCTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INVALIDATION-POLICYS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "IS-SERVICE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "LONG-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SERVICE-KIND": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-FRAGMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-PATTERN": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "VARIATION-POINT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "SERVER-COM-SPEC": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "OPERATION-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "QUEUE-LENGTH": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TRANSFORMATION-COM-SPEC-PROPSS": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "SW-DATA-DEF-PROPS-CONDITIONAL": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "ADDITIONAL-NATIVE-TYPE-QUALIFIER": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ANNOTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "BASE-TYPE-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "COMPU-METHOD-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DATA-CONSTR-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DISPLAY-FORMAT": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "IMPLEMENTATION-DATA-TYPE-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INVALID-VALUE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "MC-FUNCTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "STEP-SIZE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-ADDR-METHOD-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-ALIGNMENT": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-BIT-REPRESENTATION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-CALIBRATION-ACCESS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-CALPRM-AXIS-SET": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-COMPARISON-VARIABLES": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-DATA-DEPENDENCY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-HOST-VARIABLE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-IMPL-POLICY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-INTENDED-RESOLUTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-INTERPOLATION-METHOD": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-IS-VIRTUAL": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-POINTER-TARGET-PROPS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-RECORD-LAYOUT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-REFRESH-TIMING": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-TEXT-PROPS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-VALUE-BLOCK-SIZE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "UNIT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "VALUE-AXIS-DATA-TYPE-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "VARIATION-POINT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "SWC-TIMING": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "UUID": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "ADMIN-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ANNOTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "BEHAVIOR-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "CATEGORY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "COMPONENT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DESC": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INTRODUCTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "LONG-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-FRAGMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TIMING-CONDITIONS": [
+    "4.3.0"
+   ],
+   "TIMING-DESCRIPTIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TIMING-GUARANTEES": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TIMING-REQUIREMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TIMING-RESOURCE": [
+    "4.3.0"
+   ],
+   "VARIATION-POINT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "TIMING-EVENT": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "UUID": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "ACTIVATION-REASON-REPRESENTATION-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ADMIN-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ANNOTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "CATEGORY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DESC": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DISABLED-MODE-IREFS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INTRODUCTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "LONG-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "PERIOD": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-FRAGMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "START-ON-EVENT-REF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "VARIATION-POINT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "VARIABLE-DATA-PROTOTYPE": {
+  "attributes": {
+   "S": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "T": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "UUID": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  },
+  "elements": {
+   "ADMIN-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ANNOTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "CATEGORY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DESC": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INIT-VALUE": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INTRODUCTION": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "LONG-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-FRAGMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SW-DATA-DEF-PROPS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "TYPE-TREF": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "VARIATION-POINT": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "group IDENTIFIABLE": {
+  "attributes": {},
+  "elements": {
+   "ADMIN-DATA": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "ANNOTATIONS": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "CATEGORY": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "DESC": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "INTRODUCTION": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "group MULTILANGUAGE-REFERRABLE": {
+  "attributes": {},
+  "elements": {
+   "LONG-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ },
+ "group REFERRABLE": {
+  "attributes": {},
+  "elements": {
+   "SHORT-NAME": [
+    "4.2.2",
+    "4.3.0"
+   ],
+   "SHORT-NAME-FRAGMENTS": [
+    "4.2.2",
+    "4.3.0"
+   ]
+  }
+ }
+}

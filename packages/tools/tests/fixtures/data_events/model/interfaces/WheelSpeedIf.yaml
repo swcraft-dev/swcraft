@@ -1,0 +1,9 @@
+name: WheelSpeedIf
+kind: sender_receiver
+description: The front wheel speeds; FrontRight is queued, so every sample is kept.
+data_elements:
+- name: FrontLeft
+  implementation_type: uint16
+- name: FrontRight
+  implementation_type: uint16
+  sw_impl_policy: queued

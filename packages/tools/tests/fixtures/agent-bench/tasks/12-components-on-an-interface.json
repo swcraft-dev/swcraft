@@ -1,0 +1,32 @@
+{
+  "id": "12-components-on-an-interface",
+  "task": 12,
+  "group": "search-and-statistics",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which components have a port of interface IBrakeTemperature?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "mentions_all": [
+        "BrakeController",
+        "BrakeTemperatureSensor",
+        "BrakeThermalProtection"
+      ],
+      "mentions_none": [
+        "DiagnosticManager",
+        "InstrumentCluster",
+        "VehicleStateManager",
+        "NvM"
+      ]
+    }
+  },
+  "reference": {
+    "ports": [
+      "BrakeController.rRearBrakeTemperature (require)",
+      "BrakeTemperatureSensor.pBrakeTemperature (provide)",
+      "BrakeThermalProtection.rBrakeTemperature (require)"
+    ],
+    "computed_by": "swcraft query --request {address: {layer: swc}, members: ports, where: [{field: interface, equals: IBrakeTemperature}]}"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "name": "read-swc-layer-summary",
+  "description": "A layer-granularity `read` with NO `form`, which is how an agent reaches a layer by default: the answer is the `summary` — every element, in the same order, with fewer fields and every collection as a count. Sizes are quoted in the unit the budget is stated in — the WIRE bytes of the whole response, `measured.wire_bytes`, which is what `budget_wire_bytes` above is compared against. That unit is one copy, since 2026-10-09: a tool result is sent once, as its compact document carried as a JSON string. On `examples/basic` this response measures 326 wire bytes against the 1 756 the `full` form costs (19 %, measured 2026-10-09); on the generated 150-component `large-bench` specimen (measured 2026-11-13 with `scripts/measure_mcp_scale.py`) the same pair is 26 466 against 831 175 (3.2 %, the `full` refused), which is the difference between an answer that fits a prompt and one the server refuses because the host would cut it. An SWC's summary carries `runnables` as a count, and its access lists are member facts one level below it. The two-component model is dominated by the fixed response envelope; the large model's ratio is the one the form was added for.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. Its `swc/` layer holds `ExampleConsumerSWC` and `ExampleSWC`, both stored under the `example` group, each with one port, one runnable and one memory budget.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      }
+    ],
+    "notes": "The summary is DERIVED from what the contract already declares — the layer's `identityField`, every `placement` field, the kind's discriminator where it has one, every required scalar, every scalar reference to another element (required or optional, omitted where unset), and a count for every declared collection — so a kind declared tomorrow gets a summary by declaring its identity and its collections, with no `summaryFields` key to keep in step. `swc` declares no discriminator and no scalar reference of its own, so this value shows the other four clauses."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    }
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "swc"
+      },
+      "form": "summary",
+      "value": [
+        {
+          "name": "ExampleConsumerSWC",
+          "group": "example",
+          "ports": 1,
+          "runnables": 1,
+          "variables": 0,
+          "exclusive_areas": 0,
+          "memory": 1,
+          "data_type_mappings": 0,
+          "satisfies": 1
+        },
+        {
+          "name": "ExampleSWC",
+          "group": "example",
+          "ports": 1,
+          "runnables": 1,
+          "variables": 0,
+          "exclusive_areas": 0,
+          "memory": 1,
+          "data_type_mappings": 0,
+          "satisfies": 1
+        }
+      ]
+    },
+    "notes": "`form` is ECHOED as the form the value was published in, so a client never has to know the default table — and `discover`'s `reads` block publishes that table anyway. The reduction is a WIDTH reduction and never a depth one: every element of the layer is here, in the same registry order the `full` form answers in, so a count of the elements is the same question in either form. `ports: 1` is the count of a declared collection and not its content; `{layer, element, path: [{field: ports}]}` is the address that answers the members, itself summarized by default. Nothing is truncated: an answer that would not fit is refused with `over-budget` (`negative/read-layer-full-over-budget.json`), never cut."
+  }
+}

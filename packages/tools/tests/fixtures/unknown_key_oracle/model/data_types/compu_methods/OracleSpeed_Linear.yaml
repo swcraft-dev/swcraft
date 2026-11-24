@@ -1,0 +1,11 @@
+name: OracleSpeed_Linear
+kind: linear
+unit: KilometerPerHour
+factor: 0.01
+offset: 0
+limits:
+  lower:
+    value: 0
+  upper:
+    value: 30000
+    interval: closed

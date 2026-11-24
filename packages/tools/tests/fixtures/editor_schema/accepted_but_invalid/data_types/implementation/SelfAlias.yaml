@@ -1,0 +1,4 @@
+name: SelfAlias
+kind: reference_type
+base: SelfAlias
+description: A reference type whose base is itself

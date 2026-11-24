@@ -1,0 +1,36 @@
+{
+  "id": "14-asil-b-count",
+  "task": 14,
+  "group": "search-and-statistics",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "How many components are ASIL B?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "number": 3
+    }
+  },
+  "reference": {
+    "effective": {
+      "B": [
+        "BrakeController",
+        "BrakeTemperatureSensor",
+        "BrakeThermalProtection"
+      ],
+      "A": [
+        "DiagnosticManager",
+        "NvM"
+      ],
+      "QM": [
+        "InstrumentCluster",
+        "VehicleStateManager"
+      ]
+    },
+    "declared_B": [
+      "BrakeThermalProtection"
+    ],
+    "computed_by": "swcraft query --request {address: {layer: swc}, form: index, derived: [effective_level]}, the request of agent question 06-components-at-a-level"
+  },
+  "note": "The answer is the effective level, the one the product's own question 06 answers. Only BrakeThermalProtection declares asil B; BrakeController and BrakeTemperatureSensor inherit B(D) from the data they exchange with it. An answer of 1 counts declarations and is wrong."
+}

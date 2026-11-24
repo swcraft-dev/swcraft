@@ -1,0 +1,666 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "swcraft experiment trace: proposals.json, formatVersion 1",
+  "description": "The trace link search's proposals file: the search writes it with every decision slot empty, the architect fills them (a hand edit or the VS Code panel), and `swcraft experiment trace --apply` carries them out and marks each item `applied` or `stale`. Package data beside its reader, `trace_records.py`; seven rules are the reader's alone: no object repeats a key, no requirement id is in two entries, no (requirement, target) pair is proposed or chosen twice, no target and member are in two `linked` entries of one entry, a `linked` entry's `member` names its own requirement in the requirement form, its `version` and `confirmed` agree with the member and the entry's version, and an integer is written without a fraction (`integer` here accepts `1.0` as the number 1).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "formatVersion",
+    "kind",
+    "name",
+    "model",
+    "configuration",
+    "requirements"
+  ],
+  "properties": {
+    "formatVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "trace"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "digest",
+        "files",
+        "swcraftVersion"
+      ],
+      "properties": {
+        "digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "swcraftVersion": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "configuration": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "file",
+            "insideProject",
+            "sha256"
+          ],
+          "properties": {
+            "file": {
+              "type": "string",
+              "minLength": 1
+            },
+            "insideProject": {
+              "type": "boolean"
+            },
+            "sha256": {
+              "$ref": "#/$defs/digest"
+            }
+          }
+        }
+      ]
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/requirement"
+      }
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "figure": {
+      "oneOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "n",
+            "d"
+          ],
+          "properties": {
+            "n": {
+              "type": "integer"
+            },
+            "d": {
+              "type": "integer",
+              "minimum": 2
+            }
+          }
+        }
+      ]
+    },
+    "score": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "n",
+        "d"
+      ],
+      "properties": {
+        "n": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "d": {
+          "const": 1000000
+        }
+      }
+    },
+    "kind": {
+      "enum": [
+        "swc",
+        "port",
+        "runnable",
+        "interface",
+        "composition",
+        "task",
+        "processor",
+        "core",
+        "memory",
+        "partition"
+      ]
+    },
+    "address": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "owner",
+        "name"
+      ],
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/kind"
+        },
+        "owner": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "port",
+                  "runnable"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "owner": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "owner": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "examples": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "phrase"
+            ],
+            "properties": {
+              "kind": {
+                "const": "name"
+              },
+              "phrase": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "share",
+              "seeded",
+              "of",
+              "examples"
+            ],
+            "properties": {
+              "kind": {
+                "const": "neighbours"
+              },
+              "share": {
+                "$ref": "#/$defs/figure"
+              },
+              "seeded": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "of": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "examples": {
+                "$ref": "#/$defs/examples"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "score",
+              "count",
+              "examples"
+            ],
+            "properties": {
+              "kind": {
+                "const": "similar"
+              },
+              "score": {
+                "$ref": "#/$defs/score"
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "examples": {
+                "$ref": "#/$defs/examples"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "terms"
+            ],
+            "properties": {
+              "kind": {
+                "const": "text"
+              },
+              "terms": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 5,
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "name",
+        "score",
+        "evidence"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "swc",
+            "composition",
+            "interface",
+            "task",
+            "partition",
+            "core",
+            "processor",
+            "memory"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "score": {
+          "$ref": "#/$defs/score"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        }
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "place",
+        "group",
+        "target",
+        "fingerprint",
+        "band",
+        "score",
+        "evidence",
+        "decision"
+      ],
+      "properties": {
+        "place": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "group": {
+          "$ref": "#/$defs/group"
+        },
+        "target": {
+          "$ref": "#/$defs/address"
+        },
+        "fingerprint": {
+          "$ref": "#/$defs/digest"
+        },
+        "band": {
+          "enum": [
+            "strong",
+            "medium",
+            "weak"
+          ]
+        },
+        "score": {
+          "$ref": "#/$defs/score"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        },
+        "decision": {
+          "enum": [
+            null,
+            "accept",
+            "reject"
+          ]
+        },
+        "preselected": {
+          "const": true
+        },
+        "applied": {
+          "const": true
+        },
+        "stale": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "applied",
+              "stale"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": null
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "applied"
+                  ]
+                },
+                {
+                  "required": [
+                    "stale"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "preselected"
+            ]
+          },
+          "then": {
+            "properties": {
+              "decision": {
+                "const": "accept"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "member",
+        "version",
+        "confirmed"
+      ],
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/address"
+        },
+        "member": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "confirmed": {
+          "type": "boolean"
+        },
+        "decision": {
+          "enum": [
+            null,
+            "confirm"
+          ]
+        },
+        "applied": {
+          "const": true
+        },
+        "stale": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "applied",
+              "stale"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "confirmed": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "decision"
+                  ]
+                },
+                {
+                  "required": [
+                    "applied"
+                  ]
+                },
+                {
+                  "required": [
+                    "stale"
+                  ]
+                }
+              ]
+            }
+          },
+          "else": {
+            "required": [
+              "decision"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": null
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "applied"
+                  ]
+                },
+                {
+                  "required": [
+                    "stale"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "description",
+        "version",
+        "fingerprint",
+        "document",
+        "pass",
+        "chosenBecause",
+        "lowAccuracy",
+        "linked",
+        "candidates",
+        "chosen"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "description": "The requirement's title at the search, for display only; Apply never reads it."
+        },
+        "description": {
+          "type": "string",
+          "description": "The requirement's description at the search, for display only (the panel's tooltip and row); Apply never reads it."
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fingerprint": {
+          "$ref": "#/$defs/digest"
+        },
+        "document": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "pass": {
+          "enum": [
+            "review",
+            "labelling"
+          ]
+        },
+        "chosenBecause": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lowAccuracy": {
+          "type": "boolean"
+        },
+        "linked": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/candidate"
+          }
+        },
+        "chosen": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/chosen"
+          }
+        }
+      }
+    },
+    "chosen": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target"
+      ],
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/address"
+        },
+        "applied": {
+          "const": true
+        },
+        "stale": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "applied",
+              "stale"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

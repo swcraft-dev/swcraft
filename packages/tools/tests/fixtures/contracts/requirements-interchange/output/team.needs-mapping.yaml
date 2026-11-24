@@ -1,0 +1,8 @@
+# team.needs-mapping.yaml - how the brake team's needs.json, built with SWCraft's declarations, maps back.
+types:                 # the team's need type (the directive name) -> req | spec | ignore
+  sysreq: req
+fields:                # SWCraft's field <- the team's need key
+  derived_from: parent
+  asil: safety
+# The keys SWCraft's declarations put on every need of the team's own, which this mapping does not read.
+ignore: [satisfies, satisfies_unconfirmed, derived_from, derived_from_unconfirmed, asil, swcraft_path]

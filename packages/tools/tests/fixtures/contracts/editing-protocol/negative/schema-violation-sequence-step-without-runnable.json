@@ -1,0 +1,63 @@
+{
+  "name": "schema-violation-sequence-step-without-runnable",
+  "description": "A sequence whose one step names its component and no `runnable`. Since contract `9.0.0` a step's identity is the composite `(swc, instance, runnable)` and an absent `swc` or `instance` reads as `null` — but `runnable` is required and no optional identity field, so its absence is read as nothing at all: the owning element's validation refuses the step.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model; `Task_10ms` maps one runnable, `ExampleConsumerSWC.ExampleConsumerRun`. The change set creates a second scenario of that task whose one step names `ExampleConsumerSWC` and no runnable.",
+    "existing_elements": [
+      {
+        "layer": "tasks",
+        "element": "Task_10ms"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "sequences",
+            "element": "task10ms_consumer_overview"
+          }
+        }
+      ],
+      "notes": "The scope covers the create exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Show the consumer's part of the 10 ms cycle.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "sequences",
+          "element": "task10ms_consumer_overview"
+        },
+        "value": {
+          "name": "task10ms_consumer_overview",
+          "task": "Task_10ms",
+          "title": "Consumer overview",
+          "steps": [
+            {
+              "swc": "ExampleConsumerSWC"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "sequences",
+        "element": "task10ms_consumer_overview"
+      }
+    ],
+    "notes": "Refused when the payload is bound, at the element the payload creates. The absent-as-`null` reading is the optional identity fields' alone (`swc` and `instance`); `runnable` is required, so no spelling of the step leaves it out. A step created as a MEMBER without `runnable` is refused one step earlier, by the same code: its address cannot carry the declared tuple, so the address and the payload never denote one member."
+  }
+}

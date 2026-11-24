@@ -1,0 +1,126 @@
+{
+  "name": "consistency-violation-undeclared-data-description-elements",
+  "description": "One change set whose every reference into the three element layers names nothing: an application type whose `unit_ref`, `compu_method_ref` and `data_constr_ref` name no declared element, and a linear compu method whose `unit` names no declared unit. Each is one of contract `8.0.0`'s four undeclared-target rules (`rule:data-type.unknown-unit`, `…unknown-compu-method`, `…unknown-data-constr` and `rule:compu-method.unknown-unit`), all four reported in one refusal.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, whose three element layers are empty. The change set creates an application type and a linear method, each naming elements no layer declares.",
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "ProbeTorque"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "compu_methods",
+            "element": "ProbeTorqueScale"
+          }
+        }
+      ],
+      "notes": "The scope covers every operation exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Declare the probe torque against elements that were never declared.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "application_types",
+          "element": "ProbeTorque"
+        },
+        "value": {
+          "name": "ProbeTorque",
+          "kind": "application_type",
+          "unit_ref": "ProbeAbsentUnit",
+          "compu_method_ref": "ProbeAbsentScale",
+          "data_constr_ref": "ProbeAbsentLimits",
+          "description": "Probe torque naming three elements no layer declares"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "compu_methods",
+          "element": "ProbeTorqueScale"
+        },
+        "value": {
+          "name": "ProbeTorqueScale",
+          "kind": "linear",
+          "unit": "ProbeAbsentUnit"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "application_types",
+        "element": "ProbeTorque",
+        "path": [
+          {
+            "field": "unit_ref"
+          }
+        ]
+      }
+    ],
+    "additional": [
+      {
+        "expected_error": "consistency-violation",
+        "failure_class": "invalid",
+        "addresses": [
+          {
+            "layer": "application_types",
+            "element": "ProbeTorque",
+            "path": [
+              {
+                "field": "compu_method_ref"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "expected_error": "consistency-violation",
+        "failure_class": "invalid",
+        "addresses": [
+          {
+            "layer": "application_types",
+            "element": "ProbeTorque",
+            "path": [
+              {
+                "field": "data_constr_ref"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "expected_error": "consistency-violation",
+        "failure_class": "invalid",
+        "addresses": [
+          {
+            "layer": "compu_methods",
+            "element": "ProbeTorqueScale",
+            "path": [
+              {
+                "field": "unit"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "notes": "Pass D: every element and every reference is individually admissible, and the assembled staged result breaks a cross-element rule — `consistency-violation`, the code each undeclared-target rule of the element layers maps to. The primary is the type's `unit_ref` and `additional` carries the other three, each at the referrer's field and never at the target, which no layer declares."
+  }
+}

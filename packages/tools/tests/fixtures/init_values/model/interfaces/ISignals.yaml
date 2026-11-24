@@ -1,0 +1,58 @@
+name: ISignals
+kind: sender_receiver
+description: Every init value shape the writer has to emit, in one interface.
+data_elements:
+- name: speed
+  implementation_type: uint8
+  init: 7
+- name: plain
+  implementation_type: uint8
+- name: ratio
+  implementation_type: Ratio_T
+  init: 12.5
+- name: flag
+  implementation_type: boolean
+  init: true
+- name: mode
+  application_type: Mode_T
+  init: 'ON'
+- name: huge
+  implementation_type: float32
+  init: 1.0e+20
+- name: negative
+  implementation_type: float32
+  init: -1.0e+20
+- name: tiny
+  implementation_type: float32
+  init: 1.0e-7
+- name: whole
+  implementation_type: float32
+  init: 100.0
+- name: bytes
+  application_type: Bytes_T
+  init:
+  - 1
+  - 2
+- name: floats
+  application_type: Floats_T
+  init:
+  - 1.0e+20
+  - -1.0e+20
+  - 1.0e-7
+  - 100.0
+- name: limits
+  application_type: Limits_T
+  init:
+    low: -1.0e+20
+    high: 1.0e+20
+    tiny: 1.0e-7
+    whole: 100.0
+- name: deep
+  application_type: Grid_T
+  init:
+  - row:
+      index: 1
+      mode: 'OFF'
+  - row:
+      index: 2
+      mode: 'ON'

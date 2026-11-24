@@ -1,0 +1,10 @@
+# Scenario 4 - author a requirement and its trace link (a `satisfies` member of
+# the component), then read the coverage from the component.
+#
+# Turn 1 asks one review question. Turn 2 only reads and asks nothing, so it uses the
+# plain-string form.
+- user: "Ensure EngineController exists as an application SWC in the engine group.\
+    \ Then add a requirement REQ_ENG_001 titled 'Engine speed control shall be\
+    \ implemented' and link it to EngineController."
+  approvals: ["y"]
+- "Show me the traceability coverage for EngineController."

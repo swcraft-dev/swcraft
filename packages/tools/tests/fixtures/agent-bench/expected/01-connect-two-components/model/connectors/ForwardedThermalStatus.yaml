@@ -1,0 +1,7 @@
+name: ForwardedThermalStatus
+from:
+  swc: DiagnosticManager
+  port: pForwardedThermalStatus
+to:
+  swc: InstrumentCluster
+  port: rForwardedThermalStatus

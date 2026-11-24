@@ -1,0 +1,31 @@
+{
+  "id": "16-tasks-on-a-core",
+  "task": 16,
+  "group": "relations-and-containment",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which tasks run on Co1abc?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "mentions_all": [
+        "Ts01abcdefgh",
+        "Ts02abcdef",
+        "Ts03abcdef",
+        "Ts04abcdef",
+        "Ts05abcde",
+        "Ts31abcde"
+      ],
+      "mentions_none": [
+        "Ts06abcde",
+        "Ts16abcde",
+        "Ts32abcde"
+      ]
+    }
+  },
+  "reference": {
+    "path": "Co1abc hosts Pa1abc, which runs Ts01abcdefgh, Ts02abcdef, Ts03abcdef, Ts04abcdef, Ts05abcde, Ts31abcde",
+    "computed_by": "swcraft query hardware --where core=Co1abc, then swcraft query tasks --where partition=Pa1abc"
+  },
+  "note": "Ts31abcde has no runnable mapped; it runs on Co1abc all the same."
+}

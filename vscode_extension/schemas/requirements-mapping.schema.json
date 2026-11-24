@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://swcraft.dev/schemas/requirements-mapping.schema.json",
+  "title": "SWCraft needs mapping",
+  "description": "How a requirements team's Sphinx-Needs needs map to SWCraft's requirements, passed to `swcraft import requirements --mapping FILE`. It maps the team's need types and field names to SWCraft's; a key left out keeps SWCraft's own name. It is never a key of `swcraft.yaml`, and it lies outside the model root.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "types": {
+      "description": "The team's need type (the directive name, the need's `type`) mapped to `req`, `spec` or `ignore`. A need of an `ignore` type is not imported. When present, this is the whole list: a type it does not name is refused. When absent, `req` and `spec` map to themselves.",
+      "additionalProperties": {
+        "enum": [
+          "req",
+          "spec",
+          "ignore"
+        ],
+        "type": "string"
+      },
+      "minProperties": 1,
+      "type": "object"
+    },
+    "fields": {
+      "description": "Per SWCraft field, the key of the team's need it is read from. A field left out keeps its default source. The id and the type are never mapped.",
+      "$ref": "#/definitions/FieldSources"
+    },
+    "removed_status": {
+      "description": "The statuses that remove a requirement from the model, each listed once. When absent, `rejected` alone.",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "ignore": {
+      "description": "The team's own need keys SWCraft does not hold, each listed once. Listing a link type ignores its `_back` mirror with it. Any other key SWCraft does not read is refused.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "definitions": {
+    "FieldSources": {
+      "description": "Per SWCraft field, the key of the team's need it is read from.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "description": "The need key the requirement's `title` is read from.",
+          "type": "string",
+          "default": "title"
+        },
+        "description": {
+          "description": "The need key the requirement's `description` is read from: Sphinx-Needs writes the directive body as `content`, taken as written.",
+          "type": "string",
+          "default": "content"
+        },
+        "asil": {
+          "description": "The need key the requirement's `asil` is read from.",
+          "type": "string",
+          "default": "asil"
+        },
+        "document": {
+          "description": "The need key the requirement's `document` is read from.",
+          "type": "string",
+          "default": "document"
+        },
+        "revision": {
+          "description": "The need key the requirement's `revision` (the source tool's own revision) is read from.",
+          "type": "string",
+          "default": "revision"
+        },
+        "derived_from": {
+          "description": "The need key the requirement's parents are read from. A link field's part and condition are dropped, so `REQ-1.p1[status==\"open\"]` names `REQ-1`.",
+          "type": "string",
+          "default": "derived_from"
+        },
+        "status": {
+          "description": "The need key the status is read from. It is not stored; it decides removal (`removed_status`).",
+          "type": "string",
+          "default": "status"
+        }
+      }
+    }
+  }
+}

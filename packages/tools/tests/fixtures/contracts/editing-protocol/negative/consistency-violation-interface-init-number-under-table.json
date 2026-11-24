@@ -1,0 +1,93 @@
+{
+  "name": "consistency-violation-interface-init-number-under-table",
+  "description": "The same initial value given as a **number** — the entry's value, `1`, rather than its name. Under an implementation type that references a table the standard asks for a text ([constr_1225]) and SWCraft never reads a number as an entry, so the `init` is refused; the entry's name is the repair.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model plus the texttable `ProbeGearTable` (entries `ProbePark` = 0 and `ProbeDrive` = 1) and the implementation value type `ProbeGearRaw`, which rests on the base's `uint8_base` and names that table by `compu_method_ref`. The change set creates an interface whose one data element is typed by the value type and carries an `init`.",
+    "existing_elements": [
+      {
+        "layer": "base_types",
+        "element": "uint8_base"
+      },
+      {
+        "layer": "compu_methods",
+        "element": "ProbeGearTable"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "ProbeGearRaw"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IProbeGearStored"
+          }
+        }
+      ],
+      "notes": "The scope covers the one address exactly, so the refusal is the model rule and not the authorization boundary."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Publish the stored probe gear, starting at the drive entry's value.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "IProbeGearStored"
+        },
+        "value": {
+          "name": "IProbeGearStored",
+          "kind": "sender_receiver",
+          "data_elements": [
+            {
+              "name": "gear",
+              "implementation_type": "ProbeGearRaw",
+              "init": 1
+            }
+          ],
+          "description": "The probe gear, stored"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "interfaces",
+        "element": "IProbeGearStored",
+        "path": [
+          {
+            "field": "data_elements"
+          },
+          {
+            "member": "gear"
+          },
+          {
+            "field": "init"
+          }
+        ]
+      },
+      {
+        "layer": "implementation_types",
+        "element": "ProbeGearRaw",
+        "path": [
+          {
+            "field": "compu_method_ref"
+          }
+        ]
+      }
+    ],
+    "notes": "`rule:interface.init-unknown-enum-literal`, at two addresses: the `init` the repair rewrites, and the value type's `compu_method_ref` that makes its entries the vocabulary — in `implementation_types`, the layer that declares it. The number is refused even though it equals the `ProbeDrive` entry's value: SWCraft never reads a number as an entry or a literal, so `ProbeDrive` is the repair. The `examples/` twin `create-interface-init-by-table-entry` states that name and is staged."
+  }
+}

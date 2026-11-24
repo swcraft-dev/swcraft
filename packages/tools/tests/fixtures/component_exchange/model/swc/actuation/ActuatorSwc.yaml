@@ -1,0 +1,22 @@
+# Ports are authored provide-before-require on purpose: the ARXML writer
+# emits P-PORT-PROTOTYPEs before R-PORT-PROTOTYPEs regardless of authoring
+# order, so a round-tripped SWC always comes back provide-first. Port order
+# carries no semantics; authoring the canonical order keeps the acceptance
+# suite's strict Pydantic-equality round-trip assertions honest.
+name: ActuatorSwc
+type: application
+ports:
+- name: pStatus
+  direction: provide
+  interface: IActuatorStatus
+- name: rSpeed
+  direction: require
+  interface: IVehicleSpeed
+runnables:
+- name: ActuatorMain
+  events:
+  - type: timing
+    period: 0.02
+handle_termination_and_restart: no_support
+satisfies:
+- REQ-EXCH-001@1

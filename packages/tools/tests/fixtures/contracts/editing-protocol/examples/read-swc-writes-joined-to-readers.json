@@ -1,0 +1,300 @@
+{
+  "name": "read-swc-writes-joined-to-readers",
+  "description": "A join (`join`): every data element a runnable writes, joined to the connector that carries it and to every runnable that reads it at the other end — the sender-receiver connection table as ONE request. The outer read is a member path with a computed value (`members: \"runnables.writes\"`, `derived: [\"base_type\"]`); the first entry joins each write to the connectors whose computed `connection_ends` provider is the writing component and port, and nests the match under `connection`; the second reaches into that alias with its `left` paths and joins the reads of the requester component and port of the same data element, nested under `reader`. It is an INNER join on equal values: a row with no match is dropped, and a row with several is repeated once per match. Every path is checked against the declared shape of the row it reads before any row is computed.",
+  "kind": "example",
+  "context": {
+    "summary": "The seed of `examples/read-swc-members-path-runnable-writes.json`: the provider writes `pOut.value` in `ExampleRun` and `pPhysical.speed` in both `ExampleRun` and `ExampleSlowRun`; the consumer, one composition level below the root behind two delegated boundary ports, reads both in `ExampleConsumerRun`. So three writes each meet exactly one connector and one read.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "runnables"
+          }
+        ]
+      },
+      {
+        "layer": "connectors",
+        "element": "Example_to_Consumer"
+      },
+      {
+        "layer": "connectors",
+        "element": "Physical_to_Consumer"
+      }
+    ],
+    "baseline_state": "current",
+    "notes": "A read takes no scope and writes no audit record."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "form": "index",
+    "members": "runnables.writes",
+    "derived": [
+      "base_type"
+    ],
+    "join": [
+      {
+        "with": {
+          "address": {
+            "layer": "connectors"
+          },
+          "derived": [
+            "connection_ends"
+          ]
+        },
+        "on": [
+          {
+            "left": "element",
+            "right": "derived.connection_ends.provider.swc"
+          },
+          {
+            "left": "member.port",
+            "right": "derived.connection_ends.provider.port"
+          }
+        ],
+        "as": "connection"
+      },
+      {
+        "with": {
+          "address": {
+            "layer": "swc"
+          },
+          "members": "runnables.reads"
+        },
+        "on": [
+          {
+            "left": "connection.derived.connection_ends.requester.swc",
+            "right": "element"
+          },
+          {
+            "left": "connection.derived.connection_ends.requester.port",
+            "right": "member.port"
+          },
+          {
+            "left": "member.element",
+            "right": "member.element"
+          }
+        ],
+        "as": "reader"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "swc"
+      },
+      "form": "index",
+      "members": "runnables.writes",
+      "derived": [
+        "base_type"
+      ],
+      "join": [
+        {
+          "with": {
+            "address": {
+              "layer": "connectors"
+            },
+            "derived": [
+              "connection_ends"
+            ]
+          },
+          "on": [
+            {
+              "left": "element",
+              "right": "derived.connection_ends.provider.swc"
+            },
+            {
+              "left": "member.port",
+              "right": "derived.connection_ends.provider.port"
+            }
+          ],
+          "as": "connection"
+        },
+        {
+          "with": {
+            "address": {
+              "layer": "swc"
+            },
+            "members": "runnables.reads"
+          },
+          "on": [
+            {
+              "left": "connection.derived.connection_ends.requester.swc",
+              "right": "element"
+            },
+            {
+              "left": "connection.derived.connection_ends.requester.port",
+              "right": "member.port"
+            },
+            {
+              "left": "member.element",
+              "right": "member.element"
+            }
+          ],
+          "as": "reader"
+        }
+      ],
+      "value": {
+        "count": 3,
+        "identities": [
+          {
+            "element": "ExampleSWC",
+            "through": [
+              "ExampleRun"
+            ],
+            "member": {
+              "port": "pOut",
+              "element": "value"
+            },
+            "derived": {
+              "base_type": {
+                "implementation": "float32",
+                "base": "float32_base"
+              }
+            },
+            "connection": {
+              "element": "Example_to_Consumer",
+              "derived": {
+                "connection_ends": {
+                  "provider": {
+                    "swc": "ExampleSWC",
+                    "port": "pOut"
+                  },
+                  "requester": {
+                    "swc": "ExampleConsumerSWC",
+                    "port": "rIn"
+                  }
+                }
+              }
+            },
+            "reader": {
+              "element": "ExampleConsumerSWC",
+              "through": [
+                "ExampleConsumerRun"
+              ],
+              "member": {
+                "port": "rIn",
+                "element": "value"
+              }
+            }
+          },
+          {
+            "element": "ExampleSWC",
+            "through": [
+              "ExampleRun"
+            ],
+            "member": {
+              "port": "pPhysical",
+              "element": "speed"
+            },
+            "derived": {
+              "base_type": {
+                "implementation": "float32",
+                "base": "float32_base"
+              }
+            },
+            "connection": {
+              "element": "Physical_to_Consumer",
+              "derived": {
+                "connection_ends": {
+                  "provider": {
+                    "swc": "ExampleSWC",
+                    "port": "pPhysical"
+                  },
+                  "requester": {
+                    "swc": "ExampleConsumerSWC",
+                    "port": "rPhysical"
+                  }
+                }
+              }
+            },
+            "reader": {
+              "element": "ExampleConsumerSWC",
+              "through": [
+                "ExampleConsumerRun"
+              ],
+              "member": {
+                "port": "rPhysical",
+                "element": "speed"
+              }
+            }
+          },
+          {
+            "element": "ExampleSWC",
+            "through": [
+              "ExampleSlowRun"
+            ],
+            "member": {
+              "port": "pPhysical",
+              "element": "speed"
+            },
+            "derived": {
+              "base_type": {
+                "implementation": "float32",
+                "base": "float32_base"
+              }
+            },
+            "connection": {
+              "element": "Physical_to_Consumer",
+              "derived": {
+                "connection_ends": {
+                  "provider": {
+                    "swc": "ExampleSWC",
+                    "port": "pPhysical"
+                  },
+                  "requester": {
+                    "swc": "ExampleConsumerSWC",
+                    "port": "rPhysical"
+                  }
+                }
+              }
+            },
+            "reader": {
+              "element": "ExampleConsumerSWC",
+              "through": [
+                "ExampleConsumerRun"
+              ],
+              "member": {
+                "port": "rPhysical",
+                "element": "speed"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "notes": "Each row is the outer identity row, then each match under its alias: the provider component, port and element are `element` and `member`, the writing runnable `through.0`, the implementation and base type `derived.base_type`, the requester `connection.derived.connection_ends.requester`, the reading runnable `reader.through.0`. The joined reads are answered whole and unmeasured; only this answer is measured. Identical rows collapse, and a page's `next` is the whole row, every alias included. A path naming no value of its row is `schema-violation` (`negative/schema-violation-join-path-outside-row.json`), and so is `join` without an explicit `form: \"index\"` (`negative/schema-violation-join-without-index-form.json`)."
+  }
+}

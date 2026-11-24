@@ -1,0 +1,12 @@
+Diagrams report: vehicle-control-showcase
+
+Views: 5
+  ibd-VehicleControl            768.56 x 525 px  8484 bytes
+  overview-VehicleControl       488.28 x 455 px  3776 bytes
+  nesting                       863.28 x 114 px  2861 bytes
+  deployment                    959.28 x 228 px  4210 bytes
+  sequence-baseline_50ms_cycle  721.12 x 244 px  5788 bytes
+
+Not drawn: none
+
+Drawn as a loop: none

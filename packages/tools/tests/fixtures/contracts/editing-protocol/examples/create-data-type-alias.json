@@ -1,0 +1,79 @@
+{
+  "name": "create-data-type-alias",
+  "description": "A data type authored through the generic change set. The implementation types (`data_types` until contract `8.0.0`, `implementation_types` since) are a full model layer with a schema, a reader, a writer and ARXML output, and no MCP tool of their own. Here it is one `create` at an `implementation_types` element address, with no new tool and no new parameter.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, whose `base_types` layer (`data_types/base/`) already holds the base type `float32_base`. The value type rests on it and refines it with a unit and a value range. A value type's `base` must name a declared `base_type` — the reference-role rule, which `check-model` reports and pass D refuses — and `float32_base` is one.",
+    "existing_elements": [
+      {
+        "layer": "base_types",
+        "element": "float32_base"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "VehicleSpeed_kph"
+          }
+        }
+      ],
+      "notes": "Scope is keyed by operation and address. Nothing in it names a tool, which is why an operation on a layer that never had one needs no scope vocabulary of its own."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Add the VehicleSpeed_kph value type so speed signals carry a unit and a declared range.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "implementation_types",
+          "element": "VehicleSpeed_kph"
+        },
+        "value": {
+          "name": "VehicleSpeed_kph",
+          "kind": "value_type",
+          "base": "float32_base",
+          "unit": "kph",
+          "value_min": 0.0,
+          "value_max": 300.0,
+          "description": "Vehicle speed in kilometres per hour"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "VehicleSpeed_kph"
+          },
+          "after": {
+            "name": "VehicleSpeed_kph",
+            "kind": "value_type",
+            "base": "float32_base",
+            "unit": "kph",
+            "value_min": 0.0,
+            "value_max": 300.0,
+            "compu_method_ref": null,
+            "description": "Vehicle speed in kilometres per hour",
+            "package": null
+          },
+          "summary": "implementation_types: + VehicleSpeed_kph"
+        }
+      ]
+    },
+    "notes": "`staged` is the reviewable state: the change set is validated against the staged result — the value type's `base` resolves to a declared base type, and the exporter generates no `SHORT-NAME` from a value type's name at all since contract `7.0.0` retired the application view it used to invent, so nothing lengthens this one against the 128-character `Identifier` limit — and commit later applies exactly this delta. The real model is still byte-identical at this point."
+  }
+}

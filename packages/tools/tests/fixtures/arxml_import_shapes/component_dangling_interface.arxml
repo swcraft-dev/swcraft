@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: a component-scoped export whose component has a
+  port typed by an interface this file does not declare, for
+  `swcraft import component`.
+
+  The file holds EXACTLY ONE APPLICATION-SW-COMPONENT-TYPE and no composition
+  and no connector. MonitorSwc's rStatus port names
+  /Vendor/Interfaces/IStatus, which nothing declares; its pLevel port names an
+  interface that IS declared, so a test can tell "the one dangling port" from
+  "nothing was read".
+
+  `import component` keeps the dangling port on an interface stub, minted as
+  `import model` mints one, carrying the source path.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Chassis</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Types</SHORT-NAME>
+              <ELEMENTS>
+                <SW-BASE-TYPE>
+                  <SHORT-NAME>Octet</SHORT-NAME>
+                  <CATEGORY>FIXED_LENGTH</CATEGORY>
+                  <BASE-TYPE-SIZE>8</BASE-TYPE-SIZE>
+                  <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                  <NATIVE-DECLARATION>uint8</NATIVE-DECLARATION>
+                </SW-BASE-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>Level</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/Types/Octet</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Interfaces</SHORT-NAME>
+              <ELEMENTS>
+                <SENDER-RECEIVER-INTERFACE>
+                  <SHORT-NAME>ILevel</SHORT-NAME>
+                  <IS-SERVICE>false</IS-SERVICE>
+                  <DATA-ELEMENTS>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>level</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/Types/Level</TYPE-TREF>
+                    </VARIABLE-DATA-PROTOTYPE>
+                  </DATA-ELEMENTS>
+                </SENDER-RECEIVER-INTERFACE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Components</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>MonitorSwc</SHORT-NAME>
+                  <PORTS>
+                    <P-PORT-PROTOTYPE>
+                      <SHORT-NAME>pLevel</SHORT-NAME>
+                      <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/ILevel</PROVIDED-INTERFACE-TREF>
+                    </P-PORT-PROTOTYPE>
+                    <R-PORT-PROTOTYPE>
+                      <SHORT-NAME>rStatus</SHORT-NAME>
+                      <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Vendor/Interfaces/IStatus</REQUIRED-INTERFACE-TREF>
+                    </R-PORT-PROTOTYPE>
+                  </PORTS>
+                </APPLICATION-SW-COMPONENT-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

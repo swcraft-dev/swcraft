@@ -1,0 +1,5 @@
+name: CORE1
+kind: core
+threshold: 0.7
+enforcement: strict
+description: "Breaching core — 73% utilization against a 70% threshold."

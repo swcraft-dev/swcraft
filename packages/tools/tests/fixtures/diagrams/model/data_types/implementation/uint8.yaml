@@ -1,0 +1,4 @@
+name: uint8
+kind: value_type
+base: uint8_base
+description: The one value type every interface in this fixture is built from.

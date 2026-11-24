@@ -1,0 +1,110 @@
+{
+  "name": "read-swc-derived-effective-level",
+  "description": "A computed value on request: `derived: [\"effective_level\"]` at the `swc` layer adds to each component its effective safety level — the level it declares, else the highest level any requirement allocated to it carries, and `QM` where nothing allocates one. The value is the validator's own name-keyed effective level, the one the diagrams label each component with, and never a second formula; a component name declared twice resolves to its first declaration, as that answer does. One row per component (`rows: \"one\"`), at an explicit `form: \"index\"`, the value under `\"derived\"` as `{\"level\": ..., \"rating\": ...}` — `rating` the plain level (`B` for both `B` and `B(D)`).",
+  "kind": "example",
+  "context": {
+    "summary": "The base model with `ExampleSWC` declaring `asil: D`, `REQ_EXAMPLE_001` allocating ASIL B to both of the base's components, and a third component, `UnratedSWC`, linked by a requirement that carries no level. So the three rows show the three ways the level is answered: declared, derived from the allocation, and `QM` by default.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "asil"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "UnratedSWC"
+      },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_001",
+        "path": [
+          {
+            "field": "asil"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "notes": "A read takes no scope and writes no audit record."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "form": "index",
+    "derived": [
+      "effective_level"
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "swc"
+      },
+      "form": "index",
+      "derived": [
+        "effective_level"
+      ],
+      "value": {
+        "count": 3,
+        "identities": [
+          {
+            "element": "ExampleConsumerSWC",
+            "derived": {
+              "effective_level": {
+                "level": "B",
+                "rating": "B"
+              }
+            }
+          },
+          {
+            "element": "ExampleSWC",
+            "derived": {
+              "effective_level": {
+                "level": "D",
+                "rating": "D"
+              }
+            }
+          },
+          {
+            "element": "UnratedSWC",
+            "derived": {
+              "effective_level": {
+                "level": "QM",
+                "rating": "QM"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "notes": "`effective_level` applies at the elements of the `swc` layer alone: asked at another layer or at a member path it is `schema-violation`, never a blank. A `where` clause on `derived.effective_level.rating` keeps the components at a level, decompositions included (`B(D)` is rated `B`); a clause on `level` matches the exact spelling only."
+  }
+}

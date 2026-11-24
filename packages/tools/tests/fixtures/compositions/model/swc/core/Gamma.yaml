@@ -1,0 +1,13 @@
+name: Gamma
+type: application
+description: The require side of the assembly connector drawn inside `Sub`.
+ports:
+  - name: rInner
+    direction: require
+    interface: ITrigger
+  - name: rTrig
+    direction: require
+    interface: ITrigger
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_COMPOSITIONS_001@1

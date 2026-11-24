@@ -1,0 +1,10 @@
+id: SYS_001
+title: Braking distance
+description: The vehicle shall stop within 40 m from 100 km/h.
+req_type: req
+version: 2
+source: external
+derived_from:
+- CUST_001@1
+asil: C
+baseline: SYS-2.1

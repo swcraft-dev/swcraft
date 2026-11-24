@@ -1,0 +1,7 @@
+name: WlLoggerConnector
+from:
+  swc: Swc150abcdefghi
+  port: P10
+to:
+  swc: WlDataLogger
+  port: rLog

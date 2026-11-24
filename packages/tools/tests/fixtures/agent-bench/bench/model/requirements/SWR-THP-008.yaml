@@ -1,0 +1,9 @@
+id: SWR-THP-008
+title: Operating state use
+description: Thermal protection shall take the vehicle operating state into account.
+req_type: req
+version: 1
+source: external
+document: SRS Thermal Protection
+baseline: '1.0'
+revision: '1'

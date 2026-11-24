@@ -1,0 +1,7 @@
+id: REQ-SAFETY-001
+title: Torque limitation
+description: Allocates ASIL D to the component that declares ASIL D, so nothing is below its allocation.
+req_type: req
+version: 1
+source: architecture
+asil: D

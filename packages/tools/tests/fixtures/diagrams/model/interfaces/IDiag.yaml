@@ -1,0 +1,8 @@
+name: IDiag
+kind: client_server
+operations:
+  - name: ReadStatus
+    arguments:
+      - name: status
+        direction: out
+        implementation_type: uint8

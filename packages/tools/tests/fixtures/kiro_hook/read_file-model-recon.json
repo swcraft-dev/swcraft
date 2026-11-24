@@ -1,0 +1,11 @@
+{
+  "session_id": "s",
+  "hook_event_name": "PreToolUse",
+  "cwd": "/project",
+  "tool_name": "read_file",
+  "tool_input": {
+    "path": "model/hardware/CPU.yaml",
+    "offset": null,
+    "limit": null
+  }
+}

@@ -1,0 +1,7 @@
+name: PedalLink
+from:
+  swc: BrakePedal
+  port: pPedal
+to:
+  swc: BrakeController
+  port: rPedal

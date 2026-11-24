@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagram fixture</title>
+<style>
+body { margin: 0 auto; max-width: 960px; padding: 16px; font: 14px Helvetica, Arial, sans-serif; }
+a { color: #1a5fb4; }
+li { margin: 2px 0; }
+.file { color: #555555; font-size: 12px; }
+pre { background: #f6f6f6; padding: 8px; overflow-x: auto; }
+</style>
+</head>
+<body>
+<h1>Diagram fixture</h1>
+<section>
+<h2>Compositions</h2>
+<ul>
+<li><a href="ibd-Chassis.html">Chassis — internal block diagram</a> <span class="file">(<a href="ibd-Chassis.svg">SVG</a>)</span></li>
+<li><a href="overview-Chassis.html">Chassis — overview</a> <span class="file">(<a href="overview-Chassis.svg">SVG</a>)</span></li>
+<li><a href="ibd-Vehicle.html">Vehicle — internal block diagram</a> <span class="file">(<a href="ibd-Vehicle.svg">SVG</a>)</span></li>
+<li><a href="overview-Vehicle.html">Vehicle — overview</a> <span class="file">(<a href="overview-Vehicle.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section>
+<h2>Nesting</h2>
+<ul>
+<li><a href="nesting.html">Vehicle — nesting</a> <span class="file">(<a href="nesting.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section>
+<h2>Deployment</h2>
+<ul>
+<li><a href="deployment.html">CPU — deployment</a> <span class="file">(<a href="deployment.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section>
+<h2>Sequences</h2>
+<ul>
+<li><a href="sequence-speed_cycle.html">speed_cycle — sequence diagram</a> <span class="file">(<a href="sequence-speed_cycle.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section id="report">
+<h2>Report</h2>
+<pre>Diagrams report: Diagram fixture
+
+Views: 7
+  ibd-Chassis           906.48 x 314 px  12484 bytes
+  overview-Chassis      670.14 x 245 px  4346 bytes
+  ibd-Vehicle           765.8 x 205 px  4308 bytes
+  overview-Vehicle      670.14 x 175 px  2847 bytes
+  nesting               630.32 x 152 px  2561 bytes
+  deployment            388 x 228 px  2487 bytes
+  sequence-speed_cycle  614.6 x 296 px  5415 bytes
+
+Not drawn: 2 in 1 kind
+  not-run: 2
+    deployment  DiagServer: no task runs a runnable of it
+    deployment  Logger: no task runs a runnable of it
+
+Drawn as a loop: 1
+  ibd-Chassis  control_loop: Controller.pLoop -&gt; Controller.rLoop
+</pre>
+</section>
+<p><a href="report.txt">report.txt</a></p>
+<script type="application/json" id="swcraft-elements">{"compositions/Chassis.yaml": {"members": {"delegations/Chassis_pSpeedOut": ["ibd-Chassis"], "delegations/Chassis_rDiag": ["ibd-Chassis"], "ports/pSpeedOut": ["ibd-Chassis", "ibd-Vehicle"], "ports/rDiag": ["ibd-Chassis", "ibd-Vehicle"]}, "views": ["ibd-Chassis", "overview-Chassis", "ibd-Vehicle", "overview-Vehicle", "nesting"]}, "compositions/Vehicle.yaml": {"members": {}, "views": ["ibd-Vehicle", "overview-Vehicle", "nesting"]}, "connectors/control_loop.yaml": {"members": {}, "views": ["ibd-Chassis"]}, "connectors/diag_link.yaml": {"members": {}, "views": ["ibd-Vehicle"]}, "connectors/raw_link.yaml": {"members": {}, "views": ["ibd-Chassis"]}, "connectors/speed_link.yaml": {"members": {}, "views": ["ibd-Chassis"]}, "hardware/CORE0.yaml": {"members": {}, "views": ["deployment"]}, "hardware/CPU.yaml": {"members": {}, "views": ["deployment"]}, "hardware/PARTITION0.yaml": {"members": {}, "views": ["deployment"]}, "sequences/speed_cycle.yaml": {"members": {}, "views": ["sequence-speed_cycle"]}, "swc/chassis/Controller.yaml": {"members": {"ports/pLoop": ["ibd-Chassis", "sequence-speed_cycle"], "ports/pSpeedOut": ["ibd-Chassis"], "ports/rDiag": ["ibd-Chassis"], "ports/rLoop": ["ibd-Chassis"], "ports/rRaw": ["ibd-Chassis"], "ports/rSpeed": ["ibd-Chassis"], "runnables/ControlRun": ["sequence-speed_cycle"]}, "views": ["ibd-Chassis", "overview-Chassis", "nesting", "deployment", "sequence-speed_cycle"]}, "swc/chassis/DiagServer.yaml": {"members": {"ports/pDiag": ["ibd-Vehicle"]}, "views": ["ibd-Vehicle", "overview-Vehicle", "nesting"]}, "swc/chassis/Logger.yaml": {"members": {"ports/rLog": ["ibd-Chassis"]}, "views": ["ibd-Chassis", "overview-Chassis", "nesting"]}, "swc/chassis/Sensor.yaml": {"members": {"ports/pRaw": ["ibd-Chassis"], "ports/pSpeed": ["ibd-Chassis", "sequence-speed_cycle"], "runnables/SensorRun": ["sequence-speed_cycle"]}, "views": ["ibd-Chassis", "overview-Chassis", "nesting", "deployment", "sequence-speed_cycle"]}, "tasks/Task_10ms.yaml": {"members": {}, "views": ["deployment", "sequence-speed_cycle"]}}</script>
+</body>
+</html>

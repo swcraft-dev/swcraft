@@ -1,0 +1,8 @@
+name: raw_link
+composition: Chassis
+from:
+  swc: Sensor
+  port: pRaw
+to:
+  swc: Controller
+  port: rRaw

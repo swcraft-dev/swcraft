@@ -1,0 +1,16 @@
+# Build and generated projects
+build/
+dist/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Test, type and lint caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/

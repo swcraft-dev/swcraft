@@ -1,0 +1,553 @@
+{
+  "name": "discover-layer-hardware-full",
+  "description": "The `hardware` layer's descriptor at `form: \"full\"` — the one form that carries the descriptor PROSE, asked for one layer at a time because the project-wide `full` discovery is REFUSED with `over-budget` on every project (`negative/discover-project-full-over-budget.json`), and the refusal's second step is exactly this request. Together the fifteen per-layer `full` vectors replay every layer, kind and field annotation the model contract ships, verbatim, which is where the shipped-prose oracle (`packages/tools/tests/test_model_contract_conformance.py`) rides: rewording an annotation in the contract is a protocol-output change, and this is the output it changes. Of this layer: four kinds in one identity namespace since contract `9.0.0` (the partition, whose `core` is a reference within the layer), the `accessible` list's `whole_value` members, and the two published fields no rule reads (`type`, `hw_id`). Compare it with the same descriptor inside `examples/discover-project-all-layers-present.json`, which is this document with every `description` dropped and the three descriptor booleans (`optional`, `required`, `immutable`) omitted where they are `false`.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` shape of a SWCraft project: fifteen scaffolded layers, `hardware/` among them. Nothing about the response depends on which elements are in the layer: the inventory is derived from the model contract through the registry, not from the files.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "discover",
+    "layer": "hardware",
+    "form": "full"
+  },
+  "expected": {
+    "response": {
+      "response": "discover",
+      "project": {
+        "name": "swcraft-basic-example",
+        "arxml_version": "4.2.2",
+        "swcraft_version": "0.24.0"
+      },
+      "baseline": "rev1:kk7N755-pYf2txfvyVl9Kw",
+      "reads": {
+        "forms": [
+          "summary",
+          "full",
+          "index"
+        ],
+        "default_form": {
+          "layer": "summary",
+          "collection": "summary",
+          "element": "full",
+          "field": "full"
+        },
+        "budget_wire_bytes": 80000,
+        "hint_page_size": 50,
+        "discover": {
+          "forms": [
+            "summary",
+            "full",
+            "baseline"
+          ],
+          "default_form": "summary"
+        },
+        "derived": [
+          {
+            "name": "connection_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string"
+              }
+            }
+          },
+          {
+            "name": "base_type",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "runnables.reads",
+                "runnables.writes"
+              ]
+            },
+            "rows": "one",
+            "shape": {
+              "implementation": "string|null",
+              "base": "string|null"
+            }
+          },
+          {
+            "name": "effective_level",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one",
+            "shape": {
+              "level": "string",
+              "rating": "string"
+            }
+          },
+          {
+            "name": "partitions",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one per value",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "crossing_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              }
+            }
+          },
+          {
+            "name": "unconnected",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "ports"
+              ]
+            },
+            "rows": "one per value",
+            "shape": {
+              "direction": "string",
+              "interface": "string|null"
+            }
+          },
+          {
+            "name": "core",
+            "at": {
+              "layer": "tasks"
+            },
+            "rows": "one",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "realised_by",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null"
+            }
+          },
+          {
+            "name": "allocation",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one",
+            "shape": {
+              "sites": "integer",
+              "elements": "integer",
+              "allocated": "boolean|null"
+            }
+          },
+          {
+            "name": "stale_links",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null",
+              "current": "integer"
+            }
+          }
+        ],
+        "join": {
+          "row_ceiling": 50000,
+          "max_entries": 8
+        }
+      },
+      "form": "full",
+      "layers": [
+        {
+          "layer": "hardware",
+          "optional": false,
+          "present": true,
+          "identity_field": "name",
+          "description": "The processor the software runs on, its cores, the partitions its tasks run in, and the memories those cores may use. Exactly one processor is declared; every task runs in a declared partition on a declared core, and every memory a component budgets is declared here.",
+          "element_kinds": [
+            {
+              "kind": "processor",
+              "discriminator_field": "kind",
+              "description": "The one processor the software runs on. Every project declares exactly one. Its cores, its partitions and its memories are elements of this layer in their own right, so a partition, a task or a component names one of them directly rather than through the processor.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The processor's identity; the file is named from it (`hardware/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across every hardware element, and immutable."
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The discriminator that selects this hardware element kind; always `processor`.",
+                  "enum": [
+                    "processor"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the processor — the part it stands for, for instance. Carried in the model; it reaches no generated artifact."
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The requirements this processor satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. It allocates no ASIL to anything.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "core",
+              "discriminator_field": "kind",
+              "description": "One schedulable core of the processor, and the CPU-load budget for it. A lockstep pair is one core here, because it executes one instruction stream and the model has nothing to say about the second. Every partition names the core it runs on, and every task runs on its partition's core.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The core's identity; the file is named from it (`hardware/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. It is the name a partition's `core` gives. Unique across every hardware element, and immutable."
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The discriminator that selects this hardware element kind; always `core`.",
+                  "enum": [
+                    "core"
+                  ]
+                },
+                {
+                  "name": "threshold",
+                  "type": "number",
+                  "required": true,
+                  "immutable": false,
+                  "unit": "fraction",
+                  "description": "The share of the core's time the tasks mapped to it may total before the budget is breached: a finite fraction in (0, 1]. RAISING it weakens the check, so it is a safety act."
+                },
+                {
+                  "name": "enforcement",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "How a breach of this budget is reported. `strict` (the default): every task on the core must declare `wcet` and an over-threshold load is an error. `advisory`: a missing budget counts as zero and a breach is an information line.",
+                  "enum": [
+                    "strict",
+                    "advisory"
+                  ]
+                },
+                {
+                  "name": "asil_capability",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The highest safety integrity level this core, as configured in this project, is declared able to host: `QM`, `A`, `B`, `C` or `D`. The level belongs to the core together with its safety mechanisms, its configuration and the assumptions of use it is qualified under, not to the part alone, and it is the project's own statement: nothing verifies it. Absent when the core is unrated, and then nothing is compared against it; a written `QM` declares that the core hosts no ASIL. A rated partition on this core declaring a higher level is reported, whether or not any task runs in it.",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ]
+                },
+                {
+                  "name": "hw_id",
+                  "type": "integer",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The physical core number the silicon vendor prints in the part's manual, for a reader who has it open. Informational: nothing checks it, and two cores may carry the same one."
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the core. Carried in the model; it reaches no generated artifact."
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The requirements this core satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. It allocates no ASIL to anything.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "memory",
+              "discriminator_field": "kind",
+              "description": "One memory of the processor, and the budget for it. It belongs to the processor and names the cores that may use it; every memory a component budgets is one of these.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The memory's identity; the file is named from it (`hardware/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. It is the name a component's `memory` map keys. Unique across every hardware element, and immutable."
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The discriminator that selects this hardware element kind; always `memory`.",
+                  "enum": [
+                    "memory"
+                  ]
+                },
+                {
+                  "name": "type",
+                  "type": "string",
+                  "required": true,
+                  "immutable": false,
+                  "description": "What the memory is, in the standard spelling: `RAM`, `ROM`, `EEPROM` or `Flash`. It records the fact for a reader; no check reads it, and all four are budgeted the same way.",
+                  "enum": [
+                    "RAM",
+                    "ROM",
+                    "EEPROM",
+                    "Flash"
+                  ]
+                },
+                {
+                  "name": "size",
+                  "type": "integer",
+                  "required": true,
+                  "immutable": false,
+                  "unit": "bytes",
+                  "description": "The memory's capacity in bytes; must be greater than zero. ENLARGING it weakens the check, so it is a safety act."
+                },
+                {
+                  "name": "accessible",
+                  "type": "list[string]",
+                  "required": true,
+                  "immutable": false,
+                  "description": "The cores this project allows to use the memory, by name; at least one, and no repeats. It is a design rule rather than wiring: the integrator configures the processor's memory protection to match it, and no generated artifact does. A list of one core is a memory private to that core. The list is checked against the work placed on each core: a task whose component charges this memory a non-zero budget must run on a core named here. A budget of `0` declares no use and is not checked, which is how a component that runs elsewhere satisfies `strict` enforcement for a memory private to another core. ADMITTING a core weakens that check, so it is a safety act; withdrawing one only makes it refuse more.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                },
+                {
+                  "name": "threshold",
+                  "type": "number",
+                  "required": true,
+                  "immutable": false,
+                  "unit": "fraction",
+                  "description": "The share of the memory the components' budgets may total before the budget is breached: a finite fraction in (0, 1]. RAISING it weakens the check, so it is a safety act."
+                },
+                {
+                  "name": "enforcement",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "How a breach of this budget is reported. `strict` (the default): every component must declare a budget for the memory and an over-threshold total is an error. `advisory`: a missing budget counts as zero and a breach is an information line.",
+                  "enum": [
+                    "strict",
+                    "advisory"
+                  ]
+                },
+                {
+                  "name": "asil_capability",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The highest safety integrity level this memory, as configured in this project, is declared able to host: `QM`, `A`, `B`, `C` or `D`. The level belongs to the memory together with its safety mechanisms, its configuration and the assumptions of use it is qualified under, not to the part alone, and it is the project's own statement: nothing verifies it. Absent when the memory is unrated, and then nothing is compared against it; a written `QM` declares that the memory hosts no ASIL. A component carrying a higher level that charges this memory a non-zero budget is reported; a budget of `0` is not a use.",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the memory. Carried in the model; it reaches no generated artifact."
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The requirements this memory satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. It allocates no ASIL to anything.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "partition",
+              "discriminator_field": "kind",
+              "description": "One partition of the software on a core, AUTOSAR's OS-Application: the tasks that run together on one core under one safety integrity level. Every task names the partition it runs in and takes its core from it. A partition no task names is legal and is checked like any other. On a single core without memory protection AUTOSAR configures no OS-Application at all; the model still has every task name a partition, there one without a level, which is a convention of this model over the standard, as the required `core` is.",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The partition's identity; the file is named from it (`hardware/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. It is the name a task's `partition` gives. Unique across every hardware element, and immutable."
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "description": "The discriminator that selects this hardware element kind; always `partition`.",
+                  "enum": [
+                    "partition"
+                  ]
+                },
+                {
+                  "name": "core",
+                  "type": "string",
+                  "required": true,
+                  "immutable": false,
+                  "description": "The name of the core this partition, and every task in it, runs on. It must name a `core` declared under `hardware/`.",
+                  "reference": {
+                    "layer": "hardware",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "asil",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The safety integrity level the partition is rated at: `QM`, `A`, `B`, `C` or `D`, or a decomposed `X(Y)` such as `B(D)` — the thirteen spellings the AUTOSAR Safety Extensions list — where `Y` is the level before decomposition. Every rule ranks by `X`; one rule, `trace.decomposition-context-mismatch`, compares a requirement's `(Y)` with the level its parent requirement had before decomposition. It is the level the partition is, like a component's `asil`, and not the level it is able to host, like a core's `asil_capability`. Absent when the partition is unrated, and then nothing is compared against it, save that an unrated `trusted` partition is reported beside a partition rated above `QM`; a written `QM`, `QM(Y)` included, rates the partition as hosting no ASIL. A rated partition on a core declared able to host only a lower level is reported, whether or not any task runs in it.",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "QM(A)",
+                    "QM(B)",
+                    "QM(C)",
+                    "QM(D)",
+                    "A(B)",
+                    "A(C)",
+                    "A(D)",
+                    "B(B)",
+                    "B(C)",
+                    "B(D)",
+                    "C(C)",
+                    "C(D)",
+                    "D(D)"
+                  ]
+                },
+                {
+                  "name": "trust",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The class the operating system gives the partition, AUTOSAR's trusted and non-trusted OS-Applications: `non_trusted`, confined by memory protection; `trusted_with_protection`, trusted but confined for memory like a non-trusted one; or `trusted`, unrestricted for memory. Left out of the file while it is `non_trusted`, so a partition file that declares no class is a non-trusted one. It is a declaration and not a verification: nothing in the model expresses the operating system's configuration, so the class is checked only against the levels the partitions declare.",
+                  "enum": [
+                    "non_trusted",
+                    "trusted_with_protection",
+                    "trusted"
+                  ]
+                },
+                {
+                  "name": "coexistence",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The argument for placing components of different safety integrity levels in this partition, as free text: the memory-mixing argument, where a task's own `coexistence` is the execution-time one. It is a declaration and not a verification: the text is checked against nothing, and the model expresses no memory protection configuration."
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": false,
+                  "immutable": false,
+                  "description": "Free text about the partition. Carried in the model; it reaches no generated artifact."
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "required": false,
+                  "immutable": false,
+                  "description": "The requirements this partition satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. It allocates no ASIL to anything.",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "notes": "The same document the default form answers with `description` restored on the layer, on every kind and on every field that declares one, and with the three descriptor booleans spelled out where the default form omits them at `false` — `optional` on the layer, `required` and `immutable` on every field. Nothing else is restored, because nothing else is left out. `baseline` is the stand-in token every vector carries; a harness replaces it with the project's own."
+  }
+}

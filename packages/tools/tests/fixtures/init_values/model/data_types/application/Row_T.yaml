@@ -1,0 +1,7 @@
+name: Row_T
+kind: record
+fields:
+- name: index
+  type: Count_T
+- name: mode
+  type: Mode_T

@@ -1,0 +1,35 @@
+{
+  "id": "07-add-requirement",
+  "task": 7,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Add requirement SWR-WL-100, 'Missing input report': the component shall report a missing value on P10. Swc005abcdefghij's port P10 satisfies it.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "requirements",
+        "name": "SWR-WL-100",
+        "has": {
+          "title": "Missing input report",
+          "version": 1
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "Swc005abcdefghij",
+        "has": {
+          "ports": [
+            {
+              "name": "P10",
+              "satisfies": [
+                "SWR-WL-100@1"
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

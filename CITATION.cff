@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: "SWCraft"
+message: "If you use SWCraft, please cite the software; if you use its specimen generator, please also cite the WATERS 2015 benchmark paper it draws on."
+type: software
+authors:
+  - family-names: Tarandevich
+    given-names: Konstantin
+version: 0.24.0
+license: Apache-2.0
+repository-code: "https://github.com/swcraft-dev/swcraft"
+references:
+  - type: article
+    authors:
+      - family-names: Kramer
+      - family-names: Ziegenbein
+      - family-names: Hamann
+    title: "Real World Automotive Benchmarks For Free"
+    collection-title: "WATERS 2015"
+    year: 2015
+    url: "https://rtn.ecrts.org/forum/download/WATERS15_Real_World_Automotive_Benchmark_For_Free.pdf"

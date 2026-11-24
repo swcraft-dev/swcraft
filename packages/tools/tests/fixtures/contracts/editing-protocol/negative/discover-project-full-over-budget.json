@@ -1,0 +1,37 @@
+{
+  "name": "discover-project-full-over-budget",
+  "description": "The project-wide `discover` at `form: \"full\"`, which is REFUSED on every project: the descriptor prose of the whole contract measures more than the server's response budget, so the request is well-formed, the model is sound, and what cannot be done is send the answer. This is the budget regime working and not a regression: the refusal is answerable as `summary` or one layer at a time. The fifteen `examples/discover-layer-<layer>-full.json` vectors replay the shipped contract prose verbatim, and are exactly the requests this refusal hints after its first step.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` shape of a SWCraft project: fifteen scaffolded layers, `hardware/` among them, holding the processor `CPU`, the core `CORE0` and the memory `RAM0`. The size is a property of the CONTRACT and not of the model: the same request is, by construction, within a few dozen wire bytes on a large model.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current",
+    "notes": "Discovery needs no approved scope: it reads nothing but registry facts and the project passport, and reads are unscoped and unaudited. The refusal is measured through the same `read.measure` a read is refused with, so this vector and `packages/tools/tests/test_discover_budget.py`'s tripwire cannot disagree."
+  },
+  "input": {
+    "operation": "discover",
+    "form": "full"
+  },
+  "expected": {
+    "expected_error": "over-budget",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "notes": "`invalid` because the request AS POSED cannot be answered: the model is not stale, the caller is not unauthorized and nothing is partial. `semantic` because the request conforms to `$defs/discoverRequest` exactly; only the server, having built the answer, can know how big it is. The refusal carries NO `addresses` key at all — a discovery is not addressed at anything — and `measured`, whose `elements` counts the fifteen layer descriptors the refused response would have carried, never the model. Its `hints` are the discovery chain's two steps in order: LESS PROSE first, the same scope at `form: \"summary\"`, because it answers the same question; then LESS SCOPE, one `form: \"full\"` request per declared layer, each carrying the REQUESTED form because a client that asked for `full` asked for the prose and one layer at a time is where it still fits — sixteen hints, every one of which answers (`packages/tools/tests/test_editing_vectors.py` replays them)."
+  }
+}

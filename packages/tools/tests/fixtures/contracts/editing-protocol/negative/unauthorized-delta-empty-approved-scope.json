@@ -1,0 +1,42 @@
+{
+  "name": "unauthorized-delta-empty-approved-scope",
+  "description": "A valid change set whose semantic delta no approved scope covers. `approved_scope` is present and empty — an explicit statement that nothing is approved, which is not the same as omitting the field.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model in a scoped session where the user has approved nothing. The change set removes a component and clears the connector that refers to it — internally consistent, and outside every approved address.",
+    "existing_elements": [
+      { "layer": "swc", "element": "ExampleConsumerSWC" },
+      { "layer": "connectors", "element": "Example_to_Consumer" }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [],
+      "notes": "Empty by intent. No protocol operation can approve anything: approval stays a host-side human interaction."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Remove the consumer component and its connector.",
+    "operations": [
+      {
+        "operation": "remove",
+        "address": { "layer": "connectors", "element": "Example_to_Consumer" }
+      },
+      {
+        "operation": "remove",
+        "address": { "layer": "swc", "element": "ExampleConsumerSWC" }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "unauthorized-delta",
+    "failure_class": "unauthorized",
+    "violation_layer": "semantic",
+    "addresses": [
+      { "layer": "connectors", "element": "Example_to_Consumer" },
+      { "layer": "swc", "element": "ExampleConsumerSWC" }
+    ],
+    "notes": "The decision is made on the delta — operation plus address — and never on a tool name, which is why the rejection can name both uncovered addresses. There is no partial approval: a scope covering one of the two removes still refuses the change set, because the commit boundary applies the reviewed delta whole or not at all. The real model stays byte-identical."
+  }
+}

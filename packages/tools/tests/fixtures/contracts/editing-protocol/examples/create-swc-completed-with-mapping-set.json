@@ -1,0 +1,123 @@
+{
+  "name": "create-swc-completed-with-mapping-set",
+  "description": "`complete: true`: a component created speaking an application type that no set it names maps would be refused `consistency-violation`; the one declared set that carries the type, and pairs none of the component's types with a second implementation type, is named in its `data_type_mappings` by the server, and the entry it added to is marked `origin: client_and_server` in the delta the human reviews.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model plus the application type `Temp_C`, the sender-receiver interface `ITemp` whose data element `t` speaks it, and the mapping set `Thermal`, the one declared set that pairs `Temp_C` (with `float32`). No component named `Logger` exists.",
+    "existing_elements": [
+      {
+        "layer": "application_types",
+        "element": "Temp_C"
+      },
+      {
+        "layer": "interfaces",
+        "element": "ITemp"
+      },
+      {
+        "layer": "mapping_sets",
+        "element": "Thermal"
+      },
+      {
+        "layer": "hardware",
+        "element": "RAM0"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "Logger"
+          }
+        }
+      ],
+      "notes": "A scope over the created element covers the server's member inside it; a scope that did not cover the server's row would answer the first run's refusal unchanged."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Add a logger that reads the temperature.",
+    "complete": true,
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "Logger"
+        },
+        "value": {
+          "name": "Logger",
+          "group": "example",
+          "type": "application",
+          "ports": [
+            {
+              "name": "rTemp",
+              "direction": "require",
+              "interface": "ITemp"
+            }
+          ],
+          "memory": {
+            "RAM0": 0
+          },
+          "handle_termination_and_restart": "no_support"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "Logger"
+          },
+          "after": {
+            "name": "Logger",
+            "group": "example",
+            "type": "application",
+            "description": "",
+            "external": false,
+            "external_ref": "",
+            "external_dest": "",
+            "ports": [
+              {
+                "name": "rTemp",
+                "direction": "require",
+                "interface": "ITemp",
+                "observed_interface": null,
+                "description": "",
+                "measures": {},
+                "com_specs": [],
+                "satisfies": []
+              }
+            ],
+            "runnables": [],
+            "variables": [],
+            "exclusive_areas": [],
+            "memory": {
+              "RAM0": 0
+            },
+            "asil": null,
+            "handle_termination_and_restart": "no_support",
+            "data_type_mappings": [
+              "Thermal"
+            ],
+            "behavior_name": null,
+            "package": null,
+            "satisfies": []
+          },
+          "summary": "swc: + Logger",
+          "origin": "client_and_server"
+        }
+      ]
+    }
+  }
+}

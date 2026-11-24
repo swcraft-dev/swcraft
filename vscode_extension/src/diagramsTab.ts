@@ -1,0 +1,1752 @@
+// The diagrams' VS Code tab — the pure half. `swcraft generate diagrams` writes
+// one HTML page per view and `index.html` under `views_root`; the tab shows them
+// in one webview panel per window (the adapter in commands.ts), and every
+// decision about them is made here:
+//
+// - the rewrite (`webviewDocument()`): the page's text, rewritten in memory, with
+//   a Content Security Policy, nonces, the page script allowed by this release's
+//   hash alone, the bridge and `TAB_STYLE`; a tag or meta outside the generator's
+//   set (`PageRefusal`) is refused, other markup is left to the CSP and the bridge;
+// - the bridge (`BRIDGE_SCRIPT`): `window.swcraftHost`, the host contract of
+//   `page.py`'s module docstring;
+// - what crosses the boundary: `open` only for the page's own model block's
+//   entries under the real `model_root` (`acceptOpen()`), a link only to a file
+//   listed in `views_root` and resolved inside it (`followLink()`);
+// - Show in Diagram's data and choice, the order of a show (`planShow()`), the
+//   history (`TabHistory`) and the panel's small decisions.
+//
+// No `vscode` import: it runs under plain `node --test`. It reads the disk only
+// in `resolveViewsFile()`, `realPathIndex()` and `resolveModelFile()` (real
+// paths, no file's text); the page's text is matched, hashed and copied, never
+// evaluated.
+//
+// What it does not reach: whether VS Code's webview honours the policy and the
+// nonces (measured once, VS Code 1.145.2 on macOS), the panel and message
+// delivery (commands.ts), and the page script's own behaviour
+// (`packages/tools/tests/test_diagram_page_script.py`).
+
+import { createHash } from "node:crypto";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import {
+  LIKEC4_COMPOUND_BORDER_WIDTH,
+  type Likec4Role,
+  likec4Declarations,
+  likec4Variable,
+  MARK_WIDTH,
+  PORT_LIT_WIDTH,
+} from "./likec4Palette";
+import {
+  checkStorageName,
+  type Refused,
+  resolveModelFile,
+  resolveRegularFileUnder,
+} from "./storageName";
+import type { OutlineSymbol } from "./symbolCore";
+
+// --- the page script's hash ----------------------------------------------------
+
+/** The generated file, under the extension's `schemas/`, holding `{"sha256": <P>}`. */
+export const PAGE_SCRIPT_HASH_FILE = "diagram-page-script.json";
+
+/** A SHA-256 in base64: 43 characters and one `=`. */
+const SHA256_BASE64 = /^[A-Za-z0-9+/]{43}=$/;
+
+/**
+ * The hash *text* (the generated `diagram-page-script.json`) carries, or
+ * `undefined` when it is not that file's shape — the adapter then refuses every
+ * page, since no script could be allowed.
+ */
+export function parsePageScriptHash(text: string): string | undefined {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    return undefined;
+  }
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    return undefined;
+  }
+  const sha = (parsed as Record<string, unknown>).sha256;
+  return typeof sha === "string" && SHA256_BASE64.test(sha) ? sha : undefined;
+}
+
+/** The SHA-256 of *text* (UTF-8), base64 — the spelling of a CSP `'sha256-…'` source. */
+export function cspHash(text: string): string {
+  return createHash("sha256").update(text, "utf8").digest("base64");
+}
+
+// --- the rewrite --------------------------------------------------------------
+
+/** A CSP nonce's alphabet (base64); anything else could break out of its attribute. */
+const NONCE_PATTERN = /^[A-Za-z0-9+/]+={0,2}$/;
+
+/**
+ * The tab's Content Security Policy: the nonce for styles and the bridge, the
+ * hash for the page script — none for the tab's own refusal page
+ * (`refusalDocument()`), whose one script is nonced.
+ */
+export function tabCsp(nonce: string, scriptHash?: string): string {
+  const hashSource = scriptHash === undefined ? "" : ` 'sha256-${scriptHash}'`;
+  return (
+    `default-src 'none'; style-src 'nonce-${nonce}'; ` +
+    `script-src 'nonce-${nonce}'${hashSource}; form-action 'none'; base-uri 'none'`
+  );
+}
+
+/** Throw unless *nonce* is base64: it is written into attributes. */
+function assertNonce(nonce: string): void {
+  if (!NONCE_PATTERN.test(nonce)) {
+    throw new Error("a CSP nonce must be base64");
+  }
+}
+
+/** What the page is handed at load: the arrival, a reveal, and what the bridge draws. */
+export interface BridgeState {
+  /** The member to arrive at, already decoded (decoded once, here). */
+  fragment: string;
+  /** A Show in Diagram request to apply at load, or `null`. */
+  reveal: RevealRequest | null;
+  canBack: boolean;
+  canForward: boolean;
+  /** The artifact tracker reads the views *out of date*. */
+  outOfDate: boolean;
+}
+
+/** Show in Diagram's request to the page: the element's file, its member, and the name to show. */
+export interface RevealRequest {
+  file: string;
+  member: string | null;
+  name: string;
+}
+
+/** The one line the tab shows instead of a page whose script is not this release's. */
+export const OTHER_RELEASE_LINE =
+  "These diagram pages were generated by another SWCraft release — press Generate";
+
+/** The line the tab shows instead of a page it cannot take apart (not the generator's head, a foreign `<meta>` or tag, two scripts, a `src`). */
+export const UNREADABLE_PAGE_LINE =
+  "This diagram page is not one SWCraft generated — press Generate";
+
+/** The *out of date* line. */
+export const OUT_OF_DATE_LINE = "The model changed after these diagrams were generated.";
+
+/**
+ * The message the extension posts when the tracker's reading of the views moves
+ * while a page is shown (`{type, outOfDate}`): the bridge shows or hides the
+ * *out of date* line in place, so the page keeps its zoom, pan and pin.
+ */
+export const OUT_OF_DATE_MESSAGE = "out-of-date";
+
+/**
+ * The line the tab shows instead of `OTHER_RELEASE_LINE` when the page the press
+ * has just generated is still another release's: the window's toolchain is not
+ * this extension's release, so Generate would only write such a page again.
+ */
+export function generatedByAnotherReleaseLine(extensionVersion: string): string {
+  return (
+    `The SWCraft toolchain this window runs is another release than this extension (${extensionVersion}): ` +
+    `its diagram pages cannot be shown — run the ${extensionVersion} toolchain (swcraft.executable or PATH), then press Generate`
+  );
+}
+
+/**
+ * The line a refused page is shown with: the refusal's own, except an
+ * `other-release` refusal of a page the press has *justGenerated*, which is
+ * `generatedByAnotherReleaseLine()` — pressing Generate again would loop.
+ */
+export function refusalLine(
+  refusal: { reason: PageRefusal; line: string },
+  justGenerated: boolean,
+  extensionVersion: string,
+): string {
+  return justGenerated && refusal.reason === "other-release"
+    ? generatedByAnotherReleaseLine(extensionVersion)
+    : refusal.line;
+}
+
+/** The line the tab shows when the page it was to show is no longer a file of `views_root`. */
+export const MISSING_PAGE_LINE =
+  "This diagram page is no longer in the diagrams' directory — press Generate";
+
+/** The line the tab shows when the extension's own page-script hash cannot be read (an install defect). */
+export const NO_SCRIPT_HASH_LINE =
+  "This SWCraft extension cannot read its diagram-page-script.json — reinstall it, then press Generate";
+
+/**
+ * Why a page is not shown: `no-head` — it does not open with
+ * `GENERATED_HEAD_PREFIX` or has no `</head>`; `foreign-meta` — a `<meta` token
+ * anywhere that is not exactly one of `GENERATED_META_TAGS`; `foreign-tag` — a
+ * `<script` or `<style` token anywhere that is not exactly one of
+ * `GENERATED_TAGS`, or any `FRAME_MOVING_TOKEN`; `several-scripts` — more than
+ * one executable `<script>`; `other-release` — its script's hash differs.
+ */
+export type PageRefusal =
+  | "no-head"
+  | "foreign-meta"
+  | "foreign-tag"
+  | "several-scripts"
+  | "other-release";
+
+/** The rewrite's answer: the webview's document, or the refusal and its one line. */
+export type TabDocument =
+  | { kind: "page"; html: string }
+  | { kind: "refused"; reason: PageRefusal; line: string };
+
+/** The page script's start tag (`page.py`'s `<script>{PAGE_SCRIPT}</script>`): the one executable script. */
+const PAGE_SCRIPT_TAG = "<script>";
+
+/** The style start tag the generator writes — the page's own and the SVG's (`svg.py`) — with no attribute. */
+const STYLE_TAG = "<style>";
+
+/** A JSON data block's start tag, exactly as `page.py` writes it. */
+function jsonBlockTag(id: string): string {
+  return `<script type="application/json" id="${id}">`;
+}
+
+/**
+ * Every `<script`/`<style` start tag the generator writes, byte for byte: the
+ * page script's, the style's, and the four data blocks' (`page.py`'s
+ * `LINKS_SCRIPT_ID`, `UP_SCRIPT_ID`, `MODEL_SCRIPT_ID`, `ELEMENTS_SCRIPT_ID`).
+ * An allowlist of exact text, never a parse of attributes.
+ */
+export const GENERATED_TAGS: readonly string[] = [
+  PAGE_SCRIPT_TAG,
+  STYLE_TAG,
+  ...["swcraft-links", "swcraft-up", "swcraft-model", "swcraft-elements"].map(jsonBlockTag),
+];
+
+/** Every `<script` or `<style` token, any case, wherever it stands — a tag, an attribute value, a comment. */
+const RAW_TEXT_TOKEN = /<(?:script|style)/gi;
+
+interface GeneratedTag {
+  /** Which of `GENERATED_TAGS` it is. */
+  tag: string;
+  /** Where the tag starts. */
+  start: number;
+  /** Where its text starts (after the start tag), for a script. */
+  textStart: number;
+}
+
+/**
+ * Every `<script`/`<style` token of *html*, each the start of one of
+ * `GENERATED_TAGS`, or `undefined` when any token is not. The whole text is
+ * scanned, script text included, so no tag hides inside another; the generator
+ * writes none there (its JSON escapes `<`).
+ */
+function generatedTags(html: string): GeneratedTag[] | undefined {
+  const tags: GeneratedTag[] = [];
+  RAW_TEXT_TOKEN.lastIndex = 0;
+  for (let match = RAW_TEXT_TOKEN.exec(html); match !== null; match = RAW_TEXT_TOKEN.exec(html)) {
+    const at = match.index;
+    const tag = GENERATED_TAGS.find((candidate) => html.startsWith(candidate, at));
+    if (tag === undefined) {
+      return undefined;
+    }
+    tags.push({ tag, start: at, textStart: at + tag.length });
+  }
+  return tags;
+}
+
+/**
+ * *text* with only `A`–`Z` lowered, so offsets stay valid: `toLowerCase()` turns
+ * `İ` (U+0130) into two code units.
+ */
+export function asciiLower(text: string): string {
+  return text.replace(/[A-Z]/g, (letter) => letter.toLowerCase());
+}
+
+/** The text of a script whose text starts at *textStart*: up to its `</script`, or the document's end. */
+function scriptText(html: string, textStart: number): string {
+  const close = asciiLower(html).indexOf("</script", textStart);
+  return html.slice(textStart, close === -1 ? html.length : close);
+}
+
+/**
+ * The text every generated page opens with (`page.py`, `\n` line ends on every
+ * platform): the policy goes right after this `<head>`, so it is always in the
+ * document's real head. A page opening otherwise is refused, never searched.
+ */
+export const GENERATED_HEAD_PREFIX = '<!DOCTYPE html>\n<html lang="en">\n<head>';
+
+/**
+ * Every `<meta>` start tag the generator writes, byte for byte. Any other `<meta`
+ * token is refused by exact text, never by a scan of attributes: a regex over
+ * `[^>]*` stops at a `>` inside a quoted value (`<meta name="a>" http-equiv=
+ * "refresh" …>`), which a parser does not.
+ */
+export const GENERATED_META_TAGS: readonly string[] = [
+  '<meta charset="utf-8">',
+  '<meta name="viewport" content="width=device-width, initial-scale=1">',
+];
+
+/** Every `<meta` token, any case, wherever it stands; `\b` keeps `<metadata` (an SVG element) out. */
+const META_TOKEN = /<meta\b/gi;
+
+/**
+ * A token of a tag the generator never writes that could move the frame or load
+ * into it without script. The CSP blocks most such loads; the refusal does not
+ * lean on it.
+ */
+const FRAME_MOVING_TOKEN = /<(?:base|link|iframe|frame|frameset|object|embed|form|portal)\b/i;
+
+/** Whether every `<meta` token of *html* is exactly one of `GENERATED_META_TAGS`. */
+function onlyGeneratedMeta(html: string): boolean {
+  META_TOKEN.lastIndex = 0;
+  for (let match = META_TOKEN.exec(html); match !== null; match = META_TOKEN.exec(html)) {
+    const at = match.index;
+    if (!GENERATED_META_TAGS.some((tag) => html.startsWith(tag, at))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/** The first `</head>` end tag (never `</header>`). */
+const HEAD_END = /<\/head\s*>/i;
+
+/** The `<script>` text a JSON literal may be written into: no `<`, `>`, `&` or line separator survives. */
+export function scriptJson(value: unknown): string {
+  return JSON.stringify(value)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}
+
+/**
+ * The rewrite of a diagram page's file text for the webview:
+ *
+ * 1. the CSP `<meta>` (`tabCsp()`) as the first child of `<head>`;
+ * 2. `nonce="N"` on every `<style>`; the JSON blocks are data and get nothing;
+ * 3. the one executable `<script>` allowed only through `'sha256-P'`: its text
+ *    must hash to *scriptHash*, else the page is refused (`other-release`);
+ * 4. the bridge (`BRIDGE_SCRIPT` called with *state*, nonced) before the page's
+ *    script, or last in `<body>` on the index, which has no script;
+ * 5. `TAB_STYLE`, nonced, last in `<head>`, so it wins at equal specificity.
+ *
+ * Refused besides: every `PageRefusal` (an attribute of any kind, a `src` or a
+ * token inside another tag's attribute is `foreign-tag`). A *nonce* outside
+ * base64 throws. Nothing of *html* is evaluated.
+ *
+ * What it does not reach: it is a scan of tokens, not an HTML parser. An exact
+ * `<style>` inside a comment or attribute value is nonced in place (harmless: it
+ * allows at most a style); markup `FRAME_MOVING_TOKEN` does not name (an event
+ * attribute, an `<a>`, an `<img>`) is left to the CSP and the bridge.
+ */
+export function webviewDocument(
+  html: string,
+  options: { nonce: string; scriptHash: string; state: BridgeState },
+): TabDocument {
+  const { nonce, scriptHash, state } = options;
+  assertNonce(nonce);
+  const headEnd = HEAD_END.exec(html)?.index ?? -1;
+  if (!html.startsWith(GENERATED_HEAD_PREFIX) || headEnd < GENERATED_HEAD_PREFIX.length) {
+    return { kind: "refused", reason: "no-head", line: UNREADABLE_PAGE_LINE };
+  }
+  if (!onlyGeneratedMeta(html)) {
+    return { kind: "refused", reason: "foreign-meta", line: UNREADABLE_PAGE_LINE };
+  }
+  const tags = generatedTags(html);
+  if (tags === undefined || FRAME_MOVING_TOKEN.test(html)) {
+    return { kind: "refused", reason: "foreign-tag", line: UNREADABLE_PAGE_LINE };
+  }
+  const executable = tags.filter((tag) => tag.tag === PAGE_SCRIPT_TAG);
+  if (executable.length > 1) {
+    return { kind: "refused", reason: "several-scripts", line: UNREADABLE_PAGE_LINE };
+  }
+  const script = executable[0];
+  if (script !== undefined && cspHash(scriptText(html, script.textStart)) !== scriptHash) {
+    return { kind: "refused", reason: "other-release", line: OTHER_RELEASE_LINE };
+  }
+  const bridge = `<script nonce="${nonce}">${BRIDGE_SCRIPT}(${scriptJson(state)});</script>\n`;
+  const csp = `\n<meta http-equiv="Content-Security-Policy" content="${tabCsp(nonce, scriptHash)}">`;
+  const tabStyle = `<style nonce="${nonce}">\n${TAB_STYLE}</style>\n`;
+  const headOpenEnd = GENERATED_HEAD_PREFIX.length;
+  const bodyClose = asciiLower(html).lastIndexOf("</body>");
+  // Each validated `<style>` takes the nonce right after its name: `<style nonce="N">`.
+  const insertions: Array<[number, string]> = [
+    [headOpenEnd, csp],
+    [headEnd, tabStyle],
+    [script !== undefined ? script.start : bodyClose === -1 ? html.length : bodyClose, bridge],
+    ...tags
+      .filter((tag) => tag.tag === STYLE_TAG)
+      .map((tag): [number, string] => [tag.start + "<style".length, ` nonce="${nonce}"`]),
+  ];
+  // From the last position to the first, so no earlier offset moves (stable sort).
+  insertions.sort((a, b) => b[0] - a[0]);
+  let out = html;
+  for (const [at, text] of insertions) {
+    out = out.slice(0, at) + text + out.slice(at);
+  }
+  return { kind: "page", html: out };
+}
+
+/** Whether a refusal may be the extension's own stale hash: only `other-release` asks for a re-read. */
+export function rereadsScriptHash(document: TabDocument): boolean {
+  return document.kind === "refused" && document.reason === "other-release";
+}
+
+/**
+ * `webviewDocument()` with one re-read of the page script's hash on an
+ * `other-release` refusal: a .vsix installed over a running copy replaces
+ * `diagram-page-script.json` without restarting the extension host. *reread* is
+ * called at most once; the answer carries the hash to keep, or `undefined` (with
+ * `document` `undefined`) when the file can no longer be read
+ * (`NO_SCRIPT_HASH_LINE`).
+ */
+export function webviewDocumentRereading(
+  html: string,
+  options: { nonce: string; scriptHash: string; state: BridgeState },
+  reread: () => string | undefined,
+): { document: TabDocument | undefined; scriptHash: string | undefined } {
+  const first = webviewDocument(html, options);
+  if (!rereadsScriptHash(first)) {
+    return { document: first, scriptHash: options.scriptHash };
+  }
+  const fresh = reread();
+  if (fresh === undefined) {
+    return { document: undefined, scriptHash: undefined };
+  }
+  if (fresh === options.scriptHash) {
+    return { document: first, scriptHash: fresh };
+  }
+  return { document: webviewDocument(html, { ...options, scriptHash: fresh }), scriptHash: fresh };
+}
+
+/**
+ * The tab's own document in place of a refused page: the one line and the
+ * **Generate** button, which posts `generate`. Its own nonced style and script.
+ */
+export function refusalDocument(nonce: string, line: string): string {
+  assertNonce(nonce);
+  const escaped = line.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return [
+    "<!DOCTYPE html>",
+    '<html lang="en">',
+    "<head>",
+    '<meta charset="utf-8">',
+    `<meta http-equiv="Content-Security-Policy" content="${tabCsp(nonce)}">`,
+    `<style nonce="${nonce}">\n${TAB_STYLE}</style>`,
+    "</head>",
+    "<body>",
+    `<p id="swcraft-refused">${escaped} <button type="button" id="swcraft-generate">Generate</button></p>`,
+    `<script nonce="${nonce}">(function () { var vscode = acquireVsCodeApi(); document.getElementById("swcraft-generate").addEventListener("click", function () { vscode.postMessage({ type: "generate" }); }); })();</script>`,
+    "</body>",
+    "</html>",
+    "",
+  ].join("\n");
+}
+
+// --- the bridge ----------------------------------------------------------------
+
+/**
+ * The bridge: a function expression the rewrite calls with the page's
+ * `BridgeState`. It defines `window.swcraftHost` as `page.py`'s docstring states
+ * the contract (`state`, `navigate(href)`, `open(file, member)`, `reload()`,
+ * `on(type, handler)`) over `acquireVsCodeApi()`. It consumes every click on an
+ * `<a>` or `<area>` in the capture phase, so VS Code's own link handling never
+ * sees one, posting its `href` (or `xlink:href`) as `navigate`; a middle click
+ * opens nothing. It draws **← Back**, **Forward →** and, when out of date, the
+ * *out of date* line with **Generate**.
+ *
+ * It posts only `navigate`, `open`, `reload`, `back`, `forward` and `generate`;
+ * besides the page's messages it takes `OUT_OF_DATE_MESSAGE`.
+ */
+export const BRIDGE_SCRIPT = `(function (initial) {
+  "use strict";
+  var vscode = acquireVsCodeApi();
+  var handlers = {};
+  function post(message) { vscode.postMessage(message); }
+  window.swcraftHost = {
+    state: { fragment: String(initial.fragment || ""), reveal: initial.reveal || null },
+    navigate: function (href) { post({ type: "navigate", href: String(href) }); },
+    open: function (file, member) {
+      post({ type: "open", file: String(file), member: typeof member === "string" ? member : null });
+    },
+    reload: function () { post({ type: "reload" }); },
+    on: function (type, handler) {
+      (handlers[type] = handlers[type] || []).push(handler);
+    }
+  };
+  window.addEventListener("message", function (event) {
+    var message = event.data;
+    if (!message || typeof message.type !== "string" || !handlers.hasOwnProperty(message.type)) {
+      return;
+    }
+    handlers[message.type].forEach(function (handler) { handler(message); });
+  });
+  // Every element a click can follow: an HTML or SVG <a>, href or xlink:href or
+  // none at all, and an <area>. None is left to the webview's own link handling;
+  // the extension's followLink decides each href, and an anchor with none goes nowhere.
+  function anchorOf(event) {
+    var target = event.target;
+    return target && target.closest ? target.closest("a, area") : null;
+  }
+  function hrefOf(anchor) {
+    var href = anchor.getAttribute("href");
+    if (href === null && anchor.getAttributeNS) {
+      href = anchor.getAttributeNS("http://www.w3.org/1999/xlink", "href");
+    }
+    if (href === null) {
+      href = anchor.getAttribute("xlink:href");
+    }
+    return href;
+  }
+  document.addEventListener("click", function (event) {
+    var anchor = anchorOf(event);
+    if (!anchor) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    var href = hrefOf(anchor);
+    if (href !== null) {
+      post({ type: "navigate", href: href });
+    }
+  }, true);
+  document.addEventListener("auxclick", function (event) {
+    if (anchorOf(event)) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, true);
+  function button(id, text, title, type, enabled) {
+    var element = document.createElement("button");
+    element.type = "button";
+    element.id = id;
+    element.textContent = text;
+    element.title = title;
+    element.disabled = !enabled;
+    element.addEventListener("click", function () { post({ type: type }); });
+    return element;
+  }
+  var history = document.createElement("span");
+  history.id = "swcraft-history";
+  history.appendChild(button("swcraft-back", "\\u2190 Back", "The page shown before this one", "back", initial.canBack));
+  history.appendChild(button("swcraft-forward", "Forward \\u2192", "The page shown after this one", "forward", initial.canForward));
+  var header = document.querySelector("header");
+  if (header) {
+    header.insertBefore(history, header.firstChild);
+  } else if (document.body) {
+    var bar = document.createElement("div");
+    bar.id = "swcraft-bar";
+    bar.appendChild(history);
+    document.body.insertBefore(bar, document.body.firstChild);
+  }
+  var stale = null;
+  function markOutOfDate(outOfDate) {
+    if (!outOfDate) {
+      if (stale) {
+        stale.hidden = true;
+      }
+      return;
+    }
+    if (!stale && document.body) {
+      stale = document.createElement("div");
+      stale.id = "swcraft-stale";
+      stale.setAttribute("role", "status");
+      stale.appendChild(document.createTextNode(${JSON.stringify(OUT_OF_DATE_LINE)} + " "));
+      stale.appendChild(button("swcraft-generate", "Generate", "Generate the diagrams again", "generate", true));
+      document.body.insertBefore(stale, document.body.firstChild);
+    }
+    if (stale) {
+      stale.hidden = false;
+    }
+  }
+  markOutOfDate(Boolean(initial.outOfDate));
+  window.swcraftHost.on(${JSON.stringify(OUT_OF_DATE_MESSAGE)}, function (message) {
+    markOutOfDate(message.outOfDate === true);
+  });
+})`;
+
+// --- the tab stylesheet ----------------------------------------------------------
+
+/** The palette's exclusion: never a high-contrast body (both high-contrast kinds carry this class). */
+const NOT_HIGH_CONTRAST = ":not(.vscode-high-contrast)";
+
+/** The body of one palette scheme, VS Code's `light` or `dark` theme, never high contrast. */
+function schemeBody(scheme: "light" | "dark"): string {
+  return `body.vscode-${scheme}${NOT_HIGH_CONTRAST}`;
+}
+
+/** The bodies the LikeC4 palette reaches: VS Code's light and dark themes, never high contrast. */
+export const PALETTE_BODY = `body:is(.vscode-light, .vscode-dark)${NOT_HIGH_CONTRAST}`;
+
+/** The views the nesting packing draws, where a box holding boxes is a compound (`nesting.py`). */
+const PACKED_VIEW = ':is([data-view="nesting"], [data-view="deployment"])';
+
+/** The compound look: LikeC4's 15 % fill, its 57.5 % border, 3 px. */
+const COMPOUND_LOOK = `fill: ${role("compoundFill")}; stroke: ${role("compoundBorder")}; stroke-width: ${LIKEC4_COMPOUND_BORDER_WIDTH};`;
+
+/** One palette selector over the drawing, at specificity 0 (`:where()`), so every mark wins over it. */
+function paletteSelector(selector: string, body = PALETTE_BODY): string {
+  return `:where(${body} main > svg ${selector})`;
+}
+
+/** One palette rule: its selectors (each through {@link paletteSelector}) and declarations. */
+function paletteRule(selectors: string[], declarations: string): string {
+  return `${selectors.join(", ")} { ${declarations} }`;
+}
+
+/** A LikeC4 role's value, read from the custom property its scheme's body declares. */
+function role(name: Likec4Role): string {
+  return `var(${likec4Variable(name)})`;
+}
+
+/**
+ * The drawing in LikeC4's palette, after the base mapping and before the lit arrowheads.
+ * Every box, label and port is told by a mark the renderer writes: a box by `data-role`
+ * and `data-kind`, a box's label by its class and its `data-kind`, a member's port label
+ * by its class `in-member` and its member's `data-kind`, the view by the page's `data-view` — never by a label's
+ * anchor or its place.
+ */
+const PALETTE_RULES = [
+  paletteRule([paletteSelector("rect.background")], `fill: ${role("canvas")};`),
+  // A compound: a frame, and in the packed views every box holding boxes.
+  paletteRule(
+    [
+      paletteSelector('[data-role="frame"] > rect:not(.hit-band)'),
+      paletteSelector(
+        '[data-role="member"]:not([data-kind="component"]) > rect:not(.hit-band)',
+        `${PALETTE_BODY}${PACKED_VIEW}`,
+      ),
+    ],
+    COMPOUND_LOOK,
+  ),
+  // An element: a component anywhere, every member of a block diagram, a lifeline's head.
+  paletteRule(
+    [
+      paletteSelector('[data-kind="component"] > rect:not(.hit-band)'),
+      paletteSelector(
+        '[data-role="member"] > rect:not(.hit-band)',
+        `${PALETTE_BODY}:not(${PACKED_VIEW})`,
+      ),
+      paletteSelector('[data-role="lifeline"] > rect:not(.hit-band)'),
+    ],
+    `fill: ${role("fill")}; stroke: ${role("stroke")};`,
+  ),
+  // A member composition on every view: the compound look, after the element rule
+  // it overrides in an IBD and an overview.
+  paletteRule(
+    [paletteSelector('[data-role="member"][data-kind="composition"] > rect:not(.hit-band)')],
+    COMPOUND_LOOK,
+  ),
+  paletteRule(
+    [
+      paletteSelector("text.frame-label"),
+      paletteSelector(
+        'text.member-label:not([data-kind="component"])',
+        `${PALETTE_BODY}${PACKED_VIEW}`,
+      ),
+    ],
+    `fill: ${role("title")};`,
+  ),
+  paletteRule(
+    [
+      paletteSelector('text.member-label[data-kind="component"]'),
+      paletteSelector("text.member-label", `${PALETTE_BODY}:not(${PACKED_VIEW})`),
+      paletteSelector("text.lifeline-label"),
+    ],
+    `fill: ${role("text")};`,
+  ),
+  // Its label the compound title colour on every view, after the rule above.
+  paletteRule(
+    [paletteSelector('text.member-label[data-kind="composition"]')],
+    `fill: ${role("title")};`,
+  ),
+  paletteRule([paletteSelector("text.lifeline-detail")], `fill: ${role("detail")};`),
+  paletteRule([paletteSelector("text.port-label")], `fill: ${role("portLabel")};`),
+  paletteRule([paletteSelector("text.port-label.in-member")], `fill: ${role("memberPortLabel")};`),
+  // One inside a member composition lies on the compound tint, not on a component's blue:
+  // the port label grey of the outside.
+  paletteRule(
+    [paletteSelector('text.port-label.in-member[data-kind="composition"]')],
+    `fill: ${role("portLabel")};`,
+  ),
+  paletteRule(
+    [
+      paletteSelector("g.edge path:not(.hit-band)"),
+      paletteSelector("g.edge line:not(.hit-band)"),
+      paletteSelector("g.edge polyline:not(.hit-band)"),
+    ],
+    `stroke: ${role("line")};`,
+  ),
+  paletteRule([paletteSelector('marker path:not([fill="none"])')], `fill: ${role("line")};`),
+  paletteRule([paletteSelector("marker path[stroke]:not(.hit-band)")], `stroke: ${role("line")};`),
+  // A port: its square's outline, its glyph's outline and the connector line one colour,
+  // the line's; the square and the glyph's inside the enclosing group's (`portFill`). A
+  // glyph path the renderer leaves open (`fill="none"`) stays unfilled.
+  paletteRule(
+    [
+      paletteSelector(".port-box:not(.hit-band)"),
+      paletteSelector('g.port g.glyph path:not([fill="none"]):not(.hit-band)'),
+      paletteSelector("g.port g.glyph circle:not(.hit-band)"),
+    ],
+    `fill: ${role("portFill")}; stroke: ${role("line")};`,
+  ),
+  paletteRule(
+    [
+      paletteSelector('g.port g.glyph path[fill="none"]:not(.hit-band)'),
+      paletteSelector("g.port g.glyph line:not(.hit-band)"),
+    ],
+    `stroke: ${role("line")};`,
+  ),
+].join("\n");
+
+/** The lit arrowheads in the palette themes: the selection's amber, after the base lit rules. */
+const LIT_MARKER_RULES = [
+  paletteRule(
+    [paletteSelector('marker[id$="-lit"] path:not([fill="none"])')],
+    `fill: ${role("selection")};`,
+  ),
+  paletteRule(
+    [paletteSelector('marker[id$="-lit"] path[stroke]:not(.hit-band)')],
+    `stroke: ${role("selection")};`,
+  ),
+].join("\n");
+
+/** One mark's selectors in the palette themes: *parts* under `${PALETTE_BODY} svg`. */
+function markSelectors(parts: string[]): string {
+  return parts.map((part) => `${PALETTE_BODY} svg ${part}`).join(", ");
+}
+
+/** The shapes a mark outlines, in the order its rule lists them: a box, a line drawn as a path, a dot, a line. */
+const MARK_SHAPES = ["rect", "path", "circle", "line"] as const;
+
+/** A port glyph's shapes, in the order the port's rule lists them (a glyph has no `rect`). */
+const GLYPH_SHAPES = ["path", "line", "circle"] as const;
+
+/** *scope*'s *shapes*, each `:not(.hit-band)`: the page's band is transparent, and no mark paints it. */
+function shapeParts(scope: string, shapes: readonly string[] = MARK_SHAPES): string[] {
+  return shapes.map((shape) => `${scope} ${shape}:not(.hit-band)`);
+}
+
+/**
+ * The marks in the palette themes: amber for the selection, a link's hover and the
+ * pin's highlight, red for the current search match, red-300 for the other matches,
+ * every outline 4 px and solid. Each outranks the theme's own rule by its body
+ * selector and keeps its order (the current match last). High contrast keeps its marks.
+ */
+const MARK_RULES = [
+  `${markSelectors([
+    ".link:hover > rect:not(.hit-band)",
+    // A lit port's own hit box is not outlined; its other shapes are.
+    ".highlight rect:not(.port-hit):not(.hit-band)",
+    ...shapeParts(".highlight", MARK_SHAPES.slice(1)),
+    // A selected box, connector or line: its own shapes, never a dot.
+    ...shapeParts(".selected >", ["rect", "path", "line"]),
+  ])} { stroke: ${role("selection")}; stroke-width: ${MARK_WIDTH}; }`,
+  `${markSelectors(shapeParts(".hit"))} { stroke: ${role("hit")}; stroke-width: ${MARK_WIDTH}; }`,
+  `${markSelectors(shapeParts(".current"))} { stroke: ${role("current")}; stroke-width: ${MARK_WIDTH}; }`,
+].join("\n");
+
+/** A port's own outlines when the port itself carries *mark*: its square and its glyph's shapes. */
+function portParts(mark: string): string[] {
+  return [
+    `.port${mark} > rect.port-box:not(.hit-band)`,
+    ...shapeParts(`.port${mark} .glyph`, GLYPH_SHAPES),
+  ];
+}
+
+/**
+ * A lit (`highlight`) or `selected` port: the square's and glyph's outlines in the
+ * selection colour at `PORT_LIT_WIDTH`, thicker than the unselected outline and
+ * thinner than the lit connector (`MARK_WIDTH`). No `vector-effect`, so that order
+ * holds at any zoom. Last and more specific than the selection's rule and the
+ * match marks, so a lit port reads as the selection.
+ */
+const PORT_MARK_RULE = `${markSelectors([...portParts(".highlight"), ...portParts(".selected")])} { stroke: ${role("selection")}; stroke-width: ${PORT_LIT_WIDTH}; }`;
+
+/**
+ * The tab's own stylesheet, last in `<head>`: it resets VS Code's default webview
+ * styling (a view page's `body` padding; the index keeps its own 16 px) and maps
+ * the page to the colour theme through VS Code's theme variables and body classes.
+ *
+ * Layering: the renderers write colours as presentation attributes, so the base
+ * mapping sits inside `:where()` (specificity 0: beats an attribute, never a page
+ * rule); each page rule that names a colour is restated with its own selector,
+ * which wins because this sheet comes last. Nothing is `!important`, and no stroke
+ * rule paints `.hit-band`. `body.vscode-high-contrast` names both high-contrast
+ * kinds; `:not(.vscode-high-contrast-light)` splits them where they differ.
+ *
+ * In the light and dark themes (never high contrast) the drawing takes LikeC4's
+ * palette (versions, sources and values in `likec4Palette.ts`), the sheet's only
+ * colour literals, declared once per scheme as `--swcraft-likec4-<role>`: compounds,
+ * elements and lines take the roles `PALETTE_RULES` names, and ports the line colour
+ * (LikeC4 has no port). Other shapes, and high contrast, keep the base mapping.
+ *
+ * The marks stay on top (the palette rules are `:where()`, the marks are not), in
+ * the Tailwind CSS v3 colours of `likec4Palette.ts` (`MARK_RULES`). High contrast
+ * keeps the theme's marks. The figures below
+ * WCAG's thresholds are `diagramsTabContrast.test.ts`' named exceptions.
+ *
+ * What it does not reach: a third-party theme's values (contrast computed for VS
+ * Code 1.145.2's default themes), a later VS Code that drops a colour id, LikeC4's
+ * own runtime and later releases, a browser without CSS relative colours
+ * (`oklch(from …)`), the figures named below threshold, and the look as drawn.
+ */
+export const TAB_STYLE = `body { background: var(--vscode-editor-background); color: var(--vscode-editor-foreground); }
+${schemeBody("light")} { ${likec4Declarations("light")} }
+${schemeBody("dark")} { ${likec4Declarations("dark")} }
+body[data-view] { padding: 0; }
+body.vscode-light, body.vscode-high-contrast-light { color-scheme: light; }
+body.vscode-dark, body.vscode-high-contrast:not(.vscode-high-contrast-light) { color-scheme: dark; }
+body a, nav a, svg g.frame-up text { color: var(--vscode-textLink-foreground); }
+svg g.frame-up text { fill: var(--vscode-textLink-foreground); }
+body a:hover { color: var(--vscode-textLink-activeForeground); }
+body pre { background: var(--vscode-textCodeBlock-background); }
+body .file, .controls output, #connectors li .note { color: var(--vscode-descriptionForeground); }
+header, footer, #selection, #connectors .panel-head, #swcraft-bar, #swcraft-stale {
+  background: var(--vscode-editorWidget-background); color: var(--vscode-editorWidget-foreground);
+  border-color: var(--vscode-editorWidget-border, var(--vscode-widget-border, transparent)); }
+main { background: var(--vscode-editor-background); }
+${PALETTE_BODY} main { background: ${role("canvas")}; }
+#tip, #connectors { background: var(--vscode-editorWidget-background); color: var(--vscode-editorWidget-foreground);
+  border-color: var(--vscode-editorWidget-border, var(--vscode-widget-border, transparent));
+  box-shadow: 0 1px 4px var(--vscode-widget-shadow, transparent); }
+nav .placed-in.highlight { outline-color: var(--vscode-focusBorder); }
+body button { background: var(--vscode-button-secondaryBackground); color: var(--vscode-button-secondaryForeground);
+  border: 1px solid var(--vscode-button-border, var(--vscode-contrastBorder, transparent)); border-radius: 2px;
+  padding: 1px 6px; font: inherit; }
+body button:hover:not(:disabled) { background: var(--vscode-button-secondaryHoverBackground); }
+body button:disabled { opacity: 0.5; }
+body #open-in-model, body #swcraft-generate { background: var(--vscode-button-background); color: var(--vscode-button-foreground); }
+body #open-in-model:hover, body #swcraft-generate:hover { background: var(--vscode-button-hoverBackground); }
+body input { background: var(--vscode-input-background); color: var(--vscode-input-foreground);
+  border: 1px solid var(--vscode-input-border, transparent); }
+body input::placeholder { color: var(--vscode-input-placeholderForeground); }
+body button:focus-visible, body input:focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: -1px; }
+#swcraft-history { display: inline-flex; gap: 4px; }
+#swcraft-bar { display: flex; padding: 6px 12px; border-bottom: 1px solid; }
+#swcraft-stale { display: flex; gap: 8px; align-items: center; padding: 4px 12px; border-bottom: 1px solid;
+  border-left: 4px solid var(--vscode-editorWarning-foreground); font-size: 13px; }
+#swcraft-stale[hidden] { display: none; }
+#swcraft-refused { margin: 16px; }
+:where(main > svg rect.background) { fill: var(--vscode-editor-background); }
+:where(main > svg [stroke]:not([stroke="none"]):not(.hit-band)) { stroke: var(--vscode-editor-foreground); }
+:where(main > svg text) { fill: var(--vscode-editor-foreground); }
+:where(main > svg text[fill]) { fill: var(--vscode-descriptionForeground); }
+:where(body.vscode-dark main > svg, body.vscode-high-contrast:not(.vscode-high-contrast-light) main > svg)
+  :where(rect, circle, path):where(:not([fill="none"]):not(.background):not(.hit-band):not(.port-hit)) {
+  fill: var(--vscode-editorWidget-background); }
+:where(main > svg marker path:not([fill="none"])) { fill: var(--vscode-editor-foreground); }
+${PALETTE_RULES}
+:where(main > svg marker[id$="-lit"] path:not([fill="none"])) { fill: var(--vscode-focusBorder); }
+:where(main > svg marker[id$="-lit"] path[stroke]:not(.hit-band)) { stroke: var(--vscode-focusBorder); }
+${LIT_MARKER_RULES}
+:where(body.vscode-high-contrast main > svg [data-role] [stroke]:not([stroke="none"]):not(.hit-band)) {
+  stroke: var(--vscode-contrastBorder); stroke-width: 2px; }
+:where(body.vscode-high-contrast main > svg [data-role="frame"] > rect[stroke]:not(.hit-band)) { stroke-width: 2.5px; }
+svg .link:hover > rect:not(.hit-band) { stroke: var(--vscode-focusBorder); }
+svg .highlight rect:not(.port-hit):not(.hit-band), svg .highlight path:not(.hit-band), svg .highlight circle:not(.hit-band),
+  svg .highlight line:not(.hit-band) { stroke: var(--vscode-focusBorder); }
+svg .selected > rect:not(.hit-band), svg .selected > path:not(.hit-band), svg .selected > line:not(.hit-band) {
+  stroke: var(--vscode-focusBorder); }
+body:not(.vscode-high-contrast) svg .hit rect:not(.hit-band):not(.port-hit), body:not(.vscode-high-contrast) svg .hit circle:not(.hit-band) {
+  fill: var(--vscode-editor-findMatchHighlightBackground); }
+${MARK_RULES}
+${PORT_MARK_RULE}
+body.vscode-high-contrast svg .hit rect:not(.hit-band), body.vscode-high-contrast svg .hit path:not(.hit-band),
+  body.vscode-high-contrast svg .hit circle:not(.hit-band), body.vscode-high-contrast svg .hit line:not(.hit-band) {
+  stroke: var(--vscode-editor-findMatchHighlightBorder); stroke-width: 3px; }
+body.vscode-high-contrast svg .current rect:not(.hit-band), body.vscode-high-contrast svg .current path:not(.hit-band),
+  body.vscode-high-contrast svg .current circle:not(.hit-band), body.vscode-high-contrast svg .current line:not(.hit-band) {
+  stroke: var(--vscode-editor-findMatchBorder); stroke-width: 5px; }
+body.vscode-high-contrast svg .selected > rect:not(.hit-band), body.vscode-high-contrast svg .selected > path:not(.hit-band),
+  body.vscode-high-contrast svg .selected > line:not(.hit-band) {
+  stroke-width: 3px; stroke-dasharray: 4 2; }
+`;
+
+// --- the page's own blocks --------------------------------------------------------
+
+/** The `id` of a view page's model block (`page.MODEL_SCRIPT_ID`). */
+export const MODEL_BLOCK_ID = "swcraft-model";
+
+/** The `id` of the index's elements block (`page.ELEMENTS_SCRIPT_ID`). */
+export const ELEMENTS_BLOCK_ID = "swcraft-elements";
+
+/** One drawn element's entry: what it opens, or why it opens nothing. */
+export type ModelEntry =
+  | { file: string; member: string | null }
+  | { refused: "several-files" | "no-file" };
+
+/** The index's entry for one storage name. */
+export interface ElementViews {
+  views: string[];
+  members: Record<string, string[]>;
+}
+
+/** A data block read: its value, no block at all, or one that is not the generator's shape. */
+export type BlockRead<T> =
+  | { kind: "ok"; value: T }
+  | { kind: "absent" }
+  | { kind: "malformed"; reason: string };
+
+/**
+ * The text of the one block whose start tag is exactly the generator's
+ * `<script type="application/json" id="<id>">` (`GENERATED_TAGS`), or why there is
+ * none: a start tag spelt any other way is not the block.
+ */
+function blockText(html: string, id: string): BlockRead<string> {
+  const texts: string[] = [];
+  const tag = jsonBlockTag(id);
+  for (let at = html.indexOf(tag); at !== -1; at = html.indexOf(tag, at + tag.length)) {
+    texts.push(scriptText(html, at + tag.length));
+  }
+  if (texts.length === 0) {
+    return { kind: "absent" };
+  }
+  if (texts.length > 1) {
+    return { kind: "malformed", reason: `more than one ${id} block` };
+  }
+  return { kind: "ok", value: texts[0] };
+}
+
+function parseObject(text: string, id: string): BlockRead<Record<string, unknown>> {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    return { kind: "malformed", reason: `the ${id} block is not JSON` };
+  }
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    return { kind: "malformed", reason: `the ${id} block is not an object` };
+  }
+  return { kind: "ok", value: parsed as Record<string, unknown> };
+}
+
+function isStringList(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === "string");
+}
+
+/**
+ * A view page's `swcraft-model` block: ordinal (decimal digits) → `ModelEntry`.
+ * Any entry of another shape makes the whole block `malformed`: the block is
+ * the allowlist of what the page may open, and a half-read allowlist is not one.
+ */
+export function parseModelBlock(html: string): BlockRead<Map<string, ModelEntry>> {
+  const text = blockText(html, MODEL_BLOCK_ID);
+  if (text.kind !== "ok") {
+    return text;
+  }
+  const object = parseObject(text.value, MODEL_BLOCK_ID);
+  if (object.kind !== "ok") {
+    return object;
+  }
+  const entries = new Map<string, ModelEntry>();
+  for (const [ordinal, raw] of Object.entries(object.value)) {
+    if (
+      !/^(0|[1-9][0-9]*)$/.test(ordinal) ||
+      typeof raw !== "object" ||
+      raw === null ||
+      Array.isArray(raw)
+    ) {
+      return {
+        kind: "malformed",
+        reason: `the ${MODEL_BLOCK_ID} block's entry ${ordinal} is not an entry`,
+      };
+    }
+    const entry = raw as Record<string, unknown>;
+    const keys = Object.keys(entry).sort().join(",");
+    if (
+      keys === "file,member" &&
+      typeof entry.file === "string" &&
+      (entry.member === null || typeof entry.member === "string")
+    ) {
+      entries.set(ordinal, { file: entry.file, member: entry.member as string | null });
+    } else if (
+      keys === "refused" &&
+      (entry.refused === "several-files" || entry.refused === "no-file")
+    ) {
+      entries.set(ordinal, { refused: entry.refused });
+    } else {
+      return {
+        kind: "malformed",
+        reason: `the ${MODEL_BLOCK_ID} block's entry ${ordinal} is not an entry`,
+      };
+    }
+  }
+  return { kind: "ok", value: entries };
+}
+
+/** The key of one `{file, member}` pair in an allowlist: a `null` member is a marker of its own, never `""`. */
+function allowKey(file: string, member: string | null): string {
+  return member === null ? `${file}\u0000\u0001` : `${file}\u0000\u0002${member}`;
+}
+
+/** The `{file, member}` pairs a page may open: its model block's entries; empty for an absent or malformed block. */
+export function modelAllowlist(block: BlockRead<Map<string, ModelEntry>>): ReadonlySet<string> {
+  const allowed = new Set<string>();
+  if (block.kind === "ok") {
+    for (const entry of block.value.values()) {
+      if ("file" in entry) {
+        allowed.add(allowKey(entry.file, entry.member));
+      }
+    }
+  }
+  return allowed;
+}
+
+/** The index's `swcraft-elements` block: storage name → the views that draw it and its members. */
+export function parseElementsBlock(html: string): BlockRead<Map<string, ElementViews>> {
+  const text = blockText(html, ELEMENTS_BLOCK_ID);
+  if (text.kind !== "ok") {
+    return text;
+  }
+  const object = parseObject(text.value, ELEMENTS_BLOCK_ID);
+  if (object.kind !== "ok") {
+    return object;
+  }
+  const elements = new Map<string, ElementViews>();
+  for (const [file, raw] of Object.entries(object.value)) {
+    const entry = raw as Record<string, unknown> | null;
+    const members = typeof entry === "object" && entry !== null ? entry.members : undefined;
+    if (
+      typeof entry !== "object" ||
+      entry === null ||
+      Array.isArray(entry) ||
+      !isStringList(entry.views) ||
+      typeof members !== "object" ||
+      members === null ||
+      Array.isArray(members) ||
+      !Object.values(members).every(isStringList)
+    ) {
+      return {
+        kind: "malformed",
+        reason: `the ${ELEMENTS_BLOCK_ID} block's entry for ${file} is not an entry`,
+      };
+    }
+    elements.set(file, {
+      views: [...entry.views],
+      members: { ...(members as Record<string, string[]>) },
+    });
+  }
+  return { kind: "ok", value: elements };
+}
+
+/**
+ * The views that draw *file* — or its *member*, where the index lists views for
+ * that member — in the index's own order; an empty list when the index does not
+ * draw the file at all (*not on any diagram*).
+ */
+export function viewsForElement(
+  elements: ReadonlyMap<string, ElementViews>,
+  file: string,
+  member: string | null,
+): string[] {
+  const entry = elements.get(file);
+  if (entry === undefined) {
+    return [];
+  }
+  if (member !== null) {
+    const views = Object.hasOwn(entry.members, member) ? entry.members[member] : undefined;
+    if (views !== undefined && views.length > 0) {
+      return [...views];
+    }
+  }
+  return [...entry.views];
+}
+
+function unescapeHtml(text: string): string {
+  return text
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&");
+}
+
+/** Each view's heading as the index's list names it (*Root — internal block diagram*), in the index's order. */
+export function indexHeadings(html: string): Map<string, string> {
+  const headings = new Map<string, string>();
+  const row = /<li><a href="([^"]+)\.html">([^<]*)<\/a>/g;
+  for (let match = row.exec(html); match !== null; match = row.exec(html)) {
+    let view: string;
+    try {
+      view = decodeURIComponent(unescapeHtml(match[1]));
+    } catch {
+      continue;
+    }
+    if (!headings.has(view)) {
+      headings.set(view, unescapeHtml(match[2]));
+    }
+  }
+  return headings;
+}
+
+/** The pick's items: each view of *views*, in their order, labelled as the index names it (else by its id). */
+export function pickItems(
+  views: readonly string[],
+  headings: ReadonlyMap<string, string>,
+): Array<{ view: string; label: string }> {
+  return views.map((view) => ({ view, label: headings.get(view) ?? view }));
+}
+
+// --- what crosses the boundary -----------------------------------------------------
+
+/**
+ * An `open` from the page is followed only when the exact `{file, member}` pair is
+ * in *allowlist* (the page's own model block) and the file resolves under the real
+ * *modelRoot* (`resolveModelFile()`).
+ */
+export function acceptOpen(
+  file: string,
+  member: string | null,
+  allowlist: ReadonlySet<string>,
+  modelRoot: string,
+): { kind: "open"; path: string; member: string | null } | Refused {
+  if (!allowlist.has(allowKey(file, member))) {
+    return { kind: "refused", reason: "the element is not one the page lists" };
+  }
+  const resolved = resolveModelFile(modelRoot, file);
+  if (resolved.kind === "refused") {
+    return resolved;
+  }
+  return { kind: "open", path: resolved.path, member };
+}
+
+/** The pages and files a link may name: `index.html`, `report.txt`, `<id>.html`, `<id>.svg`. */
+// biome-ignore lint/suspicious/noControlCharactersInRegex: control characters are what is refused
+const LINK_TARGET = /^(?:index\.html|report\.txt|[^/\\:\u0000-\u001f%]+\.(?:html|svg))$/;
+
+/** What a link names: a page in the tab (the index when *view* is `undefined`), or a file in a VS Code tab. */
+export type NavigateTarget =
+  | { kind: "page"; view: string | undefined; fragment: string }
+  | { kind: "file"; name: string };
+
+/** A link followed: `NavigateTarget` with the real path of a file to open. */
+export type FollowedLink =
+  | Extract<NavigateTarget, { kind: "page" }>
+  | (Extract<NavigateTarget, { kind: "file" }> & { path: string });
+
+/**
+ * *href* as the page holds it, split at its first `#`, each half percent-decoded
+ * exactly once, then checked: `index.html`, `report.txt`, `<id>.html` or
+ * `<id>.svg`, a fragment only on a page, and the name listed in *listing* (the
+ * `views_root` entries now), compared exactly: no separator, `..`, scheme, case
+ * variant or `%` left after the decoding.
+ */
+export function acceptNavigate(
+  href: string,
+  listing: readonly string[] | undefined,
+): NavigateTarget | Refused {
+  const hash = href.indexOf("#");
+  const rawName = hash === -1 ? href : href.slice(0, hash);
+  const rawFragment = hash === -1 ? "" : href.slice(hash + 1);
+  let name: string;
+  let fragment: string;
+  try {
+    name = decodeURIComponent(rawName);
+    fragment = decodeURIComponent(rawFragment);
+  } catch {
+    return { kind: "refused", reason: "the link is not percent-encoded" };
+  }
+  if (!LINK_TARGET.test(name) || name === ".html" || name === ".svg" || name.startsWith("..")) {
+    return { kind: "refused", reason: "the link names no diagram page or file" };
+  }
+  if (listing === undefined || !listing.includes(name)) {
+    return { kind: "refused", reason: "the link names a file the diagrams do not list" };
+  }
+  if (name.endsWith(".html")) {
+    return {
+      kind: "page",
+      view: name === "index.html" ? undefined : name.slice(0, -".html".length),
+      fragment,
+    };
+  }
+  if (fragment !== "") {
+    return { kind: "refused", reason: "a fragment is taken on a page only" };
+  }
+  return { kind: "file", name };
+}
+
+/**
+ * Both checks a `navigate` passes before anything is shown or opened:
+ * `acceptNavigate()` over *listing*, then `resolveViewsFile()`. A listed name that
+ * links outside `views_root`, is gone or is no regular file is refused like an
+ * unlisted one: the tab logs one line and the page stays. A page is resolved again
+ * when shown, so one removed in between is the refusal page.
+ */
+export function followLink(
+  href: string,
+  viewsRoot: string,
+  listing: readonly string[] | undefined,
+): FollowedLink | Refused {
+  const target = acceptNavigate(href, listing);
+  if (target.kind === "refused") {
+    return target;
+  }
+  const name =
+    target.kind === "file"
+      ? target.name
+      : target.view === undefined
+        ? "index.html"
+        : `${target.view}.html`;
+  const file = resolveViewsFile(viewsRoot, name);
+  if (file.kind === "refused") {
+    return file;
+  }
+  return target.kind === "page" ? target : { kind: "file", name, path: file.path };
+}
+
+/**
+ * The real path of `<viewsRoot>/<name>` when it is a regular file whose real path
+ * lies inside the real *viewsRoot*: the check every read or open from `views_root`
+ * passes. A link outside, a directory and a FIFO are refused.
+ */
+export function resolveViewsFile(
+  viewsRoot: string,
+  name: string,
+): { kind: "file"; path: string } | Refused {
+  // biome-ignore lint/suspicious/noControlCharactersInRegex: a NUL is what is refused
+  if (name.length === 0 || /[/\\:\u0000]/.test(name) || name === "." || name === "..") {
+    return { kind: "refused", reason: "the name is not a file name" };
+  }
+  return resolveRegularFileUnder(
+    viewsRoot,
+    [name],
+    "the file lies outside the diagrams' directory",
+  );
+}
+
+/** A message the tab takes from its webview. */
+export type TabMessage =
+  | { type: "navigate"; href: string }
+  | { type: "open"; file: string; member: string | null }
+  | { type: "reload" }
+  | { type: "back" }
+  | { type: "forward" }
+  | { type: "generate" };
+
+/** The longest string a message may carry; a page writes far shorter ones. */
+const MESSAGE_TEXT_LIMIT = 4096;
+
+function boundedString(value: unknown): value is string {
+  return typeof value === "string" && value.length <= MESSAGE_TEXT_LIMIT;
+}
+
+/** *raw* (what `onDidReceiveMessage` hands over) as a `TabMessage`, or `undefined` for anything else. */
+export function parseTabMessage(raw: unknown): TabMessage | undefined {
+  if (typeof raw !== "object" || raw === null) {
+    return undefined;
+  }
+  const message = raw as Record<string, unknown>;
+  switch (message.type) {
+    case "navigate":
+      return boundedString(message.href) ? { type: "navigate", href: message.href } : undefined;
+    case "open":
+      return boundedString(message.file) &&
+        (message.member === null || boundedString(message.member))
+        ? { type: "open", file: message.file, member: message.member as string | null }
+        : undefined;
+    case "reload":
+    case "back":
+    case "forward":
+    case "generate":
+      return { type: message.type };
+    default:
+      return undefined;
+  }
+}
+
+// --- the order of a show and the history -----------------------------------------------
+
+/** One place the tab shows: a view (`undefined` for the index) and the member to arrive at. */
+export interface TabEntry {
+  view: string | undefined;
+  fragment: string;
+}
+
+/** One step the adapter takes, in order. */
+export type ShowStep =
+  | { kind: "render"; entry: TabEntry; reveal: RevealRequest | null }
+  | { kind: "reveal-panel" }
+  | { kind: "post-reveal"; reveal: RevealRequest };
+
+/** What the open panel shows: its place, and whether that place is a page or the refusal shown instead. */
+export interface ShownPlace {
+  entry: TabEntry;
+  /** The page itself is set (`webviewDocument()` accepted it); `false` for the refusal page in its place. */
+  page: boolean;
+}
+
+/**
+ * The steps of showing *request*: on a panel already showing the same view as a
+ * page, a reveal with no fragment selects the element in place, the panel revealed
+ * first and the reveal posted after (posted first, the page does not get the
+ * focus its keys need). Anything else, a refusal page included (no script to take
+ * the post), renders the page with the reveal in its state and reveals the panel.
+ */
+export function planShow(
+  shown: ShownPlace | undefined,
+  request: { entry: TabEntry; reveal?: RevealRequest },
+): ShowStep[] {
+  const reveal = request.reveal ?? null;
+  if (
+    shown?.page === true &&
+    reveal !== null &&
+    request.entry.fragment === "" &&
+    shown.entry.view === request.entry.view
+  ) {
+    return [{ kind: "reveal-panel" }, { kind: "post-reveal", reveal }];
+  }
+  return [{ kind: "render", entry: request.entry, reveal }, { kind: "reveal-panel" }];
+}
+
+/** How many places the history keeps; the oldest goes first. */
+export const HISTORY_LIMIT = 100;
+
+/**
+ * The panel's history of `{view, fragment}`: a visit drops what lay ahead and
+ * appends; a visit of the current place changes nothing; Back and Forward move
+ * within it. A reload and a reveal are not visits.
+ */
+export class TabHistory {
+  private entries: TabEntry[] = [];
+  private index = -1;
+
+  /** The place shown now, if any. */
+  get current(): TabEntry | undefined {
+    return this.index < 0 ? undefined : this.entries[this.index];
+  }
+
+  get canBack(): boolean {
+    return this.index > 0;
+  }
+
+  get canForward(): boolean {
+    return this.index >= 0 && this.index < this.entries.length - 1;
+  }
+
+  /** Record a visit of *entry*. */
+  visit(entry: TabEntry): void {
+    const current = this.current;
+    if (
+      current !== undefined &&
+      current.view === entry.view &&
+      current.fragment === entry.fragment
+    ) {
+      return;
+    }
+    this.entries = this.entries.slice(0, this.index + 1);
+    this.entries.push({ view: entry.view, fragment: entry.fragment });
+    if (this.entries.length > HISTORY_LIMIT) {
+      this.entries.shift();
+    }
+    this.index = this.entries.length - 1;
+  }
+
+  /** The place before the current one, now current; `undefined` at the start. */
+  back(): TabEntry | undefined {
+    if (!this.canBack) {
+      return undefined;
+    }
+    this.index -= 1;
+    return this.current;
+  }
+
+  /** The place after the current one, now current; `undefined` at the end. */
+  forward(): TabEntry | undefined {
+    if (!this.canForward) {
+      return undefined;
+    }
+    this.index += 1;
+    return this.current;
+  }
+
+  /** Forget every place: the panel was closed. */
+  clear(): void {
+    this.entries = [];
+    this.index = -1;
+  }
+}
+
+/**
+ * The tab's state across shows, apart from the panel itself; the adapter holds
+ * one.
+ *
+ * - a visit under another `views_root` forgets the history first, so Back and
+ *   Forward never render an old root's view under the new one;
+ * - a refusal clears the allowlist and the out-of-date reading and marks the
+ *   place as not a page, so a reveal there renders (`planShow()`);
+ * - dispose forgets everything.
+ */
+export class TabState {
+  readonly history = new TabHistory();
+  private root: string | undefined;
+  private shownPage = false;
+  private allowed: ReadonlySet<string> = new Set();
+  private told: boolean | undefined;
+  /**
+   * The editor column a file was last opened in beside the panel; `undefined`
+   * until then, and dropped when the panel moves into it (`panelMovedTo()`).
+   * Read through `besideColumn()`, never directly, at each open.
+   */
+  editorColumn: number | undefined;
+
+  /** The `views_root` the history belongs to. */
+  get viewsRoot(): string | undefined {
+    return this.root;
+  }
+
+  /** The `{file, member}` pairs the page shown may open; empty for a refusal or no page. */
+  get allowlist(): ReadonlySet<string> {
+    return this.allowed;
+  }
+
+  /** What the page shown was last told about the views' state; `undefined` for a refusal or no page. */
+  get shownOutOfDate(): boolean | undefined {
+    return this.told;
+  }
+
+  /** The place shown from *viewsRoot*, with whether it is a page; `undefined` for another root or nothing shown. */
+  shownIn(viewsRoot: string): ShownPlace | undefined {
+    const entry = viewsRoot === this.root ? this.history.current : undefined;
+    return entry === undefined ? undefined : { entry, page: this.shownPage };
+  }
+
+  /** The view shown from *viewsRoot*; `undefined` for the index, another root or nothing shown. */
+  shownViewIn(viewsRoot: string): string | undefined {
+    return this.shownIn(viewsRoot)?.entry.view;
+  }
+
+  /** Record a visit of *entry* under *viewsRoot*; a new root forgets the old root's history first. */
+  visit(viewsRoot: string, entry: TabEntry): void {
+    if (viewsRoot !== this.root) {
+      this.history.clear();
+      this.shownPage = false;
+      this.root = viewsRoot;
+    }
+    this.history.visit(entry);
+  }
+
+  /** The current place was set as a page with *allowlist*, told *outOfDate*. */
+  showedPage(allowlist: ReadonlySet<string>, outOfDate: boolean): void {
+    this.shownPage = true;
+    this.allowed = allowlist;
+    this.told = outOfDate;
+  }
+
+  /** The current place was set as the refusal page: nothing may be opened, nothing is told. */
+  showedRefusal(): void {
+    this.shownPage = false;
+    this.allowed = new Set();
+    this.told = undefined;
+  }
+
+  /**
+   * The tracker reads the views *outOfDate* now: `true` when the page shown must
+   * be told (a page is shown and the reading moved), which is then recorded.
+   */
+  outOfDateMoved(outOfDate: boolean): boolean {
+    if (this.told === undefined || this.told === outOfDate) {
+      return false;
+    }
+    this.told = outOfDate;
+    return true;
+  }
+
+  /**
+   * The panel now stands in *panelColumn*: the column a file was last opened in is
+   * forgotten when it is the panel's own, so the next open goes beside it again.
+   */
+  panelMovedTo(panelColumn: number | undefined): void {
+    if (panelColumn !== undefined && panelColumn === this.editorColumn) {
+      this.editorColumn = undefined;
+    }
+  }
+
+  /** The panel was closed: forget every place, the allowlist and the column. */
+  disposed(): void {
+    this.history.clear();
+    this.root = undefined;
+    this.shownPage = false;
+    this.allowed = new Set();
+    this.told = undefined;
+    this.editorColumn = undefined;
+  }
+}
+
+// --- the panel's small decisions -------------------------------------------------------
+
+/**
+ * The column a file opens in beside the panel, decided at each open: *lastColumn*
+ * while it is not the panel's own *panelColumn* (the file would cover the panel),
+ * otherwise `"beside"`. An unreported *panelColumn* keeps *lastColumn*.
+ */
+export function besideColumn(
+  lastColumn: number | undefined,
+  panelColumn: number | undefined,
+): number | "beside" {
+  return lastColumn === undefined || lastColumn === panelColumn ? "beside" : lastColumn;
+}
+
+/** The webview panel's view type: one panel of it per window. */
+export const DIAGRAMS_TAB_VIEW_TYPE = "swcraft.diagrams";
+
+/** The panel's title when no page names one: a refused or unreadable page. */
+export const DIAGRAMS_TAB_TITLE = "Diagrams";
+
+/**
+ * The panel's title for a page: a view page's `<h1>` (*Root — internal block
+ * diagram*), `Diagrams — <project name>` for the index, `Diagrams` without an
+ * `<h1>`. Character references are read back; a title is plain text.
+ */
+export function tabTitle(html: string, view: string | undefined): string {
+  const heading = /<h1\b[^>]*>([^<]*)<\/h1>/i.exec(html);
+  const text = heading === null ? "" : unescapeHtml(heading[1]).trim();
+  if (text === "") {
+    return DIAGRAMS_TAB_TITLE;
+  }
+  return view === undefined ? `${DIAGRAMS_TAB_TITLE} — ${text}` : text;
+}
+
+/**
+ * The outline's root (the element) when its identity line was read: the only
+ * top-level symbol, starting at line 0 (`symbolCore.ts`' `outlineOf()`);
+ * `undefined` otherwise.
+ */
+export function outlineRoot(outline: readonly OutlineSymbol[]): OutlineSymbol | undefined {
+  return outline.length === 1 && outline[0].range.startLine === 0 ? outline[0] : undefined;
+}
+
+/** The root's groups: its children, or the outline's top level when it has no root (`outlineRoot()`). */
+export function outlineGroups(outline: readonly OutlineSymbol[]): readonly OutlineSymbol[] {
+  return outlineRoot(outline)?.children ?? outline;
+}
+
+/**
+ * The 0-based line an opened model file is revealed at: *member*
+ * (`<group>/<name>`) resolved through the file's outline, else the element's
+ * identity line, else line 0. What it does not reach: a member in a flow-style
+ * collection (the identity line then), and a name repeated in one file (the
+ * first wins).
+ */
+export function memberLineOf(outline: readonly OutlineSymbol[], member: string | null): number {
+  const identityLine = outlineRoot(outline)?.selection.startLine ?? 0;
+  if (member === null) {
+    return identityLine;
+  }
+  const slash = member.indexOf("/");
+  if (slash <= 0 || slash === member.length - 1) {
+    return identityLine;
+  }
+  const groupName = member.slice(0, slash);
+  const memberName = member.slice(slash + 1);
+  const group =
+    outlineGroups(outline).find((symbol) => symbol.name === groupName) ??
+    outline.find((symbol) => symbol.name === groupName);
+  const found = group?.children.find((symbol) => symbol.name === memberName);
+  return found === undefined ? identityLine : found.selection.startLine;
+}
+
+/**
+ * What the tab's **Generate** asks `SWCraft: Diagrams` for: the view shown, so the
+ * press shows it again (`{view}`, as a lens passes), or nothing for the index or
+ * an empty tab.
+ */
+export function generateArgument(shown: TabEntry | undefined): { view: string } | undefined {
+  return shown?.view === undefined ? undefined : { view: shown.view };
+}
+
+// --- Show in Diagram -------------------------------------------------------------------
+
+/** The index's two readings Show in Diagram and the lens need: its elements block and its labels. */
+export interface DiagramIndex {
+  elements: BlockRead<Map<string, ElementViews>>;
+  headings: Map<string, string>;
+}
+
+/** *html* (the text of `index.html`) read for Show in Diagram: the elements block and each view's label. */
+export function readDiagramIndex(html: string): DiagramIndex {
+  return { elements: parseElementsBlock(html), headings: indexHeadings(html) };
+}
+
+/**
+ * The lexical storage name of *documentPath* under *modelRoot*: the POSIX path
+ * relative to it, the generator's own spelling (links not resolved); `undefined`
+ * when the document does not lie under *modelRoot* by its spelling.
+ */
+export function lexicalStorageName(modelRoot: string, documentPath: string): string | undefined {
+  const relative = path.relative(modelRoot, documentPath);
+  if (relative === "" || path.isAbsolute(relative)) {
+    return undefined;
+  }
+  const segments = relative.split(path.sep);
+  if (segments[0] === "..") {
+    return undefined;
+  }
+  return segments.join("/");
+}
+
+/**
+ * Each real path under *modelRoot* of *names* (storage names the index lists),
+ * mapped to the names resolving to it, in the order given. A name whose file
+ * cannot be resolved is left out. It reads the disk (`realpath`).
+ */
+export function realPathIndex(modelRoot: string, names: Iterable<string>): Map<string, string[]> {
+  const byReal = new Map<string, string[]>();
+  for (const name of names) {
+    if (checkStorageName(name) !== undefined) {
+      continue;
+    }
+    let real: string;
+    try {
+      real = fs.realpathSync.native(path.join(modelRoot, ...name.split("/")));
+    } catch {
+      continue;
+    }
+    const bucket = byReal.get(real) ?? [];
+    bucket.push(name);
+    byReal.set(real, bucket);
+  }
+  return byReal;
+}
+
+/**
+ * The storage name the index lists for the active file: its *lexical* name when
+ * listed, else the indexed name whose real path is *documentReal* (*byRealPath*,
+ * asked only then). Two names resolving to one file, or none, answer `undefined`
+ * (*not on any diagram*).
+ */
+export function indexedStorageName(
+  elements: ReadonlyMap<string, ElementViews>,
+  lexical: string | undefined,
+  documentReal: string | undefined,
+  byRealPath: () => ReadonlyMap<string, readonly string[]>,
+): string | undefined {
+  if (lexical !== undefined && elements.has(lexical)) {
+    return lexical;
+  }
+  if (documentReal === undefined) {
+    return undefined;
+  }
+  const names = byRealPath().get(documentReal);
+  return names !== undefined && names.length === 1 ? names[0] : undefined;
+}
+
+/**
+ * The root's groups whose direct members a diagram draws as members of the
+ * element: `graph.py`'s member groups less `delegations` (a test holds them equal).
+ */
+export const DRAWN_MEMBER_GROUPS: readonly string[] = ["ports", "runnables"];
+
+function holdsLine(span: { startLine: number; endLine: number }, line: number): boolean {
+  return span.startLine <= line && line <= span.endLine;
+}
+
+/**
+ * The member at the cursor: the symbol holding *line* directly beneath the root's
+ * `ports` or `runnables` group (so a nested entry gives its port or runnable), as
+ * `<group>/<name>`; `null` anywhere else (the element).
+ *
+ * What it does not reach: a member in a flow-style collection, and one whose
+ * identity the outline could not read (`[i]`); both answer the element.
+ */
+export function memberAtLine(outline: readonly OutlineSymbol[], line: number): string | null {
+  for (const group of outlineGroups(outline)) {
+    if (!DRAWN_MEMBER_GROUPS.includes(group.name) || !holdsLine(group.range, line)) {
+      continue;
+    }
+    const member = group.children.find((symbol) => holdsLine(symbol.range, line));
+    if (member !== undefined && !/^\[\d+\]$/.test(member.name)) {
+      return `${group.name}/${member.name}`;
+    }
+  }
+  return null;
+}
+
+/**
+ * The name a reveal carries: the element's, or `<element>.<member name>` for a
+ * member. The page shows it only in its *not on this diagram* line: a drawn
+ * element is selected, and the bar shows the element's own title.
+ */
+export function revealName(element: string, member: string | null): string {
+  if (member === null) {
+    return element;
+  }
+  return `${element}.${member.slice(member.indexOf("/") + 1)}`;
+}
+
+/** Which view Show in Diagram opens: none draws it, one view, or the user picks among several. */
+export type ViewChoice =
+  | { kind: "none" }
+  | { kind: "view"; view: string }
+  | { kind: "pick"; views: string[] };
+
+/**
+ * The choice among *views* (those that draw the element, in the index's order):
+ * the view the tab shows when it is one of them, else the one view, else a pick;
+ * none when no view draws it.
+ */
+export function chooseView(views: readonly string[], shownView: string | undefined): ViewChoice {
+  if (views.length === 0) {
+    return { kind: "none" };
+  }
+  if (shownView !== undefined && views.includes(shownView)) {
+    return { kind: "view", view: shownView };
+  }
+  if (views.length === 1) {
+    return { kind: "view", view: views[0] };
+  }
+  return { kind: "pick", views: [...views] };
+}
+
+/**
+ * The commands the diagrams reach from the editor rather than the SWCraft panel:
+ * Show in Diagram (context menu, palette, and the *diagram* lens of an element
+ * without its own page). It spawns nothing.
+ */
+export const DIAGRAM_EDITOR_COMMANDS: readonly string[] = ["swcraft.showInDiagram"];
+
+/** The button of Show in Diagram's two notices: it runs the press (`SWCraft: Diagrams`). */
+export const GENERATE_DIAGRAMS_BUTTON = "Generate Diagrams";
+
+/** The *not on any view* line (also for a page that is out of date). */
+export function notOnAnyDiagramLine(name: string): string {
+  return `${name} is not on any diagram as last generated`;
+}
+
+/** The *no views at all* line: no index, or one that lists no element (another release's). */
+export function noDiagramsLine(name: string): string {
+  return `${name} cannot be shown: no diagrams list the model's elements yet`;
+}
+
+/**
+ * Show in Diagram's line when the manifest was found but gives no `model_root`
+ * the extension can resolve (a refused or unreadable path): without it no file
+ * can be matched to the index, so the command says so instead of doing nothing.
+ */
+export const SHOW_IN_DIAGRAM_NO_MODEL_ROOT_LINE =
+  "SWCraft: Show in Diagram needs the project's model_root, which its manifest does not resolve — Check Model names why.";
+
+/** Show in Diagram's line when neither a lens names the element nor the active editor shows a model file. */
+export const SHOW_IN_DIAGRAM_NO_ELEMENT_LINE =
+  "SWCraft: Show in Diagram shows the element of a model file: open one in the editor first.";
+
+/** The pick's placeholder. */
+export function pickPlaceholder(name: string, count: number): string {
+  return `${name} is on ${count} diagrams — which one?`;
+}
+
+/**
+ * Show in Diagram's argument from a lens (`{file, name}`): accepted only when
+ * *file* passes `checkStorageName()`; anything else answers `undefined` and the
+ * command reads the active editor.
+ */
+export function showInDiagramArgument(arg: unknown): { file: string; name: string } | undefined {
+  if (typeof arg !== "object" || arg === null) {
+    return undefined;
+  }
+  const { file, name } = arg as Record<string, unknown>;
+  if (typeof file !== "string" || checkStorageName(file) !== undefined) {
+    return undefined;
+  }
+  const fallback = path.posix.basename(file, ".yaml");
+  return {
+    file,
+    name: typeof name === "string" && name.length > 0 && name.length <= 256 ? name : fallback,
+  };
+}

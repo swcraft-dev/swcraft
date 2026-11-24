@@ -1,0 +1,4 @@
+name: Bytes_T
+kind: array
+element_type: Count_T
+length: 2

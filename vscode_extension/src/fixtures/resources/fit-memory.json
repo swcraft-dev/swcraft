@@ -1,0 +1,361 @@
+{
+  "schemaVersion": 1,
+  "findings": {
+    "errors": 3,
+    "informational": 0
+  },
+  "topology": [],
+  "fit": {
+    "kind": "memory",
+    "asked": "12288"
+  },
+  "cores": [
+    {
+      "name": "CORE0",
+      "kind": "core",
+      "enforcement": "strict",
+      "utilization": "15.00%",
+      "limit": "70.00%",
+      "headroom": "55.00%",
+      "physical_headroom": "85.00%",
+      "status": "within budget",
+      "consumers": [
+        {
+          "name": "Task_10ms",
+          "layer": "tasks",
+          "amount": "15.00%",
+          "declared": true,
+          "detail": "wcet 1500us / period 0.01s"
+        }
+      ],
+      "findings": []
+    }
+  ],
+  "memories": [
+    {
+      "name": "RAM_FITS",
+      "kind": "memory",
+      "enforcement": "strict",
+      "size": 65536,
+      "used": "2048",
+      "limit": "52428",
+      "headroom": "50380",
+      "physical_headroom": "63488",
+      "status": "within budget",
+      "consumers": [
+        {
+          "name": "Alpha",
+          "layer": "swc",
+          "amount": "2048 bytes",
+          "declared": true,
+          "detail": ""
+        },
+        {
+          "name": "Beta",
+          "layer": "swc",
+          "amount": "0 bytes",
+          "declared": true,
+          "detail": ""
+        },
+        {
+          "name": "Gamma",
+          "layer": "swc",
+          "amount": "0 bytes",
+          "declared": true,
+          "detail": ""
+        }
+      ],
+      "findings": [],
+      "fit": {
+        "fits": true,
+        "within_threshold": {
+          "fits": true,
+          "limit": "52428.8",
+          "headroom": "50380.8"
+        },
+        "within_size": {
+          "fits": true,
+          "limit": "65536",
+          "headroom": "63488"
+        },
+        "answer": "fits within the threshold and the size"
+      }
+    },
+    {
+      "name": "RAM_GAP",
+      "kind": "memory",
+      "enforcement": "strict",
+      "size": 32768,
+      "used": "14336",
+      "limit": "24576",
+      "headroom": "10240",
+      "physical_headroom": "18432",
+      "status": "within budget",
+      "consumers": [
+        {
+          "name": "Alpha",
+          "layer": "swc",
+          "amount": "8192 bytes",
+          "declared": true,
+          "detail": ""
+        },
+        {
+          "name": "Beta",
+          "layer": "swc",
+          "amount": "6144 bytes",
+          "declared": true,
+          "detail": ""
+        },
+        {
+          "name": "Gamma",
+          "layer": "swc",
+          "amount": "0 bytes",
+          "declared": true,
+          "detail": ""
+        }
+      ],
+      "findings": [],
+      "fit": {
+        "fits": false,
+        "within_threshold": {
+          "fits": false,
+          "limit": "24576",
+          "headroom": "10240"
+        },
+        "within_size": {
+          "fits": true,
+          "limit": "32768",
+          "headroom": "18432"
+        },
+        "answer": "fits physically, breaks the threshold by 2048 bytes"
+      }
+    },
+    {
+      "name": "RAM_OVER",
+      "kind": "memory",
+      "enforcement": "strict",
+      "size": 16384,
+      "used": "8192",
+      "limit": "12288",
+      "headroom": "4096",
+      "physical_headroom": "8192",
+      "status": "within budget",
+      "consumers": [
+        {
+          "name": "Alpha",
+          "layer": "swc",
+          "amount": "8192 bytes",
+          "declared": true,
+          "detail": ""
+        },
+        {
+          "name": "Beta",
+          "layer": "swc",
+          "amount": "0 bytes",
+          "declared": true,
+          "detail": ""
+        },
+        {
+          "name": "Gamma",
+          "layer": "swc",
+          "amount": "0 bytes",
+          "declared": true,
+          "detail": ""
+        }
+      ],
+      "findings": [],
+      "fit": {
+        "fits": false,
+        "within_threshold": {
+          "fits": false,
+          "limit": "12288",
+          "headroom": "4096"
+        },
+        "within_size": {
+          "fits": false,
+          "limit": "16384",
+          "headroom": "8192"
+        },
+        "answer": "does not fit: over the size by 4096 bytes"
+      }
+    },
+    {
+      "name": "RAM_UNKNOWN",
+      "kind": "memory",
+      "enforcement": "strict",
+      "size": 65536,
+      "used": "1024",
+      "limit": "52428",
+      "headroom": "51404",
+      "physical_headroom": "64512",
+      "status": "unknown (not every consumer declared a budget)",
+      "consumers": [
+        {
+          "name": "Alpha",
+          "layer": "swc",
+          "amount": "1024 bytes",
+          "declared": true,
+          "detail": ""
+        },
+        {
+          "name": "Gamma",
+          "layer": "swc",
+          "amount": "not declared",
+          "declared": false,
+          "detail": ""
+        },
+        {
+          "name": "Beta",
+          "layer": "swc",
+          "amount": "0 bytes",
+          "declared": true,
+          "detail": ""
+        }
+      ],
+      "findings": [
+        {
+          "severity": "error",
+          "code": "missing_budget",
+          "message": "SWC 'Gamma' declares no budget for memory 'RAM_UNKNOWN': add `RAM_UNKNOWN` to its `memory` map with the bytes it uses, a whole number of at least 0, e.g. `RAM_UNKNOWN: 1024`.",
+          "subjects": [
+            {
+              "layer": "swc",
+              "element": "Gamma",
+              "path": [
+                {
+                  "field": "memory"
+                },
+                {
+                  "key": "RAM_UNKNOWN"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "fit": {
+        "fits": null,
+        "within_threshold": {
+          "fits": null,
+          "limit": "52428.8",
+          "headroom": "51404.8"
+        },
+        "within_size": {
+          "fits": null,
+          "limit": "65536",
+          "headroom": "64512"
+        },
+        "answer": "unknown: 1 consumer(s) declare no budget for it, so its use leaves their load out"
+      }
+    },
+    {
+      "name": "RAM_UNKNOWN_OVER",
+      "kind": "memory",
+      "enforcement": "strict",
+      "size": 32768,
+      "used": "17000",
+      "limit": "16384",
+      "headroom": "-616",
+      "physical_headroom": "15768",
+      "status": "over budget",
+      "consumers": [
+        {
+          "name": "Alpha",
+          "layer": "swc",
+          "amount": "17000 bytes",
+          "declared": true,
+          "detail": ""
+        },
+        {
+          "name": "Gamma",
+          "layer": "swc",
+          "amount": "not declared",
+          "declared": false,
+          "detail": ""
+        },
+        {
+          "name": "Beta",
+          "layer": "swc",
+          "amount": "0 bytes",
+          "declared": true,
+          "detail": ""
+        }
+      ],
+      "findings": [
+        {
+          "severity": "error",
+          "code": "missing_budget",
+          "message": "SWC 'Gamma' declares no budget for memory 'RAM_UNKNOWN_OVER': add `RAM_UNKNOWN_OVER` to its `memory` map with the bytes it uses, a whole number of at least 0, e.g. `RAM_UNKNOWN_OVER: 1024`.",
+          "subjects": [
+            {
+              "layer": "swc",
+              "element": "Gamma",
+              "path": [
+                {
+                  "field": "memory"
+                },
+                {
+                  "key": "RAM_UNKNOWN_OVER"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "severity": "error",
+          "code": "threshold_breach",
+          "message": "Memory 'RAM_UNKNOWN_OVER' consumption 17000 bytes exceeds its budget of 16384 bytes (size 32768 bytes x threshold 0.5).",
+          "subjects": [
+            {
+              "layer": "hardware",
+              "element": "RAM_UNKNOWN_OVER",
+              "path": [
+                {
+                  "field": "size"
+                }
+              ]
+            },
+            {
+              "layer": "swc",
+              "element": "Alpha",
+              "path": [
+                {
+                  "field": "memory"
+                },
+                {
+                  "key": "RAM_UNKNOWN_OVER"
+                }
+              ]
+            },
+            {
+              "layer": "swc",
+              "element": "Beta",
+              "path": [
+                {
+                  "field": "memory"
+                },
+                {
+                  "key": "RAM_UNKNOWN_OVER"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "fit": {
+        "fits": false,
+        "within_threshold": {
+          "fits": false,
+          "limit": "16384",
+          "headroom": "-616"
+        },
+        "within_size": {
+          "fits": null,
+          "limit": "32768",
+          "headroom": "15768"
+        },
+        "answer": "breaks the threshold by 12904 bytes; within the size is unknown: 1 consumer(s) declare no budget for it"
+      }
+    }
+  ]
+}

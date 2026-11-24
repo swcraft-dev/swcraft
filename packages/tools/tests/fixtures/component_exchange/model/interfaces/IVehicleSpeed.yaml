@@ -1,0 +1,5 @@
+name: IVehicleSpeed
+kind: sender_receiver
+data_elements:
+- name: speed
+  implementation_type: Speed_T

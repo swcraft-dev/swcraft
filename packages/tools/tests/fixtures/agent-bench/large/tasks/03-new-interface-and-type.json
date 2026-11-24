@@ -1,0 +1,61 @@
+{
+  "id": "03-new-interface-and-type",
+  "task": 3,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Add a sender-receiver interface IWlPadWear with one data element padWear of a new application type WlPadWear_Pct (percent, range 0 to 100). Give Swc075abcdefghij a provide port pPadWear on it, and map WlPadWear_Pct to Vt001abcde in Ms1abcdefghi.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "application_types",
+        "name": "WlPadWear_Pct",
+        "has": {
+          "range": {
+            "min": 0,
+            "max": 100
+          }
+        }
+      },
+      {
+        "layer": "interfaces",
+        "name": "IWlPadWear",
+        "has": {
+          "kind": "sender_receiver",
+          "data_elements": [
+            {
+              "name": "padWear",
+              "application_type": "WlPadWear_Pct"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "Swc075abcdefghij",
+        "has": {
+          "ports": [
+            {
+              "name": "pPadWear",
+              "direction": "provide",
+              "interface": "IWlPadWear"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "mapping_sets",
+        "name": "Ms1abcdefghi",
+        "has": {
+          "maps": [
+            {
+              "application": "WlPadWear_Pct",
+              "implementation": "Vt001abcde"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

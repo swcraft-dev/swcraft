@@ -1,0 +1,21 @@
+name: Root
+title: Root composition
+root: true
+description: >-
+  The top of the hierarchy: the four connected components, and `Edge` as a
+  composition-typed member so the document carries a `DELEGATION-SW-CONNECTOR`
+  beside its two `ASSEMBLY-SW-CONNECTOR`s. Both connectors name no composition
+  of their own and therefore belong here.
+
+members:
+  - name: Sensor
+    type: Sensor
+  - name: Display
+    type: Display
+  - name: Actuator
+    type: Actuator
+  - name: Controller
+    type: Controller
+  - name: Edge
+    composition: Edge
+    description: The delegating sub-composition.

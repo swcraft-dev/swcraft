@@ -1,0 +1,166 @@
+{
+  "name": "update-swc-stated-behaviour-and-event-names",
+  "description": "Contract `8.0.0`'s stated names through the generic change set, with no new tool and no new address form: one `update` states the component's `behavior_name`, the `SHORT-NAME` its `SWC-INTERNAL-BEHAVIOR` is written with, and one `create` adds an init event that states its own `name` at a `whole_value` member address that carries the name — a stated event name is part of the event's whole-value identity, and an event that states none keeps the address it always had.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` states no `behavior_name`, so the writer derives `ExampleSWC_InternalBehavior`, and its runnable `ExampleRun` has one timing event, written `TMT_ExampleRun`. Neither name the change set states collides with a port, a runnable or another event of the component, ignoring case.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "behavior_name"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "init",
+                  "name": "ExampleStartup"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The two exact addresses the delta reports. `ExampleSWC` declares no level, so the change set asks no safety question."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Name the example component's behaviour and give its runnable a named start-up event.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "behavior_name"
+            }
+          ]
+        },
+        "value": "ExampleBehaviour"
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "init",
+                "name": "ExampleStartup"
+              }
+            }
+          ]
+        },
+        "value": {
+          "type": "init",
+          "name": "ExampleStartup"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "init",
+                  "name": "ExampleStartup"
+                }
+              }
+            ]
+          },
+          "after": {
+            "type": "init",
+            "name": "ExampleStartup"
+          },
+          "summary": "swc/ExampleSWC: + runnables[ExampleRun].events[{type: init, name: ExampleStartup}]"
+        },
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "behavior_name"
+              }
+            ]
+          },
+          "before": null,
+          "after": "ExampleBehaviour",
+          "summary": "swc/ExampleSWC: ~ behavior_name None -> ExampleBehaviour"
+        }
+      ]
+    },
+    "notes": "`behavior_name` is an ordinary optional field and `update` reaches it like any other. The event's address is its whole value with the defaults left out, so the stated `name` is in it and an event that states none is addressed as before. The writer writes both names as they are; `check-model` judges them as written — two events of one component written with one `SHORT-NAME` are `rule:name.duplicate-event` (`negative/consistency-violation-duplicate-event-name.json`)."
+  }
+}

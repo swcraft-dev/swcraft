@@ -1,0 +1,48 @@
+{
+  "components": {
+    "hubs": [],
+    "unconnected": {
+      "max_on_one": 0,
+      "total": 0
+    }
+  },
+  "connectors": {
+    "links": 2
+  },
+  "contract_version": "12.0.0",
+  "hardware": {
+    "cores": 1,
+    "memories": 1,
+    "partitions": 1,
+    "rated_partitions": 0
+  },
+  "identifiers": {
+    "max_length": 32
+  },
+  "interfaces": {
+    "client_server": 1,
+    "fan_out": {
+      "max": 2
+    },
+    "sender_receiver": 5
+  },
+  "layers": {
+    "application_types": 3,
+    "base_types": 1,
+    "implementation_types": 2,
+    "interfaces": 6,
+    "requirements": 1,
+    "swc": 6,
+    "tasks": 1
+  },
+  "passport_version": "1.0.0",
+  "requirements": {
+    "on_all_site_kinds": 0,
+    "on_one_port": 0,
+    "stale_links": 0,
+    "unallocated": 0
+  },
+  "tasks": {
+    "idle": 0
+  }
+}

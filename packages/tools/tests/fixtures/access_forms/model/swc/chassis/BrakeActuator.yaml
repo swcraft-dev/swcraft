@@ -1,0 +1,17 @@
+name: BrakeActuator
+type: application
+description: The actuator; it reads the asked torque implicitly.
+ports:
+- name: rBrakeTorque
+  direction: require
+  interface: BrakeTorqueIf
+runnables:
+- name: ApplyTorque
+  events:
+  - type: timing
+    period: 0.1
+  reads:
+  - port: rBrakeTorque
+    element: torque
+    by: implicit
+handle_termination_and_restart: no_support

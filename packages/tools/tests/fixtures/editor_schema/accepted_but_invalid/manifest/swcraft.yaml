@@ -1,0 +1,11 @@
+# Every key is well-typed, so the manifest schema accepts it; `model_root` escapes the
+# project directory, which only the loader's path rules (`project._validate_project_paths`)
+# can see — a schema has no notion of where the file lives.
+name: escaped-model-root
+schema_version: "1.0"
+model_root: ../outside
+dist_root: dist
+views_root: views
+outputs:
+  arxml: dist/model.arxml
+  needs: dist/needs.json

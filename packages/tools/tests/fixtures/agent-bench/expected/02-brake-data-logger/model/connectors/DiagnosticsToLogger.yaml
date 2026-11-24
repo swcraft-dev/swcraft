@@ -1,0 +1,7 @@
+name: DiagnosticsToLogger
+from:
+  swc: DiagnosticManager
+  port: pBrakeDiagnostics
+to:
+  swc: BrakeDataLogger
+  port: rBrakeDiagnostics

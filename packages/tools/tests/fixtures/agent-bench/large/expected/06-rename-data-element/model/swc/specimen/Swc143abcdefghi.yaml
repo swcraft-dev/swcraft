@@ -1,0 +1,86 @@
+name: Swc143abcdefghi
+type: application
+description: Takes part in supply voltage recovery.
+ports:
+- name: P1
+  direction: require
+  interface: If0001abcdefghij
+- name: P2
+  direction: require
+  interface: If0001abcdefghij
+- name: P3
+  direction: require
+  interface: If0001abcdefghij
+- name: P4
+  direction: require
+  interface: If0001abcdefghij
+- name: P5
+  direction: require
+  interface: If0002abcdefghij
+- name: P6
+  direction: require
+  interface: If0002abcdefghij
+- name: P7
+  direction: provide
+  interface: If0236abcdefghij
+- name: P8
+  direction: provide
+  interface: If0312abcdefghij
+- name: P9
+  direction: provide
+  interface: If0388abcdefghij
+- name: P10
+  direction: provide
+  interface: If0464abcdefghij
+- name: P11
+  direction: provide
+  interface: If0540abcdefghij
+- name: P12
+  direction: provide
+  interface: If0616abcdefghij
+- name: P13
+  direction: provide
+  interface: If0692abcdefghij
+runnables:
+- name: R1
+  events:
+  - type: timing
+    period: 0.04
+  reads:
+  - port: P1
+    element: deShared
+  - port: P2
+    element: deShared
+  - port: P3
+    element: deShared
+  - port: P4
+    element: deShared
+  - port: P5
+    element: D1
+  - port: P6
+    element: D1
+  writes:
+  - port: P7
+    element: D1
+  - port: P8
+    element: D1
+  - port: P9
+    element: D1
+  - port: P10
+    element: D1
+  - port: P11
+    element: D1
+  - port: P12
+    element: D1
+  - port: P13
+    element: D1
+  calls: []
+memory:
+  Me1abc: 0
+  Me2abc: 0
+  Me3abc: 0
+  Me4abc: 1536
+asil: QM
+handle_termination_and_restart: no_support
+satisfies:
+- Rq20abcdef@1

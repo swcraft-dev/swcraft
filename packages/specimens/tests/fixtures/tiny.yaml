@@ -1,0 +1,25 @@
+name: tiny_slice
+seed: 20260921
+components: 2
+domains: 1
+cores:
+  - {name: CORE0, asil_capability: D}
+  - {name: CORE1, asil_capability: D}
+core_threshold: 0.7
+memories:
+  shared: {size: 4096, threshold: 0.8}
+  private_per_core: {size: 1024, threshold: 0.8}
+periods_ms: {1: 85}
+runnables_per_component: {min: 1, max: 1}
+wcet_us_by_period:
+  1: {min: 1, average: 5, max: 30}
+signal_size_bytes: {1: 1}
+intra_domain_link_density: 1
+inter_domain_link_density: 0
+client_server_share: 1
+asil_weights: {B: 1}
+displaced_components: 0
+private_memory_share: 0
+target_core_load: 0.5
+task_overhead_us: 5
+emit_runnable_wcet: false

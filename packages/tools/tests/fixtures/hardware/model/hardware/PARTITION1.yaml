@@ -1,0 +1,4 @@
+name: PARTITION1
+kind: partition
+core: CORE1
+description: The one partition on CORE1, without a level.

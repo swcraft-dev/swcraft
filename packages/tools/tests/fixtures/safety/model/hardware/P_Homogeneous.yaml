@@ -1,0 +1,5 @@
+name: P_Homogeneous
+kind: partition
+core: CORE0
+asil: D
+description: Task_Homogeneous's partition, rated D on CORE0 (capability B).

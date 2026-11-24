@@ -1,0 +1,8 @@
+id: SWR-GEN-002
+title: Core load limit
+description: The core load shall stay below 70 percent.
+req_type: req
+version: 1
+source: external
+baseline: '1.0'
+revision: '1'

@@ -1,0 +1,5 @@
+name: CORE1
+kind: core
+threshold: 0.6
+enforcement: strict
+description: The second core, so the `core` reference resolves for more than one partition.

@@ -1,0 +1,16 @@
+name: Beta
+type: application
+description: >-
+  The type the member `Alpha` of composition `Sub` instantiates -- the member
+  whose name differs from its type, which is what makes the two reference bases
+  of an assembly connector and a delegation observable.
+ports:
+  - name: pOut
+    direction: provide
+    interface: ISignal
+  - name: pInner
+    direction: provide
+    interface: ITrigger
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_COMPOSITIONS_001@1

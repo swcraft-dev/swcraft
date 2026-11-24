@@ -1,0 +1,5 @@
+name: NoTerminationSWC
+type: application
+description: Declares no termination and restart handling
+memory:
+  RAM0: 16

@@ -1,0 +1,10 @@
+{
+  "id": "06-rename-data-element",
+  "task": 6,
+  "group": "model-change",
+  "kind": "change",
+  "binding": "rename_a_data_element",
+  "oracle": "structural",
+  "prompt": "Rename the data element {{element}} of {{interface}} to {{new_name}}.",
+  "note": "The first data element of the most-named sender-receiver interface. A rename that leaves a runnable access on the old name fails check-model; the ports and runnables of every component with a port on the interface may move."
+}

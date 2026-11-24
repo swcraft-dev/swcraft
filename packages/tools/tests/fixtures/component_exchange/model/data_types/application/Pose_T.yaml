@@ -1,0 +1,7 @@
+name: Pose_T
+kind: record
+fields:
+- name: x
+  type: Distance_T
+- name: gear
+  type: Gear_T

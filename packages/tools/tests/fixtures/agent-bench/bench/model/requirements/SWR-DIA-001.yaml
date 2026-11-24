@@ -1,0 +1,9 @@
+id: SWR-DIA-001
+title: Diagnostic event processing
+description: The diagnostic manager shall process every thermal protection event.
+req_type: req
+version: 1
+source: external
+document: SRS Diagnostics
+baseline: '1.0'
+revision: '1'

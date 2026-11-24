@@ -1,0 +1,86 @@
+{
+  "name": "read-connectors-derived-crossing-ends",
+  "description": "A computed value on request: `derived: [\"crossing_ends\"]` at the `connectors` layer adds to each connector the end pairs that cross a partition — for each provider/requester pair `connection_ends` gives, one value per combination of a provider partition and a requester partition (each end's component's `partitions`) that differ, as `connection_ends`' value with `\"partition\"` added to each end. Composed from the two owned answers, never a second formula. Set-valued (`rows: \"one per value\"`): a connector that crosses no partition has no row, so the answer is exactly the crossing set; an end whose component no partition runs crosses nothing here.",
+  "kind": "example",
+  "context": {
+    "summary": "The seed of `read-swc-derived-partitions`: `ExampleSWC` runs in `PARTITION1` on `CORE1` and `ExampleConsumerSWC` in `PARTITION0` on `CORE0`, so the base's one connector, `Example_to_Consumer`, crosses from `PARTITION1` to `PARTITION0`.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "connectors",
+        "element": "Example_to_Consumer"
+      },
+      {
+        "layer": "hardware",
+        "element": "PARTITION1"
+      },
+      {
+        "layer": "tasks",
+        "element": "Task_10ms_P1"
+      }
+    ],
+    "baseline_state": "current",
+    "notes": "A read takes no scope and writes no audit record."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "connectors"
+    },
+    "form": "index",
+    "derived": [
+      "crossing_ends"
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "connectors"
+      },
+      "form": "index",
+      "derived": [
+        "crossing_ends"
+      ],
+      "value": {
+        "count": 1,
+        "identities": [
+          {
+            "element": "Example_to_Consumer",
+            "derived": {
+              "crossing_ends": {
+                "provider": {
+                  "swc": "ExampleSWC",
+                  "port": "pOut",
+                  "partition": "PARTITION1"
+                },
+                "requester": {
+                  "swc": "ExampleConsumerSWC",
+                  "port": "rIn",
+                  "partition": "PARTITION0"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "notes": "The protocol has no comparison operator between two values of a row, so without `crossing_ends` the question \"which connections cross a partition\" would read every connector and every component's partitions and compare them on the client. `crossing_ends` applies at the elements of the `connectors` layer alone: asked elsewhere it is `schema-violation`, never a blank."
+  }
+}

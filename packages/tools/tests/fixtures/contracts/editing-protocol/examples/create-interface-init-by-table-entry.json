@@ -1,0 +1,99 @@
+{
+  "name": "create-interface-init-by-table-entry",
+  "description": "An initial value under an implementation type that references a table is the **name** of one of the table's entries, exactly as under an enumeration: the standard asks for a text there, never a number ([constr_1225]), and the writer emits it as a `TEXT-VALUE-SPECIFICATION` whose `VALUE` is that name. The value type `ProbeGearRaw` names `ProbeGearTable`, so the data element's `init` is `ProbeDrive`.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model plus the texttable `ProbeGearTable` (entries `ProbePark` = 0 and `ProbeDrive` = 1) and the implementation value type `ProbeGearRaw`, which rests on the base's `uint8_base` and names that table by `compu_method_ref`. The change set creates an interface whose one data element is typed by the value type and carries an `init`.",
+    "existing_elements": [
+      {
+        "layer": "base_types",
+        "element": "uint8_base"
+      },
+      {
+        "layer": "compu_methods",
+        "element": "ProbeGearTable"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "ProbeGearRaw"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IProbeGearStored"
+          }
+        }
+      ],
+      "notes": "The scope covers the one address exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Publish the stored probe gear, starting in drive.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "IProbeGearStored"
+        },
+        "value": {
+          "name": "IProbeGearStored",
+          "kind": "sender_receiver",
+          "data_elements": [
+            {
+              "name": "gear",
+              "implementation_type": "ProbeGearRaw",
+              "init": "ProbeDrive"
+            }
+          ],
+          "description": "The probe gear, stored"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IProbeGearStored"
+          },
+          "after": {
+            "name": "IProbeGearStored",
+            "kind": "sender_receiver",
+            "data_elements": [
+              {
+                "name": "gear",
+                "application_type": null,
+                "implementation_type": "ProbeGearRaw",
+                "init": "ProbeDrive",
+                "asil": null,
+                "description": "",
+                "sw_impl_policy": null,
+                "sw_calibration_access": null
+              }
+            ],
+            "description": "The probe gear, stored",
+            "package": null,
+            "is_service": false,
+            "satisfies": []
+          },
+          "summary": "interfaces: + IProbeGearStored"
+        }
+      ]
+    },
+    "notes": "`staged`: pass D judges the `init` against the value type's table (`rule:interface.init-unknown-enum-literal`, which reads an enumeration's literals and a table-typed implementation type's entries alike) and finds the entry. The value is held as the entry's name, the text the writer gives the table's scale, so the `TEXT-VALUE-SPECIFICATION` it writes names exactly one scale. A text under a value type that references no table is still `rule:interface.init-string-scalar`'s refusal."
+  }
+}

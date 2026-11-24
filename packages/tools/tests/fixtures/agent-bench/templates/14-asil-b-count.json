@@ -1,0 +1,10 @@
+{
+  "id": "14-asil-b-count",
+  "task": 14,
+  "group": "search-and-statistics",
+  "kind": "question",
+  "binding": "components_at_the_commonest_level",
+  "oracle": "product-rule",
+  "prompt": "How many components are ASIL {{level}}?",
+  "note": "The level from A to D the most components hold effectively (validator.effective_asil_levels: a component's declaration, else the maximum its requirements allocate to it), a decomposed B(D) counting as B, a tie going to the higher level. An answer that counts declarations only is wrong."
+}

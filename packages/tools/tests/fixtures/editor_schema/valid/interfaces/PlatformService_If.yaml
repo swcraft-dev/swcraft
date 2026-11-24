@@ -1,0 +1,5 @@
+name: PlatformService_If
+kind: external_interface
+external_ref: /Platform/PortInterfaces/PlatformService_If
+external_dest: CLIENT-SERVER-INTERFACE
+description: Hand-built external interface stub fixture — the corpus declares no stub

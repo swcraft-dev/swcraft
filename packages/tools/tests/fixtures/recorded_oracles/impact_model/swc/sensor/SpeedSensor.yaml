@@ -1,0 +1,25 @@
+name: SpeedSensor
+type: service
+description: >-
+  The four-edge-kind start of the frozen render: a connector endpoint, a task
+  runnable mapping, a requirement link and a sequence step all depend on it.
+
+ports:
+  - name: pOut
+    direction: provide
+    interface: ISpeed
+    satisfies:
+      - REQ_SPEED_001@1
+
+runnables:
+  - name: SpeedSensor_Run
+    min_start_interval: 0.01
+    events:
+      - type: timing
+        period: 0.01
+
+memory:
+  RAM0: 2048
+  ScratchPad: 512
+
+handle_termination_and_restart: no_support

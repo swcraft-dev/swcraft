@@ -1,0 +1,11 @@
+name: ICalibration
+kind: client_server
+operations:
+- name: SetOffset
+  arguments:
+  - name: samples
+    direction: in
+    application_type: Samples_T
+  - name: raw
+    direction: out
+    implementation_type: uint8

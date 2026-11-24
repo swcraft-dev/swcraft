@@ -1,0 +1,28 @@
+name: SpeedEstimator
+type: application
+description: One component whose runnables share state guarded by exclusive areas.
+runnables:
+- name: FilterSpeed
+  events:
+  - type: timing
+    period: 0.01
+  runs_inside:
+  - area: SpeedState
+- name: MonitorSpeed
+  events:
+  - type: timing
+    period: 0.1
+  runs_inside:
+  - area: SpeedState
+- name: CalibrateOffsets
+  events:
+  - type: timing
+    period: 1.0
+  can_enter:
+  - area: OffsetTable
+exclusive_areas:
+- name: SpeedState
+  description: Guards the filtered speed shared by the 10 ms filter and the 100 ms monitor.
+- name: OffsetTable
+- name: SpareArea
+handle_termination_and_restart: no_support

@@ -1,0 +1,318 @@
+{
+  "name": "update-runnable-event-and-memory-entry",
+  "description": "The reference case for the delta projection, and for all three member-identity forms an address can carry. Retiming a runnable's timing event is a `remove` plus a `create` — the event's identity IS its value, so there is nothing inside it to update — while a field of a `field`-identified list member and an entry of a map are ordinary `update`s. The `set_*`-style tools each needed a parameter for one of these; none of them could express the first.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC.ExampleRun` runs on a 10 ms timing event and is mapped to no task, so retiming it to 20 ms binds no task-period rule; `Task_10ms` maps `ExampleConsumerSWC.ExampleConsumerRun`, not this runnable. `ExampleSWC` already budgets 2048 bytes of the `RAM0` memory, so raising it is an `update` and not a `create`.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          }
+        ]
+      },
+      {
+        "layer": "hardware",
+        "element": "RAM0"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "timing",
+                  "period": 0.01
+                }
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "timing",
+                  "period": 0.02
+                }
+              }
+            ]
+          }
+        },
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "min_start_interval"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "memory"
+              },
+              {
+                "key": "RAM0"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope names a `remove` and a `create` for the event because that is what the delta will report; an `update` approval would not cover either of them, since coverage requires an exact operation match. The prompt the user answers therefore says what the model actually does."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Retime ExampleRun to 20 ms and raise its RAM0 budget to 4 KiB.",
+    "operations": [
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "timing",
+                "period": 0.01
+              }
+            }
+          ]
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "timing",
+                "period": 0.02
+              }
+            }
+          ]
+        },
+        "value": {
+          "type": "timing",
+          "period": 0.02
+        }
+      },
+      {
+        "operation": "update",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            },
+            {
+              "field": "min_start_interval"
+            }
+          ]
+        },
+        "value": 0.02
+      },
+      {
+        "operation": "update",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "memory"
+            },
+            {
+              "key": "RAM0"
+            }
+          ]
+        },
+        "value": 4096
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "min_start_interval"
+              }
+            ]
+          },
+          "before": 0.01,
+          "after": 0.02,
+          "summary": "swc/ExampleSWC: ~ runnables[ExampleRun].min_start_interval 0.01 -> 0.02"
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "timing",
+                  "period": 0.01
+                }
+              }
+            ]
+          },
+          "before": {
+            "type": "timing",
+            "period": 0.01,
+            "disabled_modes": [],
+            "name": null
+          },
+          "summary": "swc/ExampleSWC: - runnables[ExampleRun].events[{type: timing, period: 0.01}]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "timing",
+                  "period": 0.02
+                }
+              }
+            ]
+          },
+          "after": {
+            "type": "timing",
+            "period": 0.02,
+            "disabled_modes": [],
+            "name": null
+          },
+          "summary": "swc/ExampleSWC: + runnables[ExampleRun].events[{type: timing, period: 0.02}]"
+        },
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "memory"
+              },
+              {
+                "key": "RAM0"
+              }
+            ]
+          },
+          "before": 2048,
+          "after": 4096,
+          "summary": "swc/ExampleSWC: ~ memory[RAM0] 2048 -> 4096"
+        }
+      ]
+    },
+    "notes": "Three member-identity forms in one exchange: `runnables` members are addressed by `{member: \"ExampleRun\"}` because the registry declares `name` as their identity field; `events` members are addressed by their whole value, `{member: {type, period}}`, because they have none and their `type` is not unique; and `memory` is a map, so its entry is addressed by `{key: \"RAM0\"}`. There is no ordinal step anywhere, in either direction. The event pair is the delta's projection rule seen end to end, and it is what `differ.py` already reports for this collection — \"a changed `period` is therefore one event removed and one added, never a `changed` one\". `period` is in seconds and the memory budget in bytes: the units discovery publishes per field, because they are not derivable from the types. The `RAM0` entry exists in the baseline, so the verb is `update`; adding a budget for a memory the component does not yet carry would be a `create` at the same address shape."
+  }
+}

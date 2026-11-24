@@ -1,0 +1,27 @@
+{
+  "current_version": "SRS-2",
+  "versions": {
+    "SRS-1": {
+      "needs": {
+        "SWR-1": {
+          "id": "SWR-1",
+          "title": "Title of SWR-1",
+          "content": "The software shall do what SWR-1 says.",
+          "type": "req"
+        }
+      },
+      "needs_amount": 2
+    },
+    "SRS-2": {
+      "needs": {
+        "SWR-1": {
+          "id": "SWR-1",
+          "title": "Title of SWR-1",
+          "content": "The software shall do what SWR-1 says.",
+          "type": "req"
+        }
+      },
+      "needs_amount": 1
+    }
+  }
+}

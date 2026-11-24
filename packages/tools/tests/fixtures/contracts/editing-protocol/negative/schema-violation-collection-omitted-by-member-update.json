@@ -1,0 +1,95 @@
+{
+  "name": "schema-violation-collection-omitted-by-member-update",
+  "description": "An `update` of a nested member whose replacement simply OMITS a declared collection. The payload names no membership change and says nothing about `events` at all, but an omitted key is not \"leave this alone\": the replacement is re-validated through its Pydantic class, so `events` comes back holding its declared default `[]` and the runnable's timing event is gone. The identical edit spelled `\"events\": []` was always refused; this is the same request in the spelling that reached `staged` with a `remove` in its delta the client never wrote.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC.ExampleRun` carries one 10 ms timing event. The replacement is that runnable with both of its scalar fields and no `events` key.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          },
+          {
+            "field": "events"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleRun"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the requested address exactly, so gate 1 admits the request and authorization is not what refuses it. In a scoped run gate 2 would have caught the loss late, and for the wrong reason — the delta carries a `remove` at the event's own address, which this scope does not cover. In an unscoped run, and in any auto-approving host, nothing would have caught it at all."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Slow ExampleRun's minimum start interval to 20 ms.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleRun"
+            }
+          ]
+        },
+        "value": {
+          "name": "ExampleRun",
+          "min_start_interval": 0.02
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          },
+          {
+            "field": "events"
+          }
+        ]
+      }
+    ],
+    "notes": "The membership rule is driven by the registry's field list rather than by the payload's keys, so a collection the replacement omits is bound against the default Pydantic will actually install — read off `model_fields`, never assumed empty. The address is the omitted collection, which is where the client would write the `remove` that owns membership, and the answer is byte-for-byte the one the `\"events\": []` spelling gets: one class of change, one answer. A `create`'s payload is untouched by this — it stands in for no baseline, so an omitted collection there is the default it has always been. An omitted defaulted *scalar* is likewise untouched: changing a value is what an `update` is for, and the delta reports it."
+  }
+}

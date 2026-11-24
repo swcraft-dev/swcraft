@@ -1,0 +1,100 @@
+{
+  "name": "consistency-violation-measure-unknown-element",
+  "description": "A declared argument NOTHING CAN READ. A `measures` key names a data element of the port's own interface; one that names nothing is an argument no rule can weigh and a finding silently not closed, which is exactly the failure the declared-argument design exists to prevent. It is a FINDING and never a load failure — a project carrying one stays readable by `list`, `query`, `diff` and `impact`, because the whole point of the field is that nothing verifies its content.",
+  "kind": "negative",
+  "context": {
+    "summary": "The bare `examples/basic` model. The change set declares a measure on `rIn` for `valu` — a misspelling of the one data element `IExample` declares.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rIn"
+              },
+              {
+                "field": "measures"
+              },
+              {
+                "key": "valu"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly, so the refusal is the model rule and not the authorization boundary. The safety guard fires all the same and the host is asked, because the predicate reads the ADDRESS and a dangling key is not distinguishable from a resolving one there — pass D then refuses the change set whatever the human answered, which is the same shape a `measures` map on a `provide` port has. Asking first costs nothing and keeps the predicate free of a rule lookup."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:5_M_ksCHQAIfmJvfJLqkHw",
+    "intent": "Record the end-to-end protection on the received value.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "ports"
+            },
+            {
+              "member": "rIn"
+            },
+            {
+              "field": "measures"
+            },
+            {
+              "key": "valu"
+            }
+          ]
+        },
+        "value": "End-to-end protection profile 4."
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "ports"
+          },
+          {
+            "member": "rIn"
+          },
+          {
+            "field": "measures"
+          },
+          {
+            "key": "valu"
+          }
+        ]
+      }
+    ],
+    "notes": "One address, and it is the KEY's own four-step address ending in `{\"key\": \"valu\"}` — a mapping entry is addressed by its key and never as a member, which is what makes the refusal point at the entry rather than at the map. The one repair is the key, and the rule does not guess which element was meant. Note what this is NOT: the file LOADS. A dangling key is a finding and never a load failure, so a project carrying one stays readable by `list`, `query`, `diff` and `impact` — which is the decision that keeps a field nothing verifies from being able to make a project unopenable."
+  }
+}

@@ -1,0 +1,6 @@
+name: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+type: application
+description: 120 characters is legal as declared; the generated _Implementation form is 135
+memory:
+  RAM: 16
+handle_termination_and_restart: no_support

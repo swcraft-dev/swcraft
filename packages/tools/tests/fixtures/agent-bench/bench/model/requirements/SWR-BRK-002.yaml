@@ -1,0 +1,9 @@
+id: SWR-BRK-002
+title: Brake request input
+description: The brake controller shall receive the brake request from the pedal interface.
+req_type: req
+version: 1
+source: external
+document: SRS Brake Control
+baseline: '1.0'
+revision: '1'

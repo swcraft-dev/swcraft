@@ -1,0 +1,58 @@
+{
+  "name": "find-text",
+  "description": "A `find` by `text` searches the requirements alone: those whose `id`, `title` and `description` hold every word of the phrase — each query word equal to or a prefix of a distinct word of that text, never a substring — answered in `id` order, at most sixteen, each with its address, a one-line identity (the id and the title, at most 72 characters) and the words it matched; `more` counts the rest, and the baseline token rides along. The requirement's `document` field is never answered.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with two requirements added: `REQ_EXAMPLE_002`, whose text holds `example` and `functionality` and which names its source document, and `REQ_EXAMPLE_003`, whose text holds `example` and not `function`. `REQ_EXAMPLE_001`'s description holds both.",
+    "existing_elements": [
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_001"
+      },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_002"
+      },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_003"
+      }
+    ],
+    "notes": "A `find` reads the model and writes nothing: no scope, no baseline in the request, no audit record. `function` is a prefix of `functionality`, so it matches; `REQ_EXAMPLE_003` holds one of the two words and is not answered."
+  },
+  "input": {
+    "operation": "find",
+    "text": "example function"
+  },
+  "expected": {
+    "response": {
+      "response": "find",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "text": "example function",
+      "candidates": [
+        {
+          "address": {
+            "layer": "requirements",
+            "element": "REQ_EXAMPLE_001"
+          },
+          "identity": "REQ_EXAMPLE_001 — Example requirement for ExampleSWC",
+          "words": [
+            "example",
+            "functionality"
+          ]
+        },
+        {
+          "address": {
+            "layer": "requirements",
+            "element": "REQ_EXAMPLE_002"
+          },
+          "identity": "REQ_EXAMPLE_002 — Example functionality monitoring",
+          "words": [
+            "example",
+            "functionality"
+          ]
+        }
+      ]
+    }
+  }
+}

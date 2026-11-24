@@ -1,0 +1,205 @@
+{
+  "name": "remove-memory-resource-with-referrers-cleared",
+  "description": "An approved removal, committed. The change set clears both referring budgets and removes the `RAM0` memory in one unit, which is exactly the case `delete_element`'s refusal guard and its confirmation-token round trip could not express. The response is the committed delta, which is byte-for-byte the delta that was reviewed.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `hardware/` holds `CPU`, `CORE0` and `RAM0`; both SWCs declare a `RAM0` budget, because every SWC is a consumer of every declared memory. Removing the memory while either budget still names it would be a `broken-reference` refusal.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "hardware",
+        "element": "RAM0"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "memory"
+          },
+          {
+            "key": "RAM0"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "memory"
+          },
+          {
+            "key": "RAM0"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "memory"
+              },
+              {
+                "key": "RAM0"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "memory"
+              },
+              {
+                "key": "RAM0"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "hardware",
+            "element": "RAM0"
+          }
+        }
+      ],
+      "notes": "The approved scope covers the delta exactly — three removes at three addresses, nothing wider. `CPU` and `CORE0` stay, so the `hardware` layer keeps its processor and its core and only the memory goes."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Retire the RAM0 memory: the components no longer carry a memory budget.",
+    "operations": [
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "memory"
+            },
+            {
+              "key": "RAM0"
+            }
+          ]
+        }
+      },
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "memory"
+            },
+            {
+              "key": "RAM0"
+            }
+          ]
+        }
+      },
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "hardware",
+          "element": "RAM0"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:2e6a0b94cf7d1385",
+      "delta": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "memory"
+              },
+              {
+                "key": "RAM0"
+              }
+            ]
+          },
+          "before": 1536,
+          "summary": "swc/ExampleConsumerSWC: - memory[RAM0]"
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "memory"
+              },
+              {
+                "key": "RAM0"
+              }
+            ]
+          },
+          "before": 2048,
+          "summary": "swc/ExampleSWC: - memory[RAM0]"
+        },
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "hardware",
+            "element": "RAM0"
+          },
+          "before": {
+            "name": "RAM0",
+            "kind": "memory",
+            "type": "RAM",
+            "size": 262144,
+            "accessible": 1,
+            "threshold": 0.8,
+            "satisfies": 0
+          },
+          "summary": "hardware: - RAM0",
+          "before_form": "summary"
+        }
+      ],
+      "audit_ref": "cs-20260815T102241Z-4f19c2"
+    },
+    "notes": "`baseline` on a committed response is the token the commit produced, not the one the request carried: the model has moved, and the next change set is stated against this value. `audit_ref` names the record the staged, approved and committed states of this change set are logged under; a `read` produces none."
+  }
+}

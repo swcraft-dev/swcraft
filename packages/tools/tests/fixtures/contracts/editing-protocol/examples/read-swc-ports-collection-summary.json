@@ -1,0 +1,62 @@
+{
+  "name": "read-swc-ports-collection-summary",
+  "description": "The second address shape that answers a `summary` by default: a COLLECTION, addressed by the field the registry declares a collection for. The members are summarized by the member rule — the owning collection's identity field, the required scalars and every scalar reference to another element, required or optional — so a port answers `name`, `direction`, its `interface` and its `measures` as a count, and drops its free-text `description` and its `observed_interface`, which only the `full` form carries. `interface` is optional since contract 7.6.0 (an external component's port declares none) and is kept by the reference clause; where it is unset it is omitted rather than published as `null` (`read-swc-ports-members-summary-omits-unset-interface.json`). Sizes are quoted in the unit the budget is stated in — the WIRE bytes of the whole response, `measured.wire_bytes`, which is what `budget_wire_bytes` above is compared against. That unit is one copy, since 2026-10-09: a tool result is sent once, as its compact document carried as a JSON string. On `examples/basic` this response measures 254 wire bytes against 336 for the `full` form (measured 2026-10-09; 434 against 590 in the two-copy unit, re-measured 2026-09-26 with the reference clause): one port, so the fixed response envelope is most of both figures and the width reduction barely shows. On the widest component of the generated `large-bench` specimen — 550 ports, measured 2026-11-13 — `full` refuses at 99 098 and this form ANSWERS at 70 448; its `index` measures 5 027 and a first page of 50 in `summary` 6 574. In the two-copy unit before 2026-10-09 this form refused on such a component too, hinting `index` and a first page of 50 in `summary`. One copy moved where the summary stops fitting and did not remove that place: a summary still grows with every member, `full` still refuses on that component, and the chain is what answers for a collection wide enough that the summary alone does not.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC.ports` is a list whose members the registry declares an identity field (`name`) for, and its one member `pOut` provides `IExample`.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "ports"
+          }
+        ]
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      }
+    ],
+    "notes": "A member kind belongs to no layer, so the layer's `identityField` cannot apply to it: the member rule takes its identity from the owning `collectionDescriptor` (`member_identity: field`, `identity_field: name` — `examples/discover-project-all-layers-present.json` publishes both) and adds the same required-scalar, reference and collection-count clauses the element rule uses."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc",
+      "element": "ExampleSWC",
+      "path": [
+        {
+          "field": "ports"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "ports"
+          }
+        ]
+      },
+      "form": "summary",
+      "value": [
+        {
+          "name": "pOut",
+          "direction": "provide",
+          "interface": "IExample",
+          "measures": 0,
+          "com_specs": 0,
+          "satisfies": 0
+        }
+      ]
+    },
+    "notes": "Every member is answered, not a page of them: the form reduces the width of each member and never the length of the list. `interface` survives because it is a reference to another element, and the rule is derived, never declared per field: required scalars and scalar references stay, every other optional field goes. A collection too wide for one answer is refused in both forms and paged (`limit`/`after`) rather than truncated; `where` filters on any declared field in every form, and `read-swc-port-interface-field.json` reads one port's value one step deeper in `full` form. One step further down, `{... path: [{field: ports}, {member: pOut}]}` is an address whose value is a declared kind and whose default is therefore `full`."
+  }
+}

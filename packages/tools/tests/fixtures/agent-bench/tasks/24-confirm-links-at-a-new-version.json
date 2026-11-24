@@ -1,0 +1,108 @@
+{
+  "id": "24-confirm-links-at-a-new-version",
+  "task": 24,
+  "group": "requirements-and-traceability",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Requirement REQ_BTP_CORE_LOAD moved to version 2; confirm every link to it at the new version.",
+  "note": "The bench mirrors showcase 4fdc642.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "requirements",
+        "name": "REQ_BTP_CORE_LOAD",
+        "has": {
+          "version": 2
+        }
+      },
+      {
+        "layer": "tasks",
+        "name": "Task_50ms",
+        "has": {
+          "satisfies": [
+            "REQ_BTP_CORE_LOAD@2"
+          ]
+        },
+        "lacks": {
+          "satisfies": [
+            "REQ_BTP_CORE_LOAD@1"
+          ]
+        }
+      },
+      {
+        "layer": "tasks",
+        "name": "Task_100ms",
+        "has": {
+          "satisfies": [
+            "REQ_BTP_CORE_LOAD@2"
+          ]
+        },
+        "lacks": {
+          "satisfies": [
+            "REQ_BTP_CORE_LOAD@1"
+          ]
+        }
+      },
+      {
+        "layer": "tasks",
+        "name": "Task_100ms_Low",
+        "has": {
+          "satisfies": [
+            "REQ_BTP_CORE_LOAD@2"
+          ]
+        },
+        "lacks": {
+          "satisfies": [
+            "REQ_BTP_CORE_LOAD@1"
+          ]
+        }
+      },
+      {
+        "layer": "hardware",
+        "name": "CPU",
+        "has": {
+          "satisfies": [
+            "REQ_BTP_CORE_LOAD@2"
+          ]
+        },
+        "lacks": {
+          "satisfies": [
+            "REQ_BTP_CORE_LOAD@1"
+          ]
+        }
+      },
+      {
+        "layer": "hardware",
+        "name": "Core0",
+        "has": {
+          "satisfies": [
+            "REQ_BTP_CORE_LOAD@2"
+          ]
+        },
+        "lacks": {
+          "satisfies": [
+            "REQ_BTP_CORE_LOAD@1"
+          ]
+        }
+      },
+      {
+        "layer": "hardware",
+        "name": "Core1",
+        "has": {
+          "satisfies": [
+            "REQ_BTP_CORE_LOAD@2"
+          ]
+        },
+        "lacks": {
+          "satisfies": [
+            "REQ_BTP_CORE_LOAD@1"
+          ]
+        }
+      },
+      {
+        "unreferenced": "REQ_BTP_CORE_LOAD@1"
+      }
+    ]
+  }
+}

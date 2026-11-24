@@ -1,0 +1,368 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swcraft.dev/contracts/model-passport/passport.schema.json",
+  "title": "SWCraft model passport",
+  "description": "A deterministic, names-free description of a model's shape: counts, distributions and lengths, never a name, a value or a text. The same shape is read as a generator configuration by a specimen generator, an external program: the leaves it meets exactly are required, every other leaf may be absent and, when present, is compared after generation. Not carried here, and the pass's job: that a total equals the sum of its parts, that a list is descending, and the strict reading of the file (no repeated key, no NaN or Infinity).",
+  "x-passport-version": "1.0.0",
+  "x-contract-major": 12,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "passport_version",
+    "contract_version",
+    "layers",
+    "components",
+    "interfaces",
+    "connectors",
+    "hardware",
+    "tasks",
+    "requirements",
+    "identifiers"
+  ],
+  "properties": {
+    "passport_version": {
+      "description": "This schema's own semantic version; a field or layer added is a minor, a field renamed or removed is a major.",
+      "type": "string",
+      "pattern": "^1\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "contract_version": {
+      "description": "The version of the model's layer definitions at computation, the contractVersion (not the SWCraft release). A configuration whose major differs from the running contract's is refused by a specimen generator, naming both.",
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "layers": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The element count of every layer of the model, by the layer's name.",
+      "required": [
+        "swc",
+        "interfaces",
+        "application_types",
+        "implementation_types",
+        "base_types",
+        "requirements",
+        "tasks"
+      ],
+      "properties": {
+        "swc": {
+          "$ref": "#/$defs/count"
+        },
+        "interfaces": {
+          "$ref": "#/$defs/count"
+        },
+        "connectors": {
+          "$ref": "#/$defs/count"
+        },
+        "application_types": {
+          "$ref": "#/$defs/count"
+        },
+        "implementation_types": {
+          "$ref": "#/$defs/count"
+        },
+        "base_types": {
+          "$ref": "#/$defs/count"
+        },
+        "requirements": {
+          "$ref": "#/$defs/count"
+        },
+        "compositions": {
+          "$ref": "#/$defs/count"
+        },
+        "tasks": {
+          "$ref": "#/$defs/count"
+        },
+        "sequences": {
+          "$ref": "#/$defs/count"
+        },
+        "hardware": {
+          "$ref": "#/$defs/count"
+        },
+        "mapping_sets": {
+          "$ref": "#/$defs/count"
+        },
+        "units": {
+          "$ref": "#/$defs/count"
+        },
+        "compu_methods": {
+          "$ref": "#/$defs/count"
+        },
+        "data_constraints": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "components": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hubs",
+        "unconnected"
+      ],
+      "properties": {
+        "ports": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "All ports, and the eight largest per-component port counts.",
+          "properties": {
+            "total": {
+              "$ref": "#/$defs/count"
+            },
+            "top": {
+              "$ref": "#/$defs/top"
+            }
+          }
+        },
+        "hubs": {
+          "description": "Port counts, descending, of the components whose port count exceeds twice the median component's.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/count"
+          }
+        },
+        "unconnected": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Ports no connector reaches: in all, and the most on one component.",
+          "required": [
+            "total",
+            "max_on_one"
+          ],
+          "properties": {
+            "total": {
+              "$ref": "#/$defs/count"
+            },
+            "max_on_one": {
+              "$ref": "#/$defs/count"
+            }
+          }
+        },
+        "by_declared_level": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Components by their declared asil; a component declaring none is not counted.",
+          "properties": {
+            "QM": {
+              "$ref": "#/$defs/count"
+            },
+            "A": {
+              "$ref": "#/$defs/count"
+            },
+            "B": {
+              "$ref": "#/$defs/count"
+            },
+            "C": {
+              "$ref": "#/$defs/count"
+            },
+            "D": {
+              "$ref": "#/$defs/count"
+            }
+          }
+        },
+        "runnables": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "interfaces": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sender_receiver",
+        "client_server",
+        "fan_out"
+      ],
+      "properties": {
+        "sender_receiver": {
+          "$ref": "#/$defs/count"
+        },
+        "client_server": {
+          "$ref": "#/$defs/count"
+        },
+        "fan_out": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Counts of ports naming one interface: the largest, and the eight largest.",
+          "required": [
+            "max"
+          ],
+          "properties": {
+            "max": {
+              "$ref": "#/$defs/count"
+            },
+            "top": {
+              "$ref": "#/$defs/top"
+            }
+          }
+        }
+      }
+    },
+    "connectors": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Connectors by kind, and those between two non-hub components beyond the pair connectors.",
+      "required": [
+        "links"
+      ],
+      "properties": {
+        "assembly": {
+          "$ref": "#/$defs/count"
+        },
+        "delegation": {
+          "$ref": "#/$defs/count"
+        },
+        "links": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "hardware": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cores",
+        "partitions",
+        "memories",
+        "rated_partitions"
+      ],
+      "properties": {
+        "cores": {
+          "$ref": "#/$defs/count"
+        },
+        "partitions": {
+          "$ref": "#/$defs/count"
+        },
+        "memories": {
+          "$ref": "#/$defs/count"
+        },
+        "rated_partitions": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "tasks": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Tasks with no runnable.",
+      "required": [
+        "idle"
+      ],
+      "properties": {
+        "idle": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "on_all_site_kinds",
+        "on_one_port",
+        "unallocated",
+        "stale_links"
+      ],
+      "properties": {
+        "on_all_site_kinds": {
+          "$ref": "#/$defs/count"
+        },
+        "on_one_port": {
+          "$ref": "#/$defs/count"
+        },
+        "unallocated": {
+          "$ref": "#/$defs/count"
+        },
+        "stale_links": {
+          "$ref": "#/$defs/count"
+        },
+        "links": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "identifiers": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Identifier lengths: the longest over all layers, and per layer (by the layer's name) the longest and the mean, never an identifier.",
+      "required": [
+        "max_length"
+      ],
+      "properties": {
+        "max_length": {
+          "$ref": "#/$defs/count"
+        },
+        "swc": {
+          "$ref": "#/$defs/lengths"
+        },
+        "interfaces": {
+          "$ref": "#/$defs/lengths"
+        },
+        "connectors": {
+          "$ref": "#/$defs/lengths"
+        },
+        "application_types": {
+          "$ref": "#/$defs/lengths"
+        },
+        "implementation_types": {
+          "$ref": "#/$defs/lengths"
+        },
+        "base_types": {
+          "$ref": "#/$defs/lengths"
+        },
+        "requirements": {
+          "$ref": "#/$defs/lengths"
+        },
+        "compositions": {
+          "$ref": "#/$defs/lengths"
+        },
+        "tasks": {
+          "$ref": "#/$defs/lengths"
+        },
+        "sequences": {
+          "$ref": "#/$defs/lengths"
+        },
+        "hardware": {
+          "$ref": "#/$defs/lengths"
+        },
+        "mapping_sets": {
+          "$ref": "#/$defs/lengths"
+        },
+        "units": {
+          "$ref": "#/$defs/lengths"
+        },
+        "compu_methods": {
+          "$ref": "#/$defs/lengths"
+        },
+        "data_constraints": {
+          "$ref": "#/$defs/lengths"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "top": {
+      "description": "The eight largest counts, descending.",
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "$ref": "#/$defs/count"
+      }
+    },
+    "lengths": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_length": {
+          "$ref": "#/$defs/count"
+        },
+        "mean_length": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

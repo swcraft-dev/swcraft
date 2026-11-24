@@ -1,0 +1,88 @@
+name: Swc075abcdefghij
+type: application
+description: ''
+ports:
+- name: P1
+  direction: provide
+  interface: If0168abcdefghij
+  satisfies:
+  - Rq03abcdef@1
+- name: P2
+  direction: provide
+  interface: If0244abcdefghij
+- name: P3
+  direction: provide
+  interface: If0320abcdefghij
+- name: P4
+  direction: provide
+  interface: If0396abcdefghij
+- name: P5
+  direction: provide
+  interface: If0472abcdefghij
+- name: P6
+  direction: provide
+  interface: If0548abcdefghij
+- name: P7
+  direction: require
+  interface: If0615abcdefghij
+- name: P8
+  direction: require
+  interface: If0616abcdefghij
+- name: P9
+  direction: require
+  interface: If0617abcdefghij
+- name: P10
+  direction: require
+  interface: If0618abcdefghij
+- name: P11
+  direction: require
+  interface: If0619abcdefghij
+- name: P12
+  direction: provide
+  interface: If0624abcdefghij
+- name: P13
+  direction: provide
+  interface: If0700abcdefghij
+runnables:
+- name: R1
+  events:
+  - type: timing
+    period: 0.05
+  reads:
+  - port: P7
+    element: D1
+  - port: P8
+    element: D1
+  - port: P9
+    element: D1
+  - port: P10
+    element: D1
+  - port: P11
+    element: D1
+  writes:
+  - port: P1
+    element: D1
+  - port: P2
+    element: D1
+  - port: P3
+    element: D1
+  - port: P4
+    element: D1
+  - port: P5
+    element: D1
+  - port: P6
+    element: D1
+  - port: P12
+    element: D1
+  - port: P13
+    element: D1
+  calls: []
+memory:
+  Me1abc: 0
+  Me2abc: 3584
+  Me3abc: 0
+  Me4abc: 0
+asil: QM
+handle_termination_and_restart: no_support
+satisfies:
+- Rq20abcdef@1

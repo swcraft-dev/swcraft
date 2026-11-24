@@ -1,0 +1,3379 @@
+{
+  "name": "discover-project-all-layers-present",
+  "description": "A project-wide `discover` against a model that holds all fifteen layers, answered in the DEFAULT form. That default is `summary`, which strips every descriptor `description` and omits the three declared descriptor booleans — a layer's `optional`, a field's `required` and `immutable` — where they are `false`, so that an absent one means `false`; no other key is left out. Every element kind of every layer is still here, and every declared field with its type, its `required`/`immutable` flags where they are `true`, enum members, declared unit, reference target and object-field element-kind link, and, per nested collection, its kind, its member element kinds and the strategy by which one member is identified. The prose is the one thing left out that a client cannot restore by rule, and it is in the fifteen `examples/discover-layer-<layer>-full.json` vectors, one layer at a time, because the same request at `form: \"full\"` is a refusal since contract `3.2.0` (`negative/discover-project-full-over-budget.json`) — an implementation is checked against the default and the fifteen, because the absence here is as load-bearing as the presence there.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` shape of a SWCraft project: fifteen scaffolded layers, `hardware/` among them, holding the processor `CPU`, the core `CORE0`, the partition `PARTITION0` and the memory `RAM0`.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current",
+    "notes": "Discovery needs no approved scope: it reads nothing but registry facts and the project passport, and reads are unscoped and unaudited."
+  },
+  "input": {
+    "operation": "discover"
+  },
+  "expected": {
+    "response": {
+      "response": "discover",
+      "project": {
+        "name": "swcraft-basic-example",
+        "arxml_version": "4.2.2",
+        "swcraft_version": "0.24.0"
+      },
+      "baseline": "rev1:kk7N755-pYf2txfvyVl9Kw",
+      "reads": {
+        "forms": [
+          "summary",
+          "full",
+          "index"
+        ],
+        "default_form": {
+          "layer": "summary",
+          "collection": "summary",
+          "element": "full",
+          "field": "full"
+        },
+        "budget_wire_bytes": 80000,
+        "hint_page_size": 50,
+        "discover": {
+          "forms": [
+            "summary",
+            "full",
+            "baseline"
+          ],
+          "default_form": "summary"
+        },
+        "derived": [
+          {
+            "name": "connection_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string"
+              }
+            }
+          },
+          {
+            "name": "base_type",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "runnables.reads",
+                "runnables.writes"
+              ]
+            },
+            "rows": "one",
+            "shape": {
+              "implementation": "string|null",
+              "base": "string|null"
+            }
+          },
+          {
+            "name": "effective_level",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one",
+            "shape": {
+              "level": "string",
+              "rating": "string"
+            }
+          },
+          {
+            "name": "partitions",
+            "at": {
+              "layer": "swc"
+            },
+            "rows": "one per value",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "crossing_ends",
+            "at": {
+              "layer": "connectors"
+            },
+            "rows": "one per value",
+            "shape": {
+              "provider": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              },
+              "requester": {
+                "swc": "string",
+                "port": "string",
+                "partition": "string"
+              }
+            }
+          },
+          {
+            "name": "unconnected",
+            "at": {
+              "layer": "swc",
+              "members": [
+                "ports"
+              ]
+            },
+            "rows": "one per value",
+            "shape": {
+              "direction": "string",
+              "interface": "string|null"
+            }
+          },
+          {
+            "name": "core",
+            "at": {
+              "layer": "tasks"
+            },
+            "rows": "one",
+            "shape": {
+              "partition": "string",
+              "core": "string|null"
+            }
+          },
+          {
+            "name": "realised_by",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null"
+            }
+          },
+          {
+            "name": "allocation",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one",
+            "shape": {
+              "sites": "integer",
+              "elements": "integer",
+              "allocated": "boolean|null"
+            }
+          },
+          {
+            "name": "stale_links",
+            "at": {
+              "layer": "requirements"
+            },
+            "rows": "one per value",
+            "shape": {
+              "layer": "string",
+              "element": "string",
+              "member": "string|null",
+              "kind": "string",
+              "stated": "integer|null",
+              "current": "integer"
+            }
+          }
+        ],
+        "join": {
+          "row_ceiling": 50000,
+          "max_entries": 8
+        }
+      },
+      "form": "summary",
+      "layers": [
+        {
+          "layer": "swc",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "swc",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "group",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "type",
+                  "type": "string",
+                  "enum": [
+                    "application",
+                    "service",
+                    "ecu_abstraction"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "external",
+                  "type": "boolean"
+                },
+                {
+                  "name": "external_ref",
+                  "type": "string"
+                },
+                {
+                  "name": "external_dest",
+                  "type": "string"
+                },
+                {
+                  "name": "ports",
+                  "type": "list[port]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "port"
+                    ]
+                  }
+                },
+                {
+                  "name": "runnables",
+                  "type": "list[runnable]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "runnable"
+                    ]
+                  }
+                },
+                {
+                  "name": "variables",
+                  "type": "list[variable]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "variable"
+                    ]
+                  }
+                },
+                {
+                  "name": "exclusive_areas",
+                  "type": "list[exclusive_area]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "exclusive_area"
+                    ]
+                  }
+                },
+                {
+                  "name": "memory",
+                  "type": "map[string, integer]",
+                  "unit": "bytes",
+                  "collection": {
+                    "kind": "map",
+                    "member_identity": "whole_value"
+                  }
+                },
+                {
+                  "name": "asil",
+                  "type": "string",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "QM(A)",
+                    "QM(B)",
+                    "QM(C)",
+                    "QM(D)",
+                    "A(B)",
+                    "A(C)",
+                    "A(D)",
+                    "B(B)",
+                    "B(C)",
+                    "B(D)",
+                    "C(C)",
+                    "C(D)",
+                    "D(D)"
+                  ]
+                },
+                {
+                  "name": "handle_termination_and_restart",
+                  "type": "string",
+                  "enum": [
+                    "no_support",
+                    "can_be_terminated",
+                    "can_be_terminated_and_restarted"
+                  ]
+                },
+                {
+                  "name": "data_type_mappings",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                },
+                {
+                  "name": "behavior_name",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "port",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "swc",
+                  "field": "ports"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "direction",
+                  "type": "string",
+                  "required": true,
+                  "enum": [
+                    "provide",
+                    "require"
+                  ]
+                },
+                {
+                  "name": "interface",
+                  "type": "string",
+                  "reference": {
+                    "layer": "interfaces",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "observed_interface",
+                  "type": "string"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "measures",
+                  "type": "map[string, string]",
+                  "collection": {
+                    "kind": "map",
+                    "member_identity": "whole_value"
+                  }
+                },
+                {
+                  "name": "com_specs",
+                  "type": "list[port_com_spec]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "data_element",
+                    "member_kinds": [
+                      "port_com_spec"
+                    ]
+                  }
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "runnable",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "swc",
+                  "field": "runnables"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "min_start_interval",
+                  "type": "number",
+                  "unit": "seconds"
+                },
+                {
+                  "name": "concurrent",
+                  "type": "boolean"
+                },
+                {
+                  "name": "events",
+                  "type": "list[timing_event | init_event | operation_event | data_event | call_returned_event]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value",
+                    "member_kinds": [
+                      "timing_event",
+                      "init_event",
+                      "operation_event",
+                      "data_event",
+                      "call_returned_event"
+                    ],
+                    "discriminator_field": "type"
+                  }
+                },
+                {
+                  "name": "reads",
+                  "type": "list[data_read]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "composite",
+                    "identity_fields": [
+                      "port",
+                      "element"
+                    ],
+                    "member_kinds": [
+                      "data_read"
+                    ]
+                  }
+                },
+                {
+                  "name": "writes",
+                  "type": "list[data_write]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "composite",
+                    "identity_fields": [
+                      "port",
+                      "element"
+                    ],
+                    "member_kinds": [
+                      "data_write"
+                    ]
+                  }
+                },
+                {
+                  "name": "calls",
+                  "type": "list[operation_call]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "composite",
+                    "identity_fields": [
+                      "port",
+                      "operation"
+                    ],
+                    "member_kinds": [
+                      "operation_call"
+                    ]
+                  }
+                },
+                {
+                  "name": "reads_variables",
+                  "type": "list[variable_read]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "variable",
+                    "member_kinds": [
+                      "variable_read"
+                    ]
+                  }
+                },
+                {
+                  "name": "writes_variables",
+                  "type": "list[variable_write]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "variable",
+                    "member_kinds": [
+                      "variable_write"
+                    ]
+                  }
+                },
+                {
+                  "name": "can_enter",
+                  "type": "list[can_enter_area]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "area",
+                    "member_kinds": [
+                      "can_enter_area"
+                    ]
+                  }
+                },
+                {
+                  "name": "runs_inside",
+                  "type": "list[runs_inside_area]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "area",
+                    "member_kinds": [
+                      "runs_inside_area"
+                    ]
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "symbol",
+                  "type": "string"
+                },
+                {
+                  "name": "wcet",
+                  "type": "string"
+                },
+                {
+                  "name": "wcet_type",
+                  "type": "string",
+                  "enum": [
+                    "gross",
+                    "net"
+                  ]
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "variable",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "swc",
+                  "field": "variables"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "access",
+                  "type": "string",
+                  "required": true,
+                  "enum": [
+                    "implicit",
+                    "explicit"
+                  ]
+                },
+                {
+                  "name": "application_type",
+                  "type": "string",
+                  "reference": {
+                    "layer": "application_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "implementation_type",
+                  "type": "string",
+                  "reference": {
+                    "layer": "implementation_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "init",
+                  "type": "value"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "sw_calibration_access",
+                  "type": "string",
+                  "enum": [
+                    "not_accessible",
+                    "read_only",
+                    "read_write"
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "exclusive_area",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "swc",
+                  "field": "exclusive_areas"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "port_com_spec",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "port",
+                  "field": "com_specs"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "data_element",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "enable_update",
+                  "type": "boolean"
+                },
+                {
+                  "name": "alive_timeout",
+                  "type": "number",
+                  "unit": "seconds"
+                },
+                {
+                  "name": "handle_never_received",
+                  "type": "boolean"
+                },
+                {
+                  "name": "handle_timeout_type",
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "replace"
+                  ]
+                },
+                {
+                  "name": "handle_out_of_range",
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "default",
+                    "ignore",
+                    "saturate"
+                  ]
+                },
+                {
+                  "name": "uses_end_to_end_protection",
+                  "type": "boolean"
+                },
+                {
+                  "name": "queue_length",
+                  "type": "integer"
+                },
+                {
+                  "name": "init",
+                  "type": "value"
+                }
+              ]
+            },
+            {
+              "kind": "timing_event",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "runnable",
+                  "field": "events"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "type",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "timing"
+                  ]
+                },
+                {
+                  "name": "period",
+                  "type": "number",
+                  "required": true,
+                  "immutable": true,
+                  "unit": "seconds"
+                },
+                {
+                  "name": "disabled_modes",
+                  "type": "list[disabled_mode]",
+                  "immutable": true,
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value",
+                    "member_kinds": [
+                      "disabled_mode"
+                    ]
+                  }
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "immutable": true
+                }
+              ]
+            },
+            {
+              "kind": "init_event",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "runnable",
+                  "field": "events"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "type",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "init"
+                  ]
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "immutable": true
+                }
+              ]
+            },
+            {
+              "kind": "operation_event",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "runnable",
+                  "field": "events"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "type",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "operation"
+                  ]
+                },
+                {
+                  "name": "port",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "operation",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "immutable": true
+                }
+              ]
+            },
+            {
+              "kind": "data_event",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "runnable",
+                  "field": "events"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "type",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "data"
+                  ]
+                },
+                {
+                  "name": "port",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "element",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "disabled_modes",
+                  "type": "list[disabled_mode]",
+                  "immutable": true,
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value",
+                    "member_kinds": [
+                      "disabled_mode"
+                    ]
+                  }
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "immutable": true
+                }
+              ]
+            },
+            {
+              "kind": "call_returned_event",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "runnable",
+                  "field": "events"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "type",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "call_returned"
+                  ]
+                },
+                {
+                  "name": "port",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "operation",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "result",
+                  "type": "string",
+                  "immutable": true
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "immutable": true
+                }
+              ]
+            },
+            {
+              "kind": "data_read",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "runnable",
+                  "field": "reads"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "port",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "element",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "by",
+                  "type": "string",
+                  "enum": [
+                    "value",
+                    "implicit"
+                  ]
+                },
+                {
+                  "name": "name",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "data_write",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "runnable",
+                  "field": "writes"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "port",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "element",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "by",
+                  "type": "string",
+                  "enum": [
+                    "implicit"
+                  ]
+                },
+                {
+                  "name": "name",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "operation_call",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "runnable",
+                  "field": "calls"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "port",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "operation",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "asynchronous",
+                  "type": "boolean"
+                },
+                {
+                  "name": "poll",
+                  "type": "boolean"
+                },
+                {
+                  "name": "result",
+                  "type": "string"
+                },
+                {
+                  "name": "timeout",
+                  "type": "number",
+                  "unit": "seconds"
+                },
+                {
+                  "name": "name",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "variable_read",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "runnable",
+                  "field": "reads_variables"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "variable",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "name",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "variable_write",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "runnable",
+                  "field": "writes_variables"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "variable",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "name",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "can_enter_area",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "runnable",
+                  "field": "can_enter"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "area",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                }
+              ]
+            },
+            {
+              "kind": "runs_inside_area",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "runnable",
+                  "field": "runs_inside"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "area",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                }
+              ]
+            },
+            {
+              "kind": "disabled_mode",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "timing_event",
+                  "field": "disabled_modes"
+                },
+                {
+                  "kind": "data_event",
+                  "field": "disabled_modes"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "port",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "mode_group_ref",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "mode_ref",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "interfaces",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "sender_receiver",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "sender_receiver"
+                  ]
+                },
+                {
+                  "name": "data_elements",
+                  "type": "list[data_element]",
+                  "required": true,
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "data_element"
+                    ]
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                },
+                {
+                  "name": "is_service",
+                  "type": "boolean"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "client_server",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "client_server"
+                  ]
+                },
+                {
+                  "name": "operations",
+                  "type": "list[operation]",
+                  "required": true,
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "operation"
+                    ]
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                },
+                {
+                  "name": "is_service",
+                  "type": "boolean"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "external_interface",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "external_interface"
+                  ]
+                },
+                {
+                  "name": "external_ref",
+                  "type": "string"
+                },
+                {
+                  "name": "external_dest",
+                  "type": "string"
+                },
+                {
+                  "name": "operations",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                },
+                {
+                  "name": "data_elements",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "data_element",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "sender_receiver",
+                  "field": "data_elements"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "application_type",
+                  "type": "string",
+                  "reference": {
+                    "layer": "application_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "implementation_type",
+                  "type": "string",
+                  "reference": {
+                    "layer": "implementation_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "init",
+                  "type": "value"
+                },
+                {
+                  "name": "asil",
+                  "type": "string",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "QM(A)",
+                    "QM(B)",
+                    "QM(C)",
+                    "QM(D)",
+                    "A(B)",
+                    "A(C)",
+                    "A(D)",
+                    "B(B)",
+                    "B(C)",
+                    "B(D)",
+                    "C(C)",
+                    "C(D)",
+                    "D(D)"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "sw_impl_policy",
+                  "type": "string",
+                  "enum": [
+                    "standard",
+                    "queued"
+                  ]
+                },
+                {
+                  "name": "sw_calibration_access",
+                  "type": "string",
+                  "enum": [
+                    "not_accessible",
+                    "read_only",
+                    "read_write"
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "operation",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "client_server",
+                  "field": "operations"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "arguments",
+                  "type": "list[argument]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "argument"
+                    ]
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "argument",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "operation",
+                  "field": "arguments"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "direction",
+                  "type": "string",
+                  "required": true,
+                  "enum": [
+                    "in",
+                    "out",
+                    "inout"
+                  ]
+                },
+                {
+                  "name": "application_type",
+                  "type": "string",
+                  "reference": {
+                    "layer": "application_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "implementation_type",
+                  "type": "string",
+                  "reference": {
+                    "layer": "implementation_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "connectors",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "connector",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "from",
+                  "type": "connector_endpoint",
+                  "required": true,
+                  "element_kind": "connector_endpoint"
+                },
+                {
+                  "name": "to",
+                  "type": "connector_endpoint",
+                  "required": true,
+                  "element_kind": "connector_endpoint"
+                },
+                {
+                  "name": "composition",
+                  "type": "string",
+                  "reference": {
+                    "layer": "compositions",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "connector_endpoint",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "connector",
+                  "field": "from"
+                },
+                {
+                  "kind": "connector",
+                  "field": "to"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "swc",
+                  "type": "string",
+                  "reference": {
+                    "layer": "swc",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "composition",
+                  "type": "string",
+                  "reference": {
+                    "layer": "compositions",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "port",
+                  "type": "string",
+                  "required": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "application_types",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "enum",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "enum"
+                  ]
+                },
+                {
+                  "name": "literals",
+                  "type": "list[enum_literal]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "enum_literal"
+                    ]
+                  }
+                },
+                {
+                  "name": "compu_method_ref",
+                  "type": "string",
+                  "reference": {
+                    "layer": "compu_methods",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "record",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "record"
+                  ]
+                },
+                {
+                  "name": "fields",
+                  "type": "list[record_field]",
+                  "required": true,
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "record_field"
+                    ]
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "array",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "array"
+                  ]
+                },
+                {
+                  "name": "element_type",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "application_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "length",
+                  "type": "integer",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "application_type",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "application_type"
+                  ]
+                },
+                {
+                  "name": "unit",
+                  "type": "string"
+                },
+                {
+                  "name": "conversion",
+                  "type": "conversion",
+                  "element_kind": "conversion"
+                },
+                {
+                  "name": "range",
+                  "type": "range",
+                  "element_kind": "range"
+                },
+                {
+                  "name": "unit_ref",
+                  "type": "string",
+                  "reference": {
+                    "layer": "units",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "compu_method_ref",
+                  "type": "string",
+                  "reference": {
+                    "layer": "compu_methods",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "data_constr_ref",
+                  "type": "string",
+                  "reference": {
+                    "layer": "data_constraints",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "enum_literal",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "enum",
+                  "field": "literals"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "value",
+                  "type": "integer",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "record_field",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "record",
+                  "field": "fields"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "type",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "application_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "conversion",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "application_type",
+                  "field": "conversion"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "factor",
+                  "type": "number"
+                },
+                {
+                  "name": "offset",
+                  "type": "number"
+                },
+                {
+                  "name": "limits",
+                  "type": "conversion_limits",
+                  "element_kind": "conversion_limits"
+                }
+              ]
+            },
+            {
+              "kind": "range",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "application_type",
+                  "field": "range"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "min",
+                  "type": "number"
+                },
+                {
+                  "name": "max",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "kind": "conversion_limits",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "conversion",
+                  "field": "limits"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "lower",
+                  "type": "conversion_limit_bound",
+                  "element_kind": "conversion_limit_bound"
+                },
+                {
+                  "name": "upper",
+                  "type": "conversion_limit_bound",
+                  "element_kind": "conversion_limit_bound"
+                }
+              ]
+            },
+            {
+              "kind": "conversion_limit_bound",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "conversion_limits",
+                  "field": "lower"
+                },
+                {
+                  "kind": "conversion_limits",
+                  "field": "upper"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "value",
+                  "type": "number",
+                  "required": true
+                },
+                {
+                  "name": "interval",
+                  "type": "string",
+                  "enum": [
+                    "closed",
+                    "open"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "implementation_types",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "value_type",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "value_type"
+                  ]
+                },
+                {
+                  "name": "base",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "base_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "unit",
+                  "type": "string"
+                },
+                {
+                  "name": "value_min",
+                  "type": "number"
+                },
+                {
+                  "name": "value_max",
+                  "type": "number"
+                },
+                {
+                  "name": "compu_method_ref",
+                  "type": "string",
+                  "reference": {
+                    "layer": "compu_methods",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "reference_type",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "reference_type"
+                  ]
+                },
+                {
+                  "name": "base",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "implementation_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "compu_method_ref",
+                  "type": "string",
+                  "reference": {
+                    "layer": "compu_methods",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "external_type",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "external_type"
+                  ]
+                },
+                {
+                  "name": "external_ref",
+                  "type": "string"
+                },
+                {
+                  "name": "external_dest",
+                  "type": "string"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "implementation_record",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "implementation_record"
+                  ]
+                },
+                {
+                  "name": "elements",
+                  "type": "list[implementation_element]",
+                  "required": true,
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "implementation_element"
+                    ]
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "implementation_array",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "implementation_array"
+                  ]
+                },
+                {
+                  "name": "element_type",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "implementation_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "length",
+                  "type": "integer",
+                  "required": true
+                },
+                {
+                  "name": "element_name",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "pointer",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "pointer"
+                  ]
+                },
+                {
+                  "name": "target",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "implementation_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "implementation_element",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "implementation_record",
+                  "field": "elements"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "type",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "implementation_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "base_types",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "base_type",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "base_type"
+                  ]
+                },
+                {
+                  "name": "size",
+                  "type": "integer",
+                  "required": true,
+                  "unit": "bits"
+                },
+                {
+                  "name": "encoding",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "native_declaration",
+                  "type": "string"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "requirements",
+          "present": true,
+          "identity_field": "id",
+          "element_kinds": [
+            {
+              "kind": "requirement",
+              "fields": [
+                {
+                  "name": "id",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "title",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "req_type",
+                  "type": "string",
+                  "enum": [
+                    "req",
+                    "spec"
+                  ]
+                },
+                {
+                  "name": "version",
+                  "type": "integer",
+                  "required": true
+                },
+                {
+                  "name": "source",
+                  "type": "string",
+                  "required": true,
+                  "enum": [
+                    "external",
+                    "architecture"
+                  ]
+                },
+                {
+                  "name": "derived_from",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                },
+                {
+                  "name": "asil",
+                  "type": "string",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "QM(A)",
+                    "QM(B)",
+                    "QM(C)",
+                    "QM(D)",
+                    "A(B)",
+                    "A(C)",
+                    "A(D)",
+                    "B(B)",
+                    "B(C)",
+                    "B(D)",
+                    "C(C)",
+                    "C(D)",
+                    "D(D)"
+                  ]
+                },
+                {
+                  "name": "document",
+                  "type": "string"
+                },
+                {
+                  "name": "baseline",
+                  "type": "string"
+                },
+                {
+                  "name": "revision",
+                  "type": "string"
+                },
+                {
+                  "name": "stub",
+                  "type": "boolean"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "compositions",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "composition",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "title",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "root",
+                  "type": "boolean"
+                },
+                {
+                  "name": "ports",
+                  "type": "list[composition_port]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "composition_port"
+                    ]
+                  }
+                },
+                {
+                  "name": "members",
+                  "type": "list[composition_member]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "composition_member"
+                    ]
+                  }
+                },
+                {
+                  "name": "delegations",
+                  "type": "list[delegation]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "delegation"
+                    ]
+                  }
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "composition_port",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "composition",
+                  "field": "ports"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "direction",
+                  "type": "string",
+                  "required": true,
+                  "enum": [
+                    "provide",
+                    "require"
+                  ]
+                },
+                {
+                  "name": "interface",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "interfaces",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "composition_member",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "composition",
+                  "field": "members"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "type",
+                  "type": "string",
+                  "reference": {
+                    "layer": "swc",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "composition",
+                  "type": "string",
+                  "reference": {
+                    "layer": "compositions",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "delegation",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "composition",
+                  "field": "delegations"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "port",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "member",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "member_port",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "tasks",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "task",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "period",
+                  "type": "number",
+                  "required": true,
+                  "unit": "seconds"
+                },
+                {
+                  "name": "priority",
+                  "type": "integer",
+                  "required": true
+                },
+                {
+                  "name": "partition",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "hardware",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "wcet",
+                  "type": "string"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "runnables",
+                  "type": "list[task_runnable_ref]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "composite",
+                    "identity_fields": [
+                      "swc",
+                      "instance",
+                      "runnable"
+                    ],
+                    "member_kinds": [
+                      "task_runnable_ref"
+                    ]
+                  }
+                },
+                {
+                  "name": "coexistence",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "task_runnable_ref",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "task",
+                  "field": "runnables"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "swc",
+                  "type": "string",
+                  "immutable": true,
+                  "reference": {
+                    "layer": "swc",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "instance",
+                  "type": "string",
+                  "immutable": true
+                },
+                {
+                  "name": "runnable",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "sequences",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "sequence",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "task",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "tasks",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "title",
+                  "type": "string"
+                },
+                {
+                  "name": "steps",
+                  "type": "list[sequence_step]",
+                  "required": true,
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "composite",
+                    "identity_fields": [
+                      "swc",
+                      "instance",
+                      "runnable"
+                    ],
+                    "member_kinds": [
+                      "sequence_step"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "sequence_step",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "sequence",
+                  "field": "steps"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "swc",
+                  "type": "string",
+                  "immutable": true,
+                  "reference": {
+                    "layer": "swc",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "instance",
+                  "type": "string",
+                  "immutable": true
+                },
+                {
+                  "name": "runnable",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "note",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "hardware",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "processor",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "processor"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "core",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "core"
+                  ]
+                },
+                {
+                  "name": "threshold",
+                  "type": "number",
+                  "required": true,
+                  "unit": "fraction"
+                },
+                {
+                  "name": "enforcement",
+                  "type": "string",
+                  "enum": [
+                    "strict",
+                    "advisory"
+                  ]
+                },
+                {
+                  "name": "asil_capability",
+                  "type": "string",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ]
+                },
+                {
+                  "name": "hw_id",
+                  "type": "integer"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "memory",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "memory"
+                  ]
+                },
+                {
+                  "name": "type",
+                  "type": "string",
+                  "required": true,
+                  "enum": [
+                    "RAM",
+                    "ROM",
+                    "EEPROM",
+                    "Flash"
+                  ]
+                },
+                {
+                  "name": "size",
+                  "type": "integer",
+                  "required": true,
+                  "unit": "bytes"
+                },
+                {
+                  "name": "accessible",
+                  "type": "list[string]",
+                  "required": true,
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                },
+                {
+                  "name": "threshold",
+                  "type": "number",
+                  "required": true,
+                  "unit": "fraction"
+                },
+                {
+                  "name": "enforcement",
+                  "type": "string",
+                  "enum": [
+                    "strict",
+                    "advisory"
+                  ]
+                },
+                {
+                  "name": "asil_capability",
+                  "type": "string",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "partition",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "partition"
+                  ]
+                },
+                {
+                  "name": "core",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "hardware",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "asil",
+                  "type": "string",
+                  "enum": [
+                    "QM",
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "QM(A)",
+                    "QM(B)",
+                    "QM(C)",
+                    "QM(D)",
+                    "A(B)",
+                    "A(C)",
+                    "A(D)",
+                    "B(B)",
+                    "B(C)",
+                    "B(D)",
+                    "C(C)",
+                    "C(D)",
+                    "D(D)"
+                  ]
+                },
+                {
+                  "name": "trust",
+                  "type": "string",
+                  "enum": [
+                    "non_trusted",
+                    "trusted_with_protection",
+                    "trusted"
+                  ]
+                },
+                {
+                  "name": "coexistence",
+                  "type": "string"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "satisfies",
+                  "type": "list[string]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "whole_value"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "mapping_sets",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "mapping_set",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "maps",
+                  "type": "list[map]",
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "application",
+                    "member_kinds": [
+                      "map"
+                    ]
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "map",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "mapping_set",
+                  "field": "maps"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "application",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "reference": {
+                    "layer": "application_types",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "implementation",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "implementation_types",
+                    "identity_field": "name"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "units",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "unit",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "display_name",
+                  "type": "string"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "compu_methods",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "texttable",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "texttable"
+                  ]
+                },
+                {
+                  "name": "entries",
+                  "type": "list[table_entry]",
+                  "required": true,
+                  "collection": {
+                    "kind": "list",
+                    "member_identity": "field",
+                    "identity_field": "name",
+                    "member_kinds": [
+                      "table_entry"
+                    ]
+                  }
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "linear",
+              "discriminator_field": "kind",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "kind",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true,
+                  "enum": [
+                    "linear"
+                  ]
+                },
+                {
+                  "name": "unit",
+                  "type": "string",
+                  "required": true,
+                  "reference": {
+                    "layer": "units",
+                    "identity_field": "name"
+                  }
+                },
+                {
+                  "name": "factor",
+                  "type": "number"
+                },
+                {
+                  "name": "offset",
+                  "type": "number"
+                },
+                {
+                  "name": "limits",
+                  "type": "linear_limits",
+                  "element_kind": "linear_limits"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "table_entry",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "texttable",
+                  "field": "entries"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "value",
+                  "type": "integer",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                }
+              ]
+            },
+            {
+              "kind": "linear_limits",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "linear",
+                  "field": "limits"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "lower",
+                  "type": "linear_limit_bound",
+                  "element_kind": "linear_limit_bound"
+                },
+                {
+                  "name": "upper",
+                  "type": "linear_limit_bound",
+                  "element_kind": "linear_limit_bound"
+                }
+              ]
+            },
+            {
+              "kind": "linear_limit_bound",
+              "member_only": true,
+              "member_of": [
+                {
+                  "kind": "linear_limits",
+                  "field": "lower"
+                },
+                {
+                  "kind": "linear_limits",
+                  "field": "upper"
+                }
+              ],
+              "fields": [
+                {
+                  "name": "value",
+                  "type": "number",
+                  "required": true
+                },
+                {
+                  "name": "interval",
+                  "type": "string",
+                  "enum": [
+                    "closed",
+                    "open"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "layer": "data_constraints",
+          "present": true,
+          "identity_field": "name",
+          "element_kinds": [
+            {
+              "kind": "data_constr",
+              "fields": [
+                {
+                  "name": "name",
+                  "type": "string",
+                  "required": true,
+                  "immutable": true
+                },
+                {
+                  "name": "min",
+                  "type": "number"
+                },
+                {
+                  "name": "max",
+                  "type": "number"
+                },
+                {
+                  "name": "level",
+                  "type": "integer"
+                },
+                {
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "name": "package",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "notes": "Full fidelity, deliberately: there is no abridgement rule in the protocol — omitting a declared default abridges nothing, because the rule restores it — and the earlier abridged pair of project-wide vectors could not be used as an acceptance input by anyone. Every top-level element kind publishes exactly the fields `schema.py` declares for it (under serialization aliases — `Connector.from_` appears as `from`), plus the one registry-declared placement field `swc.group`; every nested member kind is published beside them with `member_only` and `member_of`; and every collection publishes `member_identity`, without which a client could not construct a member address at all now that there is no ordinal step. Since contract `2.0.0` no layer is optional, so `optional` is `false` on every one of them and this summary omits it on every one (absent means `false`); `present` is still a probe of this project, and its `false` half is `discover-layer-hardware-absent.json` — an ordinary layer-narrowed discovery rather than a second copy of this document."
+  }
+}

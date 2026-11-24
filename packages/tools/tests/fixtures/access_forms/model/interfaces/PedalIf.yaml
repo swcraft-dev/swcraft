@@ -1,0 +1,6 @@
+name: PedalIf
+kind: sender_receiver
+description: The brake pedal position.
+data_elements:
+- name: position
+  implementation_type: uint16

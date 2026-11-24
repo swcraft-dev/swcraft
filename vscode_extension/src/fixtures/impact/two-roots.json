@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 3,
+  "name": "IExample",
+  "direction": "dependents",
+  "depth": null,
+  "matched": {
+    "interface": [
+      {
+        "layer": "swc",
+        "name": "ExampleConsumerSWC",
+        "detail": "via port rIn",
+        "details": [
+          {
+            "kind": "port",
+            "value": "rIn"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "name": "ExampleSWC",
+        "detail": "via port pOut",
+        "details": [
+          {
+            "kind": "port",
+            "value": "pOut"
+          }
+        ]
+      },
+      {
+        "layer": "connector",
+        "name": "Example_to_Consumer",
+        "detail": "via ports ExampleSWC.pOut, ExampleConsumerSWC.rIn",
+        "details": [
+          {
+            "kind": "endpoint",
+            "value": "ExampleSWC.pOut"
+          },
+          {
+            "kind": "endpoint",
+            "value": "ExampleConsumerSWC.rIn"
+          }
+        ]
+      },
+      {
+        "layer": "composition",
+        "name": "Root",
+        "detail": "members ExampleSWC, ExampleConsumerSWC",
+        "details": [
+          {
+            "kind": "member",
+            "value": "ExampleSWC"
+          },
+          {
+            "kind": "member",
+            "value": "ExampleConsumerSWC"
+          }
+        ]
+      },
+      {
+        "layer": "task",
+        "name": "Task_10ms",
+        "detail": "runnable ExampleConsumerRun",
+        "details": [
+          {
+            "kind": "runnable",
+            "value": "ExampleConsumerRun"
+          }
+        ]
+      },
+      {
+        "layer": "sequence",
+        "name": "task10ms_consumer_cycle",
+        "detail": "step: ExampleConsumerRun",
+        "details": [
+          {
+            "kind": "step",
+            "value": "ExampleConsumerRun"
+          }
+        ]
+      }
+    ],
+    "swc": [
+      {
+        "layer": "composition",
+        "name": "Root",
+        "detail": "members ExampleSWC, ExampleConsumerSWC",
+        "details": [
+          {
+            "kind": "member",
+            "value": "ExampleSWC"
+          },
+          {
+            "kind": "member",
+            "value": "ExampleConsumerSWC"
+          }
+        ]
+      }
+    ]
+  }
+}

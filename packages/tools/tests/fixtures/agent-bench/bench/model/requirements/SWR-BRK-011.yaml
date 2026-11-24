@@ -1,0 +1,9 @@
+id: SWR-BRK-011
+title: Pedal feel
+description: The pedal feel shall remain constant over the full temperature range.
+req_type: req
+version: 1
+source: external
+document: SRS Brake Control
+baseline: '1.0'
+revision: '1'

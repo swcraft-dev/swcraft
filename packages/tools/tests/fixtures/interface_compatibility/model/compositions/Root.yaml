@@ -1,0 +1,16 @@
+name: Root
+title: Root composition
+root: true
+description: >-
+  The one composition. Both connectors name none of their own and therefore
+  belong here, and every declared component is placed here exactly once.
+
+members:
+  - name: Sensor
+    type: Sensor
+  - name: Display
+    type: Display
+  - name: Actuator
+    type: Actuator
+  - name: Controller
+    type: Controller

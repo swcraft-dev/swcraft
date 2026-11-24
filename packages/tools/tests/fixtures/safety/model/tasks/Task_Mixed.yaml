@@ -1,0 +1,13 @@
+name: Task_Mixed
+period: 0.01
+priority: 10
+partition: P_Mixed
+wcet: 200us
+description: Three distinct effective levels — D declared, B declared, QM derived — and no coexistence argument.
+runnables:
+- swc: TorqueLimiter
+  runnable: LimitTorque
+- swc: PlainWorker
+  runnable: Work
+- swc: DiagnosticsAgent
+  runnable: Diagnose

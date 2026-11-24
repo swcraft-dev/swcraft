@@ -1,0 +1,80 @@
+{
+  "name": "update-memory-accessible-and-threshold",
+  "description": "An approved change set over one hardware element: a core admitted to the list of cores a memory may be used from, and the memory's own budget threshold raised. The two edits are one unit because they are the two halves of the same design act — a second core is admitted to `RAM0`, and the budget is raised to make room for what it will put there — and because raising a threshold is a SAFETY act, which the host answers for the whole change set rather than per operation.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with a second core, `CORE1`, seeded beside `CORE0`. `RAM0` is accessible from `CORE0` alone and budgets 80% of its 256 KiB; both components budget against it.",
+    "existing_elements": [
+      { "layer": "hardware", "element": "RAM0" },
+      { "layer": "hardware", "element": "CORE0" },
+      { "layer": "hardware", "element": "CORE1" }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "hardware",
+            "element": "RAM0",
+            "path": [{ "field": "accessible" }, { "member": "CORE1" }]
+          }
+        },
+        {
+          "operation": "update",
+          "address": { "layer": "hardware", "element": "RAM0", "path": [{ "field": "threshold" }] }
+        }
+      ],
+      "notes": "The scope covers both addresses exactly, and with the right verbs: admitting a core is a `create` at that member's own address, not an `update` of the list. It does NOT authorize the safety question — BOTH of these edits are safety-relevant, `threshold` as one of the three SCALAR fields whose weakening direction the server classifies from the staged before/after values and the admission as the one LIST-SHAPED field, whose direction is in the operation instead. The host answers the safety question once for the whole change set, separately from the scope, which is why this vector's status is `committed` rather than `staged`."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Admit CORE1 to RAM0 and raise the memory budget to 90%.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "hardware",
+          "element": "RAM0",
+          "path": [{ "field": "accessible" }, { "member": "CORE1" }]
+        },
+        "value": "CORE1"
+      },
+      {
+        "operation": "update",
+        "address": { "layer": "hardware", "element": "RAM0", "path": [{ "field": "threshold" }] },
+        "value": 0.9
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:5c02f71ad3b8e964",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "hardware",
+            "element": "RAM0",
+            "path": [{ "field": "accessible" }, { "member": "CORE1" }]
+          },
+          "after": "CORE1",
+          "summary": "hardware/RAM0: + accessible[CORE1]"
+        },
+        {
+          "operation": "update",
+          "address": { "layer": "hardware", "element": "RAM0", "path": [{ "field": "threshold" }] },
+          "before": 0.8,
+          "after": 0.9,
+          "summary": "hardware/RAM0: ~ threshold 0.8 -> 0.9"
+        }
+      ],
+      "audit_ref": "cs-20260826T171104Z-9b3e07"
+    },
+    "notes": "`accessible` is a `whole_value` list, so a member is addressed by its own value — `{member: \"CORE1\"}` — and admitting a core is a `create` at that address. An `update` at `{field: accessible}` would be the REORDERING primitive and is refused when the replacement changes which members are there, which is what keeps the identity, multiset and same-identity checks on the member address where they can be made. Every name in the list must be a declared `core`: `hardware.accessible-undeclared-core` and `hardware.accessible-not-a-core` are the two `check-model` rules pass D runs over the staged result, which is why the fixture declares `CORE1`. The list also constrains something else: `hardware.unreachable-memory` refuses a task whose SWC budgets a memory the task's core is not declared to reach, so admitting a core makes a check that refused stop refusing. Widening is therefore a weakening — `widen_access`, the fifth direction — and this change set carries TWO, rendered in the classifier's fixed field order as the threshold raise then the admission. Withdrawing a core is the other direction and is not a weakening: it can only make that rule refuse more. What none of this reaches is the linker script — the rule checks a declaration, not a placement."
+  }
+}

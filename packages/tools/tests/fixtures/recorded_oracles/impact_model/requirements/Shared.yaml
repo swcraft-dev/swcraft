@@ -1,0 +1,5 @@
+id: Shared
+title: The name two layers carry
+description: A requirement whose id is also an SWC name, so `impact` reports two groups. No element satisfies it and nothing derives from it, so it is a graph leaf.
+version: 1
+source: architecture

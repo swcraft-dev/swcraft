@@ -1,0 +1,9 @@
+id: SWR-THP-001
+title: Thermal protection evaluation
+description: Thermal protection shall be evaluated every 50 ms from the brake temperature.
+req_type: req
+version: 1
+source: external
+document: SRS Thermal Protection
+baseline: '1.0'
+revision: '1'

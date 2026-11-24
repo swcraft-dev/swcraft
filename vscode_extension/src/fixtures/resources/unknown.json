@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "findings": {
+    "errors": 2,
+    "informational": 0
+  },
+  "topology": [],
+  "fit": null,
+  "cores": [
+    {
+      "name": "CORE0",
+      "kind": "core",
+      "enforcement": "strict",
+      "utilization": "12.00%",
+      "limit": "70.00%",
+      "headroom": "58.00%",
+      "physical_headroom": "88.00%",
+      "status": "unknown (not every consumer declared a budget)",
+      "consumers": [
+        {
+          "name": "Task_10ms",
+          "layer": "tasks",
+          "amount": "12.00%",
+          "declared": true,
+          "detail": "wcet 1200us / period 0.01s"
+        },
+        {
+          "name": "Task_20ms",
+          "layer": "tasks",
+          "amount": "not declared",
+          "declared": false,
+          "detail": "period 0.02s, no wcet declared"
+        }
+      ],
+      "findings": [
+        {
+          "severity": "error",
+          "code": "missing_budget",
+          "message": "Task 'Task_20ms' on core 'CORE0' declares no 'wcet' budget: set its `wcet` to a positive whole number with one of ns, us, ms, s, e.g. `wcet: 500us`.",
+          "subjects": [
+            {
+              "layer": "tasks",
+              "element": "Task_20ms",
+              "path": [
+                {
+                  "field": "wcet"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "memories": [
+    {
+      "name": "RAM",
+      "kind": "memory",
+      "enforcement": "strict",
+      "size": 8192,
+      "used": "2048",
+      "limit": "6553",
+      "headroom": "4505",
+      "physical_headroom": "6144",
+      "status": "unknown (not every consumer declared a budget)",
+      "consumers": [
+        {
+          "name": "Alpha",
+          "layer": "swc",
+          "amount": "2048 bytes",
+          "declared": true,
+          "detail": ""
+        },
+        {
+          "name": "Beta",
+          "layer": "swc",
+          "amount": "not declared",
+          "declared": false,
+          "detail": ""
+        },
+        {
+          "name": "Delta",
+          "layer": "swc",
+          "amount": "0 bytes",
+          "declared": true,
+          "detail": ""
+        },
+        {
+          "name": "Epsilon",
+          "layer": "swc",
+          "amount": "0 bytes",
+          "declared": true,
+          "detail": ""
+        },
+        {
+          "name": "Gamma",
+          "layer": "swc",
+          "amount": "0 bytes",
+          "declared": true,
+          "detail": ""
+        }
+      ],
+      "findings": [
+        {
+          "severity": "error",
+          "code": "missing_budget",
+          "message": "SWC 'Beta' declares no budget for memory 'RAM': add `RAM` to its `memory` map with the bytes it uses, a whole number of at least 0, e.g. `RAM: 1024`.",
+          "subjects": [
+            {
+              "layer": "swc",
+              "element": "Beta",
+              "path": [
+                {
+                  "field": "memory"
+                },
+                {
+                  "key": "RAM"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

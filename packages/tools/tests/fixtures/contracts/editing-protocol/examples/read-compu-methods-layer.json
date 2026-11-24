@@ -1,0 +1,67 @@
+{
+  "name": "read-compu-methods-layer",
+  "description": "A layer-granularity `read` of `compu_methods`, stored in `data_types/compu_methods/`. The layer holds two kinds, discriminated by `kind`: the linear method `ProbeTorqueScale`, which names its unit, and the texttable `ProbeGearTable`, whose entries the enumeration and the value type of the model share. Each is published with its own kind's fields.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model plus contract `8.0.0`'s data description elements: the unit `ProbeNewtonMetre` (`data_types/units/`), the linear compu method `ProbeTorqueScale` naming it and the texttable `ProbeGearTable` with two entries (`data_types/compu_methods/`), and the data constraint `ProbeTorqueLimits` (`data_types/constraints/`); the application type `ProbeTorque` names the unit, the method and the constraint, and the enumeration `ProbeGear` and the value type `ProbeGearRaw` (over the base's `uint8_base`) share the table.",
+    "existing_elements": [
+      {
+        "layer": "units",
+        "element": "ProbeNewtonMetre"
+      },
+      {
+        "layer": "compu_methods",
+        "element": "ProbeTorqueScale"
+      },
+      {
+        "layer": "compu_methods",
+        "element": "ProbeGearTable"
+      },
+      {
+        "layer": "data_constraints",
+        "element": "ProbeTorqueLimits"
+      },
+      {
+        "layer": "application_types",
+        "element": "ProbeTorque"
+      },
+      {
+        "layer": "application_types",
+        "element": "ProbeGear"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "ProbeGearRaw"
+      }
+    ],
+    "notes": "No `form` is stated, so the layer answers `summary`; the texttable's `entries` collection is answered as a count, as every collection is in a summary."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "compu_methods"
+    }
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "compu_methods"
+      },
+      "form": "summary",
+      "value": [
+        {
+          "name": "ProbeGearTable",
+          "kind": "texttable",
+          "entries": 2
+        },
+        {
+          "name": "ProbeTorqueScale",
+          "kind": "linear",
+          "unit": "ProbeNewtonMetre"
+        }
+      ]
+    },
+    "notes": "Which types name a method is not part of its answer: an application type names a linear method, an enumeration, a value type or a reference type a texttable, and `check-model` judges the role (`rule:data-type.compu-method-wrong-category`)."
+  }
+}

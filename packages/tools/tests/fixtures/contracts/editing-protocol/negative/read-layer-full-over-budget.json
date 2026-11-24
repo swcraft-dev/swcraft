@@ -1,0 +1,27 @@
+{
+  "name": "read-layer-full-over-budget",
+  "description": "A `read` of a whole layer in `full` form against a model whose components are wide enough that the response would exceed the server's response budget. The request is well-formed and the model is sound; what cannot be done is send the answer, so it is REFUSED with `over-budget` — the eleventh code — carrying `measured` and the narrower requests that would be answered instead. Nothing is truncated: a cut response is one neither side knows the shape of. The chain has one further step below the narrower forms at a layer, a collection or a member slice: the FIRST PAGE of the set, at the size `discover` publishes as `reads.hint_page_size`. It is offered wherever the set is longer than one page, which this layer is not — three components ARE one page, so a page of it is the layer itself and a hint that replays the request is not a step.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model with one further component, `WideSWC`, carrying 800 ports on the base's own `IExample` interface. The layer's `full` publication is over the budget; its `summary` and its `index` are far under it.",
+    "existing_elements": [
+      { "layer": "swc", "element": "ExampleSWC" },
+      { "layer": "swc", "element": "WideSWC" },
+      { "layer": "interfaces", "element": "IExample" }
+    ],
+    "baseline_state": "current",
+    "notes": "The width is the whole point and it is in the SEED rather than in this file: a vector that inlined half a megabyte of ports would be unreadable and would say nothing the seed's one rule does not. The wide component is otherwise ordinary — a declared interface on every port, a RAM0 budget, an incoming requirement link — so the baseline is valid and the ONLY thing wrong with the exchange is the size of the answer it asks for."
+  },
+  "input": {
+    "operation": "read",
+    "address": { "layer": "swc" },
+    "form": "full"
+  },
+  "expected": {
+    "expected_error": "over-budget",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [{ "layer": "swc" }],
+    "notes": "`invalid` because the request AS POSED cannot be answered: the model is not stale, the caller is not unauthorized and nothing is partial — the other three failure classes each say something untrue here. `semantic` because the request conforms to `$defs/readRequest` exactly; only the server, having published the value, can know how big it is. The refusal carries `hints` — `{form: summary}` then `{form: index}`, complete replayable requests in the chain's narrowing order — and `measured`, with the size, the budget and the element count. Exactly those two, and no paged third: the layer is three elements, and the page a hint could offer is the set that has just been refused. A layer longer than one page ends its chain with `{form: <the form that was served>, limit: <reads.hint_page_size>}` instead, which is what turns a wide layer from a dead end into a walk. Both keys are optional in `$defs/errorResult` and no other code sets either, which is what keeps every other negative vector in this directory byte-identical. Sending the request WITHOUT `form` is the accepted case: a layer address answers `summary` by default, so nothing an agent does by default reaches this refusal."
+  }
+}

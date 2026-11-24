@@ -1,0 +1,28 @@
+{
+  "id": "20-links-needing-confirmation",
+  "task": 20,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which requirement links need confirmation because the requirement has a newer version?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "mentions_all": [
+        "Rq01abcdefghijk",
+        "Swc001abcdefghij"
+      ],
+      "mentions_none": [
+        "If0001abcdefghij",
+        "Ts01abcdefgh"
+      ]
+    }
+  },
+  "reference": {
+    "needs_confirmation": [
+      "swc Swc001abcdefghij: Rq01abcdefghijk@1, the requirement at version 2",
+      "swc Swc001abcdefghij port P1: Rq01abcdefghijk@1, the requirement at version 2"
+    ],
+    "computed_by": "swcraft check-model --format json, the findings trace.link-needs-confirmation"
+  }
+}

@@ -1,0 +1,19 @@
+name: BrakeController
+type: application
+ports:
+- name: pBrakeRequest
+  direction: provide
+  interface: IBrakeRequest
+- name: rPermittedBrakeAction
+  direction: require
+  interface: IPermittedBrakeAction
+runnables:
+- name: ProcessBrakeRequest
+  events:
+  - type: timing
+    period: 0.05
+memory:
+  RAM: 3072
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_SHOWCASE_BASELINE_001@1

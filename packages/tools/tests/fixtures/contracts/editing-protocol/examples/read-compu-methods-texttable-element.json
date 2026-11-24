@@ -1,0 +1,75 @@
+{
+  "name": "read-compu-methods-texttable-element",
+  "description": "An element-granularity `read` of the texttable `ProbeGearTable`: its entries in full, each the enum literal's shape — a `name` written as the scale's `SHORT-LABEL` and `VT`, a `value`, a `description`. The enumeration `ProbeGear` states no `literals` of its own: these entries are its values, and the value type `ProbeGearRaw` names the same table.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model plus contract `8.0.0`'s data description elements: the unit `ProbeNewtonMetre` (`data_types/units/`), the linear compu method `ProbeTorqueScale` naming it and the texttable `ProbeGearTable` with two entries (`data_types/compu_methods/`), and the data constraint `ProbeTorqueLimits` (`data_types/constraints/`); the application type `ProbeTorque` names the unit, the method and the constraint, and the enumeration `ProbeGear` and the value type `ProbeGearRaw` (over the base's `uint8_base`) share the table.",
+    "existing_elements": [
+      {
+        "layer": "units",
+        "element": "ProbeNewtonMetre"
+      },
+      {
+        "layer": "compu_methods",
+        "element": "ProbeTorqueScale"
+      },
+      {
+        "layer": "compu_methods",
+        "element": "ProbeGearTable"
+      },
+      {
+        "layer": "data_constraints",
+        "element": "ProbeTorqueLimits"
+      },
+      {
+        "layer": "application_types",
+        "element": "ProbeTorque"
+      },
+      {
+        "layer": "application_types",
+        "element": "ProbeGear"
+      },
+      {
+        "layer": "implementation_types",
+        "element": "ProbeGearRaw"
+      }
+    ],
+    "notes": "No `form` is stated; the echoed `form` is the one an element address defaults to."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "compu_methods",
+      "element": "ProbeGearTable"
+    }
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "compu_methods",
+        "element": "ProbeGearTable"
+      },
+      "form": "full",
+      "value": {
+        "name": "ProbeGearTable",
+        "kind": "texttable",
+        "entries": [
+          {
+            "name": "ProbePark",
+            "value": 0,
+            "description": "Probe gear parked"
+          },
+          {
+            "name": "ProbeDrive",
+            "value": 1,
+            "description": "Probe gear driving"
+          }
+        ],
+        "description": "Probe gear values",
+        "package": null
+      }
+    },
+    "notes": "An entry is a member of the `entries` collection identified by its `name`; two entries of one table that share a name or a value are `rule:compu-method.table-entry-repeated`'s finding."
+  }
+}

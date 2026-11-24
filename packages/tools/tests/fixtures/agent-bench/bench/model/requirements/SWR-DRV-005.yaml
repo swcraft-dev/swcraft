@@ -1,0 +1,9 @@
+id: SWR-DRV-005
+title: Warning lamp
+description: A brake fade warning lamp shall be lit while thermal protection is active.
+req_type: req
+version: 1
+source: external
+document: SRS Driver Information
+baseline: '1.0'
+revision: '1'

@@ -1,0 +1,9 @@
+name: DiagMapping
+maps: []
+description: >-
+  The carrier of the relation `swc.swc.data_type_mappings` -> Shared, and
+  nothing else. It declares no pair ON PURPOSE: a set the Speed walk reaches
+  would put every component that names it into that walk, and the two
+  hand-written order pins out of `Speed` in `test_query.py` would have to be
+  re-derived from the code they grade. `SpeedMapping` beside it carries the
+  pairs, so both of the layer's reference fields are exercised too.

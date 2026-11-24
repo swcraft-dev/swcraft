@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Composition fixture</title>
+<style>
+body { margin: 0 auto; max-width: 960px; padding: 16px; font: 14px Helvetica, Arial, sans-serif; }
+a { color: #1a5fb4; }
+li { margin: 2px 0; }
+.file { color: #555555; font-size: 12px; }
+pre { background: #f6f6f6; padding: 8px; overflow-x: auto; }
+</style>
+</head>
+<body>
+<h1>Composition fixture</h1>
+<section>
+<h2>Compositions</h2>
+<ul>
+<li><a href="ibd-Root.html">Root — internal block diagram</a> <span class="file">(<a href="ibd-Root.svg">SVG</a>)</span></li>
+<li><a href="overview-Root.html">Root — overview</a> <span class="file">(<a href="overview-Root.svg">SVG</a>)</span></li>
+<li><a href="ibd-Sink.html">Sink — internal block diagram</a> <span class="file">(<a href="ibd-Sink.svg">SVG</a>)</span></li>
+<li><a href="overview-Sink.html">Sink — overview</a> <span class="file">(<a href="overview-Sink.svg">SVG</a>)</span></li>
+<li><a href="ibd-Sub.html">Sub — internal block diagram</a> <span class="file">(<a href="ibd-Sub.svg">SVG</a>)</span></li>
+<li><a href="overview-Sub.html">Sub — overview</a> <span class="file">(<a href="overview-Sub.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section>
+<h2>Nesting</h2>
+<ul>
+<li><a href="nesting.html">Root — nesting</a> <span class="file">(<a href="nesting.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section id="report">
+<h2>Report</h2>
+<pre>Diagrams report: Composition fixture
+
+Views: 7
+  ibd-Root       688.52 x 205 px  4633 bytes
+  overview-Root  650.34 x 175 px  3136 bytes
+  ibd-Sink       525.74 x 205 px  3175 bytes
+  overview-Sink  420.84 x 175 px  1740 bytes
+  ibd-Sub        835.12 x 318 px  8710 bytes
+  overview-Sub   643.74 x 245 px  4127 bytes
+  nesting        762 x 152 px  3047 bytes
+
+Not drawn: none
+
+Drawn as a loop: none
+</pre>
+</section>
+<p><a href="report.txt">report.txt</a></p>
+<script type="application/json" id="swcraft-elements">{"compositions/Root.yaml": {"members": {}, "views": ["ibd-Root", "overview-Root", "nesting"]}, "compositions/Sink.yaml": {"members": {"delegations/Sink_rSignalIn_Consumer": ["ibd-Sink"], "ports/rSignalIn": ["ibd-Root", "ibd-Sink"]}, "views": ["ibd-Root", "overview-Root", "ibd-Sink", "overview-Sink", "nesting"]}, "compositions/Sub.yaml": {"members": {"delegations/Sub_pSignalOut_Alpha": ["ibd-Sub"], "delegations/Sub_rTrigger_Gamma": ["ibd-Sub"], "ports/pSignalOut": ["ibd-Root", "ibd-Sub"], "ports/rTrigger": ["ibd-Root", "ibd-Sub"]}, "views": ["ibd-Root", "overview-Root", "ibd-Sub", "overview-Sub", "nesting"]}, "connectors/root_link.yaml": {"members": {}, "views": ["ibd-Root"]}, "connectors/sub_link.yaml": {"members": {}, "views": ["ibd-Sub"]}, "swc/core/Beta.yaml": {"members": {"ports/pInner": ["ibd-Sub"], "ports/pOut": ["ibd-Sub"]}, "views": ["ibd-Sub", "overview-Sub", "nesting"]}, "swc/core/Consumer.yaml": {"members": {"ports/rIn": ["ibd-Sink"]}, "views": ["ibd-Sink", "overview-Sink", "nesting"]}, "swc/core/Gamma.yaml": {"members": {"ports/rInner": ["ibd-Sub"], "ports/rTrig": ["ibd-Sub"]}, "views": ["ibd-Sub", "overview-Sub", "nesting"]}, "swc/external/ExternalStub.yaml": {"members": {}, "views": ["ibd-Sub", "overview-Sub", "nesting"]}}</script>
+</body>
+</html>

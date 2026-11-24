@@ -1,0 +1,5 @@
+name: Ratio_T
+kind: value_type
+base: float32_base
+value_min: 0.0
+value_max: 100.0

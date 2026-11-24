@@ -1,0 +1,9 @@
+name: RAM
+kind: memory
+type: RAM
+size: 32768
+accessible:
+- Core0
+threshold: 0.75
+enforcement: strict
+description: Illustrative showcase memory budget.

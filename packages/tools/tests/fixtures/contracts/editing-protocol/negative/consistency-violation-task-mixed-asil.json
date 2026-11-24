@@ -1,0 +1,95 @@
+{
+  "name": "consistency-violation-task-mixed-asil",
+  "description": "A task whose runnables belong to components of two or more distinct effective levels, with no coexistence argument. It costs no field on the task beyond its own exemption, because the levels are computed from what the task already names — and `QM` beside a rated component IS mixed, since QM is not an ASIL and a component carrying it is not at the bottom of a scale but off it.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model with `Task_10ms` running a runnable of each component. Nothing declares a level, so both derive QM and the baseline is homogeneous and valid. The change set declares `ExampleSWC` at ASIL D, which makes the task carry two distinct levels with no argument.",
+    "existing_elements": [
+      {
+        "layer": "tasks",
+        "element": "Task_10ms"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [
+              {
+                "field": "asil"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly. Note what the change set does NOT touch: no requirement allocates a level here, so declaring `ExampleSWC` at D is above nothing and `safety.component-below-requirements` finds nothing — the refusal is the TASK's, and the addresses name the task's own argument beside each component's level rather than the requirement layer, which allocates nothing to name."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:1nyRHHqGVn7AlWQB-Wq2-g",
+    "intent": "Build ExampleSWC to ASIL D.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [
+            {
+              "field": "asil"
+            }
+          ]
+        },
+        "value": "D"
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "tasks",
+        "element": "Task_10ms",
+        "path": [
+          {
+            "field": "coexistence"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "asil"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "asil"
+          }
+        ]
+      }
+    ],
+    "notes": "The task's own `coexistence` field comes back beside each component's level, and `examples/update-task-coexistence.json` is the argument accepted. `QM` beside a rated component IS mixed: ISO 26262-1 says QM is not an ASIL, so a component carrying it is not at the bottom of a scale but off it, and scheduling it with an ASIL-D component is exactly the coexistence question. The baseline is valid and the change set creates the finding, which is what makes this a vector about a result rather than a starting point."
+  }
+}

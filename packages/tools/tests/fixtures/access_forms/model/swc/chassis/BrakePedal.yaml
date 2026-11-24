@@ -1,0 +1,16 @@
+name: BrakePedal
+type: application
+description: The brake pedal; it sends its position explicitly.
+ports:
+- name: pPedal
+  direction: provide
+  interface: PedalIf
+runnables:
+- name: SamplePedal
+  events:
+  - type: timing
+    period: 0.01
+  writes:
+  - port: pPedal
+    element: position
+handle_termination_and_restart: no_support

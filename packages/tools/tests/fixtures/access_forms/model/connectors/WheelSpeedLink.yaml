@@ -1,0 +1,7 @@
+name: WheelSpeedLink
+from:
+  swc: WheelSensor
+  port: pWheelSpeed
+to:
+  swc: BrakeController
+  port: rWheelSpeed

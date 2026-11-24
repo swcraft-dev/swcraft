@@ -1,0 +1,555 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swcraft.dev/tests/functional/scenario.schema.json",
+  "title": "SWCraft functional scenario",
+  "description": "One functional scenario of packages/mcp/tests/functional/: the specimen it runs on, the questions put to it and what their answers must satisfy. A test-tree schema, not a contract. Not carried here, and the loader's job (harness.load_scenario): that every threshold, target, step and variant an entry names exists (a minus_variant's step in that variant too), that the specimen is a key of the pin file (packages/tools/tests/fixtures/specimens/specimens.json) and every path of its pinned because is a leaf of its committed passport, that step ids are unique, that a scenario on the shared project has no step writing into it (an export fault, an MCP tool outside the harness's READ_ONLY_TOOLS, a recipe whose request names such a tool, a swcraft command other than check-model and the read-only six, or an option of one outside its reviewed flags -- a classification, not behaviour: a read-only tool, command or flag that starts writing, a step's positional values (none of those commands' positionals names a file it writes), a recipe in neither the profile nor a How-to page and a write outside the project directory are not reached), and the strict reading of the file (no repeated key, no NaN or Infinity).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "function", "tier", "specimen", "class", "steps", "expectations", "thresholds"],
+  "allOf": [
+    {
+      "if": {"properties": {"tier": {"const": "large-bench"}}},
+      "then": {"properties": {"specimen": {"const": "large-bench"}}},
+      "else": {"properties": {"specimen": {"not": {"const": "large-bench"}}}}
+    }
+  ],
+  "properties": {
+    "id": {"$ref": "#/$defs/name", "description": "The scenario's name: its file's stem."},
+    "function": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The catalogue row the scenario covers, as the row's Function cell spells it."
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["release", "row"],
+      "description": "The findings row the scenario was written for: the release whose findings list holds it, and the row.",
+      "properties": {
+        "release": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "row": {"type": "integer", "minimum": 1}
+      }
+    },
+    "tier": {"enum": ["generated-small", "large-bench"], "description": "The data tier: generated-small, a small specimen generated from its committed passport, any but large-bench; large-bench, the large-bench specimen the agent task benchmark's large set reads, which it must name, and read only (the loader refuses \"project\": \"fresh\" on it). The tier gives the case its marks (test_scenarios.TIER_MARKS): a large-bench case carries large_bench beside functional. The real-export tier is not a scenario tier."},
+    "class": {"enum": ["normal", "boundary-at-scale", "refusal"]},
+    "project": {
+      "enum": ["shared", "fresh"],
+      "default": "shared",
+      "description": "shared: the session's copy of the specimen (on large-bench, the session's one large bench), for scenarios that only read (the loader refuses on it an export fault, an MCP tool that writes -- change_set, build, validate, the two exports -- or a recipe whose request names one, any swcraft command but check-model and the read-only six, and an option of one outside its reviewed flags; it judges a classification, not behaviour, so a read-only tool or command that starts writing is not caught); fresh: a project of the variant's own, for steps that write into the project (generate arxml moves the previous export aside); generated-small only."
+    },
+    "guide": {
+      "enum": ["installed", "absent"],
+      "default": "absent",
+      "description": "The user guide the guide tool reads, which is the installation's and never the project's: installed, the real guide's corpus built in-process beside the release notes the build selects, which the producer leaves out (guide_support.real_corpus), installed as the package payload; absent (the default), no installed guide, so the guide tool refuses as guide-missing. Not reached: the built site's own corpus file and version.md, the one page the in-process corpus lacks."
+    },
+    "specimen": {
+      "$ref": "#/$defs/name",
+      "description": "The specimen the scenario runs on: a key of the pin file (packages/tools/tests/fixtures/specimens/specimens.json), whose committed passport (<name>.passport.json) is the model's shape and whose because says why a leaf is what it is when the passport cannot. Every tier names one: large-bench names large-bench, generated-small any other."
+    },
+    "target": {
+      "type": "object",
+      "description": "Named questions to the passport's locator; a step or an expectation names the answer by its name. threshold_gap_bytes and over_size_bytes answer a whole number, which a step's argument takes as it is and values_equal refuses.",
+      "propertyNames": {"$ref": "#/$defs/name"},
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "enum": [
+              "largest_component",
+              "largest_components",
+              "heaviest_interface",
+              "heaviest_sender_receiver_interfaces",
+              "most_unconnected_component",
+              "most_read_sender_receiver_interface",
+              "most_read_data_element",
+              "commonest_level",
+              "threshold_gap_memory",
+              "threshold_gap_bytes",
+              "over_size_bytes",
+              "declared_resources"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["question", "first"],
+            "description": "The first answers of a question that answers several: a question it answers fewer of fails the run.",
+            "properties": {
+              "question": {"enum": ["largest_components", "heaviest_sender_receiver_interfaces"]},
+              "first": {"type": "integer", "minimum": 1}
+            }
+          }
+        ]
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "description": "Named numbers, each with its source cited.",
+      "propertyNames": {"$ref": "#/$defs/name"},
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["value", "because"],
+        "properties": {
+          "value": {"type": "integer", "minimum": 0},
+          "because": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "steps": {"$ref": "#/$defs/steps"},
+    "expectations": {"$ref": "#/$defs/expectations"},
+    "variants": {
+      "type": "object",
+      "minProperties": 1,
+      "description": "Named overrides of steps and expectations: each variant is a test of its own, and the top-level steps and expectations run under a variant's name only; an empty variant is them, unchanged.",
+      "propertyNames": {"$ref": "#/$defs/name"},
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "steps": {"$ref": "#/$defs/steps"},
+          "expectations": {"$ref": "#/$defs/expectations"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "name": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*$"},
+    "thresholdName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "A key of thresholds: a number in an expectation is always named, never a literal."
+    },
+    "path": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_*]+(\\.[A-Za-z0-9_*]+)*$",
+      "description": "A dotted path into a step's answer; '*' walks every item of a list or every value of a mapping; a number takes a list's item at that index."
+    },
+    "targetRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["$target"],
+      "properties": {"$target": {"$ref": "#/$defs/name"}}
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {"$ref": "#/$defs/mcpStep"},
+          {"$ref": "#/$defs/recipeStep"},
+          {"$ref": "#/$defs/cliStep"},
+          {"$ref": "#/$defs/exportFaultsStep"}
+        ]
+      }
+    },
+    "projectFile": {
+      "type": "string",
+      "pattern": "^(?!.*\\.\\.)[A-Za-z0-9_-][A-Za-z0-9_./-]*$",
+      "description": "A file in the project's directory, by its project-relative POSIX path (no '..')."
+    },
+    "exportFaultsStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "export_faults"],
+      "description": "A copy of the project's export with a second, conflicting declaration of each of the target's sender-receiver interfaces (export_faults.py): an export defect, never a model shape, so it is a step and not part of the specimen.",
+      "properties": {
+        "id": {"$ref": "#/$defs/name"},
+        "export_faults": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["interfaces", "kind", "source", "output"],
+          "properties": {
+            "interfaces": {"$ref": "#/$defs/targetRef"},
+            "kind": {
+              "enum": ["value", "description"],
+              "description": "value: the copy's first data element names another type (a merge conflict); description: its description alone differs (a merge)."
+            },
+            "source": {"$ref": "#/$defs/projectFile"},
+            "output": {"$ref": "#/$defs/projectFile"}
+          }
+        }
+      }
+    },
+    "mcpStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "mcp", "arguments"],
+      "description": "A tools/call through the in-memory client. An argument value {\"$target\": name} is the target's answer.",
+      "properties": {
+        "id": {"$ref": "#/$defs/name"},
+        "mcp": {"type": "string", "pattern": "^[a-z_]+$"},
+        "arguments": {"type": "object"},
+        "continues": {
+          "$ref": "#/$defs/name",
+          "description": "An earlier step whose page this one continues: the request gains after, that page's cursor; a page that does not say it is truncated, or carries no non-empty next, fails this step (harness.page_cursor)."
+        },
+        "text": {
+          "enum": ["impact-summary", "refusal"],
+          "description": "Read the answer's text as this form and count over that: a text tool's answer has no body otherwise. impact-summary: harness.impact_summary_document. refusal: the answer must be one \"ERROR: <msg>\" text and no body, read as {\"refusal\": <msg>} (harness.refusal_document); any other answer fails the step."
+        }
+      }
+    },
+    "recipeStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "recipe", "request"],
+      "description": "One request of a recipe of the assistant profile, by title, through the MCP tool the recipe names.",
+      "properties": {
+        "id": {"$ref": "#/$defs/name"},
+        "recipe": {"type": "string", "minLength": 1},
+        "request": {
+          "type": "integer",
+          "minimum": -1,
+          "description": "The index of the recipe's request block; -1 is its last one, the page a recipe that counts first sends after its count."
+        },
+        "fill": {
+          "type": "object",
+          "description": "Placeholder -> target name.",
+          "propertyNames": {"pattern": "^<[A-Z_]+>$"},
+          "additionalProperties": {"$ref": "#/$defs/name"}
+        },
+        "drop": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1},
+          "description": "Top-level arguments removed from the request (the same question without its limit)."
+        },
+        "continues": {
+          "$ref": "#/$defs/name",
+          "description": "An earlier step whose page this request continues: it gains after, that page's cursor; a page that does not say it is truncated, or carries no non-empty next, fails this step (harness.page_cursor)."
+        }
+      }
+    },
+    "cliStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "cli"],
+      "description": "swcraft argv, run as the interpreter's -m swcraft_tools.cli in the project directory; {manifest} and {project} are replaced by the project's paths.",
+      "properties": {
+        "id": {"$ref": "#/$defs/name"},
+        "cli": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "stdout": {
+          "enum": ["json"],
+          "description": "json: the command's stdout, which must be one JSON object whatever the exit code, is the step's body (a --format json run); any other stdout fails the step. Without it (and without stdin) a CLI step has no body."
+        },
+        "stdin": {
+          "type": "object",
+          "description": "A hook step: this object is written to the command's standard input as JSON, {project} in its string values replaced by the project's directory (keys and other values as written), and the command's stdout, which must be one JSON object, is the step's body (harness.run_cli)."
+        }
+      }
+    },
+    "expectations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {"$ref": "#/$defs/rowsAtMost"},
+          {"$ref": "#/$defs/bytesAtMost"},
+          {"$ref": "#/$defs/countEquals"},
+          {"$ref": "#/$defs/countAbove"},
+          {"$ref": "#/$defs/valuesEqual"},
+          {"$ref": "#/$defs/literalEquals"},
+          {"$ref": "#/$defs/present"},
+          {"$ref": "#/$defs/absent"},
+          {"$ref": "#/$defs/disjointFrom"},
+          {"$ref": "#/$defs/rowsAmong"},
+          {"$ref": "#/$defs/exitCode"},
+          {"$ref": "#/$defs/findingsExactly"},
+          {"$ref": "#/$defs/reportReferrersExactly"},
+          {"$ref": "#/$defs/reportMergedExactly"},
+          {"$ref": "#/$defs/reportFirstLine"},
+          {"$ref": "#/$defs/reportNamesExactly"}
+        ]
+      }
+    },
+    "because": {"type": "string", "minLength": 1, "description": "Why the expectation holds, when it records a decision."},
+    "rowsAtMost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "at", "rows_at_most"],
+      "description": "The items at the path, counted, are at most the threshold.",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "at": {"$ref": "#/$defs/path"},
+        "rows_at_most": {"$ref": "#/$defs/thresholdName"},
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "bytesAtMost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "bytes_at_most"],
+      "description": "The step's wire bytes (every text block escaped as a JSON string, in UTF-8) are at most the threshold.",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "bytes_at_most": {"$ref": "#/$defs/thresholdName"},
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "countEquals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "at", "count_equals"],
+      "description": "The count at the path (a number, or the items of a list) equals a passport leaf, a threshold, the count at a path of another step of the same variant, or a locator figure.",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "at": {"$ref": "#/$defs/path"},
+        "count_equals": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["passport"],
+              "properties": {"passport": {"$ref": "#/$defs/path"}}
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["threshold"],
+              "properties": {"threshold": {"$ref": "#/$defs/thresholdName"}}
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["step", "at"],
+              "properties": {"step": {"$ref": "#/$defs/name"}, "at": {"$ref": "#/$defs/path"}}
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["locator", "of"],
+              "properties": {
+                "locator": {
+                  "enum": ["port_count", "unconnected_count", "ports_naming_count", "components_naming_count", "connector_count", "readers_count", "declared_level_count"],
+                  "description": "A figure the locator reads off the model for the target 'of' names: a component's ports, its unconnected ports, or the connectors with an end on it (connector_count); the ports naming an interface, the distinct components those ports belong to (components_naming_count), or the reads of the interface's most read data element through ports naming it (readers_count); the components declaring a level, by its rating, when 'of' names a level (declared_level_count, declared and not effective)."
+                },
+                "of": {"$ref": "#/$defs/name"}
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["locator"],
+              "properties": {
+                "locator": {
+                  "enum": [
+                    "sender_receiver_rows",
+                    "model_components",
+                    "model_compositions",
+                    "model_component_ports",
+                    "model_connectors",
+                    "model_runnables",
+                    "model_dependencies"
+                  ],
+                  "description": "A figure the locator reads off the whole model, naming no target (harness.MODEL_FIGURES): the sender-receiver table's rows -- per connector, each write of the provider through its port paired with a read of the requester through its port of the same data element; or the architecture metrics' figures, counted off the files: the components that are not external stubs, the compositions, the ports of the components that are not stubs, the connectors, the runnables of every component, and the directed dependencies (per connector joining a require and a provide port of two different components, the requirer and the provider, each pair once, a pair of two stubs left out)."
+                }
+              }
+            }
+          ]
+        },
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "countAbove": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "at", "count_above"],
+      "description": "A precondition: the count at the path is above the threshold, so the scenario is meaningful.",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "at": {"$ref": "#/$defs/path"},
+        "count_above": {"$ref": "#/$defs/thresholdName"},
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "valuesEqual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "at", "values_equal"],
+      "description": "The values at the path, in order, are exactly the target's answer: its names in the locator's order, or its one name.",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "at": {"$ref": "#/$defs/path"},
+        "values_equal": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["target"],
+          "properties": {"target": {"$ref": "#/$defs/name"}}
+        },
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "literalEquals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "at", "literal_equals", "because"],
+      "description": "Every value at the path is the literal, of its type: a boolean or a string, never a number -- a number in an expectation is always a named threshold.",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "at": {"$ref": "#/$defs/path"},
+        "literal_equals": {"type": ["boolean", "string"]},
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "present": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "at", "present"],
+      "description": "The answer has a value at the path that is not null (a page's next cursor, say).",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "at": {"$ref": "#/$defs/path"},
+        "present": {"const": true},
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "absent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "at", "absent"],
+      "description": "The path selects nothing in the step's body: the negative of present (a hook's answer that decides nothing, say). A step with no body to look in fails.",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "at": {"$ref": "#/$defs/path"},
+        "absent": {"const": true},
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "disjointFrom": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "at", "disjoint_from"],
+      "description": "The step's items at the path (a list read as its items) are not empty, and none is an item at the same path of the named step: a continued page answers rows past the page it continues.",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "at": {"$ref": "#/$defs/path"},
+        "disjoint_from": {"$ref": "#/$defs/name"},
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "rowsAmong": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "at", "rows_among"],
+      "description": "The step's items at the path are not empty and are member rows (element and member), no two the same, and every one is in the locator's answer read off the model: the unconnected ports of the component the target 'of' names, or of the whole model when there is no 'of'.",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "at": {"$ref": "#/$defs/path"},
+        "rows_among": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["locator"],
+          "properties": {
+            "locator": {"enum": ["unconnected_ports"]},
+            "of": {"$ref": "#/$defs/name"}
+          }
+        },
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "reportMergedExactly": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "report_merged_exactly"],
+      "description": "The groups the step's import report lists under its merged declarations, by name, are exactly the target's interfaces.",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "report_merged_exactly": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["interfaces"],
+          "properties": {"interfaces": {"$ref": "#/$defs/name"}}
+        },
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "projectFile": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+(/[A-Za-z0-9_.-]+)*$",
+      "not": {"pattern": "(^|/)\\.\\.?(/|$)"},
+      "description": "A file of the project a step wrote, by its project-relative POSIX path (no . or .. segment), read (UTF-8) when the expectation is evaluated, after the variant's last step; an absent file fails the expectation."
+    },
+    "reportFirstLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "file", "heading", "report_first_line", "because"],
+      "description": "The first non-empty line under the Markdown heading '## <heading>' of the project file is the string literal.",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "file": {"$ref": "#/$defs/projectFile"},
+        "heading": {"type": "string", "minLength": 1},
+        "report_first_line": {"type": "string", "minLength": 1},
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "reportNamesExactly": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "file", "heading", "report_names_exactly", "because"],
+      "description": "The code-span texts of the first column of the first table under the Markdown heading '## <heading>' of the project file are exactly the target's names, each once (a name listed twice fails); a section with no table fails, unless the target names nothing (the build report's Resources section is then a sentence).",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "file": {"$ref": "#/$defs/projectFile"},
+        "heading": {"type": "string", "minLength": 1},
+        "report_names_exactly": {"$ref": "#/$defs/targetRef"},
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "exitCode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "exit_code"],
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "exit_code": {"type": "integer", "minimum": 0},
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "reportReferrersExactly": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "report_referrers_exactly"],
+      "description": "The referring elements the step's import report lists under its unresolved references, as 'Component/port', are exactly the ports naming the target's interfaces.",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "report_referrers_exactly": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ports_naming"],
+          "properties": {"ports_naming": {"$ref": "#/$defs/name"}}
+        },
+        "because": {"$ref": "#/$defs/because"}
+      }
+    },
+    "findingsExactly": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "findings_exactly"],
+      "description": "The (rule, element) pairs of the step's check-model --format json findings -- less those of the same step of another variant, when minus_variant is named -- are exactly the expected pairs; an element is 'Component' or 'Component/member'.",
+      "properties": {
+        "step": {"$ref": "#/$defs/name"},
+        "findings_exactly": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pairs"],
+          "properties": {
+            "pairs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["rule", "ports_naming"],
+                "properties": {
+                  "rule": {"type": "string", "minLength": 1},
+                  "ports_naming": {"$ref": "#/$defs/name", "description": "A target naming an interface, or several: every port naming one of them."}
+                }
+              }
+            },
+            "minus_variant": {"$ref": "#/$defs/name"}
+          }
+        },
+        "because": {"$ref": "#/$defs/because"}
+      }
+    }
+  }
+}

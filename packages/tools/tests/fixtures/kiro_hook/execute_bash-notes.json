@@ -1,0 +1,13 @@
+{
+  "session_id": "sess_09c936af-bf43-42f2-a9d0-4774261db103",
+  "hook_event_name": "PreToolUse",
+  "cwd": "/project",
+  "tool_name": "execute_bash",
+  "tool_input": {
+    "command": "echo hello > notes/e.txt",
+    "description": "Step 3 of tool test: create e.txt file in notes directory",
+    "cwd": "/project",
+    "run_in_background": false,
+    "timeout": null
+  }
+}

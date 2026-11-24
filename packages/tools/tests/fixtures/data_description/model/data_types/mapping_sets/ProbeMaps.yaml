@@ -1,0 +1,12 @@
+name: ProbeMaps
+maps:
+- application: ProbeSpeed
+  implementation: ProbeF32
+- application: ProbeMixed
+  implementation: ProbeF32
+- application: ProbeLength
+  implementation: ProbeF32
+- application: ProbeGear
+  implementation: ProbeU8
+- application: ProbePair
+  implementation: ProbePair

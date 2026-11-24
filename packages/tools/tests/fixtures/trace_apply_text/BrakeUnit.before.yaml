@@ -1,0 +1,26 @@
+# A component written by hand: comments, blank lines, its own key order and quoting.
+name: BrakeUnit   # the unit
+description: >-
+  Supervises the brake temperature
+  and reports a fault.
+
+kind: application
+asil: "B"
+
+ports:
+  - name: pBrakeTemp          # the provided temperature
+    direction: provided
+    interface: IBrakeTemp
+    satisfies:
+      - SR-1@1   # linked in the first review
+
+  - name: pFault
+    direction: provided
+    interface: IFault
+
+runnables:
+- name: Supervise
+  description: 'supervise it'
+  satisfies: [SR-1@1]
+- name: Init
+  satisfies: []

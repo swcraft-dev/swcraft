@@ -1,0 +1,9 @@
+name: IDiagnostics
+kind: client_server
+description: The client-server interface; it declares no data element at all, which is what a measures key on it cannot name.
+operations:
+- name: Read
+  arguments:
+  - name: value
+    direction: out
+    implementation_type: uint8

@@ -1,0 +1,8 @@
+name: DanglingLinkSWC
+type: application
+description: Satisfies a requirement no file declares
+memory:
+  RAM0: 16
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_DANGLING_001@1

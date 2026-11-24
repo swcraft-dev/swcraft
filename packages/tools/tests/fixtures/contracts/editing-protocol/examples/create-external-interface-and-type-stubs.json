@@ -1,0 +1,181 @@
+{
+  "name": "create-external-interface-and-type-stubs",
+  "description": "Contract `7.5.0`'s two stub kinds authored with no new tool and no new address form. One `create` declares an interface another file of the same delivery owns — its full AUTOSAR path and its `DEST`, nothing of its content — a second declares an implementation data type the same way, and one `update` re-points a component's port at the interface stub. A stub is an ordinary element to the editing protocol: the generic change set reaches both because the registry is derived from the contract.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, whose `ExampleConsumerSWC` requires `IExample` on `rIn` through the connector `Example_to_Consumer`. Neither stub the change set creates exists.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "ports"
+          },
+          {
+            "member": "rIn"
+          }
+        ]
+      },
+      {
+        "layer": "connectors",
+        "element": "Example_to_Consumer"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IForeignSpeed"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "ForeignSpeed_T"
+          }
+        },
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rIn"
+              },
+              {
+                "field": "interface"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "Three exact addresses in two layers and the component's port. No component, element or port here carries a level, so the safety guard has nothing to ask: re-pointing a RATED consumer's port from a source carrying a rated data element to a stub is the one move through a stub that asks, and it is `packages/tools/tests/test_external_stubs_editing.py`'s to pin."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:3c7e19a4b0d25f86",
+    "intent": "Carry the speed interface and its type as references into the rest of the delivery.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "IForeignSpeed"
+        },
+        "value": {
+          "name": "IForeignSpeed",
+          "kind": "external_interface",
+          "external_ref": "/Foreign/PortInterfaces/IForeignSpeed",
+          "external_dest": "SENDER-RECEIVER-INTERFACE",
+          "description": "Declared by another file of the same delivery"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "implementation_types",
+          "element": "ForeignSpeed_T"
+        },
+        "value": {
+          "name": "ForeignSpeed_T",
+          "kind": "external_type",
+          "external_ref": "/Foreign/ImplementationDataTypes/ForeignSpeed_T",
+          "external_dest": "IMPLEMENTATION-DATA-TYPE"
+        }
+      },
+      {
+        "operation": "update",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "ports"
+            },
+            {
+              "member": "rIn"
+            },
+            {
+              "field": "interface"
+            }
+          ]
+        },
+        "value": "IForeignSpeed"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:3c7e19a4b0d25f86",
+      "delta": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rIn"
+              },
+              {
+                "field": "interface"
+              }
+            ]
+          },
+          "before": "IExample",
+          "after": "IForeignSpeed",
+          "summary": "swc/ExampleConsumerSWC: ~ ports[rIn].interface IExample -> IForeignSpeed"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "IForeignSpeed"
+          },
+          "after": {
+            "name": "IForeignSpeed",
+            "kind": "external_interface",
+            "external_ref": "/Foreign/PortInterfaces/IForeignSpeed",
+            "external_dest": "SENDER-RECEIVER-INTERFACE",
+            "operations": [],
+            "data_elements": [],
+            "description": "Declared by another file of the same delivery",
+            "satisfies": []
+          },
+          "summary": "interfaces: + IForeignSpeed"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "ForeignSpeed_T"
+          },
+          "after": {
+            "name": "ForeignSpeed_T",
+            "kind": "external_type",
+            "external_ref": "/Foreign/ImplementationDataTypes/ForeignSpeed_T",
+            "external_dest": "IMPLEMENTATION-DATA-TYPE",
+            "description": ""
+          },
+          "summary": "implementation_types: + ForeignSpeed_T"
+        }
+      ]
+    },
+    "notes": "A stub has five fields and no member at all: `name`, the `kind` discriminator, `external_ref`, `external_dest` and `description`. `external_ref` and `external_dest` are what the generated ARXML carries verbatim on every reference naming the stub, and no element is emitted for the stub itself. Whether the pair is well formed — an absolute path, a `DEST` the role admits — is `interface.external-incomplete-reference` and `data-type.external-incomplete-reference`, both pass D's; `negative/consistency-violation-interface-external-incomplete-reference.json` and its data type twin are the refusals. The connector stays legal because the kind is compared across a stub: a `SENDER-RECEIVER-INTERFACE` stub is sender-receiver, and nothing beyond the kind is judged, since the model cannot see what the target declares."
+  }
+}

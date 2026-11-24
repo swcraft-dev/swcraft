@@ -1,0 +1,3 @@
+name: CPU
+kind: processor
+description: "The one processor; the four cores and two memories below are its."

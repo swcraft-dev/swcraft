@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: a component prototype whose type is not in this export.
+
+  Root places RemotePart, typed /Vendor/Components/RemoteSwc, which nothing
+  declares. The importer mints an external stub for exactly this: a component
+  carrying the source's TYPE-TREF path and DEST verbatim, so a re-export
+  points where the source did. Keeping unresolved references does NOT
+  replace that stub: the stub carries the reference, so no unresolved-reference
+  record is minted for it. An absent target in a role that may name a stub
+  (a port's interface, a data element's or an argument's type and the other
+  roles of unresolved.STUB_ROLE_LAYERS) becomes an interface or implementation
+  type stub, minted after mapping, which carries its reference the same way;
+  an absent target in any other role, or one whose DEST the stub rule refuses,
+  keeps its unresolved-reference record. No absent target is invented as a
+  DEFINITION.
+
+  Root also places LocalPart, typed by a declared component, so a test can
+  tell the stub from "nothing was imported".
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Chassis</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Types</SHORT-NAME>
+              <ELEMENTS>
+                <SW-BASE-TYPE>
+                  <SHORT-NAME>Octet</SHORT-NAME>
+                  <CATEGORY>FIXED_LENGTH</CATEGORY>
+                  <BASE-TYPE-SIZE>8</BASE-TYPE-SIZE>
+                  <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                  <NATIVE-DECLARATION>uint8</NATIVE-DECLARATION>
+                </SW-BASE-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>Level</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/Types/Octet</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Interfaces</SHORT-NAME>
+              <ELEMENTS>
+                <SENDER-RECEIVER-INTERFACE>
+                  <SHORT-NAME>ILevel</SHORT-NAME>
+                  <IS-SERVICE>false</IS-SERVICE>
+                  <DATA-ELEMENTS>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>level</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/Types/Level</TYPE-TREF>
+                    </VARIABLE-DATA-PROTOTYPE>
+                  </DATA-ELEMENTS>
+                </SENDER-RECEIVER-INTERFACE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Components</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>LocalSwc</SHORT-NAME>
+                  <PORTS>
+                    <P-PORT-PROTOTYPE>
+                      <SHORT-NAME>pLevel</SHORT-NAME>
+                      <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/ILevel</PROVIDED-INTERFACE-TREF>
+                    </P-PORT-PROTOTYPE>
+                  </PORTS>
+                </APPLICATION-SW-COMPONENT-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Compositions</SHORT-NAME>
+              <ELEMENTS>
+                <COMPOSITION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>Root</SHORT-NAME>
+                  <COMPONENTS>
+                    <SW-COMPONENT-PROTOTYPE>
+                      <SHORT-NAME>LocalPart</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Acme/Chassis/Components/LocalSwc</TYPE-TREF>
+                    </SW-COMPONENT-PROTOTYPE>
+                    <SW-COMPONENT-PROTOTYPE>
+                      <SHORT-NAME>RemotePart</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Vendor/Components/RemoteSwc</TYPE-TREF>
+                    </SW-COMPONENT-PROTOTYPE>
+                  </COMPONENTS>
+                </COMPOSITION-SW-COMPONENT-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

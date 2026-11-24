@@ -1,0 +1,6 @@
+id: Rq02abcdef
+title: Output frame timing
+description: Every output frame shall be published within its period, measured at
+  the sender port.
+version: 2
+source: architecture

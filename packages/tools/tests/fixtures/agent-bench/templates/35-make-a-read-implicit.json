@@ -1,0 +1,10 @@
+{
+  "id": "35-make-a-read-implicit",
+  "task": 35,
+  "group": "model-change",
+  "kind": "change",
+  "binding": "make_a_read_implicit",
+  "oracle": "structural",
+  "prompt": "{{component}}'s {{runnable}} should read {{element}} on {{port}} implicitly.",
+  "note": "Of the reads not yet implicit whose implicit form no check-model rule refuses (a require port of a sender-receiver interface holding the element, the element not queued, no enable_update stated for it on the port), the first in row order of the data element the most runnable reads name. The runnable's other reads keep their forms."
+}

@@ -1,0 +1,27 @@
+{
+  "session_id": "sess_4aa21d6a-4cdf-4468-a19a-6555f8c902bd",
+  "hook_event_name": "PreToolUse",
+  "cwd": "/project",
+  "tool_name": "code",
+  "tool_input": {
+    "operation": "search_symbols",
+    "file_path": null,
+    "symbol_name": "main",
+    "symbols": [],
+    "path": "notes",
+    "symbol_type": null,
+    "limit": null,
+    "exact_match": null,
+    "language": null,
+    "include_source": null,
+    "top_level_only": null,
+    "pattern": null,
+    "replacement": null,
+    "row": null,
+    "column": null,
+    "new_name": null,
+    "trigger_character": null,
+    "tab_size": null,
+    "insert_spaces": null
+  }
+}

@@ -1,0 +1,4 @@
+name: BellText
+kind: value_type
+base: uint8_base
+description: "A value type whose description rings the bell\a"

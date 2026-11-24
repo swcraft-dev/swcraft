@@ -1,0 +1,3 @@
+name: CPU
+kind: processor
+description: The project's processor. Replace with the part, e.g. "Infineon AURIX TC397".

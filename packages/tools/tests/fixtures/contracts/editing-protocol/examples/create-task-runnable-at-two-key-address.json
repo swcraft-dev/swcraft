@@ -1,0 +1,115 @@
+{
+  "name": "create-task-runnable-at-two-key-address",
+  "description": "A runnable entry added to a task at a member address that names the component by `swc` with TWO keys, the payload two keys as well: since contract `9.0.0` a task entry's identity is the composite `(swc, instance, runnable)`, and an absent optional identity field reads as `null`. The scope approving it spells the member with all three keys, `instance` as `null`; the delta's address and its `after` carry the three keys the engine emits.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `Task_10ms` maps `ExampleConsumerSWC.ExampleConsumerRun` and budgets 1200 us of its 10 ms period; `ExampleSWC.ExampleRun` runs on a 10 ms timing event and is mapped to no task; both components derive `QM`, so a task running both mixes no level.",
+    "existing_elements": [
+      {
+        "layer": "tasks",
+        "element": "Task_10ms"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "tasks",
+            "element": "Task_10ms",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": {
+                  "swc": "ExampleSWC",
+                  "instance": null,
+                  "runnable": "ExampleRun"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope writes the member with three keys and the change set with two; both are canonicalized to the three-key form before coverage is decided."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Run ExampleRun in the 10 ms task beside the consumer.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "tasks",
+          "element": "Task_10ms",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": {
+                "swc": "ExampleSWC",
+                "runnable": "ExampleRun"
+              }
+            }
+          ]
+        },
+        "value": {
+          "swc": "ExampleSWC",
+          "runnable": "ExampleRun"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "tasks",
+            "element": "Task_10ms",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": {
+                  "swc": "ExampleSWC",
+                  "instance": null,
+                  "runnable": "ExampleRun"
+                }
+              }
+            ]
+          },
+          "after": {
+            "swc": "ExampleSWC",
+            "instance": null,
+            "runnable": "ExampleRun"
+          },
+          "summary": "tasks/Task_10ms: + runnables[{swc: ExampleSWC, instance: None, runnable: ExampleRun}]"
+        }
+      ]
+    },
+    "notes": "Two keys in the address and the payload, three in the scope, three in the delta: an absent optional identity field reads as `null` in all four places, so the create's address and its payload denote one member and the scope covers it exactly. The `after` publishes `\"instance\": null` as every member payload of a composite identity does. The staged result satisfies the task rules: `ExampleRun`'s 10 ms timing event is a multiple of the 10 ms period, the runnable is mapped to one task, and both components derive `QM`, so the task mixes no level."
+  }
+}

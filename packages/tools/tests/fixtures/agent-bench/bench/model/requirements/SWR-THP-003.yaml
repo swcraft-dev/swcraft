@@ -1,0 +1,10 @@
+id: SWR-THP-003
+title: Permitted action under fade
+description: When the brake temperature exceeds 600 degC the permitted brake action
+  shall be reduced.
+req_type: req
+version: 1
+source: external
+document: SRS Thermal Protection
+baseline: '1.0'
+revision: '1'

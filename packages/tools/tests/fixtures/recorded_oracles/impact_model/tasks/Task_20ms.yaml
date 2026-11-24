@@ -1,0 +1,9 @@
+name: Task_20ms
+period: 0.02
+priority: 3
+partition: PARTITION1
+wcet: 400us
+description: The PARTITION1 task, so the `partition` reference resolves for more than one partition.
+runnables:
+  - swc: Shared
+    runnable: Shared_Run

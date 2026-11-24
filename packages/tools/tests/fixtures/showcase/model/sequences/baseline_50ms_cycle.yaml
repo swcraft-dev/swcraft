@@ -1,0 +1,10 @@
+name: baseline_50ms_cycle
+task: Task_50ms
+title: Baseline 50 ms cycle
+steps:
+- swc: BrakeTemperatureSensor
+  runnable: PublishBrakeTemperature
+- swc: BrakeController
+  runnable: ProcessBrakeRequest
+- swc: VehicleStateManager
+  runnable: PublishOperatingState

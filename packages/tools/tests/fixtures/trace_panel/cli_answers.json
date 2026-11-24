@@ -1,0 +1,23 @@
+{
+  "applyApplied": {
+    "exit": 0,
+    "stdout": "Trace apply: proposals of the search 'trace' (the model has changed since the search)\nSummary: 1 written, 1 confirmed, 1 rejected, 0 already done, 0 stale, 0 not written, 0 undecided; 1 files\nPlan: sha256:5930b512cb9a23ff122ed5f5cc6899eb3ee5fb6f73d41e477e8a814dcb657cb1\n\nLinks to write:\n  SWC 'Ctl' (port 'pOut') satisfies 'SR-2@1'\n\nLinks to confirm:\n  SWC 'Ctl' satisfies 'SR-1@1' → 'SR-1@2'\n\nRejections to record:\n  SR-2@1 rejected for Composition 'Top'\n"
+  },
+  "applyDryRun": {
+    "exit": 0,
+    "stdout": "Trace apply: proposals of the search 'trace' (the model has changed since the search)\nDry run: nothing was written.\nSummary: 1 written, 1 confirmed, 1 rejected, 0 already done, 0 stale, 0 not written, 0 undecided; 1 files\nPlan: sha256:5930b512cb9a23ff122ed5f5cc6899eb3ee5fb6f73d41e477e8a814dcb657cb1\n\nLinks to write:\n  SWC 'Ctl' (port 'pOut') satisfies 'SR-2@1'\n\nLinks to confirm:\n  SWC 'Ctl' satisfies 'SR-1@1' → 'SR-1@2'\n\nRejections to record:\n  SR-2@1 rejected for Composition 'Top'\n"
+  },
+  "applyNoChange": {
+    "exit": 0,
+    "stdout": "Trace apply: proposals of the search 'trace' (the model has changed since the search)\nDry run: nothing was written.\nSummary: 0 written, 0 confirmed, 0 rejected, 3 already done, 0 stale, 0 not written, 0 undecided; 0 files\nNo change.\nPlan: sha256:500b98780cf8780dbaf05e0f567ac0b6fb48fc61ea13eeebc6bd17618d6fd186\n\nAlready done:\n  SR-1 on SWC 'Ctl': applied by an earlier Apply\n  SR-2 on SWC 'Ctl' (port 'pOut'): applied by an earlier Apply\n  SR-2 on Composition 'Top': applied by an earlier Apply\n"
+  },
+  "cwd": "/work/project",
+  "documents": {
+    "exit": 0,
+    "stdout": "{\n  \"documents\": [\n    {\n      \"awaitingOnly\": 0,\n      \"document\": \"Body Spec\",\n      \"inScope\": 3,\n      \"linked\": 1,\n      \"pass\": \"review\",\n      \"rejectedEarlier\": 0,\n      \"stubs\": 0,\n      \"withoutLink\": 2\n    },\n    {\n      \"awaitingOnly\": 1,\n      \"document\": \"Brake Spec\",\n      \"inScope\": 8,\n      \"linked\": 4,\n      \"pass\": \"review\",\n      \"rejectedEarlier\": 0,\n      \"stubs\": 0,\n      \"withoutLink\": 3\n    },\n    {\n      \"awaitingOnly\": 0,\n      \"document\": \"System Spec\",\n      \"inScope\": 8,\n      \"linked\": 5,\n      \"pass\": \"labelling\",\n      \"rejectedEarlier\": 0,\n      \"stubs\": 0,\n      \"withoutLink\": 3\n    },\n    {\n      \"awaitingOnly\": 0,\n      \"document\": null,\n      \"inScope\": 2,\n      \"linked\": 0,\n      \"pass\": \"review\",\n      \"rejectedEarlier\": 0,\n      \"stubs\": 0,\n      \"withoutLink\": 2\n    }\n  ],\n  \"kind\": \"trace-documents\",\n  \"proposals\": \"dist/experiments/trace/proposals.json\",\n  \"schemaVersion\": 1\n}\n"
+  },
+  "search": {
+    "exit": 0,
+    "stdout": "trace: 21 requirements in scope in 3 documents and 2 without a document; reviewed 13 (12 with candidates, 1 nothing found); labelling: 1 chosen in 1 document\nGenerated report: /work/project/dist/experiments/trace/report.md\nGenerated result: /work/project/dist/experiments/trace/result.json\nGenerated proposals: /work/project/dist/experiments/trace/proposals.json\n"
+  }
+}

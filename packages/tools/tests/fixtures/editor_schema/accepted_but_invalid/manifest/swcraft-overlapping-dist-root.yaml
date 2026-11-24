@@ -1,0 +1,13 @@
+# Every key is well-typed and `dist_root` is a string, so the manifest schema accepts it;
+# `model/dist` is INSIDE `model_root`, which only the loader can see. The build would
+# generate into the model that is the source of truth and `clean-outputs` would delete it.
+# The escape rule's fixture (`swcraft.yaml`) does not reach this half: that one resolves
+# OUTSIDE the project, this one resolves too far inside it.
+name: overlapping-dist-root
+schema_version: "1.0"
+model_root: model
+dist_root: model/dist
+views_root: views
+outputs:
+  arxml: dist/model.arxml
+  needs: dist/needs.json

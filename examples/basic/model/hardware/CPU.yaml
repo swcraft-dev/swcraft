@@ -1,0 +1,3 @@
+name: CPU
+kind: processor
+description: The example processor — one core and one RAM, which is the smallest honest ECU.

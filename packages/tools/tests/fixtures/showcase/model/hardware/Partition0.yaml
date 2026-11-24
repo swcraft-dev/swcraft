@@ -1,0 +1,4 @@
+name: Partition0
+kind: partition
+core: Core0
+description: The one partition on Core0, without a level; both tasks run in it.

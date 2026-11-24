@@ -1,0 +1,174 @@
+{
+  "name": "find-names-many",
+  "description": "A `find` of nine names (0.19.1): above three names each name answers fewer candidates, so the answer is bounded by the request at sixteen candidates in all — four names answer four each, five three, six to eight two and nine to sixteen one. Each name's candidates are the first of the answer it would get alone, in the same order, so an exact hit is first; `more` counts the rest per name, and a name nothing matches is still answered `\"candidates\": \"none\"`.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, as `find-names` reads it. `ExampleSWC` and `consumer` match five names each and `example` nine; `Task_10ms` two (the task, then the sequence named after it); `IExampl`, `Root`, `RAM0` and `CPU` one each; nothing is named `Logger`.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      },
+      {
+        "layer": "compositions",
+        "element": "Root"
+      },
+      {
+        "layer": "hardware",
+        "element": "RAM0"
+      },
+      {
+        "layer": "hardware",
+        "element": "CPU"
+      },
+      {
+        "layer": "tasks",
+        "element": "Task_10ms"
+      }
+    ],
+    "notes": "A `find` reads the model and writes nothing. One candidate a name is the answer's form at nine to sixteen names; a name whose one candidate is not the element meant is asked again alone, where it answers up to five."
+  },
+  "input": {
+    "operation": "find",
+    "names": [
+      "ExampleSWC",
+      "consumer",
+      "IExampl",
+      "example",
+      "Root",
+      "RAM0",
+      "CPU",
+      "Task_10ms",
+      "Logger"
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "find",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "results": [
+        {
+          "name": "ExampleSWC",
+          "candidates": [
+            {
+              "address": {
+                "layer": "swc",
+                "element": "ExampleSWC"
+              },
+              "tier": "exact",
+              "identity": "swc ExampleSWC (application, 1 port, 1 runnable) — Example software com…"
+            }
+          ],
+          "more": 4
+        },
+        {
+          "name": "consumer",
+          "candidates": [
+            {
+              "address": {
+                "layer": "swc",
+                "element": "ExampleConsumerSWC"
+              },
+              "tier": "word",
+              "identity": "swc ExampleConsumerSWC (application, 1 port, 1 runnable) — Example soft…"
+            }
+          ],
+          "more": 4
+        },
+        {
+          "name": "IExampl",
+          "candidates": [
+            {
+              "address": {
+                "layer": "interfaces",
+                "element": "IExample"
+              },
+              "tier": "word",
+              "identity": "interfaces IExample (sender_receiver, 1 data element)"
+            }
+          ]
+        },
+        {
+          "name": "example",
+          "candidates": [
+            {
+              "address": {
+                "layer": "interfaces",
+                "element": "IExample"
+              },
+              "tier": "word",
+              "identity": "interfaces IExample (sender_receiver, 1 data element)"
+            }
+          ],
+          "more": 8
+        },
+        {
+          "name": "Root",
+          "candidates": [
+            {
+              "address": {
+                "layer": "compositions",
+                "element": "Root"
+              },
+              "tier": "exact",
+              "identity": "compositions Root (2 members) — Root composition"
+            }
+          ]
+        },
+        {
+          "name": "RAM0",
+          "candidates": [
+            {
+              "address": {
+                "layer": "hardware",
+                "element": "RAM0"
+              },
+              "tier": "exact",
+              "identity": "hardware RAM0 (RAM) — 256 KiB application RAM pool — 80% consumption bu…"
+            }
+          ]
+        },
+        {
+          "name": "CPU",
+          "candidates": [
+            {
+              "address": {
+                "layer": "hardware",
+                "element": "CPU"
+              },
+              "tier": "exact",
+              "identity": "hardware CPU (processor) — The example processor — one core and one RAM…"
+            }
+          ]
+        },
+        {
+          "name": "Task_10ms",
+          "candidates": [
+            {
+              "address": {
+                "layer": "tasks",
+                "element": "Task_10ms"
+              },
+              "tier": "exact",
+              "identity": "tasks Task_10ms — 10 ms application task"
+            }
+          ],
+          "more": 1
+        },
+        {
+          "name": "Logger",
+          "candidates": "none"
+        }
+      ]
+    },
+    "notes": "`ExampleSWC`'s one candidate is the component, the first of the five it answers alone (its member of `Root` is second there); `more` is 4 for it, as for `consumer`, 8 for `example` and 1 for `Task_10ms`. Eight candidates in all, of at most sixteen: one for each name but `Logger`, which answers `none`."
+  }
+}

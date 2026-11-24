@@ -1,0 +1,126 @@
+{
+  "name": "create-partition-carrying-coexistence",
+  "description": "A partition created whole with its argument already written, and a mixed task moved into it in the same change set. The argument arrives inside its owner rather than as an edit to one, which no address arm reads in the hardware layer; the guard compares two models, so it is asked about exactly as a declared argument is.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with `ExampleSWC` declaring D, `ExampleConsumerSWC` deriving `QM`, and `Task_10ms` running both with its own execution-time argument in the unrated `PARTITION0`, so the baseline reports nothing. The change set creates `PARTITION1` on `CORE0`, rated D and carrying a memory-mixing argument, and moves the task into it.",
+    "existing_elements": [
+      {
+        "layer": "hardware",
+        "element": "CORE0"
+      },
+      {
+        "layer": "tasks",
+        "element": "Task_10ms"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "hardware",
+            "element": "PARTITION1"
+          }
+        },
+        {
+          "operation": "update",
+          "address": {
+            "layer": "tasks",
+            "element": "Task_10ms",
+            "path": [
+              {
+                "field": "partition"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers both addresses exactly: the partition created whole and the task's `partition`. Neither authorizes the safety question — the partition arrives carrying an argument, which the guard decides by comparing two models — so `declare_partition_coexistence` is asked once for the whole change set, and the status is `committed`."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:bI1cGm1hvz1Nz4EFr-Xtmg",
+    "intent": "Give the mixed task a rated, argued partition of its own.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "hardware",
+          "element": "PARTITION1"
+        },
+        "value": {
+          "name": "PARTITION1",
+          "kind": "partition",
+          "core": "CORE0",
+          "asil": "D",
+          "coexistence": "The partition's components sit in their own memory regions under memory protection.",
+          "description": "The partition the mixed task runs in, rated D."
+        }
+      },
+      {
+        "operation": "update",
+        "address": {
+          "layer": "tasks",
+          "element": "Task_10ms",
+          "path": [
+            {
+              "field": "partition"
+            }
+          ]
+        },
+        "value": "PARTITION1"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:OjA3alZYVlEINSVzCDiybQ",
+      "delta": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "tasks",
+            "element": "Task_10ms",
+            "path": [
+              {
+                "field": "partition"
+              }
+            ]
+          },
+          "before": "PARTITION0",
+          "after": "PARTITION1",
+          "summary": "tasks/Task_10ms: ~ partition PARTITION0 -> PARTITION1"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "hardware",
+            "element": "PARTITION1"
+          },
+          "after": {
+            "name": "PARTITION1",
+            "kind": "partition",
+            "core": "CORE0",
+            "asil": "D",
+            "trust": "non_trusted",
+            "coexistence": "The partition's components sit in their own memory regions under memory protection.",
+            "description": "The partition the mixed task runs in, rated D.",
+            "satisfies": []
+          },
+          "summary": "hardware: + PARTITION1"
+        }
+      ],
+      "audit_ref": "cs-20261009T115138Z-477ccb"
+    },
+    "notes": "`committed` after the second question. Without the argument the staged model would carry a `safety.component-below-partition` finding and pass D would refuse the change set; with it the model is clean and the argument is a declaration a human answered for."
+  }
+}

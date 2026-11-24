@@ -1,0 +1,939 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://swcraft.dev/schemas/swc.schema.json",
+  "title": "SWCs",
+  "$comment": "Software components, one file each under `swc/{group}/`; the group is the file's directory, not a key inside the file.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "description": "The component's identity; the file is named from it (`swc/{group}/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across all software components, must not be empty, and immutable — renaming is a remove and a create.",
+      "type": "string"
+    },
+    "type": {
+      "description": "The AUTOSAR component category. Only `application` is emitted today — the ARXML writer refuses a `service` or `ecu_abstraction` component — so the default is the one value that generates.",
+      "type": "string",
+      "enum": [
+        "application",
+        "service",
+        "ecu_abstraction"
+      ],
+      "default": "application"
+    },
+    "description": {
+      "description": "Free text about the component, shown on the component's box in the diagrams when non-empty, and written into the generated ARXML as the component type's `DESC`, exactly as held; the empty default writes none. An external component emits no element, so its text reaches the diagrams only.",
+      "type": "string",
+      "default": ""
+    },
+    "external": {
+      "description": "Whether the component is a stub standing in for a type outside the model — a prototype the ARXML import found with no type declaration to resolve it against. A stub declares no runnables, and its ports carry a name and a direction only, never an interface; no component type is generated for it, and the writer emits its prototype's reference verbatim from `external_ref` and `external_dest`. Left out of the file while it is `false`, so only a stub carries the key.",
+      "type": "boolean",
+      "default": false
+    },
+    "external_ref": {
+      "description": "The AUTOSAR path the source's `TYPE-TREF` carried, verbatim, for a stub component. Written back unchanged into the emitted `SW-COMPONENT-PROTOTYPE` so that a re-import resolves the prototype where the original did. Empty for every component that is not a stub.",
+      "type": "string",
+      "default": ""
+    },
+    "external_dest": {
+      "description": "The `DEST` the source's `TYPE-TREF` carried, verbatim, for a stub component — `APPLICATION-SW-COMPONENT-TYPE` or `COMPOSITION-SW-COMPONENT-TYPE`. Carried beside `external_ref` because the path alone does not say what kind of element it names, and a `DEST` that differs from the source's still validates against the XSD while dangling in the target toolchain. Empty for every component that is not a stub.",
+      "type": "string",
+      "default": ""
+    },
+    "ports": {
+      "description": "The component's ports, addressed by `name`, which must be unique inside the component. Each port is typed by a declared interface and joined to another component by an assembly connector; an external stub's port declares no interface.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/port"
+      },
+      "default": []
+    },
+    "runnables": {
+      "description": "The component's runnable entities, addressed by `name`, which must be unique inside the component — and only there, which is why a task or a sequence names a runnable by its component — the type by `swc` or the occurrence by `instance` — and the runnable's `name`.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/runnable"
+      },
+      "default": []
+    },
+    "variables": {
+      "description": "The component's inter-runnable variables, addressed by `name`, which must be unique inside the component: the data its runnables share without going through a port. Each is written into the component's internal behaviour as an explicit or an implicit inter-runnable variable, by its `access`, and shares that behaviour's name space with the runnables and the events. Omitted while empty.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/variable"
+      },
+      "default": []
+    },
+    "exclusive_areas": {
+      "description": "The component's exclusive areas, addressed by `name`, which must be unique inside the component: each a constraint on the RTE's scheduling under which the runnables that use one area do not preempt each other inside it. A runnable of the same component names an area in its `can_enter` or `runs_inside` list. Each is written into the component's internal behaviour as an `EXCLUSIVE-AREA`, and shares that behaviour's name space with the runnables, the events and the variables. Omitted while empty.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/exclusive_area"
+      },
+      "default": []
+    },
+    "memory": {
+      "description": "Memory budgets, in bytes, keyed by the name of a declared memory. Every key must name a memory the hardware declares; a key that names nothing, or names a core, is a model error. (unit: bytes)",
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "default": {}
+    },
+    "asil": {
+      "description": "The safety integrity level this component declares: `QM`, `A`, `B`, `C` or `D`, or a decomposed `X(Y)` such as `B(D)` — the thirteen spellings the AUTOSAR Safety Extensions list — where `Y` is the level before decomposition. Every rule ranks by `X`; one rule, `trace.decomposition-context-mismatch`, compares a requirement's `(Y)` with the level its parent requirement had before decomposition. Absent when it declares none, and a component that declares none takes the highest level of the requirements its own `satisfies`, its ports' and its runnables' name. A written `QM`, `QM(Y)` included, declares that no level is allocated — ISO 26262-1 calls QM not an ASIL, so it is not the lowest one — and is read as a declaration rather than as an absence. Declaring a level equal to or above that highest one is legitimate; only below it is reported.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "QM",
+        "A",
+        "B",
+        "C",
+        "D",
+        "QM(A)",
+        "QM(B)",
+        "QM(C)",
+        "QM(D)",
+        "A(B)",
+        "A(C)",
+        "A(D)",
+        "B(B)",
+        "B(C)",
+        "B(D)",
+        "C(C)",
+        "C(D)",
+        "D(D)",
+        null
+      ]
+    },
+    "handle_termination_and_restart": {
+      "description": "Whether this component's behaviour supports being stopped and restarted: `no_support`, `can_be_terminated` or `can_be_terminated_and_restarted`, emitted as the behaviour's `HANDLE-TERMINATION-AND-RESTART`. Required by `check-model` and by the ARXML writer on every component that is not an external stub. Absent when the model says nothing, and then `check-model` reports the component and the ARXML writer refuses it; a written `no_support` is a declaration, kept and emitted. An external stub may not declare it.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "no_support",
+        "can_be_terminated",
+        "can_be_terminated_and_restarted",
+        null
+      ]
+    },
+    "data_type_mappings": {
+      "description": "The mapping sets this component's behaviour maps its data types with, by name, in the order declared. A set named twice is refused, and a component that names none carries no key at all. Every application type the component's ports speak in has to be paired by one of the sets named here.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "behavior_name": {
+      "description": "The SHORT-NAME of the component's internal behaviour, as stated. Optional: absent, the behaviour is named `{name}_InternalBehavior`; a stated name is written as it is, and every reference to the behaviour follows it. A name equal to the derived one states the same thing. It must be a legal AUTOSAR Identifier and must not collide, ignoring case, with a port of the component.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "package": {
+      "description": "The one sub-package of `/ComponentTypes` this component is emitted in, a single SHORT-NAME segment: the component and the forms generated from it and every reference to it take `/ComponentTypes/{package}/`. Absent means `/ComponentTypes` itself. SWCraft's importers record it for an element whose source path is exactly `/ComponentTypes/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/ComponentTypes` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule. An external stub emits no component type, so it may not declare one.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "satisfies": {
+      "description": "The requirements this component satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. A link on a port or a runnable of this component counts for it, and allocates its ASIL to it.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "definitions": {
+    "port": {
+      "description": "One port of a software component: a named, directed endpoint typed by an interface. A `provide` port offers the interface, a `require` port consumes it, and an assembly connector joins one of each. A port of an external stub carries its name and direction only: the source states no interface for it. `kind:compositions.composition_port` declares the same four fields for a composition's boundary port; the two are duplicated rather than shared because a bare kind name is unique across the whole contract and `memberOf` is derived per layer.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The port's identity inside its component; unique among the component's ports and immutable.",
+          "type": "string"
+        },
+        "direction": {
+          "description": "Whether the port offers the interface (`provide`) or consumes it (`require`). An assembly connector runs from a `provide` port to a `require` port, never between two of the same direction.",
+          "type": "string",
+          "enum": [
+            "provide",
+            "require"
+          ]
+        },
+        "interface": {
+          "description": "The name of the declared interface this port is typed by. The two ends of a connector need not name the same interface: the required port's interface must be satisfied by the provided port's. Absent on an external stub's port, which never carries one; a port of any other component without one is reported.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "observed_interface": {
+          "description": "An observation, not a declaration: on an external stub's port, the interface its one known neighbour is typed by, or that all its neighbours agree on. The import writes it only there. No rule reads it, it draws no dependency, and the diagrams do not draw it: an external component's port is drawn as a bare square.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "description": "Free text about the port. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "measures": {
+          "description": "The measures that answer a finding about this port, keyed by the name of a data element the port's interface declares and valued by free text naming the mechanism. An entry stops a `require` port being reported for taking that element from a lower-rated source. It is a declaration and not a verification: no text is checked beyond blankness, and an empty or whitespace-only one is `safety.measure-blank`'s error. A key naming no element of the port's interface is reported, and so is a map on a `provide` port, where nothing reads it.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {}
+        },
+        "com_specs": {
+          "description": "The communication attributes this port states per data element, AUTOSAR's com-specs, addressed by `data_element`, which appears at most once. Each entry names a data element of the port's sender-receiver interface and records only what differs from the value the generated ARXML states when the model is silent. An empty list states nothing and is left out of the file. A port on a client-server interface carries none, and neither does a port of an external component; a port on an external interface stub carries entries only for the data elements the stub lists, with no `init` and, on a require port, no `queue_length`.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/port_com_spec"
+          },
+          "default": []
+        },
+        "satisfies": {
+          "description": "The requirements this port satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. It allocates the requirement's ASIL to the component that owns the port.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "name",
+        "direction"
+      ]
+    },
+    "port_com_spec": {
+      "description": "The communication attributes one data element takes on one port of a component, AUTOSAR's com-spec, stated only where they differ from what the generated ARXML states when the model is silent. Addressed by `data_element`; every other field is optional, and an absent one means the silent value: no update flag, no alive timeout, no never-received handling, no timeout replacement, no range check, no end-to-end protection, and no initial value of the port's own, so the port starts from the data element's `init`. The four receiver fields belong to a `require` port on an element that is not queued, `init` to a port of either direction on an element that is not queued, and `queue_length` to a `require` port on a queued one. An entry may state `init` alone. A composition's boundary port carries none: it states the silent values.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "data_element": {
+          "description": "The name of the data element of the port's interface these attributes apply to — of the data elements an external interface stub lists, when the port is typed by one. The entry's identity inside the port's `com_specs`, and so immutable.",
+          "type": "string"
+        },
+        "enable_update": {
+          "description": "AUTOSAR's `enableUpdate`, on a `require` port: whether the runnable can ask if the value was updated since its last read. Absent means `false`.",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "alive_timeout": {
+          "description": "AUTOSAR's `aliveTimeout`, on a `require` port, in seconds: how long the receiver waits for a new value before it reports a timeout. Absent, or `0`, means no timeout monitoring. Must be a finite number, zero or more. (unit: seconds)",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "handle_never_received": {
+          "description": "AUTOSAR's `handleNeverReceived`, on a `require` port: whether the receiver reports a value it has never received. Absent means `false`.",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "handle_timeout_type": {
+          "description": "AUTOSAR's `handleTimeoutType`, on a `require` port: `none` keeps the last value when the alive timeout expires, and `replace` replaces it with the init value. Absent means `none`.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "none",
+            "replace",
+            null
+          ]
+        },
+        "handle_out_of_range": {
+          "description": "AUTOSAR's `handleOutOfRange`, on a port of either direction: `none` requires no range check, and `default`, `ignore` and `saturate` say what the RTE does with a value outside the element's range. Absent means `none`.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "none",
+            "default",
+            "ignore",
+            "saturate",
+            null
+          ]
+        },
+        "uses_end_to_end_protection": {
+          "description": "AUTOSAR's `usesEndToEndProtection`, on a port of either direction: whether the element is protected end to end on this port. Absent means `false`.",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "queue_length": {
+          "description": "AUTOSAR's `queueLength`, on a `require` port whose data element is queued: how many values the receiver's queue holds. Must be at least 1, and a `require` port reading a queued element must state it.",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "init": {
+          "description": "This port's own initial value for the data element, AUTOSAR's com-spec `initValue`, which takes precedence over the element's `init` on this port. Optional: absent, the port starts from the element's `init`. Its shape follows the element's declared type exactly as the element's `init` does, and a value that type cannot hold is reported as a model error rather than converted.",
+          "type": [
+            "boolean",
+            "integer",
+            "number",
+            "string",
+            "array",
+            "object",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "data_element"
+      ]
+    },
+    "runnable": {
+      "description": "One runnable entity of a software component: a schedulable function with its timing constraint, the events that trigger it — periodic, at start-up, a client's call of an operation the component provides, the reception of a data element on one of its require ports, or the return of an asynchronous call of its component — whether it may be started again while it runs, the C symbol its entry point is generated under, and the data it touches through the component's own ports — the data elements it `reads` and `writes`, explicitly or implicitly, and the operations it `calls`, synchronously or asynchronously, each entry naming a port and a member of that port's interface — the variables of its own component it reads and writes without a port, in `reads_variables` and `writes_variables`, and the exclusive areas of its own component it enters by API, in `can_enter`, or runs inside as a whole, in `runs_inside`. A runnable is mapped to an OS task through the task's `runnables` list, by its component — the type by `swc` or the occurrence by `instance` — and the runnable's `name`, and the runnable of one occurrence to at most one task.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The runnable's identity inside its component; unique among the component's runnables and immutable. It is prefixed `TMT_` and `IT_` for the generated event names.",
+          "type": "string"
+        },
+        "min_start_interval": {
+          "description": "The minimum interval, in seconds, between two starts of the runnable (0 means no minimum). Must be >= 0; neither this field nor any other float accepts NaN or ±Infinity. (unit: seconds)",
+          "type": "number",
+          "default": 0.0
+        },
+        "concurrent": {
+          "description": "Whether the runnable may be started again while an earlier start is still running — AUTOSAR's `canBeInvokedConcurrently`. Left out of the file while it is `false`, the default, so only a runnable that may run concurrently with itself carries the key.",
+          "type": "boolean",
+          "default": false
+        },
+        "events": {
+          "description": "The events that trigger the runnable: periodic `timing` events, the start-up `init` event, `operation` events, each naming an operation a client calls through one of the component's own `provide` ports, `data` events, each naming a data element whose reception through one of the component's own `require` ports starts it, and `call_returned` events, each naming an operation a runnable of the component calls asynchronously, whose return starts it and whose result it fetches. A union-typed collection whose members carry no identity field: a member IS its value, so a changed period, port, operation or element is one event removed and one added.",
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/timing_event"
+              },
+              {
+                "$ref": "#/definitions/init_event"
+              },
+              {
+                "$ref": "#/definitions/operation_event"
+              },
+              {
+                "$ref": "#/definitions/data_event"
+              },
+              {
+                "$ref": "#/definitions/call_returned_event"
+              }
+            ]
+          },
+          "default": []
+        },
+        "reads": {
+          "description": "The data elements the runnable reads, each named by a `require` port of the component and a data element of that port's sender-receiver interface. A `(port, element)` pair appears at most once, whatever its receive form; `by: value` marks a by-value read, `by: implicit` an implicit one, and an entry without `by` is received by argument. The list says what is read, never in what order — a sequence owns ordering.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/data_read"
+          },
+          "default": []
+        },
+        "writes": {
+          "description": "The data elements the runnable writes, each named by a `provide` port of the component and a data element of that port's sender-receiver interface. A `(port, element)` pair appears at most once, whatever its send form; `by: implicit` marks an implicit write and an entry without it is an explicit send. The list says what is written, never in what order — a sequence owns ordering.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/data_write"
+          },
+          "default": []
+        },
+        "calls": {
+          "description": "The operations the runnable calls, each named by a `require` port of the component and an operation of that port's client-server interface. A `(port, operation)` pair appears at most once, whatever its synchrony; `asynchronous: true` marks a call the runnable does not wait for and an entry without it is a synchronous call.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/operation_call"
+          },
+          "default": []
+        },
+        "reads_variables": {
+          "description": "The variables of the runnable's own component it reads, each named by `variable`. A variable appears at most once. The list says what is read, never in what order — a sequence owns ordering.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/variable_read"
+          },
+          "default": []
+        },
+        "writes_variables": {
+          "description": "The variables of the runnable's own component it writes, each named by `variable`. A variable appears at most once. The list says what is written, never in what order — a sequence owns ordering.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/variable_write"
+          },
+          "default": []
+        },
+        "can_enter": {
+          "description": "The exclusive areas of the runnable's own component it can enter, each named by `area`: the runnable enters and leaves each by explicit RTE calls (`Rte_Enter`, `Rte_Exit`). An area appears at most once. Written as the runnable's `CAN-ENTER-EXCLUSIVE-AREA-REFS`, in the order listed.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/can_enter_area"
+          },
+          "default": []
+        },
+        "runs_inside": {
+          "description": "The exclusive areas of the runnable's own component it runs inside, each named by `area`: the runnable's whole execution is guarded by each, and no RTE call is generated for it. An area appears at most once. Written as the runnable's `RUNS-INSIDE-EXCLUSIVE-AREA-REFS`, in the order listed.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/runs_inside_area"
+          },
+          "default": []
+        },
+        "description": {
+          "description": "Free text about the runnable. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "symbol": {
+          "description": "The C symbol of the runnable's entry point, AUTOSAR's `symbol`: the name the generated code gives the function the component implements. Optional: absent, the runnable's `name` is its symbol, and a symbol equal to the name states the same thing. A stated symbol must be a C identifier — a letter or an underscore, then letters, digits and underscores — and no two runnables of one component may be written with the same symbol, whether stated or taken from the name.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "wcet": {
+          "description": "The runnable's execution-time budget: what the architect allots to one execution of the runnable, an upper bound the model is checked against and never a measurement. Written as a whole number followed by its unit, one of `ns`, `us`, `ms` or `s` — `850ns`, `400us`, `2ms` — with no space, no leading zero, no decimal point and at most 18 digits; omitted or `null` when no budget is declared, greater than zero when present, and declared together with `wcet_type`. Written into the generated ARXML as the maximum of the runnable's `EXECUTION-TIME-CONSTRAINT`, the integer and its unit's CSE code exactly as written. A file still spelling `wcet_us` is refused with the new spelling.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "wcet_type": {
+          "description": "What the runnable's `wcet` counts, AUTOSAR's `executionTimeType`: `gross`, the time including the runnable's external calls, or `net`, the time without them; neither includes interruptions. Required when `wcet` is declared and refused without it. The analyses sum `gross` and `net` budgets alike, so a `net` budget's external calls are counted nowhere.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "gross",
+            "net",
+            null
+          ]
+        },
+        "satisfies": {
+          "description": "The requirements this runnable satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. It allocates the requirement's ASIL to the component that owns the runnable.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "timing_event": {
+      "description": "A periodic trigger: the runnable is invoked every `period` seconds, except in the modes `disabled_modes` names. Every field is part of the event's identity, so a changed period is one event removed and another added, never an edit in place; a field still at its default is left out of the identity, so an event that disables no mode is addressed by its `type` and `period` alone.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "description": "The discriminator of a timing event; always `timing`.",
+          "type": "string",
+          "enum": [
+            "timing"
+          ]
+        },
+        "period": {
+          "description": "The period of the trigger, in seconds. Must be > 0. (unit: seconds)",
+          "type": "number"
+        },
+        "disabled_modes": {
+          "description": "The modes in which this event does not start its runnable, AUTOSAR's `disabledMode`s, in the order declared. Part of the event's identity like `period`, and replaced only with the whole event: the list has no addressable interior. An empty list is left out of the file and out of the event's identity.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/disabled_mode"
+          },
+          "default": []
+        },
+        "name": {
+          "description": "The event's SHORT-NAME, as stated. Optional: absent, the name is derived — `TMT_{runnable}`, with a counter over every event of the component where two would derive the same name — and a stated name is written as it is, keeping the event's place in that counter, so no other event's derived name moves. A name equal to the derived one states the same thing. Part of the event's identity while stated, and so immutable; absent, it is left out of the identity. It must be a legal AUTOSAR Identifier and unique, ignoring case, among the names of the component's events and runnables as written.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "period"
+      ]
+    },
+    "disabled_mode": {
+      "description": "One mode in which a timing or data-received event does not start its runnable, AUTOSAR's `disabledMode`: the component's own `require` port that receives the mode, and the ARXML paths of the mode declaration group prototype and of the mode declaration, verbatim. The model declares no mode-switch interface, so the port is typed by an external interface stub and the two paths are held as the export spelled them.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "port": {
+          "description": "The name of the component's own `require` port the mode arrives on. Its interface is an external interface stub standing in for a mode-switch interface.",
+          "type": "string"
+        },
+        "mode_group_ref": {
+          "description": "The absolute ARXML path of the mode declaration group prototype, verbatim: the port's interface path followed by the prototype's short name.",
+          "type": "string"
+        },
+        "mode_ref": {
+          "description": "The absolute ARXML path of the mode declaration, verbatim.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "port",
+        "mode_group_ref",
+        "mode_ref"
+      ]
+    },
+    "init_event": {
+      "description": "An initialization event: the runnable runs once at start-up. It carries its `type` and, when stated, its `name`, so a runnable either has it or does not.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "description": "The discriminator of an initialization event; always `init`.",
+          "type": "string",
+          "enum": [
+            "init"
+          ]
+        },
+        "name": {
+          "description": "The event's SHORT-NAME, as stated. Optional: absent, the name is derived — `IT_{runnable}`, with a counter over every event of the component where two would derive the same name — and a stated name is written as it is, keeping the event's place in that counter, so no other event's derived name moves. A name equal to the derived one states the same thing. Part of the event's identity while stated, and so immutable; absent, it is left out of the identity. It must be a legal AUTOSAR Identifier and unique, ignoring case, among the names of the component's events and runnables as written.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "operation_event": {
+      "description": "A server trigger: the runnable is started when a client calls `operation` through `port`, one of the component's own `provide` ports whose interface is client-server. Every field is part of the event's identity, so a changed port or operation is one event removed and another added, never an edit in place.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "description": "The discriminator of an operation event; always `operation`.",
+          "type": "string",
+          "enum": [
+            "operation"
+          ]
+        },
+        "port": {
+          "description": "The name of the component's port the operation is provided through: a `provide` port whose interface is client-server. Part of the event's identity, and so immutable.",
+          "type": "string"
+        },
+        "operation": {
+          "description": "The name of an operation of that port's interface — of the operations an external interface stub lists, when the port is typed by one. Part of the event's identity, and so immutable.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The event's SHORT-NAME, as stated. Optional: absent, the name is derived — `OIT_{port}_{operation}`, with a counter over every event of the component where two would derive the same name — and a stated name is written as it is, keeping the event's place in that counter, so no other event's derived name moves. A name equal to the derived one states the same thing. Part of the event's identity while stated, and so immutable; absent, it is left out of the identity. It must be a legal AUTOSAR Identifier and unique, ignoring case, among the names of the component's events and runnables as written.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "port",
+        "operation"
+      ]
+    },
+    "data_event": {
+      "description": "A data-received trigger: the runnable is started each time a value of `element` arrives through `port`, one of the component's own `require` ports whose interface is sender-receiver — AUTOSAR's `DataReceivedEvent` — except in the modes `disabled_modes` names. Every field is part of the event's identity, so a changed port or element is one event removed and another added, never an edit in place; a field still at its default is left out of the identity, so an event that disables no mode is addressed by its `type`, `port` and `element` alone.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "description": "The discriminator of a data-received event; always `data`.",
+          "type": "string",
+          "enum": [
+            "data"
+          ]
+        },
+        "port": {
+          "description": "The name of the component's port the element is received through: a `require` port whose interface is sender-receiver. Part of the event's identity, and so immutable.",
+          "type": "string"
+        },
+        "element": {
+          "description": "The name of a data element of that port's interface — of the data elements an external interface stub lists, when the port is typed by one. Part of the event's identity, and so immutable.",
+          "type": "string"
+        },
+        "disabled_modes": {
+          "description": "The modes in which this event does not start its runnable, AUTOSAR's `disabledMode`s, in the order declared — the timing event's field. Part of the event's identity like `port` and `element`, and replaced only with the whole event: the list has no addressable interior. An empty list is left out of the file and out of the event's identity.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/disabled_mode"
+          },
+          "default": []
+        },
+        "name": {
+          "description": "The event's SHORT-NAME, as stated. Optional: absent, the name is derived — `DRT_{port}_{element}`, with a counter over every event of the component where two would derive the same name — and a stated name is written as it is, keeping the event's place in that counter, so no other event's derived name moves. A name equal to the derived one states the same thing. Part of the event's identity while stated, and so immutable; absent, it is left out of the identity. It must be a legal AUTOSAR Identifier and unique, ignoring case, among the names of the component's events and runnables as written.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "port",
+        "element"
+      ]
+    },
+    "call_returned_event": {
+      "description": "A returns trigger: the runnable is started when an asynchronous call of `operation` through `port`, made by a runnable of the same component, returns, and it is the runnable that fetches the result — AUTOSAR's `AsynchronousServerCallReturnsEvent`, sourced by a result point of this runnable referencing that call. Every field is part of the event's identity, so a changed port or operation is one event removed and another added, never an edit in place; a field still at its default is left out of the identity, so an event that states neither name is addressed by its `type`, `port` and `operation` alone.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "description": "The discriminator of a call-returned event; always `call_returned`.",
+          "type": "string",
+          "enum": [
+            "call_returned"
+          ]
+        },
+        "port": {
+          "description": "The name of the component's port the asynchronous call goes through: a `require` port whose interface is client-server, named by an asynchronous `calls` entry of a runnable of the component. Part of the event's identity, and so immutable.",
+          "type": "string"
+        },
+        "operation": {
+          "description": "The name of the operation called asynchronously: an operation of that port's interface — of the operations an external interface stub lists, when the port is typed by one. Part of the event's identity, and so immutable.",
+          "type": "string"
+        },
+        "result": {
+          "description": "The SHORT-NAME of the result point this runnable fetches the result through, as stated. Optional: absent, the name is derived as `Result_{port}_{operation}`; a stated name is written as it is. Part of the event's identity while stated, and so immutable; absent, it is left out of the identity. It must be a legal AUTOSAR Identifier and unique, ignoring case, among the names of the runnable's access points as written.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "description": "The event's SHORT-NAME, as stated. Optional: absent, the name is derived — `ASRT_{port}_{operation}`, with a counter over every event of the component where two would derive the same name — and a stated name is written as it is, keeping the event's place in that counter, so no other event's derived name moves. A name equal to the derived one states the same thing. Part of the event's identity while stated, and so immutable; absent, it is left out of the identity. It must be a legal AUTOSAR Identifier and unique, ignoring case, among the names of the component's events and runnables as written.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "port",
+        "operation"
+      ]
+    },
+    "data_read": {
+      "description": "One entry of a runnable's `reads` list: the `(port, element)` pair that names a data element received through one of the component's own `require` ports, and the receive form — by argument, by value or implicit. The pair is the member's identity; the form is not.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "port": {
+          "description": "The name of the component's port the element is read through: a `require` port whose interface is sender-receiver. Half of the member's composite identity, and so immutable.",
+          "type": "string"
+        },
+        "element": {
+          "description": "The name of a data element of that port's interface — of the data elements an external interface stub lists, when the port is typed by one. The other half of the composite identity, and so immutable.",
+          "type": "string"
+        },
+        "by": {
+          "description": "The receive form: `value` for a by-value read; `implicit` for an implicit read, AUTOSAR's `dataReadAccess`, whose value the RTE takes before the runnable starts and which does not change while it runs; absent for the by-argument default, which has no spelling of its own. A form and not an identity, so one `(port, element)` pair may not appear once in each form.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "value",
+            "implicit",
+            null
+          ]
+        },
+        "name": {
+          "description": "The access point's SHORT-NAME, as stated. Optional: absent, the name is derived as `R_{port}_{element}`; a stated name is written as it is, and one equal to the derived one states the same thing. Not part of the entry's identity. It must be a legal AUTOSAR Identifier and unique, ignoring case, among the names of the runnable's access points as written.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "port",
+        "element"
+      ]
+    },
+    "data_write": {
+      "description": "One entry of a runnable's `writes` list: the `(port, element)` pair that names a data element sent through one of the component's own `provide` ports, and the send form — explicit or implicit. The pair is the member's identity; the form is not.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "port": {
+          "description": "The name of the component's port the element is written through: a `provide` port whose interface is sender-receiver. Half of the member's composite identity, and so immutable.",
+          "type": "string"
+        },
+        "element": {
+          "description": "The name of a data element of that port's interface — of the data elements an external interface stub lists, when the port is typed by one. The other half of the composite identity, and so immutable.",
+          "type": "string"
+        },
+        "by": {
+          "description": "The send form: `implicit` for an implicit write, AUTOSAR's `dataWriteAccess`, whose value the RTE publishes only after the runnable ends; absent for the explicit send, which has no spelling of its own. A form and not an identity, so one `(port, element)` pair may not appear once in each form.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "implicit",
+            null
+          ]
+        },
+        "name": {
+          "description": "The access point's SHORT-NAME, as stated. Optional: absent, the name is derived as `W_{port}_{element}`; a stated name is written as it is, and one equal to the derived one states the same thing. Not part of the entry's identity. It must be a legal AUTOSAR Identifier and unique, ignoring case, among the names of the runnable's access points as written.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "port",
+        "element"
+      ]
+    },
+    "operation_call": {
+      "description": "One entry of a runnable's `calls` list: the `(port, operation)` pair that names an operation invoked through one of the component's own `require` ports, and how: synchronously, the default, or asynchronously, with the result polled by the calling runnable or fetched by a runnable a `call_returned` event starts. The pair is the member's identity; the synchrony is not.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "port": {
+          "description": "The name of the component's port the operation is called through: a `require` port whose interface is client-server. Half of the member's composite identity, and so immutable.",
+          "type": "string"
+        },
+        "operation": {
+          "description": "The name of an operation of that port's interface — of the operations an external interface stub lists, when the port is typed by one. The other half of the composite identity, and so immutable.",
+          "type": "string"
+        },
+        "asynchronous": {
+          "description": "Whether the call is asynchronous — AUTOSAR's `AsynchronousServerCallPoint`, whose caller does not wait for the server. Left out of the file while it is `false`, the default, a synchronous call. Not part of the entry's identity, so changing it is an update in place.",
+          "type": "boolean",
+          "default": false
+        },
+        "poll": {
+          "description": "Whether the calling runnable fetches the result itself, without waiting, through a result point of its own — AUTOSAR's `AsynchronousServerCallResultPoint` on the caller, with no returns event. Only with `asynchronous: true`. Left out of the file while it is `false`, the default.",
+          "type": "boolean",
+          "default": false
+        },
+        "result": {
+          "description": "The polled result point's SHORT-NAME, as stated. Only with `poll: true`. Optional: absent, the name is derived as `Result_{port}_{operation}`; a stated name is written as it is. It must be a legal AUTOSAR Identifier and unique, ignoring case, among the names of the runnable's access points as written.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "timeout": {
+          "description": "The asynchronous call point's timeout, in seconds — AUTOSAR's `TIMEOUT`. Only with `asynchronous: true`; must be >= 0. Optional: absent, no timeout is written, never an invented value. The asynchronous calls of one `(port, operation)` pair in one component state one timeout. (unit: seconds)",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "name": {
+          "description": "The access point's SHORT-NAME, as stated. Optional: absent, the name is derived as `Call_{port}_{operation}`; a stated name is written as it is, and one equal to the derived one states the same thing. Not part of the entry's identity. It must be a legal AUTOSAR Identifier and unique, ignoring case, among the names of the runnable's access points as written.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "port",
+        "operation"
+      ]
+    },
+    "variable": {
+      "description": "One inter-runnable variable of a software component: a datum the component's runnables share without going through a port. It states how the runnables reach it (`access`), the declared data type it holds (`application_type` for an application data type, `implementation_type` for an implementation data type) and an optional `init` value it starts from. A runnable of the same component names it in its `reads_variables` and `writes_variables` lists.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The variable's identity inside its component; unique among the component's variables and immutable. Written as the variable's SHORT-NAME in the component's internal behaviour, a name space its runnables and events share.",
+          "type": "string"
+        },
+        "access": {
+          "description": "How the runnables reach the variable, which chooses the RTE API generated for it: `explicit`, a direct access, where a runnable may see another runnable's write while it runs, or `implicit`, where the value a runnable reads does not change while it runs. Required, because AUTOSAR gives no default. Written as the container the variable is emitted in, `EXPLICIT-INTER-RUNNABLE-VARIABLES` or `IMPLICIT-INTER-RUNNABLE-VARIABLES`.",
+          "type": "string",
+          "enum": [
+            "implicit",
+            "explicit"
+          ]
+        },
+        "application_type": {
+          "description": "The name of the declared application data type this variable holds, an element of the `application_types` layer: an application type, an enumeration, a record or an array. Exactly one of `application_type` and `implementation_type` is set.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "implementation_type": {
+          "description": "The name of the declared implementation data type this variable holds, an element of the `implementation_types` layer: a value type, a reference type, an implementation record, an implementation array or an external data type stub. A pointer, named directly or at the end of a chain of reference types, is a model error. Exactly one of `application_type` and `implementation_type` is set.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "init": {
+          "description": "The value this variable starts from. Optional, with the shape and the rules of a data element's `init`, judged against the variable's own declared type, and written in place as the variable's `INIT-VALUE`. A variable that a runnable reads and that states none is reported as a warning: AUTOSAR leaves its value undefined when the read comes before every write, and the model states no order of execution.",
+          "type": [
+            "boolean",
+            "integer",
+            "number",
+            "string",
+            "array",
+            "object",
+            "null"
+          ]
+        },
+        "description": {
+          "description": "Free text about the variable. Written into the generated ARXML as the variable's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        },
+        "sw_calibration_access": {
+          "description": "AUTOSAR's `swCalibrationAccess` for this variable: how a measurement and calibration tool may reach it, `not_accessible`, `read_only` or `read_write`. Absent means `not_accessible`, and nothing is written for it; a stated value is written into the generated ARXML as the variable's `SW-CALIBRATION-ACCESS`.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "not_accessible",
+            "read_only",
+            "read_write",
+            null
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "access"
+      ]
+    },
+    "variable_read": {
+      "description": "One entry of a runnable's `reads_variables` list: a variable of the runnable's own component that the runnable reads. The variable is the member's identity.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "variable": {
+          "description": "The name of the variable read: a variable of the runnable's own component. The member's identity, and so immutable.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The variable access's SHORT-NAME, as stated. Optional: absent, the name is derived as `RV_{variable}`; a stated name is written as it is, and one equal to the derived one states the same thing. Not part of the entry's identity. It must be a legal AUTOSAR Identifier and unique, ignoring case, among the names of the runnable's access points as written.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "variable"
+      ]
+    },
+    "variable_write": {
+      "description": "One entry of a runnable's `writes_variables` list: a variable of the runnable's own component that the runnable writes. The variable is the member's identity.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "variable": {
+          "description": "The name of the variable written: a variable of the runnable's own component. The member's identity, and so immutable.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The variable access's SHORT-NAME, as stated. Optional: absent, the name is derived as `WV_{variable}`; a stated name is written as it is, and one equal to the derived one states the same thing. Not part of the entry's identity. It must be a legal AUTOSAR Identifier and unique, ignoring case, among the names of the runnable's access points as written.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "variable"
+      ]
+    },
+    "exclusive_area": {
+      "description": "One exclusive area of a software component: a constraint on the RTE's scheduling, under which the runnables of the component that use the area do not preempt each other inside it. A runnable of the same component names it in its `can_enter` list, to enter and leave it by API, or in its `runs_inside` list, to run inside it as a whole. The area is local to its component.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The area's identity inside its component; unique among the component's areas, must not be blank, and immutable — renaming is a remove and a create. Written as the area's SHORT-NAME in the component's internal behaviour, a name space its runnables, events and variables share.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text about the area. Written into the generated ARXML as the area's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "can_enter_area": {
+      "description": "One entry of a runnable's `can_enter` list: an exclusive area of the runnable's own component that the runnable enters and leaves by explicit RTE calls. The area is the member's identity.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "area": {
+          "description": "The name of the area entered: an exclusive area of the runnable's own component. The member's identity, and so immutable.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "area"
+      ]
+    },
+    "runs_inside_area": {
+      "description": "One entry of a runnable's `runs_inside` list: an exclusive area of the runnable's own component that guards the runnable's whole execution. The area is the member's identity.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "area": {
+          "description": "The name of the area the runnable runs inside: an exclusive area of the runnable's own component. The member's identity, and so immutable.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "area"
+      ]
+    }
+  }
+}

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hand-crafted, anonymized importer fixture.
+  Mirrors the structural shapes of real tool exports the maintainer holds privately
+  (nested AR-PACKAGES, two-level typing, DESC blocks) using invented names.
+  No content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Chassis</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>DataTypes</SHORT-NAME>
+              <ELEMENTS>
+                <SW-BASE-TYPE>
+                  <SHORT-NAME>uint8</SHORT-NAME>
+                  <CATEGORY>FIXED_LENGTH</CATEGORY>
+                  <BASE-TYPE-SIZE>8</BASE-TYPE-SIZE>
+                  <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                  <NATIVE-DECLARATION>uint8</NATIVE-DECLARATION>
+                </SW-BASE-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>WheelSpeedValue_impl</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <DESC>
+                    <L-2 L="FOR-ALL">Implementation type for a raw wheel speed sample (anonymized fixture).</L-2>
+                  </DESC>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/DataTypes/uint8</BASE-TYPE-REF>
+                        <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Interfaces</SHORT-NAME>
+              <ELEMENTS>
+                <SENDER-RECEIVER-INTERFACE>
+                  <SHORT-NAME>IWheelSpeed</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="FOR-ALL">Wheel speed sender/receiver interface (anonymized fixture).</L-2>
+                  </DESC>
+                  <IS-SERVICE>false</IS-SERVICE>
+                  <DATA-ELEMENTS>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>speedValue</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="FOR-ALL">Current wheel speed value.</L-2>
+                      </DESC>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/DataTypes/WheelSpeedValue_impl</TYPE-TREF>
+                    </VARIABLE-DATA-PROTOTYPE>
+                  </DATA-ELEMENTS>
+                </SENDER-RECEIVER-INTERFACE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Components</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>WheelSpeedSensorSwc</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="FOR-ALL">Wheel speed sensor application component (anonymized fixture).</L-2>
+                  </DESC>
+                  <PORTS>
+                    <P-PORT-PROTOTYPE>
+                      <SHORT-NAME>pWheelSpeed</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="FOR-ALL">Provides the current wheel speed reading.</L-2>
+                      </DESC>
+                      <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/IWheelSpeed</PROVIDED-INTERFACE-TREF>
+                    </P-PORT-PROTOTYPE>
+                    <R-PORT-PROTOTYPE>
+                      <SHORT-NAME>rWheelSpeedEcho</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="FOR-ALL">Requires a loop-back echo of the wheel speed value.</L-2>
+                      </DESC>
+                      <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/IWheelSpeed</REQUIRED-INTERFACE-TREF>
+                    </R-PORT-PROTOTYPE>
+                  </PORTS>
+                  <INTERNAL-BEHAVIORS>
+                    <SWC-INTERNAL-BEHAVIOR>
+                      <SHORT-NAME>WheelSpeedSensorSwc_InternalBehavior</SHORT-NAME>
+                      <EVENTS>
+                        <TIMING-EVENT>
+                          <SHORT-NAME>TMT_WheelSpeedSensorRun</SHORT-NAME>
+                          <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/Acme/Chassis/Components/WheelSpeedSensorSwc/WheelSpeedSensorSwc_InternalBehavior/WheelSpeedSensorRun</START-ON-EVENT-REF>
+                          <PERIOD>0.01</PERIOD>
+                        </TIMING-EVENT>
+                      </EVENTS>
+                      <PORT-API-OPTIONS>
+                        <PORT-API-OPTION>
+                          <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                          <INDIRECT-API>false</INDIRECT-API>
+                          <PORT-REF DEST="P-PORT-PROTOTYPE">/Acme/Chassis/Components/WheelSpeedSensorSwc/pWheelSpeed</PORT-REF>
+                        </PORT-API-OPTION>
+                      </PORT-API-OPTIONS>
+                      <RUNNABLES>
+                        <RUNNABLE-ENTITY>
+                          <SHORT-NAME>WheelSpeedSensorRun</SHORT-NAME>
+                          <MINIMUM-START-INTERVAL>0.01</MINIMUM-START-INTERVAL>
+                          <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                          <SYMBOL>WheelSpeedSensorRun</SYMBOL>
+                        </RUNNABLE-ENTITY>
+                      </RUNNABLES>
+                      <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                    </SWC-INTERNAL-BEHAVIOR>
+                  </INTERNAL-BEHAVIORS>
+                </APPLICATION-SW-COMPONENT-TYPE>
+                <SWC-IMPLEMENTATION>
+                  <SHORT-NAME>WheelSpeedSensorSwc_Implementation</SHORT-NAME>
+                  <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/Acme/Chassis/Components/WheelSpeedSensorSwc/WheelSpeedSensorSwc_InternalBehavior</BEHAVIOR-REF>
+                </SWC-IMPLEMENTATION>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

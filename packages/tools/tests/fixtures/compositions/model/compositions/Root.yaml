@@ -1,0 +1,15 @@
+name: Root
+title: Root composition
+root: true
+description: >-
+  The top of the hierarchy. Both of its members are compositions, a shape a
+  tool export's top level can have: a connector there joins two composition
+  prototypes and therefore names two composition TYPES.
+
+members:
+  - name: Sub
+    composition: Sub
+    description: The producing sub-composition.
+  - name: Sink
+    composition: Sink
+    description: The consuming sub-composition.

@@ -1,0 +1,7 @@
+name: BrakeEcu
+kind: processor
+description: The brake ECU's processor.
+satisfies:
+- AS_001@1
+- SYS_REQ[12]@1
+- '[[SYS_REQ_14]]@1'

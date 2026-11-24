@@ -1,0 +1,102 @@
+# A specimen preset (kind: specimen) at a large synthetic topology scale. Every figure is
+# "invented" (chosen at that scale, rounded, to complete a consistent passport) or "neutral" (a
+# leaf at its neutral value).
+kind: specimen
+passport:
+  passport_version: 1.0.0
+  contract_version: 12.0.0
+  layers:
+    swc: 75                     # invented
+    interfaces: 500             # invented (all sender-receiver or client-server here)
+    connectors: 1400            # invented
+    application_types: 0        # neutral
+    implementation_types: 500   # invented
+    base_types: 12              # invented (the usual platform types' count)
+    requirements: 0             # invented
+    compositions: 1             # neutral
+    tasks: 0                    # invented
+    sequences: 0                # neutral
+    hardware: 3                 # invented (a processor, a core, a partition)
+    mapping_sets: 0             # neutral
+    units: 0                    # neutral
+    compu_methods: 0            # neutral
+    data_constraints: 0         # neutral
+  components:
+    ports:
+      total: 3000               # invented
+      top: [430, 140, 100, 60, 60, 60, 60, 60]   # invented
+    hubs: [430, 140, 100]       # invented
+    unconnected:
+      total: 290                # invented
+      max_on_one: 140           # invented
+    runnables: 400              # invented
+  interfaces:
+    sender_receiver: 450        # invented
+    client_server: 50           # invented
+    fan_out:
+      max: 600                  # invented (the heaviest interface)
+      top: [600, 200, 150, 100, 80, 60, 50, 40]  # invented
+  connectors:
+    assembly: 1400              # invented
+    delegation: 0               # neutral
+    links: 900                  # invented
+  hardware:
+    cores: 1                    # invented
+    partitions: 1               # derived: hardware 3 less one processor, one core
+    memories: 0                 # invented
+    rated_partitions: 0         # invented
+  tasks:
+    idle: 0                     # invented (no task)
+  requirements:                 # invented (no requirement)
+    on_all_site_kinds: 0
+    on_one_port: 0
+    unallocated: 0
+    stale_links: 0
+    links: 0
+  identifiers:
+    max_length: 40              # invented
+    swc:                        # the met layers at the generated names' values
+      max_length: 40
+      mean_length: 7.44
+    interfaces:
+      max_length: 6
+      mean_length: 6.0
+    connectors:
+      max_length: 8
+      mean_length: 8.0
+    implementation_types:
+      max_length: 6
+      mean_length: 6.0
+    base_types:
+      max_length: 6
+      mean_length: 6.0
+    compositions:
+      max_length: 4
+      mean_length: 4.0
+    hardware:
+      max_length: 8
+      mean_length: 7.667
+    application_types:          # neutral, as every layer below
+      max_length: 0
+      mean_length: 0
+    requirements:
+      max_length: 0
+      mean_length: 0
+    tasks:
+      max_length: 0
+      mean_length: 0
+    sequences:
+      max_length: 0
+      mean_length: 0
+    mapping_sets:
+      max_length: 0
+      mean_length: 0
+    units:
+      max_length: 0
+      mean_length: 0
+    compu_methods:
+      max_length: 0
+      mean_length: 0
+    data_constraints:
+      max_length: 0
+      mean_length: 0

@@ -1,0 +1,10 @@
+id: SWR-DRV-007
+title: Operating state publication
+description: The vehicle state manager shall publish the operating state every 100
+  ms.
+req_type: req
+version: 1
+source: external
+document: SRS Driver Information
+baseline: '1.0'
+revision: '1'

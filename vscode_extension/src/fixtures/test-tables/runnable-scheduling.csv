@@ -1,0 +1,6 @@
+"row_id","occurrence","component","runnable","symbol","mapping","task","task_position","task_period_s","task_priority","partition","core","events","min_start_interval_s","concurrent","wcet","wcet_type","description","source_ref","facts_hash","verification_method","comment","accepted","accepted_facts_hash","review_state"
+"occurrence:ExampleConsumerSWC:ExampleConsumerRun","ExampleConsumerSWC","ExampleConsumerSWC","ExampleConsumerRun","","mapped","Task_10ms","1","0.01","5","PARTITION0","CORE0","[{""disabled_modes"":[],""period_s"":0.01,""type"":""timing""}]","0.01","false","","","Consumes, then ""stores""","swc/example/ExampleConsumerSWC.yaml","02dbff61828a71ce","","Check on target,
+with the bench's ""long"" run","","","not-reviewed"
+"occurrence:ExampleSWC:ExampleRun","ExampleSWC","ExampleSWC","ExampleRun","","not-mapped","","","","","","","[{""disabled_modes"":[],""period_s"":0.01,""type"":""timing""}]","0.01","false","","","Publishes, ""quoted"" stateafter a CR
+after an LF
+after a CRLF","swc/example/ExampleSWC.yaml","834fb658bf4795fd","HIL","","yes","0000000000000000","stale"

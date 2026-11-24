@@ -1,0 +1,74 @@
+{
+  "description": "Every build-time pin and digest of the workstation archive's runtime payloads, and of the elkjs payload the swcraft-tools wheel carries. scripts/build_artifacts.py reads this file and carries no digest or version of its own. `python scripts/dev.py update-pins` writes it: the Node.js, CPython and elkjs versions are the ones already here (edit them to bump). Each Node.js and CPython sha256 is transcribed from the publisher's own sums file (nodejs.org's SHASUMS256.txt, the python-build-standalone release's SHA256SUMS); the elkjs sha256 is computed from the npm registry's tarball once that tarball matches the sha512 integrity the registry publishes for the version. The companion extensions are the vscode_extension/package.json extensionPack, in its order, each at the newest release version the Visual Studio Marketplace publishes, with the build each platform takes; their sha256 is computed from the downloaded package, because the Marketplace publishes none.",
+  "node": {
+    "version": "22.23.2",
+    "platforms": {
+      "linux-x64": {
+        "sha256": "d60acfe00a2932254bb0ad20e01b0d74397a0875595de719654b214f4b03f307"
+      },
+      "macos-arm64": {
+        "sha256": "61130f394c1630d211dd50aecc4353d379480f36d3ac913cd85dbba1aed585c6"
+      },
+      "windows-x64": {
+        "sha256": "1177b4137ba5adaa56354ae40f1080c7450e8ae09cecb47da459d1c52ac99f97"
+      }
+    }
+  },
+  "python": {
+    "version": "3.11.16",
+    "build_tag": "20260901",
+    "platforms": {
+      "linux-x64": {
+        "sha256": "faa0758583a63f14c5eee516af82738403b59c13edda6fc0a21d953febd89eed"
+      },
+      "macos-arm64": {
+        "sha256": "50424fa409e8ae84b82a3052522f64695b47dff2158b70bb7358e0ebd6c085c9"
+      },
+      "windows-x64": {
+        "sha256": "6be524fa6752af802146a4adc7d098565425b0b1c166e19a5a7a4c8cccb86bf6"
+      }
+    }
+  },
+  "elkjs": {
+    "version": "0.12.0",
+    "sha256": "c1d7719723e020b10724e3ccbc935696a2884f1e78d361cdd03766309e8e8e2a"
+  },
+  "extensions": [
+    {
+      "id": "redhat.vscode-yaml",
+      "version": "2.0.0",
+      "platforms": {
+        "linux-x64": {
+          "target": "universal",
+          "sha256": "4bba62ccda962b720dcb0829e85cf4109c94e86653dcd39fd7500c3687ad8c60"
+        },
+        "macos-arm64": {
+          "target": "universal",
+          "sha256": "4bba62ccda962b720dcb0829e85cf4109c94e86653dcd39fd7500c3687ad8c60"
+        },
+        "windows-x64": {
+          "target": "universal",
+          "sha256": "4bba62ccda962b720dcb0829e85cf4109c94e86653dcd39fd7500c3687ad8c60"
+        }
+      }
+    },
+    {
+      "id": "redhat.vscode-xml",
+      "version": "0.29.3",
+      "platforms": {
+        "linux-x64": {
+          "target": "linux-x64",
+          "sha256": "70ffe8167d7d099fc6de48dd1cd646a97be80c4d6a52d83ac6b83fd8c3b5e0ba"
+        },
+        "macos-arm64": {
+          "target": "darwin-arm64",
+          "sha256": "5d87705680ea2bef3c658526e803f26a614dc7a5e5623cb447808885232e4665"
+        },
+        "windows-x64": {
+          "target": "win32-x64",
+          "sha256": "d79028a93e591fc757425544c9423cd65d8529036e4793486a356efabc9c730c"
+        }
+      }
+    }
+  ]
+}

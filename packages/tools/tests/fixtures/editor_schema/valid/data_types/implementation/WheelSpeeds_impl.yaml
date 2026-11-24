@@ -1,0 +1,8 @@
+name: WheelSpeeds_impl
+kind: implementation_record
+elements:
+  - name: front
+    type: WheelSpeedValue_T
+  - name: rear
+    type: WheelSpeedValue_T
+description: Hand-built implementation record fixture — the corpus declares no implementation structure

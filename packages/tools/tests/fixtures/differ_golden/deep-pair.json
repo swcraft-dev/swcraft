@@ -1,0 +1,304 @@
+{
+  "schema_version": 2,
+  "layers": {
+    "requirements": {
+      "added": [],
+      "removed": [],
+      "changed": [],
+      "rename_hints": []
+    },
+    "compositions": {
+      "added": [],
+      "removed": [],
+      "changed": [],
+      "rename_hints": []
+    },
+    "swcs": {
+      "added": [],
+      "removed": [],
+      "changed": [
+        {
+          "key": "SpeedCtrlSWC",
+          "fields": [],
+          "collections": [
+            {
+              "field": "ports",
+              "added": [],
+              "removed": [],
+              "changed": [
+                {
+                  "key": "pStatus",
+                  "fields": [
+                    {
+                      "field": "interface",
+                      "old": "IStatus",
+                      "new": "IState"
+                    }
+                  ],
+                  "collections": []
+                }
+              ],
+              "rename_hints": [],
+              "reordered": true
+            },
+            {
+              "field": "runnables",
+              "added": [],
+              "removed": [],
+              "changed": [
+                {
+                  "key": "SpeedCtrl_Run",
+                  "fields": [
+                    {
+                      "field": "min_start_interval",
+                      "old": 0.01,
+                      "new": 0.02
+                    }
+                  ],
+                  "collections": [
+                    {
+                      "field": "events",
+                      "added": [
+                        [
+                          "timing",
+                          0.02
+                        ]
+                      ],
+                      "removed": [
+                        [
+                          "timing",
+                          0.01
+                        ]
+                      ],
+                      "changed": [],
+                      "rename_hints": [],
+                      "reordered": false
+                    }
+                  ]
+                }
+              ],
+              "rename_hints": [],
+              "reordered": false
+            },
+            {
+              "field": "memory",
+              "added": [
+                "FLASH"
+              ],
+              "removed": [
+                "ROM"
+              ],
+              "changed": [
+                {
+                  "key": "RAM",
+                  "fields": [
+                    {
+                      "field": "value",
+                      "old": 1024,
+                      "new": 2048
+                    }
+                  ],
+                  "collections": []
+                }
+              ],
+              "rename_hints": [],
+              "reordered": false
+            },
+            {
+              "field": "satisfies",
+              "added": [],
+              "removed": [
+                "REQ-SPEED-002@1"
+              ],
+              "changed": [],
+              "rename_hints": [],
+              "reordered": false
+            }
+          ]
+        }
+      ],
+      "rename_hints": []
+    },
+    "interfaces": {
+      "added": [],
+      "removed": [],
+      "changed": [
+        {
+          "key": "ICtrl",
+          "fields": [],
+          "collections": [
+            {
+              "field": "operations",
+              "added": [],
+              "removed": [],
+              "changed": [
+                {
+                  "key": "ReadDtc",
+                  "fields": [],
+                  "collections": [
+                    {
+                      "field": "arguments",
+                      "added": [],
+                      "removed": [],
+                      "changed": [
+                        {
+                          "key": "speed",
+                          "fields": [
+                            {
+                              "field": "implementation_type",
+                              "old": "uint16",
+                              "new": "uint32"
+                            }
+                          ],
+                          "collections": []
+                        }
+                      ],
+                      "rename_hints": [],
+                      "reordered": false
+                    }
+                  ]
+                }
+              ],
+              "rename_hints": [],
+              "reordered": false
+            }
+          ]
+        }
+      ],
+      "rename_hints": []
+    },
+    "application_types": {
+      "added": [],
+      "removed": [],
+      "changed": [],
+      "rename_hints": []
+    },
+    "implementation_types": {
+      "added": [],
+      "removed": [],
+      "changed": [
+        {
+          "key": "Gear",
+          "fields": [],
+          "collections": [
+            {
+              "field": "literals",
+              "added": [],
+              "removed": [],
+              "changed": [],
+              "rename_hints": [],
+              "reordered": true
+            }
+          ]
+        }
+      ],
+      "rename_hints": []
+    },
+    "base_types": {
+      "added": [],
+      "removed": [],
+      "changed": [],
+      "rename_hints": []
+    },
+    "units": {
+      "added": [],
+      "removed": [],
+      "changed": [],
+      "rename_hints": []
+    },
+    "compu_methods": {
+      "added": [],
+      "removed": [],
+      "changed": [],
+      "rename_hints": []
+    },
+    "data_constraints": {
+      "added": [],
+      "removed": [],
+      "changed": [],
+      "rename_hints": []
+    },
+    "mapping_sets": {
+      "added": [],
+      "removed": [],
+      "changed": [],
+      "rename_hints": []
+    },
+    "connectors": {
+      "added": [],
+      "removed": [],
+      "changed": [],
+      "rename_hints": []
+    },
+    "tasks": {
+      "added": [],
+      "removed": [],
+      "changed": [
+        {
+          "key": "Task_10ms",
+          "fields": [],
+          "collections": [
+            {
+              "field": "runnables",
+              "added": [],
+              "removed": [
+                [
+                  "SpeedCtrlSWC",
+                  null,
+                  "TorqueCalc_Run"
+                ]
+              ],
+              "changed": [],
+              "rename_hints": [],
+              "reordered": false
+            }
+          ]
+        }
+      ],
+      "rename_hints": []
+    },
+    "sequences": {
+      "added": [],
+      "removed": [],
+      "changed": [
+        {
+          "key": "SpeedFlow",
+          "fields": [],
+          "collections": [
+            {
+              "field": "steps",
+              "added": [],
+              "removed": [],
+              "changed": [
+                {
+                  "key": [
+                    "SpeedCtrlSWC",
+                    null,
+                    "SpeedCtrl_Run"
+                  ],
+                  "fields": [
+                    {
+                      "field": "note",
+                      "old": "reads the sensor",
+                      "new": "reads the wheel sensor"
+                    }
+                  ],
+                  "collections": []
+                }
+              ],
+              "rename_hints": [],
+              "reordered": false
+            }
+          ]
+        }
+      ],
+      "rename_hints": []
+    },
+    "hardware": {
+      "added": [],
+      "removed": [],
+      "changed": [],
+      "rename_hints": []
+    }
+  }
+}

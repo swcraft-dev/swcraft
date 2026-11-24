@@ -1,0 +1,76 @@
+{
+  "id": "guide-section-in-parts",
+  "function": "MCP `guide`",
+  "tier": "generated-small",
+  "specimen": "scenario-impact-summary-bounded",
+  "class": "boundary-at-scale",
+  "guide": "installed",
+  "thresholds": {
+    "one_part": {
+      "value": 1,
+      "because": "the command-line page is longer than one reply, so its subtree is read in parts"
+    },
+    "guide_reply_budget": {
+      "value": 8000,
+      "because": "every guide reply is at most 8 000 wire bytes, under VS Code's 8 192-byte spill to a file (guide_search.GUIDE_REPLY_BUDGET_WIRE_BYTES)"
+    }
+  },
+  "steps": [
+    {
+      "id": "first",
+      "mcp": "guide",
+      "arguments": {
+        "section": "cli"
+      }
+    },
+    {
+      "id": "second",
+      "mcp": "guide",
+      "arguments": {
+        "section": "cli",
+        "part": 2
+      }
+    }
+  ],
+  "expectations": [
+    {
+      "step": "first",
+      "at": "parts",
+      "count_above": "one_part"
+    },
+    {
+      "step": "first",
+      "at": "next.section",
+      "literal_equals": "cli",
+      "because": "a part that is not the last names the following one, of the same id"
+    },
+    {
+      "step": "first",
+      "bytes_at_most": "guide_reply_budget"
+    },
+    {
+      "step": "second",
+      "at": "id",
+      "literal_equals": "cli",
+      "because": "the part named by next answers the same subtree"
+    },
+    {
+      "step": "second",
+      "at": "parts",
+      "count_equals": {
+        "step": "first",
+        "at": "parts"
+      },
+      "because": "every part of one id states the same number of parts"
+    },
+    {
+      "step": "second",
+      "at": "text",
+      "present": true
+    },
+    {
+      "step": "second",
+      "bytes_at_most": "guide_reply_budget"
+    }
+  ]
+}

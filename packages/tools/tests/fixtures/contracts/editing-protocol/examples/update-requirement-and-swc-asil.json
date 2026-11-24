@@ -1,0 +1,80 @@
+{
+  "name": "update-requirement-and-swc-asil",
+  "description": "The sentence an architect starts with — \"this component is ASIL D\" — as a change set the protocol accepts. The level is allocated on the REQUIREMENT, which is where ISO 26262 puts it, and declared on the component in the same unit; the two are one design act, and a change set that carried only one of them would be judged against the other's current value rather than against the one being written. Both fields are ordinary declared fields, and neither DIRECTION written here is a safety act: allocating a level where none was, and declaring a component to it, make a check refuse more. What is a safety act is the other direction on either of them, which the authorization notes below state.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` and `ExampleConsumerSWC` both satisfy `REQ_EXAMPLE_001` (each names it in its own `satisfies`), and no element of the model declares an `asil` at all — the field has no default, so it is absent on disk and reads as null. After the change set the requirement carries ASIL D, `ExampleSWC` declares D (equal, which is the legitimate direction), and `ExampleConsumerSWC` declares nothing and therefore DERIVES D from the same requirement.",
+    "existing_elements": [
+      { "layer": "requirements", "element": "REQ_EXAMPLE_001" },
+      { "layer": "swc", "element": "ExampleSWC" },
+      { "layer": "swc", "element": "ExampleConsumerSWC" }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "requirements",
+            "element": "REQ_EXAMPLE_001",
+            "path": [{ "field": "asil" }]
+          }
+        },
+        {
+          "operation": "update",
+          "address": { "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "asil" }] }
+        }
+      ],
+      "notes": "The scope covers both addresses exactly, and with the same verb the delta reports: the field is absent rather than missing, so writing it for the first time is an `update` at the field's own address and not a `create` — a `create` belongs to a member of a collection, and `asil` is a scalar the element always declares the place for. Note which way the safety guard does NOT point here, and where it does. Neither address in THIS change set is a safety act: writing a level for the first time allocates one where none was and declares a component to it, and both make a check refuse more rather than less. The guard fires on the OTHER direction of both fields, and answers it from the values the delta carries — lowering the level a bearer allocates, removing a `satisfies` member from a component, a port or a runnable, or lowering a component's own EFFECTIVE level, is `SafetyChangeKind.LOWER_ALLOCATION`, because each makes a check stop refusing and creates no finding in exchange. The component is not exempt: lowering it creates a `consistency-violation` the change set's own validation refuses only for `safety.component-below-requirements`, while `safety.consumer-above-element` and `safety.task-mixed-asil` read the effective level and simply stop refusing. `negative/consistency-violation-component-below-requirements.json` is that refusal; it is the model gate BESIDE the guard's question and not instead of it. Two qualifiers the guard reads and a reader should not have to infer: a requirement that allocates no level allocates nothing, so removing a `satisfies` member naming an unlevelled one, or removing the requirement — every requirement of this very model before the change set — is no weakening at all; and a component that stops declaring a level DERIVES what its requirements allocate, so withdrawing a declaration the requirements hold up is no drop."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Allocate REQ_EXAMPLE_001 at ASIL D and build ExampleSWC to it.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "requirements",
+          "element": "REQ_EXAMPLE_001",
+          "path": [{ "field": "asil" }]
+        },
+        "value": "D"
+      },
+      {
+        "operation": "update",
+        "address": { "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "asil" }] },
+        "value": "D"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "update",
+          "address": { "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "asil" }] },
+          "before": null,
+          "after": "D",
+          "summary": "swc/ExampleSWC: ~ asil None -> D"
+        },
+        {
+          "operation": "update",
+          "address": {
+            "layer": "requirements",
+            "element": "REQ_EXAMPLE_001",
+            "path": [{ "field": "asil" }]
+          },
+          "before": null,
+          "after": "D",
+          "summary": "requirements/REQ_EXAMPLE_001: ~ asil None -> D"
+        }
+      ]
+    },
+    "notes": "`before` is `null` on both entries and that is the field's real prior state: `asil` has no default, so a project that has never allocated a level carries no key at all and the loaded element reads `None`. The delta is in the projection's own order — the layer order the differ walks, `swc` before `requirements` — and not the order the operations were requested in, which is the property `examples/update-runnable-event-and-memory-entry.json` states at length. `status` is `staged` because no host review boundary was offered: an accepted change set reaches `staged` on its own, and nothing here asks a human anything. The accepted outcome is the whole point of the pair the two `asil` operations make: `ExampleSWC` declares exactly the level allocated to it, which `[constr_6201]` admits along with any HIGHER one, and `ExampleConsumerSWC` declares nothing and derives D from the same requirement — an omission is not a `QM`, and a component that declares nothing is never reported. Writing `asil: QM` on it instead WOULD be reported, because that is a declaration that no ASIL is allocated to a component an ASIL-D requirement allocates one to."
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swcraft.dev/contracts/editing-protocol/vector.schema.json",
+  "title": "SWCraft editing-protocol test vector",
+  "description": "The envelope every file under packages/tools/tests/fixtures/contracts/editing-protocol/examples/ and .../negative/ follows. A vector is a self-describing exchange — baseline assumptions, the request, and what must come back — not an annotated snippet, so Phases 19.2 and 19.3 receive executable acceptance inputs instead of prose with labels.",
+  "$comment": "The relative reference `protocol.schema.json#/...` resolves against this document's $id, whose last path segment equals this file's name on disk; the consistency test builds a `referencing` registry over the two local files under exactly those identifiers.",
+  "$ref": "#/$defs/vector",
+  "$defs": {
+    "vector": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "A stable identifier for the vector, unique across both directories. Not the file name — the file may be renamed, the vector name may not.",
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "description": "What the vector proves, in one or two sentences.",
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "description": "`example` files live under examples/ and state an accepted exchange; `negative` files live under negative/ and state a rejection.",
+          "enum": ["example", "negative"]
+        },
+        "context": { "$ref": "#/$defs/context" },
+        "input": {
+          "description": "The protocol request. Constrained by the conditional branches below: for an example and for a `semantic` negative it must conform to protocol.schema.json's request shapes; for a `protocol-schema` negative it is arbitrary JSON, because violating that schema is the whole point of the vector.",
+          "$comment": "Any JSON here; the allOf branches narrow it."
+        },
+        "expected": {
+          "oneOf": [
+            { "$ref": "#/$defs/expectedResponse" },
+            { "$ref": "#/$defs/expectedError" }
+          ]
+        }
+      },
+      "required": ["name", "description", "kind", "context", "input", "expected"],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$comment": "An example is an accepted exchange: its input is a well-formed request and its expectation is a response shape.",
+          "if": {
+            "properties": { "kind": { "const": "example" } },
+            "required": ["kind"]
+          },
+          "then": {
+            "properties": {
+              "input": { "$ref": "protocol.schema.json#/$defs/request" },
+              "expected": { "$ref": "#/$defs/expectedResponse" }
+            }
+          }
+        },
+        {
+          "$comment": "Every negative expects an error, whichever layer detects it.",
+          "if": {
+            "properties": { "kind": { "const": "negative" } },
+            "required": ["kind"]
+          },
+          "then": {
+            "properties": { "expected": { "$ref": "#/$defs/expectedError" } }
+          }
+        },
+        {
+          "$comment": "A `semantic` negative is a well-formed request whose violation only the 19.2 engine can find — an undeclared field, an illegal emitted identifier, a dangling reference, a stale baseline, an unapproved delta. The envelope therefore holds it to the protocol request shapes.",
+          "if": {
+            "properties": {
+              "kind": { "const": "negative" },
+              "expected": {
+                "properties": { "violation_layer": { "const": "semantic" } },
+                "required": ["violation_layer"]
+              }
+            },
+            "required": ["kind", "expected"]
+          },
+          "then": {
+            "properties": { "input": { "$ref": "protocol.schema.json#/$defs/request" } }
+          }
+        },
+        {
+          "$comment": "A `protocol-schema` negative is rejected by protocol.schema.json itself, so its input is admitted as arbitrary JSON here and its expectation is pinned to `schema-violation`. The test asserts the FACT of rejection only: a jsonschema ValidationError has no stable mapping to an error code, so no message text is matched.",
+          "if": {
+            "properties": {
+              "kind": { "const": "negative" },
+              "expected": {
+                "properties": { "violation_layer": { "const": "protocol-schema" } },
+                "required": ["violation_layer"]
+              }
+            },
+            "required": ["kind", "expected"]
+          },
+          "then": {
+            "properties": {
+              "expected": {
+                "properties": { "expected_error": { "const": "schema-violation" } },
+                "required": ["expected_error"]
+              }
+            }
+          }
+        }
+      ]
+    },
+
+    "context": {
+      "description": "The baseline assumptions the vector is stated against: what the model already holds, which baseline token the request carries, and what the approved scope covers. A negative's violation lives in this context or in the request, machine-checkably — never in a free-text label. `layers_present` and `existing_elements` together are the FIXTURE SPEC: a 19.2/19.3 harness builds the baseline model from them, and packages/tools/tests/test_editing_protocol_contracts.py (class `TestContextIsAFixtureSpec`) holds them to that reading rather than treating them as decoration.",
+      "type": "object",
+      "properties": {
+        "summary": {
+          "description": "The starting state in prose, for a reader.",
+          "type": "string",
+          "minLength": 1
+        },
+        "layers_present": {
+          "description": "The layers that exist in the baseline model. Its absence means no particular layer set is assumed either way; state it when the vector depends on it. When present it must cover every layer `existing_elements` names — a fixture cannot hold an element of a layer it does not have.",
+          "type": "array",
+          "items": { "$ref": "protocol.schema.json#/$defs/layerName" }
+        },
+        "existing_elements": {
+          "description": "Elements the baseline model already holds, as addresses — the referenced targets, the identity a `create` collides with, the element an `update` addresses. Load-bearing rather than illustrative: a `create` in `input` whose address is listed here is an `identity-conflict` by construction, and one whose address is NOT listed is the accepted case, so the two may not disagree. One exception: a member of a `whole_value` LIST, because such a collection is a multiset and an address listed here may legally be created again — that adds a second occurrence rather than colliding. An address in `occupied_targets` is not an exception to this rule but an instance of its accepted case: its identity is free, so it is not listed here.",
+          "type": "array",
+          "items": { "$ref": "protocol.schema.json#/$defs/elementAddress" }
+        },
+        "occupied_targets": {
+          "description": "Element addresses whose PLAIN storage file name — the one the registry composes from the identity — is already held by a file although NO element of that layer declares that identity. The second, narrower half of the fixture spec, reachable whenever a file is not named after the element it holds: a hand-authored file whose basename is not the name it declares, or, on a case-insensitive filesystem, a file whose name differs from the identity only in case. A `create` at an address listed here is the ACCEPTED case: the store never lets a file-name collision touch an element, so the new element's file takes the nearest free collision suffix (`~1`, `~2`, …) — which is storage and appears in no response — and only an identity `existing_elements` lists is an `identity-conflict`. It is stated separately because the fixture that produces it is different (a file, not an element) and because a harness must be able to tell the two preconditions apart.",
+          "type": "array",
+          "items": { "$ref": "protocol.schema.json#/$defs/elementAddress" }
+        },
+        "baseline_state": {
+          "description": "Whether the token the request carries still describes the real model. `stale` is what a stale-baseline vector states: the model moved after the token was read.",
+          "enum": ["current", "stale"],
+          "default": "current"
+        },
+        "authorization": { "$ref": "#/$defs/authorizationContext" },
+        "notes": { "type": "string", "minLength": 1 }
+      },
+      "required": ["summary"],
+      "additionalProperties": false
+    },
+
+    "authorizationContext": {
+      "description": "The approved scope this exchange is judged against. An empty `approved_scope` is an explicit statement that nothing is approved — the unauthorized-delta case — and is not the same as omitting the field.",
+      "type": "object",
+      "properties": {
+        "approved_scope": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/scopeEntry" }
+        },
+        "notes": { "type": "string", "minLength": 1 }
+      },
+      "required": ["approved_scope"],
+      "additionalProperties": false
+    },
+
+    "scopeEntry": {
+      "description": "One approved operation at one address. Scope is keyed by operation and address, never by MCP tool name.",
+      "type": "object",
+      "properties": {
+        "operation": { "$ref": "protocol.schema.json#/$defs/changeOperationName" },
+        "address": { "$ref": "protocol.schema.json#/$defs/address" }
+      },
+      "required": ["operation", "address"],
+      "additionalProperties": false
+    },
+
+    "expectedResponse": {
+      "description": "An example's expectation: the response shape the accepted exchange must produce. Narrowed to the nine SUCCESS shapes on purpose (a `read` is answered in one of four: one address, several — `readManyResponse` —, none, the model map, or a count — `countResponse`; a `find` in `findResponse` or, in its `text` form, `findTextResponse`, or, in its `for_requirement` form, `findCandidatesResponse`) — protocol.schema.json's `$defs/response` union also admits `errorResult`, so referencing it here would let a file under examples/ state a rejection while `kind: \"example\"` says the exchange is accepted. A rejection is a negative, and its expectation is `expectedError`.",
+      "type": "object",
+      "properties": {
+        "response": {
+          "oneOf": [
+            { "$ref": "protocol.schema.json#/$defs/discoverResponse" },
+            { "$ref": "protocol.schema.json#/$defs/readResponse" },
+            { "$ref": "protocol.schema.json#/$defs/readManyResponse" },
+            { "$ref": "protocol.schema.json#/$defs/modelMapResponse" },
+            { "$ref": "protocol.schema.json#/$defs/countResponse" },
+            { "$ref": "protocol.schema.json#/$defs/findResponse" },
+            { "$ref": "protocol.schema.json#/$defs/findTextResponse" },
+            { "$ref": "protocol.schema.json#/$defs/findCandidatesResponse" },
+            { "$ref": "protocol.schema.json#/$defs/changeSetResponse" }
+          ]
+        },
+        "notes": { "type": "string", "minLength": 1 }
+      },
+      "required": ["response"],
+      "additionalProperties": false
+    },
+
+    "expectedError": {
+      "description": "A negative's expectation: the stable code, its failure class, and the layer that detects the violation. `violation_layer` is the discriminator the envelope's conditional branches key on.",
+      "type": "object",
+      "properties": {
+        "expected_error": { "$ref": "protocol.schema.json#/$defs/errorCode" },
+        "failure_class": { "$ref": "protocol.schema.json#/$defs/failureClass" },
+        "violation_layer": {
+          "description": "`protocol-schema`: protocol.schema.json rejects the input on its own. `semantic`: the input is a well-formed request and only the 19.2 engine, over the staged result, can detect the violation.",
+          "enum": ["protocol-schema", "semantic"]
+        },
+        "addresses": {
+          "description": "The address(es) the rejection names, where it has any.",
+          "type": "array",
+          "items": { "$ref": "protocol.schema.json#/$defs/address" },
+          "minItems": 1
+        },
+        "additional": {
+          "description": "The SECONDARY violations the same rejection must report alongside the primary one, in the order `errorResult.additional` carries them. Present only on a vector whose point is that one round trip reports everything a `check-model` run would; absent means the primary is the only violation and `errorResult.additional` is omitted.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/expectedAdditionalError" },
+          "minItems": 1
+        },
+        "notes": { "type": "string", "minLength": 1 }
+      },
+      "required": ["expected_error", "failure_class", "violation_layer"],
+      "additionalProperties": false
+    },
+
+    "expectedAdditionalError": {
+      "description": "One secondary violation of `expectedError.additional` — the vector-side mirror of protocol.schema.json's `$defs/errorDetail`, minus the message, which is not contract.",
+      "type": "object",
+      "properties": {
+        "expected_error": { "$ref": "protocol.schema.json#/$defs/errorCode" },
+        "failure_class": { "$ref": "protocol.schema.json#/$defs/failureClass" },
+        "addresses": {
+          "type": "array",
+          "items": { "$ref": "protocol.schema.json#/$defs/address" },
+          "minItems": 1
+        }
+      },
+      "required": ["expected_error", "failure_class"],
+      "additionalProperties": false
+    }
+  }
+}

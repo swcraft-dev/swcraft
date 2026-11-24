@@ -1,0 +1,122 @@
+{
+  "name": "identity-conflict-same-identity-group-move",
+  "description": "The forbidden shape: a `remove` and a `create` at the SAME identity in one change set. The protocol bans same-identity replacement GLOBALLY — for every uniquely identified element and every uniquely identified nested member — because the semantic differ does not represent relocation, or an in-place change of an immutable field, as a permitted delta: the vocabulary is `create`, `remove` and `update` at an address, and none of those means \"the same thing, elsewhere or differently identified\". A group move is the instance shown here because `swc.group` is immutable placement metadata and this is the only way it could be written; the `kind` discriminators of `interfaces`, `application_types`, `implementation_types` and `hardware`, and renaming in place run into exactly the same ban.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, where `ExampleSWC` is stored under the `example` group. The client wants it under `sensors` instead and states the move the only way the operation set allows: remove it, then create it again with the same name and a different group.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      },
+      {
+        "layer": "hardware",
+        "element": "RAM0"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC"
+          }
+        }
+      ],
+      "notes": "The scope covers both operations exactly, so the refusal is the identity rule and not the authorization boundary — the same shape as `immutable-field-memory-kind-discriminator.json`. An approved scope can no more make an identity reusable inside one change set than it can make an immutable field writable."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Move ExampleSWC from the example group into the sensors group.",
+    "operations": [
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC"
+        },
+        "value": {
+          "name": "ExampleSWC",
+          "group": "sensors",
+          "type": "application",
+          "description": "Example software component for testing and demonstration",
+          "ports": [
+            {
+              "name": "pOut",
+              "direction": "provide",
+              "interface": "IExample",
+              "description": "Example output port providing data"
+            }
+          ],
+          "runnables": [
+            {
+              "name": "ExampleRun",
+              "min_start_interval": 0.01,
+              "events": [
+                {
+                  "type": "timing",
+                  "period": 0.01
+                }
+              ]
+            }
+          ],
+          "memory": {
+            "RAM0": 2048
+          },
+          "handle_termination_and_restart": "no_support"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "identity-conflict",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      }
+    ],
+    "notes": "Why this is a refusal rather than a feature: the current and future semantic differ has no delta entry that represents a relocation, so the pair would reach the review boundary as something other than what was asked for and the user would approve a delta that is not the request. The argument is deliberately not one from snapshot equality — `group` is carried as placement metadata, so the two snapshots differ — nor one from byte equality, since the files differ either way. Refusing the pair at pass B turns a change the review surface cannot express into a stated rejection with an address on it. The ban is global and its consequences are these: relocating an SWC between groups, changing an `interfaces`/`application_types`/`implementation_types`/`hardware` `kind`, and renaming an element or member in place all become unreachable through the protocol, and each stays a user act on the user's own files — edit the YAML, `git mv` for a group — where the trust boundary already puts it. Two shapes stay legal and are the contrast this vector rests on: a `remove` and a `create` at DIFFERENT identities is the rename case (`examples/rename-swc-via-remove-create-and-reference-updates.json`), and a `remove` and a `create` of the same value in a `whole_value` LIST is a multiset operation rather than an identity replacement, because such members are counted rather than uniquely identified (`examples/create-and-remove-duplicate-runnable-events.json`)."
+  }
+}

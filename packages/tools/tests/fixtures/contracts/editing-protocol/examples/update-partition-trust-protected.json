@@ -1,0 +1,82 @@
+{
+  "name": "update-partition-trust-protected",
+  "description": "A trusted partition declared `trusted_with_protection`: still trusted, but confined for memory like a non-trusted one ([SWS_Os_00795], `OsTrustedApplicationWithProtection`). The declaration makes `safety.trusted-partition-below-processor-level` and `safety.trusted-partition-unrated` stop refusing the partition, and nothing in the model checks that the OS configuration confines it — the shape of a `coexistence` argument, so it is the sixth direction's fourth kind.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with `PARTITION0` declared `trusted`. It is unrated and the only partition on the unrated `CORE0`, so neither trust rule fires and the baseline reports nothing. The change set declares the partition `trusted_with_protection`.",
+    "existing_elements": [
+      {
+        "layer": "hardware",
+        "element": "PARTITION0"
+      },
+      {
+        "layer": "hardware",
+        "element": "CORE0"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "hardware",
+            "element": "PARTITION0",
+            "path": [
+              {
+                "field": "trust"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly. Leaving `trusted` is a declaration that silences the two trust rules, which the guard decides by comparing two models, so `declare_partition_protection` is asked once for the whole change set and the status is `committed`."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:WqHVkNLKJZj2fEvfn9EFmA",
+    "intent": "Confine PARTITION0 under memory protection.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "hardware",
+          "element": "PARTITION0",
+          "path": [
+            {
+              "field": "trust"
+            }
+          ]
+        },
+        "value": "trusted_with_protection"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:2-ek80-MttYu7I3LtrZKRQ",
+      "delta": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "hardware",
+            "element": "PARTITION0",
+            "path": [
+              {
+                "field": "trust"
+              }
+            ]
+          },
+          "before": "trusted",
+          "after": "trusted_with_protection",
+          "summary": "hardware/PARTITION0: ~ trust trusted -> trusted_with_protection"
+        }
+      ],
+      "audit_ref": "cs-20261010T073157Z-7b0d52"
+    },
+    "notes": "`committed` after the second question. No finding stands here for the declaration to close; it is asked because leaving `trusted` is what would close one beside a higher-rated partition, and nothing checks it. The class is declared, never verified: nothing in the model expresses the OS configuration, the MPU or the linker script."
+  }
+}

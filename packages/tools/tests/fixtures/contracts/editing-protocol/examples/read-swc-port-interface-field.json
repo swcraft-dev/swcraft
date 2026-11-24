@@ -1,0 +1,32 @@
+{
+  "name": "read-swc-port-interface-field",
+  "description": "A generic `read` at field granularity inside a nested collection member: the `interface` of the port `pOut` of `ExampleSWC`. It pins the two address step forms an element-internal read needs — a declared field and a collection member named by its identity value.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC.ports` is a list whose members the registry declares an identity field (`name`) for, so `pOut` is addressed by that value and never by its position.",
+    "existing_elements": [
+      { "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "ports" }, { "member": "pOut" }] }
+    ]
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc",
+      "element": "ExampleSWC",
+      "path": [{ "field": "ports" }, { "member": "pOut" }, { "field": "interface" }]
+    }
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [{ "field": "ports" }, { "member": "pOut" }, { "field": "interface" }]
+      },
+      "form": "full",
+      "value": "IExample"
+    },
+    "notes": "The answer is the reference value — an identity, never a path. Discovery declares the field's reference target as `{layer: interfaces, identity_field: name}`, which is what makes `IExample` resolvable without the read disclosing where the interface is stored."
+  }
+}

@@ -1,0 +1,12 @@
+name: Diag_to_Powertrain
+composition: VehicleTop
+from:
+  composition: Diagnostics
+  port: pDiag
+to:
+  composition: Powertrain
+  port: rDiagIn
+description: >-
+  reference `connectors.connector_endpoint.composition` -> Diagnostics and
+  Powertrain: an endpoint may name a composition TYPE instead of a component,
+  and the writer resolves it to the member of that type inside `VehicleTop`.

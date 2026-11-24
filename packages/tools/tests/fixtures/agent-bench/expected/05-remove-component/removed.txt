@@ -1,0 +1,3 @@
+model/swc/application/InstrumentCluster.yaml
+model/connectors/ChassisToCluster.yaml
+model/connectors/DiagnosticsToCluster.yaml

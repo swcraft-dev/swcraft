@@ -1,0 +1,14 @@
+Diagrams report: Composition fixture
+
+Views: 7
+  ibd-Root       688.52 x 205 px  4633 bytes
+  overview-Root  650.34 x 175 px  3136 bytes
+  ibd-Sink       525.74 x 205 px  3175 bytes
+  overview-Sink  420.84 x 175 px  1740 bytes
+  ibd-Sub        835.12 x 318 px  8710 bytes
+  overview-Sub   643.74 x 245 px  4127 bytes
+  nesting        762 x 152 px  3047 bytes
+
+Not drawn: none
+
+Drawn as a loop: none

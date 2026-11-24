@@ -1,0 +1,125 @@
+{
+  "name": "update-sequence-step-note-at-instance-address",
+  "description": "A sequence step that names its component by `instance` — a root-relative member path, contract `9.0.0` — updated at a member address that spells all three identity keys, `swc` as `null`. The scope approving it spells the same member with TWO keys: an absent optional identity field reads as `null` in an address as in a payload, so both spellings name one member, and the delta carries the three-key form the engine emits.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, its one sequence step written `instance: ExampleConsumerSWC` rather than `swc: ExampleConsumerSWC`. The root composition places `ExampleConsumerSWC` once, as the member `ExampleConsumerSWC`, so the path resolves to that component and the step and `Task_10ms`'s `swc` entry resolve to one scheduling identity: `sequence.step-not-mapped` finds the step's runnable in the task. The step carries no `note`.",
+    "existing_elements": [
+      {
+        "layer": "sequences",
+        "element": "task10ms_consumer_cycle",
+        "path": [
+          {
+            "field": "steps"
+          },
+          {
+            "member": {
+              "instance": "ExampleConsumerSWC",
+              "runnable": "ExampleConsumerRun"
+            }
+          }
+        ]
+      },
+      {
+        "layer": "tasks",
+        "element": "Task_10ms"
+      },
+      {
+        "layer": "compositions",
+        "element": "Root"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "sequences",
+            "element": "task10ms_consumer_cycle",
+            "path": [
+              {
+                "field": "steps"
+              },
+              {
+                "member": {
+                  "instance": "ExampleConsumerSWC",
+                  "runnable": "ExampleConsumerRun"
+                }
+              },
+              {
+                "field": "note"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope writes the member with two keys and the change set with three: a scope entry and a change's address are canonicalized to one form before coverage is decided, so neither spelling is a different identity and the change is covered exactly."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Say what the consumer step assumes about the producer.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "sequences",
+          "element": "task10ms_consumer_cycle",
+          "path": [
+            {
+              "field": "steps"
+            },
+            {
+              "member": {
+                "swc": null,
+                "instance": "ExampleConsumerSWC",
+                "runnable": "ExampleConsumerRun"
+              }
+            },
+            {
+              "field": "note"
+            }
+          ]
+        },
+        "value": "ExampleConsumerRun reads the latest value ExampleRun published; no ordering between the two is assumed."
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "sequences",
+            "element": "task10ms_consumer_cycle",
+            "path": [
+              {
+                "field": "steps"
+              },
+              {
+                "member": {
+                  "swc": null,
+                  "instance": "ExampleConsumerSWC",
+                  "runnable": "ExampleConsumerRun"
+                }
+              },
+              {
+                "field": "note"
+              }
+            ]
+          },
+          "before": "",
+          "after": "ExampleConsumerRun reads the latest value ExampleRun published; no ordering between the two is assumed.",
+          "summary": "sequences/task10ms_consumer_cycle: ~ steps[{swc: None, instance: ExampleConsumerSWC, runnable: Example…].note  -> ExampleConsumerRun reads the latest value ExampleRun publis…"
+        }
+      ]
+    },
+    "notes": "The change set's address spells `swc` as `null`, the scope leaves it out, and the delta carries the three keys with `null` spelled — what the engine emits is always the three-key form, whichever spelling a client wrote. The step is matched to `Task_10ms`'s entry by the RESOLVED identity: the task names the type `ExampleConsumerSWC` by `swc`, the step names the root member `ExampleConsumerSWC` by `instance`, and both resolve to the one occurrence, so `sequence.step-not-mapped` stays silent on the baseline and on the staged result. Rewriting the step's selector from `instance` back to `swc` would be a `remove` and a `create`, never an `update`: generic matching stays syntactic and never resolves."
+  }
+}

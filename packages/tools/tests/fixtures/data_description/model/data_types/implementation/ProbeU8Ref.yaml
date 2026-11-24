@@ -1,0 +1,4 @@
+name: ProbeU8Ref
+kind: reference_type
+base: ProbeU8
+compu_method_ref: ProbeTable

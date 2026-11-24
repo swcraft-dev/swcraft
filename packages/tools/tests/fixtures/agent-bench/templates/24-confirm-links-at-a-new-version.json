@@ -1,0 +1,10 @@
+{
+  "id": "24-confirm-links-at-a-new-version",
+  "task": 24,
+  "group": "requirements-and-traceability",
+  "kind": "change",
+  "binding": "confirm_links_at_a_new_version",
+  "oracle": "structural",
+  "prompt": "Requirement {{requirement}} moved to version {{next}}; confirm every link to it at the new version.",
+  "note": "The declared, non-stub requirement with the most link sites, every link to it at its latest version; the requirement takes the new version and every link, on the member that holds it, moves to it."
+}

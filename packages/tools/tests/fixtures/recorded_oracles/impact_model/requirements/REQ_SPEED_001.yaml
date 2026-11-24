@@ -1,0 +1,10 @@
+id: REQ_SPEED_001
+title: Vehicle speed is sensed and controlled
+description: >-
+  relation `*.satisfies` from one element of each of eleven linkable kinds (a
+  component, a port, a runnable, a composition, both interface kinds, a task and
+  the four hardware kinds); relation `requirements.requirement.derived_from`
+  from REQ_SPEED_002.
+req_type: req
+version: 1
+source: architecture

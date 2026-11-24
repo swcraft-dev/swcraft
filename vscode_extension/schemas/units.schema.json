@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://swcraft.dev/schemas/units.schema.json",
+  "title": "Units",
+  "$comment": "Units, one file each under `data_types/units/`: the unit a physical value is measured in, an element a type names by reference. One kind, `unit`, which an application type names as its `unit_ref` and a `linear` compu method as its `unit`. The directory is mandatory and may be empty.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "description": "The unit's identity; the file is named from it (`data_types/units/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the units, must not be blank, and immutable; an element of another layer may carry the same name.",
+      "type": "string"
+    },
+    "display_name": {
+      "description": "The text the unit is shown as (for example `km/h`), written as the `UNIT`'s `DISPLAY-NAME` exactly as held; the empty default writes none.",
+      "type": "string",
+      "default": ""
+    },
+    "description": {
+      "description": "Free text about the unit. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+      "type": "string",
+      "default": ""
+    },
+    "package": {
+      "description": "The one sub-package of `/DataTypes/Units`, its layer's package, this unit is emitted in, a single SHORT-NAME segment: the unit and every reference to it take `/DataTypes/Units/{package}/`. Absent means `/DataTypes/Units` itself. It is held to the AUTOSAR Identifier rule.",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

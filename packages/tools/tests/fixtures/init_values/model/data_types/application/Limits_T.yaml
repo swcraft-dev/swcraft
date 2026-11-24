@@ -1,0 +1,11 @@
+name: Limits_T
+kind: record
+fields:
+- name: low
+  type: Sample_T
+- name: high
+  type: Sample_T
+- name: tiny
+  type: Sample_T
+- name: whole
+  type: Sample_T

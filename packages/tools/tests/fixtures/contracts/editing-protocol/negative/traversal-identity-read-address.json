@@ -1,0 +1,39 @@
+{
+  "name": "traversal-identity-read-address",
+  "description": "A structurally well-formed `read` address whose `element` is a path traversal. The envelope is right in every other respect — `{layer, element}`, no string path anywhere — so the refusal cannot come from the address *shape*; it comes from `$defs/identity`, which holds an element identity to a single path segment because the registry composes a file name from it.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `swc` is a declared layer and the request reaches it correctly; only the identity is hostile. Reads disclose no storage path, but the identity would still have to be resolved against the file system by the registry, which is where a traversal would land if it were admitted.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc",
+      "element": "../../etc/passwd"
+    }
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "protocol-schema",
+    "notes": "`schema-violation` and not `broken-reference`: the value never becomes an identity the engine could fail to resolve, because `protocol.schema.json` refuses the envelope first (pass A). That is the difference from `unknown-field-swc-safety-level.json`, whose address is legal and whose *meaning* only the registry can reject. `$defs/identity` refuses `.`, `..` and any value carrying `/`, `\\` or NUL, so the rule is stated once and applies to every `element` in every request — the no-traversal rule made structural rather than delegated to a sanitizer."
+  }
+}

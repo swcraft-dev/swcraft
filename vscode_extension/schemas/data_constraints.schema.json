@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://swcraft.dev/schemas/data_constraints.schema.json",
+  "title": "Data Constraints",
+  "$comment": "Data constraints, one file each under `data_types/constraints/`: the physical limits a value is declared within, an element a type names by reference. One kind, `data_constr`, which an application type names as its `data_constr_ref`. The directory is mandatory and may be empty.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "description": "The data constraint's identity; the file is named from it (`data_types/constraints/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the data constraints, must not be blank, and immutable; an element of another layer may carry the same name.",
+      "type": "string"
+    },
+    "min": {
+      "description": "The lower physical limit; omitted or `null` when there is none. An integer is held as the integer it is; NaN and ±Infinity are refused.",
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "max": {
+      "description": "The upper physical limit; omitted or `null` when there is none. An integer is held as the integer it is; NaN and ±Infinity are refused.",
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "level": {
+      "description": "The rule's `CONSTR-LEVEL`, the category of the constraint (the lower the level, the more stringent the check); omitted or `null` when the rule states none.",
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "description": {
+      "description": "Free text about the data constraint. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+      "type": "string",
+      "default": ""
+    },
+    "package": {
+      "description": "The one sub-package of `/DataTypes/Constraints`, its layer's package, this data constraint is emitted in, a single SHORT-NAME segment: the data constraint and every reference to it take `/DataTypes/Constraints/{package}/`. Absent means `/DataTypes/Constraints` itself. It is held to the AUTOSAR Identifier rule.",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

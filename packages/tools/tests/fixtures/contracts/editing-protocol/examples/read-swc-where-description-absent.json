@@ -1,0 +1,31 @@
+{
+  "name": "read-swc-where-description-absent",
+  "description": "The question \"which components carry no description?\" asked as one filtered read: `where: [{\"field\": \"description\", \"exists\": false}]` over the `swc` layer. `exists` asks whether a VALUE is carried, and a field the element does not carry, a `null` and the empty string `\"\"` are no value. The empty string is the case that matters: every string field of the schema that has a default defaults to `\"\"`, so an element that never wrote a description carries `\"\"` exactly as one that stated `description: \"\"` does; a clause that matched neither would answer nothing on any real model. The two components without a description are answered — one whose file omits the key and one whose file states it empty — and the base's two described components are not. The `index` form keeps the answer to the identities the question asks for.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, whose two components (`ExampleSWC`, `ExampleConsumerSWC`) each carry a description, plus two components without one: `UndescribedSWC`, whose file has no `description` key, and `BlankDescriptionSWC`, whose file states `description: \"\"`.",
+    "existing_elements": [
+      { "layer": "swc", "element": "ExampleSWC" },
+      { "layer": "swc", "element": "ExampleConsumerSWC" },
+      { "layer": "swc", "element": "UndescribedSWC" },
+      { "layer": "swc", "element": "BlankDescriptionSWC" }
+    ],
+    "notes": "The response carries `\"\"` for both undescribed components in every form that publishes the field, whether the file wrote it or not, and a clause is compared against exactly the value the response would carry — which is why the rule is about the value and not about what the file spelled. `0`, `false` and an empty map `{}` are values: `exists: true` keeps an element carrying one of them."
+  },
+  "input": {
+    "operation": "read",
+    "address": { "layer": "swc" },
+    "form": "index",
+    "where": [{ "field": "description", "exists": false }]
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": { "layer": "swc" },
+      "form": "index",
+      "where": [{ "field": "description", "exists": false }],
+      "value": { "count": 2, "identities": ["BlankDescriptionSWC", "UndescribedSWC"] }
+    },
+    "notes": "The identities come in the layer's read order. The negation `exists: true` answers the base's two components and neither of these, so the two clauses partition the layer."
+  }
+}

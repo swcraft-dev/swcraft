@@ -1,0 +1,147 @@
+schema_version: "1.0"
+scenarios:
+  - id: check-model
+    description: Production model has no model findings, warnings included.
+    presets: [small, medium, large]
+    command: [swcraft, check-model, --format, json, --project, "{project}"]
+    expected_exit_code: 0
+    format: json
+    assertions:
+      - {id: clean, op: equals, path: findings, expected: []}
+  - id: validate
+    description: Production model passes semantic validation.
+    presets: [small, medium, large]
+    command: [swcraft, validate, --project, "{project}"]
+    expected_exit_code: 0
+    format: text
+    assertions:
+      - {id: passed, op: stdout_contains, expected: "Validation passed"}
+  - id: generate-arxml
+    description: SWCraft emits a non-empty ARXML artifact.
+    presets: [small, medium, large]
+    command: [swcraft, generate, arxml, --project, "{project}"]
+    expected_exit_code: 0
+    format: text
+    assertions:
+      - {id: artifact, op: file_non_empty, path: "{arxml}"}
+  - id: generate-diagrams
+    description: SWCraft emits a non-empty diagram report.
+    presets: [small, medium, large]
+    command: [swcraft, generate, diagrams, --project, "{project}"]
+    expected_exit_code: 0
+    format: text
+    assertions:
+      - {id: artifact, op: file_non_empty, path: "{diagrams}"}
+  - id: list
+    description: Every SWCraft layer count agrees with generation.json.
+    presets: [small, medium, large]
+    command: [swcraft, list, --project, "{project}"]
+    expected_exit_code: 0
+    format: json
+    assertions:
+      - {id: schema, op: equals, path: schemaVersion, expected: 1}
+      - {id: requirements, op: count_equals, path: layers.requirements.elements, expected: "{project.layer_counts.requirements}"}
+      - {id: compositions, op: count_equals, path: layers.compositions.elements, expected: "{project.layer_counts.compositions}"}
+      - {id: swc, op: count_equals, path: layers.swc.elements, expected: "{project.layer_counts.swc}"}
+      - {id: interfaces, op: count_equals, path: layers.interfaces.elements, expected: "{project.layer_counts.interfaces}"}
+      - {id: application-types, op: count_equals, path: layers.application_types.elements, expected: "{project.layer_counts.application_types}"}
+      - {id: implementation-types, op: count_equals, path: layers.implementation_types.elements, expected: "{project.layer_counts.implementation_types}"}
+      - {id: base-types, op: count_equals, path: layers.base_types.elements, expected: "{project.layer_counts.base_types}"}
+      - {id: units, op: count_equals, path: layers.units.elements, expected: "{project.layer_counts.units}"}
+      - {id: compu-methods, op: count_equals, path: layers.compu_methods.elements, expected: "{project.layer_counts.compu_methods}"}
+      - {id: data-constraints, op: count_equals, path: layers.data_constraints.elements, expected: "{project.layer_counts.data_constraints}"}
+      - {id: mapping-sets, op: count_equals, path: layers.mapping_sets.elements, expected: "{project.layer_counts.mapping_sets}"}
+      - {id: connectors, op: count_equals, path: layers.connectors.elements, expected: "{project.layer_counts.connectors}"}
+      - {id: tasks, op: count_equals, path: layers.tasks.elements, expected: "{project.layer_counts.tasks}"}
+      - {id: sequences, op: count_equals, path: layers.sequences.elements, expected: "{project.layer_counts.sequences}"}
+      - {id: hardware, op: count_equals, path: layers.hardware.elements, expected: "{project.layer_counts.hardware}"}
+  - id: query-domain
+    description: Query selects the first semantic domain through its public directory token.
+    presets: [small, medium, large]
+    command: [swcraft, query, swc, --where, "group={architecture.domains.0.token}", --project, "{project}"]
+    expected_exit_code: 0
+    format: json
+    assertions:
+      - {id: schema, op: equals, path: schemaVersion, expected: 3}
+      - {id: selected, op: elements_from_generation, path: elements, source: architecture.components, identity: component, where: {domain: "{architecture.domains.0.composition}"}}
+  - id: query-asil
+    description: Query selects the generated ASIL-C component set.
+    presets: [small, medium, large]
+    command: [swcraft, query, swc, --where, asil=C, --project, "{project}"]
+    expected_exit_code: 0
+    format: json
+    assertions:
+      - {id: selected, op: elements_from_generation, path: elements, source: architecture.components, identity: component, where: {asil: C}}
+  - id: query-members
+    description: Query returns the public member slice for SWC ports.
+    presets: [small, medium, large]
+    command: [swcraft, query, swc, --members, ports, --project, "{project}"]
+    expected_exit_code: 0
+    format: json
+    assertions:
+      - {id: schema, op: equals, path: schemaVersion, expected: 3}
+      - {id: nonempty, op: non_empty, path: elements}
+  - id: impact-landmarks
+    description: Impact resolves gateway, shared service, interface and requirement landmarks.
+    presets: [small, medium, large]
+    command: [swcraft, impact, "{landmarks.gateway_component}", --project, "{project}"]
+    expected_exit_code: 0
+    format: json
+    assertions:
+      - {id: gateway, op: equals, path: name, expected: "{landmarks.gateway_component}"}
+      - {id: matched, op: non_empty, path: matched}
+  - id: impact-shared-service
+    description: Impact resolves the shared service landmark.
+    presets: [small, medium, large]
+    command: [swcraft, impact, "{landmarks.shared_service_component}", --project, "{project}"]
+    expected_exit_code: 0
+    format: json
+    assertions:
+      - {id: shared-service, op: equals, path: name, expected: "{landmarks.shared_service_component}"}
+      - {id: matched, op: non_empty, path: matched}
+  - id: impact-interface
+    description: Impact resolves the generated client-server interface landmark.
+    presets: [small, medium, large]
+    command: [swcraft, impact, "{landmarks.client_server_interface}", --project, "{project}"]
+    expected_exit_code: 0
+    format: json
+    assertions:
+      - {id: interface, op: equals, path: name, expected: "{landmarks.client_server_interface}"}
+      - {id: matched, op: non_empty, path: matched}
+  - id: impact-requirement
+    description: Impact resolves the generated requirement landmark.
+    presets: [small, medium, large]
+    command: [swcraft, impact, "{landmarks.representative_feature_requirement}", --project, "{project}"]
+    expected_exit_code: 0
+    format: json
+    assertions:
+      - {id: requirement, op: equals, path: name, expected: "{landmarks.representative_feature_requirement}"}
+      - {id: matched, op: non_empty, path: matched}
+  - id: graph-forward
+    description: Bounded dependency walk has forward results.
+    presets: [small, medium, large]
+    command: [swcraft, query, --deps, "{landmarks.gateway_component}", --depth, "2", --project, "{project}"]
+    expected_exit_code: 0
+    format: json
+    assertions:
+      - {id: direction, op: equals, path: direction, expected: dependencies}
+      - {id: bounded, op: equals, path: depth, expected: 2}
+      - {id: results, op: non_empty, path: matched}
+  - id: graph-reverse
+    description: Bounded dependent walk has reverse results.
+    presets: [small, medium, large]
+    command: [swcraft, query, --dependents, "{landmarks.gateway_component}", --depth, "2", --project, "{project}"]
+    expected_exit_code: 0
+    format: json
+    assertions:
+      - {id: direction, op: equals, path: direction, expected: dependents}
+      - {id: bounded, op: equals, path: depth, expected: 2}
+      - {id: results, op: non_empty, path: matched}
+  - id: resource-report
+    description: Resource totals match generation.json and have no breaches.
+    presets: [small, medium, large]
+    command: [swcraft, resource-report, --project, "{project}"]
+    expected_exit_code: 0
+    format: text
+    assertions:
+      - {id: totals, op: resource_totals}

@@ -1,0 +1,25 @@
+{
+  "session_id": "sess_39b8ab01-bd76-4d94-9a7f-6512477c5f7b",
+  "hook_event_name": "PreToolUse",
+  "cwd": "/project",
+  "tool_name": "mcp_swcraft_change_set",
+  "tool_input": {
+    "baseline": "rev1:IVas-hoENjTrdJwtoX0ldQ",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ProbeSWC"
+        },
+        "value": {
+          "name": "ProbeSWC",
+          "group": "probe",
+          "type": "application",
+          "handle_termination_and_restart": "no_support"
+        }
+      }
+    ],
+    "intent": "Add an empty application component ProbeSWC in the probe group."
+  }
+}

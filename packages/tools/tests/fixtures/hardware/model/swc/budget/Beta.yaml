@@ -1,0 +1,7 @@
+name: Beta
+type: application
+description: "Declares both memory pools."
+memory:
+  RAM: 512
+  ROM: 400
+handle_termination_and_restart: no_support

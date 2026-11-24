@@ -1,0 +1,9 @@
+id: SWR-BRK-003
+title: Permitted brake action applied
+description: The brake controller shall apply only the permitted brake action.
+req_type: req
+version: 1
+source: external
+document: SRS Brake Control
+baseline: '1.0'
+revision: '1'

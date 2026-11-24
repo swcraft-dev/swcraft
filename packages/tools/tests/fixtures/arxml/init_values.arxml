@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hand-crafted, anonymized fixture for init values.
+  Mirrors the value-specification shapes a tool export carries,
+  APPLICATION-VALUE-SPECIFICATION (scalar, via SW-VALUE-CONT/SW-VALUES-PHYS/V),
+  NUMERICAL-VALUE-SPECIFICATION (the nested numeric form, via VALUE),
+  ARRAY-VALUE-SPECIFICATION and RECORD-VALUE-SPECIFICATION, plus the two
+  lexical shapes the export spells (hexadecimal values, and record members with
+  no SHORT-LABEL, matched positionally). Invented names only; no content copied
+  from any real export.
+
+  XSD-valid against both licensed schemas as shipped (the reader-fixture gate in
+  test_arxml_xsd_conformance.py holds it there). Two consequences shape the file:
+  the record's and the array's members reference an APPLICATION-PRIMITIVE-DATA-TYPE
+  twin of the implementation type, because neither schema admits an
+  IMPLEMENTATION-DATA-TYPE DEST there; and the hexadecimal digits are lower case,
+  because the 4.2.2 NUMERICAL pattern is `0x[0-9a-f]+` (4.3.0 admits either case).
+
+  The leaves state each form the reader reads and the import carries: a number in
+  the application form under an application type (with a value UNIT-REF naming the
+  unit its type states) and in the numerical form under an implementation type (the
+  form [constr_1221] and [constr_1385] ask of a prototype's own value), and an
+  enumeration's literal as the text of
+  its scale (a VT in the application form), and the value of an implementation type
+  that references a table as a TEXT-VALUE-SPECIFICATION naming one of its scales.
+
+  The port COM-SPECs reference the SAME constants the data elements do, which
+  is the common case of a tool export's port-level references; the
+  divergent cases are built as inline ImportModels in
+  test_arxml_import_interfaces.py rather than by perturbing this file.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Chassis</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>DataTypes</SHORT-NAME>
+              <ELEMENTS>
+                <SW-BASE-TYPE>
+                  <SHORT-NAME>uint8</SHORT-NAME>
+                  <CATEGORY>FIXED_LENGTH</CATEGORY>
+                  <BASE-TYPE-SIZE>8</BASE-TYPE-SIZE>
+                  <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                  <NATIVE-DECLARATION>uint8</NATIVE-DECLARATION>
+                </SW-BASE-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>Counter</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/DataTypes/uint8</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>Level</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/DataTypes/uint8</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>Mode</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/DataTypes/uint8</BASE-TYPE-REF>
+                        <COMPU-METHOD-REF DEST="COMPU-METHOD">/Acme/Chassis/CompuMethods/Mode_CompuMethod</COMPU-METHOD-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>Gear</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/DataTypes/uint8</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>Speed</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/DataTypes/uint8</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+                <APPLICATION-RECORD-DATA-TYPE>
+                  <SHORT-NAME>Point</SHORT-NAME>
+                  <ELEMENTS>
+                    <APPLICATION-RECORD-ELEMENT>
+                      <SHORT-NAME>x</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Chassis/ApplicationTypes/Counter</TYPE-TREF>
+                    </APPLICATION-RECORD-ELEMENT>
+                    <APPLICATION-RECORD-ELEMENT>
+                      <SHORT-NAME>y</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Chassis/ApplicationTypes/Counter</TYPE-TREF>
+                    </APPLICATION-RECORD-ELEMENT>
+                  </ELEMENTS>
+                </APPLICATION-RECORD-DATA-TYPE>
+                <APPLICATION-ARRAY-DATA-TYPE>
+                  <SHORT-NAME>Triple</SHORT-NAME>
+                  <ELEMENT>
+                    <SHORT-NAME>TripleElement</SHORT-NAME>
+                    <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Chassis/ApplicationTypes/Counter</TYPE-TREF>
+                    <MAX-NUMBER-OF-ELEMENTS>3</MAX-NUMBER-OF-ELEMENTS>
+                  </ELEMENT>
+                </APPLICATION-ARRAY-DATA-TYPE>
+                <APPLICATION-ARRAY-DATA-TYPE>
+                  <SHORT-NAME>PointPair</SHORT-NAME>
+                  <ELEMENT>
+                    <SHORT-NAME>PointPairElement</SHORT-NAME>
+                    <TYPE-TREF DEST="APPLICATION-RECORD-DATA-TYPE">/Acme/Chassis/DataTypes/Point</TYPE-TREF>
+                    <MAX-NUMBER-OF-ELEMENTS>2</MAX-NUMBER-OF-ELEMENTS>
+                  </ELEMENT>
+                </APPLICATION-ARRAY-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>ApplicationTypes</SHORT-NAME>
+              <ELEMENTS>
+                <!-- Application twin of DataTypes/Counter, linked through the mapping set below:
+                     both licensed schemas restrict a record element's and an array element's
+                     TYPE-TREF to APPLICATION-* types, so this is the only shape Point and Triple
+                     can be spelled in. The importer keeps both, because a composite member names
+                     the application side and may name no implementation type; the two are two
+                     layers, so both members keep the name `Counter` (rule 1 of
+                     arxml_import/type_mapping.py). Level has no twin because nothing
+                     application-level references it. Gear (an enumeration) and Speed (a
+                     unit) type their data elements on the application side; their twins
+                     exist because a component's ports need each application type paired. -->
+                <APPLICATION-PRIMITIVE-DATA-TYPE>
+                  <SHORT-NAME>Counter</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                </APPLICATION-PRIMITIVE-DATA-TYPE>
+                <APPLICATION-PRIMITIVE-DATA-TYPE>
+                  <SHORT-NAME>Gear</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <COMPU-METHOD-REF DEST="COMPU-METHOD">/Acme/Chassis/CompuMethods/Gear_CompuMethod</COMPU-METHOD-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </APPLICATION-PRIMITIVE-DATA-TYPE>
+                <APPLICATION-PRIMITIVE-DATA-TYPE>
+                  <SHORT-NAME>Speed</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <UNIT-REF DEST="UNIT">/Acme/Chassis/Units/KilometrePerHour</UNIT-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </APPLICATION-PRIMITIVE-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>CompuMethods</SHORT-NAME>
+              <ELEMENTS>
+                <COMPU-METHOD>
+                  <SHORT-NAME>Gear_CompuMethod</SHORT-NAME>
+                  <CATEGORY>TEXTTABLE</CATEGORY>
+                  <COMPU-INTERNAL-TO-PHYS>
+                    <COMPU-SCALES>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>PARK</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>DRIVE</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                    </COMPU-SCALES>
+                  </COMPU-INTERNAL-TO-PHYS>
+                </COMPU-METHOD>
+                <COMPU-METHOD>
+                  <SHORT-NAME>Mode_CompuMethod</SHORT-NAME>
+                  <CATEGORY>TEXTTABLE</CATEGORY>
+                  <COMPU-INTERNAL-TO-PHYS>
+                    <COMPU-SCALES>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>OFF</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>ON</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                    </COMPU-SCALES>
+                  </COMPU-INTERNAL-TO-PHYS>
+                </COMPU-METHOD>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Units</SHORT-NAME>
+              <ELEMENTS>
+                <UNIT>
+                  <SHORT-NAME>KilometrePerHour</SHORT-NAME>
+                  <DISPLAY-NAME>km/h</DISPLAY-NAME>
+                </UNIT>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>DataTypeMappingSets</SHORT-NAME>
+              <ELEMENTS>
+                <DATA-TYPE-MAPPING-SET>
+                  <SHORT-NAME>Acme_Chassis_DataTypeMapping</SHORT-NAME>
+                  <DATA-TYPE-MAPS>
+                    <DATA-TYPE-MAP>
+                      <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Chassis/ApplicationTypes/Counter</APPLICATION-DATA-TYPE-REF>
+                      <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/DataTypes/Counter</IMPLEMENTATION-DATA-TYPE-REF>
+                    </DATA-TYPE-MAP>
+                    <DATA-TYPE-MAP>
+                      <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Chassis/ApplicationTypes/Gear</APPLICATION-DATA-TYPE-REF>
+                      <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/DataTypes/Gear</IMPLEMENTATION-DATA-TYPE-REF>
+                    </DATA-TYPE-MAP>
+                    <DATA-TYPE-MAP>
+                      <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Chassis/ApplicationTypes/Speed</APPLICATION-DATA-TYPE-REF>
+                      <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/DataTypes/Speed</IMPLEMENTATION-DATA-TYPE-REF>
+                    </DATA-TYPE-MAP>
+                  </DATA-TYPE-MAPS>
+                </DATA-TYPE-MAPPING-SET>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Constants</SHORT-NAME>
+              <ELEMENTS>
+                <CONSTANT-SPECIFICATION>
+                  <SHORT-NAME>SR_IScalars_counter_Init</SHORT-NAME>
+                  <VALUE-SPEC>
+                    <NUMERICAL-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>counter_Init</SHORT-LABEL>
+                      <VALUE>0xff</VALUE>
+                    </NUMERICAL-VALUE-SPECIFICATION>
+                  </VALUE-SPEC>
+                </CONSTANT-SPECIFICATION>
+                <CONSTANT-SPECIFICATION>
+                  <SHORT-NAME>SR_IScalars_level_Init</SHORT-NAME>
+                  <VALUE-SPEC>
+                    <NUMERICAL-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>level_Init</SHORT-LABEL>
+                      <VALUE BINDING-TIME="CODE-GENERATION-TIME">7</VALUE>
+                    </NUMERICAL-VALUE-SPECIFICATION>
+                  </VALUE-SPEC>
+                </CONSTANT-SPECIFICATION>
+                <CONSTANT-SPECIFICATION>
+                  <SHORT-NAME>SR_IScalars_gear_Init</SHORT-NAME>
+                  <VALUE-SPEC>
+                    <APPLICATION-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>gear_Init</SHORT-LABEL>
+                      <CATEGORY>VALUE</CATEGORY>
+                      <SW-VALUE-CONT>
+                        <SW-ARRAYSIZE>
+                          <V>1</V>
+                        </SW-ARRAYSIZE>
+                        <SW-VALUES-PHYS>
+                          <VT>DRIVE</VT>
+                        </SW-VALUES-PHYS>
+                      </SW-VALUE-CONT>
+                    </APPLICATION-VALUE-SPECIFICATION>
+                  </VALUE-SPEC>
+                </CONSTANT-SPECIFICATION>
+                <CONSTANT-SPECIFICATION>
+                  <SHORT-NAME>SR_IScalars_speed_Init</SHORT-NAME>
+                  <VALUE-SPEC>
+                    <APPLICATION-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>speed_Init</SHORT-LABEL>
+                      <CATEGORY>VALUE</CATEGORY>
+                      <SW-VALUE-CONT>
+                        <UNIT-REF DEST="UNIT">/Acme/Chassis/Units/KilometrePerHour</UNIT-REF>
+                        <SW-ARRAYSIZE>
+                          <V>1</V>
+                        </SW-ARRAYSIZE>
+                        <SW-VALUES-PHYS>
+                          <V>30</V>
+                        </SW-VALUES-PHYS>
+                      </SW-VALUE-CONT>
+                    </APPLICATION-VALUE-SPECIFICATION>
+                  </VALUE-SPEC>
+                </CONSTANT-SPECIFICATION>
+                <CONSTANT-SPECIFICATION>
+                  <SHORT-NAME>SR_IScalars_mode_Init</SHORT-NAME>
+                  <VALUE-SPEC>
+                    <TEXT-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>mode_Init</SHORT-LABEL>
+                      <VALUE>ON</VALUE>
+                    </TEXT-VALUE-SPECIFICATION>
+                  </VALUE-SPEC>
+                </CONSTANT-SPECIFICATION>
+                <CONSTANT-SPECIFICATION>
+                  <SHORT-NAME>SR_IComposites_triple_Init</SHORT-NAME>
+                  <VALUE-SPEC>
+                    <ARRAY-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>triple_Init</SHORT-LABEL>
+                      <ELEMENTS>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>triple0_Init</SHORT-LABEL>
+                          <VALUE BINDING-TIME="CODE-GENERATION-TIME">0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>triple1_Init</SHORT-LABEL>
+                          <VALUE BINDING-TIME="CODE-GENERATION-TIME">1</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>triple2_Init</SHORT-LABEL>
+                          <VALUE BINDING-TIME="CODE-GENERATION-TIME">0x10</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                      </ELEMENTS>
+                    </ARRAY-VALUE-SPECIFICATION>
+                  </VALUE-SPEC>
+                </CONSTANT-SPECIFICATION>
+                <CONSTANT-SPECIFICATION>
+                  <SHORT-NAME>SR_IComposites_point_Init</SHORT-NAME>
+                  <VALUE-SPEC>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>point_Init</SHORT-LABEL>
+                      <FIELDS>
+                        <APPLICATION-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>SR_IComposites_point_LongDecorativeXName_Init</SHORT-LABEL>
+                          <CATEGORY>VALUE</CATEGORY>
+                          <SW-VALUE-CONT>
+                            <SW-ARRAYSIZE>
+                              <V>1</V>
+                            </SW-ARRAYSIZE>
+                            <SW-VALUES-PHYS>
+                              <V>5</V>
+                            </SW-VALUES-PHYS>
+                          </SW-VALUE-CONT>
+                        </APPLICATION-VALUE-SPECIFICATION>
+                        <APPLICATION-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>SR_IComposites_point_LongDecorativeYName_Init</SHORT-LABEL>
+                          <CATEGORY>VALUE</CATEGORY>
+                          <SW-VALUE-CONT>
+                            <SW-ARRAYSIZE>
+                              <V>1</V>
+                            </SW-ARRAYSIZE>
+                            <SW-VALUES-PHYS>
+                              <V>0x0a</V>
+                            </SW-VALUES-PHYS>
+                          </SW-VALUE-CONT>
+                        </APPLICATION-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </VALUE-SPEC>
+                </CONSTANT-SPECIFICATION>
+                <CONSTANT-SPECIFICATION>
+                  <SHORT-NAME>SR_IComposites_pairs_Init</SHORT-NAME>
+                  <VALUE-SPEC>
+                    <ARRAY-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>pairs_Init</SHORT-LABEL>
+                      <ELEMENTS>
+                        <RECORD-VALUE-SPECIFICATION>
+                          <FIELDS>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <VALUE BINDING-TIME="CODE-GENERATION-TIME">1</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <VALUE BINDING-TIME="CODE-GENERATION-TIME">2</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                          </FIELDS>
+                        </RECORD-VALUE-SPECIFICATION>
+                        <RECORD-VALUE-SPECIFICATION>
+                          <FIELDS>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <VALUE BINDING-TIME="CODE-GENERATION-TIME">3</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <VALUE BINDING-TIME="CODE-GENERATION-TIME">4</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                          </FIELDS>
+                        </RECORD-VALUE-SPECIFICATION>
+                      </ELEMENTS>
+                    </ARRAY-VALUE-SPECIFICATION>
+                  </VALUE-SPEC>
+                </CONSTANT-SPECIFICATION>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Interfaces</SHORT-NAME>
+              <ELEMENTS>
+                <SENDER-RECEIVER-INTERFACE>
+                  <SHORT-NAME>IScalars</SHORT-NAME>
+                  <IS-SERVICE>false</IS-SERVICE>
+                  <DATA-ELEMENTS>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>counter</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/DataTypes/Counter</TYPE-TREF>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/Acme/Chassis/Constants/SR_IScalars_counter_Init</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </VARIABLE-DATA-PROTOTYPE>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>level</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/DataTypes/Level</TYPE-TREF>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/Acme/Chassis/Constants/SR_IScalars_level_Init</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </VARIABLE-DATA-PROTOTYPE>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>gear</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Chassis/ApplicationTypes/Gear</TYPE-TREF>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/Acme/Chassis/Constants/SR_IScalars_gear_Init</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </VARIABLE-DATA-PROTOTYPE>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>speed</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Chassis/ApplicationTypes/Speed</TYPE-TREF>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/Acme/Chassis/Constants/SR_IScalars_speed_Init</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </VARIABLE-DATA-PROTOTYPE>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>mode</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/DataTypes/Mode</TYPE-TREF>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/Acme/Chassis/Constants/SR_IScalars_mode_Init</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </VARIABLE-DATA-PROTOTYPE>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>uninitialized</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/DataTypes/Counter</TYPE-TREF>
+                    </VARIABLE-DATA-PROTOTYPE>
+                  </DATA-ELEMENTS>
+                </SENDER-RECEIVER-INTERFACE>
+                <SENDER-RECEIVER-INTERFACE>
+                  <SHORT-NAME>IComposites</SHORT-NAME>
+                  <IS-SERVICE>false</IS-SERVICE>
+                  <DATA-ELEMENTS>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>triple</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-ARRAY-DATA-TYPE">/Acme/Chassis/DataTypes/Triple</TYPE-TREF>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/Acme/Chassis/Constants/SR_IComposites_triple_Init</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </VARIABLE-DATA-PROTOTYPE>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>point</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-RECORD-DATA-TYPE">/Acme/Chassis/DataTypes/Point</TYPE-TREF>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/Acme/Chassis/Constants/SR_IComposites_point_Init</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </VARIABLE-DATA-PROTOTYPE>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>pairs</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-ARRAY-DATA-TYPE">/Acme/Chassis/DataTypes/PointPair</TYPE-TREF>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/Acme/Chassis/Constants/SR_IComposites_pairs_Init</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </VARIABLE-DATA-PROTOTYPE>
+                  </DATA-ELEMENTS>
+                </SENDER-RECEIVER-INTERFACE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Components</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>InitValueSwc</SHORT-NAME>
+                  <PORTS>
+                    <P-PORT-PROTOTYPE>
+                      <SHORT-NAME>pScalars</SHORT-NAME>
+                      <PROVIDED-COM-SPECS>
+                        <NONQUEUED-SENDER-COM-SPEC>
+                          <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/Acme/Chassis/Interfaces/IScalars/counter</DATA-ELEMENT-REF>
+                          <INIT-VALUE>
+                            <CONSTANT-REFERENCE>
+                              <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/Acme/Chassis/Constants/SR_IScalars_counter_Init</CONSTANT-REF>
+                            </CONSTANT-REFERENCE>
+                          </INIT-VALUE>
+                        </NONQUEUED-SENDER-COM-SPEC>
+                      </PROVIDED-COM-SPECS>
+                      <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/IScalars</PROVIDED-INTERFACE-TREF>
+                    </P-PORT-PROTOTYPE>
+                    <R-PORT-PROTOTYPE>
+                      <SHORT-NAME>rComposites</SHORT-NAME>
+                      <REQUIRED-COM-SPECS>
+                        <NONQUEUED-RECEIVER-COM-SPEC>
+                          <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/Acme/Chassis/Interfaces/IComposites/point</DATA-ELEMENT-REF>
+                          <INIT-VALUE>
+                            <CONSTANT-REFERENCE>
+                              <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/Acme/Chassis/Constants/SR_IComposites_point_Init</CONSTANT-REF>
+                            </CONSTANT-REFERENCE>
+                          </INIT-VALUE>
+                        </NONQUEUED-RECEIVER-COM-SPEC>
+                      </REQUIRED-COM-SPECS>
+                      <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/IComposites</REQUIRED-INTERFACE-TREF>
+                    </R-PORT-PROTOTYPE>
+                  </PORTS>
+                  <INTERNAL-BEHAVIORS>
+                    <SWC-INTERNAL-BEHAVIOR>
+                      <SHORT-NAME>InitValueSwc_InternalBehavior</SHORT-NAME>
+                      <DATA-TYPE-MAPPING-REFS>
+                        <DATA-TYPE-MAPPING-REF DEST="DATA-TYPE-MAPPING-SET">/Acme/Chassis/DataTypeMappingSets/Acme_Chassis_DataTypeMapping</DATA-TYPE-MAPPING-REF>
+                      </DATA-TYPE-MAPPING-REFS>
+                      <EVENTS>
+                        <TIMING-EVENT>
+                          <SHORT-NAME>TMT_InitValueRun</SHORT-NAME>
+                          <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/Acme/Chassis/Components/InitValueSwc/InitValueSwc_InternalBehavior/InitValueRun</START-ON-EVENT-REF>
+                          <PERIOD>0.01</PERIOD>
+                        </TIMING-EVENT>
+                      </EVENTS>
+                      <HANDLE-TERMINATION-AND-RESTART>NO-SUPPORT</HANDLE-TERMINATION-AND-RESTART>
+                      <RUNNABLES>
+                        <RUNNABLE-ENTITY>
+                          <SHORT-NAME>InitValueRun</SHORT-NAME>
+                          <MINIMUM-START-INTERVAL>0.01</MINIMUM-START-INTERVAL>
+                          <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                          <SYMBOL>InitValueRun</SYMBOL>
+                        </RUNNABLE-ENTITY>
+                      </RUNNABLES>
+                      <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                    </SWC-INTERNAL-BEHAVIOR>
+                  </INTERNAL-BEHAVIORS>
+                </APPLICATION-SW-COMPONENT-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

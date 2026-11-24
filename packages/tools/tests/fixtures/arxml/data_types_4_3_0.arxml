@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hand-crafted, anonymized AUTOSAR 4.3.0 twin of data_types.arxml: a 4.3.0
+  input is read regardless of its version label.
+
+  Element content is deliberately IDENTICAL to the 4.2.2 twin: the AUTOSAR XML
+  namespace is r4.0 across the whole 4.x line, so the only thing a 4.3.0 label
+  changes is the XSD filename in xsi:schemaLocation. Keeping the content equal
+  is what makes "the type mapping is version-agnostic" testable - the twin
+  equality is asserted on the parsed tree by
+  test_arxml_fixtures.py::TestVersionTwins, so an edit to one twin that is not
+  mirrored in the other fails there. Both bare-name collision shapes the 4.2.2
+  fixture carries (BrakeModeEnum's mapped app/impl twin pair, DoorStateEnum's
+  unmapped accidental collision) are therefore present here unchanged.
+
+  SCOPE, stated so nothing downstream overclaims: this fixture proves that a file
+  LABELLED 4.3.0 is read correctly. It is hand-crafted to SWCraft's own shapes and
+  therefore proves NOTHING about the dialect of a real 4.3.0 export - the risk the
+  importer's skip-and-report policy exists for. No content copied from any real
+  export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-3-0.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Chassis</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Types</SHORT-NAME>
+              <ELEMENTS>
+                <SW-BASE-TYPE>
+                  <SHORT-NAME>uint8</SHORT-NAME>
+                  <CATEGORY>FIXED_LENGTH</CATEGORY>
+                  <BASE-TYPE-SIZE>8</BASE-TYPE-SIZE>
+                  <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                  <NATIVE-DECLARATION>uint8</NATIVE-DECLARATION>
+                </SW-BASE-TYPE>
+                <SW-BASE-TYPE>
+                  <SHORT-NAME>uint16</SHORT-NAME>
+                  <CATEGORY>FIXED_LENGTH</CATEGORY>
+                  <BASE-TYPE-SIZE>16</BASE-TYPE-SIZE>
+                  <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                  <NATIVE-DECLARATION>uint16</NATIVE-DECLARATION>
+                </SW-BASE-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>uint16_impl</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/Types/uint16</BASE-TYPE-REF>
+                        <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>WheelTravelRange_impl</SHORT-NAME>
+                  <CATEGORY>TYPE_REFERENCE</CATEGORY>
+                  <DESC>
+                    <L-2 L="FOR-ALL">Alias-over-implementation-type example: reuses uint16_impl's representation (anonymized fixture).</L-2>
+                  </DESC>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/Types/uint16_impl</IMPLEMENTATION-DATA-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+                <!-- Twin of ApplicationTypes/BrakeModeEnum below, linked via the mapping set. -->
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>BrakeModeEnum</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/Types/uint8</BASE-TYPE-REF>
+                        <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+                <!-- Unrelated to ApplicationTypes/DoorStateEnum below: same bare name, different
+                     package, no DATA-TYPE-MAP entry connects them (accidental collision). -->
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>DoorStateEnum</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <DESC>
+                    <L-2 L="FOR-ALL">Raw latch-sensor byte, unrelated to the application-level DoorStateEnum (anonymized fixture; deliberate name collision).</L-2>
+                  </DESC>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/Types/uint8</BASE-TYPE-REF>
+                        <SW-CALIBRATION-ACCESS>NOT-ACCESSIBLE</SW-CALIBRATION-ACCESS>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>CompuMethods</SHORT-NAME>
+              <ELEMENTS>
+                <COMPU-METHOD>
+                  <SHORT-NAME>BrakeModeEnum_CompuMethod</SHORT-NAME>
+                  <CATEGORY>TEXTTABLE</CATEGORY>
+                  <COMPU-INTERNAL-TO-PHYS>
+                    <COMPU-SCALES>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>OFF</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>ACTIVE</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">2</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">2</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>FAULT</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                    </COMPU-SCALES>
+                  </COMPU-INTERNAL-TO-PHYS>
+                </COMPU-METHOD>
+                <COMPU-METHOD>
+                  <SHORT-NAME>DoorStateEnum_CompuMethod</SHORT-NAME>
+                  <CATEGORY>TEXTTABLE</CATEGORY>
+                  <COMPU-INTERNAL-TO-PHYS>
+                    <COMPU-SCALES>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>CLOSED</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                      <COMPU-SCALE>
+                        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                        <COMPU-CONST>
+                          <VT>OPEN</VT>
+                        </COMPU-CONST>
+                      </COMPU-SCALE>
+                    </COMPU-SCALES>
+                  </COMPU-INTERNAL-TO-PHYS>
+                </COMPU-METHOD>
+                <!-- LINEAR compu-method with COMPU-DENOMINATOR 100, which a conversion does not read: the method is reported skipped and PressureRatio imports with no conversion. -->
+                <COMPU-METHOD>
+                  <SHORT-NAME>PressureRatio_CompuMethod</SHORT-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <COMPU-INTERNAL-TO-PHYS>
+                    <COMPU-SCALES>
+                      <COMPU-SCALE>
+                        <COMPU-RATIONAL-COEFFS>
+                          <COMPU-NUMERATOR>
+                            <V>0</V>
+                            <V>1</V>
+                          </COMPU-NUMERATOR>
+                          <COMPU-DENOMINATOR>
+                            <V>100</V>
+                          </COMPU-DENOMINATOR>
+                        </COMPU-RATIONAL-COEFFS>
+                      </COMPU-SCALE>
+                    </COMPU-SCALES>
+                  </COMPU-INTERNAL-TO-PHYS>
+                </COMPU-METHOD>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>ApplicationTypes</SHORT-NAME>
+              <ELEMENTS>
+                <!-- Twin of Types/BrakeModeEnum above, linked via the mapping set below. -->
+                <APPLICATION-PRIMITIVE-DATA-TYPE>
+                  <SHORT-NAME>BrakeModeEnum</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <COMPU-METHOD-REF DEST="COMPU-METHOD">/Acme/Chassis/CompuMethods/BrakeModeEnum_CompuMethod</COMPU-METHOD-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </APPLICATION-PRIMITIVE-DATA-TYPE>
+                <!-- Unrelated to Types/DoorStateEnum above: bare-name collision, no mapping entry. -->
+                <APPLICATION-PRIMITIVE-DATA-TYPE>
+                  <SHORT-NAME>DoorStateEnum</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <DESC>
+                    <L-2 L="FOR-ALL">Application-level door latch state, unrelated to the implementation-level DoorStateEnum (anonymized fixture; deliberate name collision).</L-2>
+                  </DESC>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <COMPU-METHOD-REF DEST="COMPU-METHOD">/Acme/Chassis/CompuMethods/DoorStateEnum_CompuMethod</COMPU-METHOD-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </APPLICATION-PRIMITIVE-DATA-TYPE>
+                <!-- Non-TEXTTABLE-backed app primitive that no mapping set names: imported as an
+                     application_type with no conversion, because its LINEAR method above (denominator
+                     100) is not read as one; that method, not this type, is the skip entry. -->
+                <APPLICATION-PRIMITIVE-DATA-TYPE>
+                  <SHORT-NAME>PressureRatio</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <COMPU-METHOD-REF DEST="COMPU-METHOD">/Acme/Chassis/CompuMethods/PressureRatio_CompuMethod</COMPU-METHOD-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </APPLICATION-PRIMITIVE-DATA-TYPE>
+                <APPLICATION-RECORD-DATA-TYPE>
+                  <SHORT-NAME>WheelCornerStatus</SHORT-NAME>
+                  <CATEGORY>STRUCTURE</CATEGORY>
+                  <DESC>
+                    <L-2 L="FOR-ALL">Per-corner wheel status record (anonymized fixture).</L-2>
+                  </DESC>
+                  <ELEMENTS>
+                    <APPLICATION-RECORD-ELEMENT>
+                      <SHORT-NAME>pressure</SHORT-NAME>
+                      <CATEGORY>VALUE</CATEGORY>
+                      <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Chassis/ApplicationTypes/PressureRatio</TYPE-TREF>
+                    </APPLICATION-RECORD-ELEMENT>
+                    <APPLICATION-RECORD-ELEMENT>
+                      <SHORT-NAME>mode</SHORT-NAME>
+                      <CATEGORY>VALUE</CATEGORY>
+                      <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Chassis/ApplicationTypes/BrakeModeEnum</TYPE-TREF>
+                    </APPLICATION-RECORD-ELEMENT>
+                  </ELEMENTS>
+                </APPLICATION-RECORD-DATA-TYPE>
+                <APPLICATION-ARRAY-DATA-TYPE>
+                  <SHORT-NAME>WheelCornerStatusArray</SHORT-NAME>
+                  <CATEGORY>ARRAY</CATEGORY>
+                  <DESC>
+                    <L-2 L="FOR-ALL">Fixed-size array of per-corner wheel status records, one per wheel (anonymized fixture).</L-2>
+                  </DESC>
+                  <ELEMENT>
+                    <SHORT-NAME>corner</SHORT-NAME>
+                    <CATEGORY>VALUE</CATEGORY>
+                    <TYPE-TREF DEST="APPLICATION-RECORD-DATA-TYPE">/Acme/Chassis/ApplicationTypes/WheelCornerStatus</TYPE-TREF>
+                    <MAX-NUMBER-OF-ELEMENTS>4</MAX-NUMBER-OF-ELEMENTS>
+                  </ELEMENT>
+                </APPLICATION-ARRAY-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>DataTypeMappingSets</SHORT-NAME>
+              <ELEMENTS>
+                <DATA-TYPE-MAPPING-SET>
+                  <SHORT-NAME>Acme_Chassis_DataTypeMapping</SHORT-NAME>
+                  <DATA-TYPE-MAPS>
+                    <DATA-TYPE-MAP>
+                      <APPLICATION-DATA-TYPE-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/Acme/Chassis/ApplicationTypes/BrakeModeEnum</APPLICATION-DATA-TYPE-REF>
+                      <IMPLEMENTATION-DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/Types/BrakeModeEnum</IMPLEMENTATION-DATA-TYPE-REF>
+                    </DATA-TYPE-MAP>
+                  </DATA-TYPE-MAPS>
+                </DATA-TYPE-MAPPING-SET>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

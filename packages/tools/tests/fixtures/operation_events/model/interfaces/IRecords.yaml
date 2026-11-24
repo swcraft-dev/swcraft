@@ -1,0 +1,12 @@
+name: IRecords
+kind: client_server
+description: The one client-server interface the server runnable is started through.
+operations:
+- name: ReadRecord
+  arguments:
+  - name: id
+    direction: in
+    implementation_type: uint8
+  - name: value
+    direction: out
+    implementation_type: uint8

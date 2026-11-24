@@ -1,0 +1,8 @@
+- "In the current project, ensure ISpeed exists with data element speed of type\
+  \ float32 and IPressure exists with data element pressure of type float32.\
+  \ Ensure EngineController exists as an application SWC in the engine group\
+  \ with provide port pEngineSpeed on ISpeed. Ensure BrakeController exists as\
+  \ an application SWC in the brake group with require port rBrakePressure on\
+  \ IPressure. Now connect EngineController.pEngineSpeed to\
+  \ BrakeController.rBrakePressure. If the ports are incompatible, explain\
+  \ the incompatibility."

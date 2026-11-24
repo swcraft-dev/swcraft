@@ -1,0 +1,7 @@
+name: Gear_T
+kind: enum
+literals:
+- name: PARK
+  value: 0
+- name: DRIVE
+  value: 1

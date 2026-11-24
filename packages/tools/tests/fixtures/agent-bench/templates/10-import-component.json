@@ -1,0 +1,10 @@
+{
+  "id": "10-import-component",
+  "task": 10,
+  "group": "mixed",
+  "kind": "change",
+  "binding": "import_a_component",
+  "oracle": "structural",
+  "prompt": "Import the component in imports/{{file}}. {{memory_clause}}Add it to the {{composition}} composition and connect {{provider}}'s {{provider_port}} to its {{port}}.",
+  "note": "The export is generated at binding time: a new component with one require port on the most-named sender-receiver interface that a composition member provides, made by generate arxml --component from a scratch copy of the project with the component added. A component export carries no memory budget, which is why the prompt states the RAM."
+}

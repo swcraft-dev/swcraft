@@ -1,0 +1,66 @@
+name: BrakeController
+type: application
+description: >-
+  The receiver and the client: it reads the wheel speed implicitly and the
+  pedal explicitly, writes the torque implicitly, and calls the storage
+  without waiting.
+ports:
+- name: rWheelSpeed
+  direction: require
+  interface: WheelSpeedIf
+- name: rPedal
+  direction: require
+  interface: PedalIf
+- name: pBrakeTorque
+  direction: provide
+  interface: BrakeTorqueIf
+- name: rNvStorage
+  direction: require
+  interface: NvStorageIf
+- name: rCalibration
+  direction: require
+  interface: CalibrationIf
+runnables:
+- name: ComputeBrakeTorque
+  events:
+  - type: timing
+    period: 0.01
+  reads:
+  - port: rWheelSpeed
+    element: speed
+    by: implicit
+  - port: rPedal
+    element: position
+  writes:
+  - port: pBrakeTorque
+    element: torque
+    by: implicit
+  calls:
+  - port: rNvStorage
+    operation: WriteBlock
+    asynchronous: true
+  - port: rCalibration
+    operation: ReadBlock
+    asynchronous: true
+    poll: true
+    timeout: 0.5
+- name: OnBlockWritten
+  events:
+  - type: call_returned
+    port: rNvStorage
+    operation: WriteBlock
+- name: Diagnose
+  events:
+  - type: timing
+    period: 1.0
+  reads:
+  - port: rWheelSpeed
+    element: speed
+    by: implicit
+  - port: rPedal
+    element: position
+    by: value
+  calls:
+  - port: rCalibration
+    operation: GetVersion
+handle_termination_and_restart: no_support

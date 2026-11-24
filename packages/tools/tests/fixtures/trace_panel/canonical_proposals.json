@@ -1,0 +1,4841 @@
+{
+  "configuration": {
+    "file": "experiments/trace.yaml",
+    "insideProject": true,
+    "sha256": "sha256:68931f0b4f38093239931d1da6aa0c36d51197fb0f1a4e0c466c49c8a529fc48"
+  },
+  "formatVersion": 1,
+  "kind": "trace",
+  "model": {
+    "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "files": 42,
+    "swcraftVersion": "0.0.0+fixture"
+  },
+  "name": "trace",
+  "requirements": [
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "lamps"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:27771f4f56aaf20ee095ec20c187256b69867c3599d3cb0863e070958b6ab0eb",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "lamps",
+                  "exterior"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "LampController",
+            "score": {
+              "d": 1000000,
+              "n": 1000000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 1000000
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "DriveLamps",
+            "owner": "LampController"
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "The exterior lamps shall be driven.",
+      "document": "Body Spec",
+      "fingerprint": "sha256:a1e134fd956a2ce00e7d32da94f854eea2350016a403d1c0227da6ad866f281e",
+      "id": "BODY-1",
+      "linked": [
+        {
+          "confirmed": true,
+          "member": "BODY-1@1",
+          "target": {
+            "kind": "swc",
+            "name": "LampController",
+            "owner": null
+          },
+          "version": 1
+        }
+      ],
+      "lowAccuracy": true,
+      "pass": "review",
+      "title": "Exterior lamps",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "lock",
+                "door",
+                "doors"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:c2887745d9340ac652e18085aa2e2dc6ef8c29fcd2aea8eca5ebbe390aacf385",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "door",
+                  "doors",
+                  "lock"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "DoorController",
+            "score": {
+              "d": 1000000,
+              "n": 1000000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 1000000
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "LockDoors",
+            "owner": "DoorController"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "door",
+                "doors"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:8f21a2e70dd361d592fd4c246f7e01cdf49da89205bab6f48f9d39c7f6fefd2c",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "door",
+                  "doors",
+                  "lock"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "DoorController",
+            "score": {
+              "d": 1000000,
+              "n": 1000000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 553179
+          },
+          "target": {
+            "kind": "swc",
+            "name": "DoorController",
+            "owner": null
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BODY-1"
+              ],
+              "kind": "neighbours",
+              "of": 1,
+              "seeded": 1,
+              "share": 1
+            }
+          ],
+          "fingerprint": "sha256:94072d703c93932bbdcb11fadf9e09e4ede129034bf1b4ec28540f9309b1c178",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BODY-1"
+                ],
+                "kind": "neighbours",
+                "of": 1,
+                "seeded": 1,
+                "share": 1
+              }
+            ],
+            "kind": "swc",
+            "name": "LampController",
+            "score": {
+              "d": 1000000,
+              "n": 400000
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 400000
+          },
+          "target": {
+            "kind": "swc",
+            "name": "LampController",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "The doors shall lock on request.",
+      "document": "Body Spec",
+      "fingerprint": "sha256:e33e4ed55ad9d0567ec849a7e275c8c99b5ffd30a551ca9b6ffb54370ace4a9b",
+      "id": "BODY-2",
+      "linked": [],
+      "lowAccuracy": false,
+      "pass": "review",
+      "title": "Door lock",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "state",
+                "lamp"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:d3dc64748256957bf2fd991561434814d9a2ce00a0385e6542a90b69e934c428",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BODY-1"
+                ],
+                "kind": "neighbours",
+                "of": 1,
+                "seeded": 1,
+                "share": 1
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "lamp",
+                  "state"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "LampController",
+            "score": {
+              "d": 1000000,
+              "n": 1305094
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 1000000
+          },
+          "target": {
+            "kind": "port",
+            "name": "pLampCmd",
+            "owner": "LampController"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BODY-1"
+              ],
+              "kind": "neighbours",
+              "of": 1,
+              "seeded": 1,
+              "share": 1
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "lamp"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:94072d703c93932bbdcb11fadf9e09e4ede129034bf1b4ec28540f9309b1c178",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BODY-1"
+                ],
+                "kind": "neighbours",
+                "of": 1,
+                "seeded": 1,
+                "share": 1
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "lamp",
+                  "state"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "LampController",
+            "score": {
+              "d": 1000000,
+              "n": 1305094
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 753731
+          },
+          "target": {
+            "kind": "swc",
+            "name": "LampController",
+            "owner": null
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "lamp"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:27771f4f56aaf20ee095ec20c187256b69867c3599d3cb0863e070958b6ab0eb",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BODY-1"
+                ],
+                "kind": "neighbours",
+                "of": 1,
+                "seeded": 1,
+                "share": 1
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "lamp",
+                  "state"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "LampController",
+            "score": {
+              "d": 1000000,
+              "n": 1305094
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 380776
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "DriveLamps",
+            "owner": "LampController"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "state",
+                "lamp"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:f9eab698312151a2b03c6ee643633dba8efb02cda19f50677a645b1c6019ea35",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "lamp",
+                  "state"
+                ]
+              }
+            ],
+            "kind": "interface",
+            "name": "ILampCmd",
+            "score": {
+              "d": 1000000,
+              "n": 1000000
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 1000000
+          },
+          "target": {
+            "kind": "interface",
+            "name": "ILampCmd",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "The lamp state shall be reported.",
+      "document": "Body Spec",
+      "fingerprint": "sha256:ff8744e361b03ab95685993b0e9295be04f9444ac3a79c265eb898a10abf4521",
+      "id": "BODY-3",
+      "linked": [],
+      "lowAccuracy": false,
+      "pass": "review",
+      "title": "Lamp state",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-1"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-1"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 1000000
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2943272
+          },
+          "target": {
+            "kind": "port",
+            "name": "pBrakeCmd",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 958398
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:6082e0c74ec9f8e26e78d052f2eedfd34ed923f81f50a154751d6a8eeef47a80",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2933436
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "ComputeBrake",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:341f3d2ac06a9680cdae1e223ac59225848f2750ef203e5cf20b67cfefa4a430",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 752632
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "MonitorPads",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:686a92c20015925f7dd61d51b9c48f89ad652df4d9146e0a5e5f5226b2dd9c8e",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "brake"
+                ]
+              }
+            ],
+            "kind": "interface",
+            "name": "IBrakeCmd",
+            "score": {
+              "d": 1000000,
+              "n": 982929
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 943272
+          },
+          "target": {
+            "kind": "interface",
+            "name": "IBrakeCmd",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "The brake shall release on request.",
+      "document": "Brake Spec",
+      "fingerprint": "sha256:b58ac627996e166078da1f3594e8f55a6d51e879002198c93f96f37eb4c9946d",
+      "id": "BRK-6",
+      "linked": [
+        {
+          "confirmed": false,
+          "decision": null,
+          "member": "BRK-6@1",
+          "target": {
+            "kind": "swc",
+            "name": "BrakeController",
+            "owner": null
+          },
+          "version": 1
+        },
+        {
+          "confirmed": false,
+          "decision": null,
+          "member": "BRK-6",
+          "target": {
+            "kind": "swc",
+            "name": "BrakeController",
+            "owner": null
+          },
+          "version": null
+        }
+      ],
+      "lowAccuracy": false,
+      "pass": "review",
+      "title": "Brake release",
+      "version": 2
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-1"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-1"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 1000000
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2943272
+          },
+          "target": {
+            "kind": "port",
+            "name": "pBrakeCmd",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 958398
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:6082e0c74ec9f8e26e78d052f2eedfd34ed923f81f50a154751d6a8eeef47a80",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2933436
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "ComputeBrake",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:8ae29b2a45811cc3afd0486507e4252ea6c1c558fefe6d5d4a22efe394eb040b",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 984171
+          },
+          "target": {
+            "kind": "swc",
+            "name": "BrakeController",
+            "owner": null
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:341f3d2ac06a9680cdae1e223ac59225848f2750ef203e5cf20b67cfefa4a430",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 752632
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "MonitorPads",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:686a92c20015925f7dd61d51b9c48f89ad652df4d9146e0a5e5f5226b2dd9c8e",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "brake"
+                ]
+              }
+            ],
+            "kind": "interface",
+            "name": "IBrakeCmd",
+            "score": {
+              "d": 1000000,
+              "n": 982929
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 943272
+          },
+          "target": {
+            "kind": "interface",
+            "name": "IBrakeCmd",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "The brake shall stop on request.",
+      "document": "Brake Spec",
+      "fingerprint": "sha256:3c071cfb97194f9f062d093e5f2984fd25bc585717a9bb9400de78adabed1626",
+      "id": "BRK-8",
+      "linked": [],
+      "lowAccuracy": false,
+      "pass": "review",
+      "title": "Say \"stop\" \\ now\tthen next 🚗",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-1"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-1"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 1000000
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pad"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2450583
+          },
+          "target": {
+            "kind": "port",
+            "name": "pBrakeCmd",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 958398
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:6082e0c74ec9f8e26e78d052f2eedfd34ed923f81f50a154751d6a8eeef47a80",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pad"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2411117
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "ComputeBrake",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "pad",
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:341f3d2ac06a9680cdae1e223ac59225848f2750ef203e5cf20b67cfefa4a430",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pad"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 1000000
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "MonitorPads",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:8ae29b2a45811cc3afd0486507e4252ea6c1c558fefe6d5d4a22efe394eb040b",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pad"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 470120
+          },
+          "target": {
+            "kind": "swc",
+            "name": "BrakeController",
+            "owner": null
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:686a92c20015925f7dd61d51b9c48f89ad652df4d9146e0a5e5f5226b2dd9c8e",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "brake"
+                ]
+              }
+            ],
+            "kind": "interface",
+            "name": "IBrakeCmd",
+            "score": {
+              "d": 1000000,
+              "n": 708213
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 450583
+          },
+          "target": {
+            "kind": "interface",
+            "name": "IBrakeCmd",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "The brake pad temperature shall be monitored above 600 °C.",
+      "document": "Brake Spec",
+      "fingerprint": "sha256:9f0c14b9c555f3a7cbbe117b6f87f5eb124a89b5adeaaf1e8712554ded7ab80a",
+      "id": "BRK-7",
+      "linked": [],
+      "lowAccuracy": false,
+      "pass": "review",
+      "title": "Pad temperature above 600 °C",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-1"
+              ],
+              "kind": "neighbours",
+              "of": 3,
+              "seeded": 1,
+              "share": {
+                "d": 3,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-1"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 1000000
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "pressure",
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-1"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pressure",
+                  "speed",
+                  "wheel",
+                  "computation"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 2600000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2284250
+          },
+          "target": {
+            "kind": "port",
+            "name": "pBrakeCmd",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "brake",
+                "pressure",
+                "speed",
+                "wheel"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:8ae29b2a45811cc3afd0486507e4252ea6c1c558fefe6d5d4a22efe394eb040b",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-1"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pressure",
+                  "speed",
+                  "wheel",
+                  "computation"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 2600000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 1000000
+          },
+          "target": {
+            "kind": "swc",
+            "name": "BrakeController",
+            "owner": null
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "speed",
+                "wheel"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:a19b2f79491f5b86639c560f193334886894d55cf6afde55ee223251fd085f7f",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-1"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pressure",
+                  "speed",
+                  "wheel",
+                  "computation"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 2600000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 594589
+          },
+          "target": {
+            "kind": "port",
+            "name": "pWheelSpeed",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:341f3d2ac06a9680cdae1e223ac59225848f2750ef203e5cf20b67cfefa4a430",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-1"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pressure",
+                  "speed",
+                  "wheel",
+                  "computation"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 2600000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 257443
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "MonitorPads",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-3"
+              ],
+              "kind": "neighbours",
+              "of": 3,
+              "seeded": 1,
+              "share": {
+                "d": 3,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-3"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 789024
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "wheel",
+                "speed"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:8951e50cde0de3f3b5860bb4fb3bbba5b0a210005ab95d0623dd0cd942cf16ab",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-3"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-3"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 789024
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "WheelSensor",
+            "score": {
+              "d": 1000000,
+              "n": 1833621
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 1842496
+          },
+          "target": {
+            "kind": "swc",
+            "name": "WheelSensor",
+            "owner": null
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "speed",
+                "wheel"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:e0d39adcfa8174bc55a305c2bd96b5c2691ab84dc3ffa6ab826cc2997eded71f",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-3"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-3"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 789024
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "WheelSensor",
+            "score": {
+              "d": 1000000,
+              "n": 1833621
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 524132
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "SampleSpeed",
+            "owner": "WheelSensor"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "speed",
+                "wheel"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:f3dbc888d5c41d3c8d4fe10a15395f3c531c00b4d47f02d9806f6f9e7982ed3a",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-3"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-3"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 789024
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "WheelSensor",
+            "score": {
+              "d": 1000000,
+              "n": 1833621
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 517022
+          },
+          "target": {
+            "kind": "port",
+            "name": "pSpeedOut",
+            "owner": "WheelSensor"
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "The brake pressure shall be computed from the wheel speed.",
+      "document": "Brake Spec",
+      "fingerprint": "sha256:39f459bf0953f6e29ae43fce1ccddab73d96e319749520c8f40dc5551c5cf7a3",
+      "id": "BRK-2",
+      "linked": [
+        {
+          "confirmed": true,
+          "member": "BRK-2@1",
+          "target": {
+            "kind": "runnable",
+            "name": "ComputeBrake",
+            "owner": "BrakeController"
+          },
+          "version": 1
+        }
+      ],
+      "lowAccuracy": false,
+      "pass": "review",
+      "title": "Brake computation",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-1"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-1"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 1000000
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pad",
+                  "wear"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2274665
+          },
+          "target": {
+            "kind": "port",
+            "name": "pBrakeCmd",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 958398
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:6082e0c74ec9f8e26e78d052f2eedfd34ed923f81f50a154751d6a8eeef47a80",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pad",
+                  "wear"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2224620
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "ComputeBrake",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "pad",
+                "wear",
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:341f3d2ac06a9680cdae1e223ac59225848f2750ef203e5cf20b67cfefa4a430",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pad",
+                  "wear"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 1000000
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "MonitorPads",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:8ae29b2a45811cc3afd0486507e4252ea6c1c558fefe6d5d4a22efe394eb040b",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 2,
+                "share": {
+                  "d": 2,
+                  "n": 1
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pad",
+                  "wear"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 3400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 286574
+          },
+          "target": {
+            "kind": "swc",
+            "name": "BrakeController",
+            "owner": null
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:686a92c20015925f7dd61d51b9c48f89ad652df4d9146e0a5e5f5226b2dd9c8e",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "brake"
+                ]
+              }
+            ],
+            "kind": "interface",
+            "name": "IBrakeCmd",
+            "score": {
+              "d": 1000000,
+              "n": 553513
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 274665
+          },
+          "target": {
+            "kind": "interface",
+            "name": "IBrakeCmd",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [
+        {
+          "target": {
+            "kind": "memory",
+            "name": "Ram",
+            "owner": null
+          }
+        }
+      ],
+      "chosenBecause": null,
+      "description": "Brake pad wear shall be monitored.",
+      "document": "Brake Spec",
+      "fingerprint": "sha256:38db138b75796e0a9cc54b4d4ed4a5054d707c43e3efd96abd261dcab63a0c67",
+      "id": "BRK-5",
+      "linked": [],
+      "lowAccuracy": false,
+      "pass": "review",
+      "title": "Pad wear",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "neighbours",
+              "of": 3,
+              "seeded": 1,
+              "share": {
+                "d": 3,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 1000000
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "brake",
+                "pressure"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:6082e0c74ec9f8e26e78d052f2eedfd34ed923f81f50a154751d6a8eeef47a80",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pressure",
+                  "command"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 2352990
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2206211
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "ComputeBrake",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "brake",
+                "pressure"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:8ae29b2a45811cc3afd0486507e4252ea6c1c558fefe6d5d4a22efe394eb040b",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pressure",
+                  "command"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 2352990
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 554727
+          },
+          "target": {
+            "kind": "swc",
+            "name": "BrakeController",
+            "owner": null
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:341f3d2ac06a9680cdae1e223ac59225848f2750ef203e5cf20b67cfefa4a430",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pressure",
+                  "command"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 2352990
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 235189
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "MonitorPads",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "command",
+                "pressure",
+                "brake"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:686a92c20015925f7dd61d51b9c48f89ad652df4d9146e0a5e5f5226b2dd9c8e",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "brake",
+                  "pressure",
+                  "command"
+                ]
+              }
+            ],
+            "kind": "interface",
+            "name": "IBrakeCmd",
+            "score": {
+              "d": 1000000,
+              "n": 1000000
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 1000000
+          },
+          "target": {
+            "kind": "interface",
+            "name": "IBrakeCmd",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "The brake pressure command shall be sent.",
+      "document": "Brake Spec",
+      "fingerprint": "sha256:22c4eebc183f88810d038252d64389c2fbb7d2047b28503ea64aa5c8fa513628",
+      "id": "BRK-1",
+      "linked": [
+        {
+          "confirmed": true,
+          "member": "BRK-1@1",
+          "target": {
+            "kind": "port",
+            "name": "pBrakeCmd",
+            "owner": "BrakeController"
+          },
+          "version": 1
+        }
+      ],
+      "lowAccuracy": false,
+      "pass": "review",
+      "title": "Brake command",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-4"
+              ],
+              "kind": "neighbours",
+              "of": 3,
+              "seeded": 1,
+              "share": {
+                "d": 3,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-4"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 1000000
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "speed",
+                "wheel"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:6ebc8c8f612048f54479d4b78a50c2a993418c000552dabac6ec9c47efb8b795",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-4"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-4"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel"
+                ]
+              }
+            ],
+            "kind": "interface",
+            "name": "IWheelSpeed",
+            "score": {
+              "d": 1000000,
+              "n": 2178470
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2166911
+          },
+          "target": {
+            "kind": "interface",
+            "name": "IWheelSpeed",
+            "owner": null
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "neighbours",
+              "of": 3,
+              "seeded": 1,
+              "share": {
+                "d": 3,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 752305
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "speed",
+                "wheel"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:6082e0c74ec9f8e26e78d052f2eedfd34ed923f81f50a154751d6a8eeef47a80",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 2,
+                "share": {
+                  "d": 3,
+                  "n": 2
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 571286
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 1954415
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 1687499
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "ComputeBrake",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "speed",
+                "wheel"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:a19b2f79491f5b86639c560f193334886894d55cf6afde55ee223251fd085f7f",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 2,
+                "share": {
+                  "d": 3,
+                  "n": 2
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 571286
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 1954415
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 585605
+          },
+          "target": {
+            "kind": "port",
+            "name": "pWheelSpeed",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-1"
+              ],
+              "kind": "neighbours",
+              "of": 3,
+              "seeded": 1,
+              "share": {
+                "d": 3,
+                "n": 1
+              }
+            }
+          ],
+          "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 2,
+                "share": {
+                  "d": 3,
+                  "n": 2
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 571286
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 1954415
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 400000
+          },
+          "target": {
+            "kind": "port",
+            "name": "pBrakeCmd",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "speed",
+                "wheel"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:8ae29b2a45811cc3afd0486507e4252ea6c1c558fefe6d5d4a22efe394eb040b",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 2,
+                "share": {
+                  "d": 3,
+                  "n": 2
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 571286
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 1954415
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 386849
+          },
+          "target": {
+            "kind": "swc",
+            "name": "BrakeController",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "The wheel speed sensors shall be sampled.",
+      "document": "Brake Spec",
+      "fingerprint": "sha256:90fc9cb12f2b2d8fdfa547957e35a43a6b4cff0539e7c55c4d032bdb5f945db9",
+      "id": "BRK-3",
+      "linked": [
+        {
+          "confirmed": true,
+          "member": "BRK-3@1",
+          "target": {
+            "kind": "swc",
+            "name": "WheelSensor",
+            "owner": null
+          },
+          "version": 1
+        }
+      ],
+      "lowAccuracy": false,
+      "pass": "review",
+      "title": "Wheel speed sampling",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-3"
+              ],
+              "kind": "neighbours",
+              "of": 3,
+              "seeded": 1,
+              "share": {
+                "d": 3,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-3"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 1000000
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "wheel",
+                "speed"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:8951e50cde0de3f3b5860bb4fb3bbba5b0a210005ab95d0623dd0cd942cf16ab",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-3"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-3"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel",
+                  "km"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "WheelSensor",
+            "score": {
+              "d": 1000000,
+              "n": 2277878
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2160914
+          },
+          "target": {
+            "kind": "swc",
+            "name": "WheelSensor",
+            "owner": null
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "speed",
+                "km",
+                "wheel"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:f3dbc888d5c41d3c8d4fe10a15395f3c531c00b4d47f02d9806f6f9e7982ed3a",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-3"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-3"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel",
+                  "km"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "WheelSensor",
+            "score": {
+              "d": 1000000,
+              "n": 2277878
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 912222
+          },
+          "target": {
+            "kind": "port",
+            "name": "pSpeedOut",
+            "owner": "WheelSensor"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "speed",
+                "wheel"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:e0d39adcfa8174bc55a305c2bd96b5c2691ab84dc3ffa6ab826cc2997eded71f",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-3"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 1,
+                "share": {
+                  "d": 3,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "BRK-3"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel",
+                  "km"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "WheelSensor",
+            "score": {
+              "d": 1000000,
+              "n": 2277878
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 593125
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "SampleSpeed",
+            "owner": "WheelSensor"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "neighbours",
+              "of": 3,
+              "seeded": 1,
+              "share": {
+                "d": 3,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "BRK-2"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 720339
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "speed",
+                "wheel"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:6082e0c74ec9f8e26e78d052f2eedfd34ed923f81f50a154751d6a8eeef47a80",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 2,
+                "share": {
+                  "d": 3,
+                  "n": 2
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 547492
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel",
+                  "km"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 1976186
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 1706463
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "ComputeBrake",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "speed",
+                "km",
+                "wheel"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:a19b2f79491f5b86639c560f193334886894d55cf6afde55ee223251fd085f7f",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 2,
+                "share": {
+                  "d": 3,
+                  "n": 2
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 547492
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel",
+                  "km"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 1976186
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 1000000
+          },
+          "target": {
+            "kind": "port",
+            "name": "pWheelSpeed",
+            "owner": "BrakeController"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "speed",
+                "wheel"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:8ae29b2a45811cc3afd0486507e4252ea6c1c558fefe6d5d4a22efe394eb040b",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 2,
+                "share": {
+                  "d": 3,
+                  "n": 2
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 547492
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel",
+                  "km"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 1976186
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 444487
+          },
+          "target": {
+            "kind": "swc",
+            "name": "BrakeController",
+            "owner": null
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "BRK-1"
+              ],
+              "kind": "neighbours",
+              "of": 3,
+              "seeded": 1,
+              "share": {
+                "d": 3,
+                "n": 1
+              }
+            }
+          ],
+          "fingerprint": "sha256:826e926c3fb4f4b27d97ad7c0f29400d62b4012ef29ce8d1d0fa4fce1528477e",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "BRK-1",
+                  "BRK-2"
+                ],
+                "kind": "neighbours",
+                "of": 3,
+                "seeded": 2,
+                "share": {
+                  "d": 3,
+                  "n": 2
+                }
+              },
+              {
+                "count": 2,
+                "examples": [
+                  "BRK-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 547492
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "speed",
+                  "wheel",
+                  "km"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "BrakeController",
+            "score": {
+              "d": 1000000,
+              "n": 1976186
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 400000
+          },
+          "target": {
+            "kind": "port",
+            "name": "pBrakeCmd",
+            "owner": "BrakeController"
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "The wheel speed signal shall carry km/h.",
+      "document": "Brake Spec",
+      "fingerprint": "sha256:bcae03ef52e6194c5791e9d2f1fd770eb86869f33f6d07d73a708d4c971f1310",
+      "id": "BRK-4",
+      "linked": [
+        {
+          "confirmed": true,
+          "member": "BRK-4@1",
+          "target": {
+            "kind": "interface",
+            "name": "IWheelSpeed",
+            "owner": null
+          },
+          "version": 1
+        }
+      ],
+      "lowAccuracy": false,
+      "pass": "review",
+      "title": "Wheel speed signal",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "SYS-3"
+              ],
+              "kind": "neighbours",
+              "of": 5,
+              "seeded": 1,
+              "share": {
+                "d": 5,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "SYS-3"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 1000000
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "partition"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:111dcb8d3cf71004a8e2519f9e78a993b423b617ec3fea5680ef2a36eff5f644",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "SYS-3"
+                ],
+                "kind": "neighbours",
+                "of": 5,
+                "seeded": 1,
+                "share": {
+                  "d": 5,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "SYS-3"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "partition"
+                ]
+              }
+            ],
+            "kind": "partition",
+            "name": "SafePartition",
+            "score": {
+              "d": 1000000,
+              "n": 2868304
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2898220
+          },
+          "target": {
+            "kind": "partition",
+            "name": "SafePartition",
+            "owner": null
+          }
+        },
+        {
+          "band": "strong",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "name",
+              "phrase": "Mcu"
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "mcu",
+                "microcontroller"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:6ee7205fa452d2977da47b8f03e2539bbec9c2ad0824d53f643da0588d6039a2",
+          "group": {
+            "evidence": [
+              {
+                "kind": "name",
+                "phrase": "Mcu"
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "mcu",
+                  "microcontroller"
+                ]
+              }
+            ],
+            "kind": "processor",
+            "name": "Mcu",
+            "score": {
+              "d": 1000000,
+              "n": 1250000
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 1250000
+          },
+          "target": {
+            "kind": "processor",
+            "name": "Mcu",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": "the clearest of 1 requirement whose first candidate is partition SafePartition",
+      "description": "The Mcu shall host the application partition.",
+      "document": "System Spec",
+      "fingerprint": "sha256:4c7e3ef59b0eeb6edcb4c56489db4c62466badd33dfb2fd9b8fbd7c8ff21e6a4",
+      "id": "SYS-8",
+      "linked": [],
+      "lowAccuracy": false,
+      "pass": "labelling",
+      "title": "Microcontroller",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "strong",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "name",
+              "phrase": "Core0"
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "core"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:40e7377c68ce25500338aef1518d101f4c6725a8cd5edcda909a0d3c8c753458",
+          "group": {
+            "evidence": [
+              {
+                "kind": "name",
+                "phrase": "Core0"
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "core"
+                ]
+              }
+            ],
+            "kind": "core",
+            "name": "Core0",
+            "score": {
+              "d": 1000000,
+              "n": 1250000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 1250000
+          },
+          "target": {
+            "kind": "core",
+            "name": "Core0",
+            "owner": null
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "SYS-4"
+              ],
+              "kind": "neighbours",
+              "of": 5,
+              "seeded": 1,
+              "share": {
+                "d": 5,
+                "n": 1
+              }
+            }
+          ],
+          "fingerprint": "sha256:4882f1d571e5694270ea475179eac031a409d4c9d9b68728e7dfcfaa53b77c68",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "SYS-4"
+                ],
+                "kind": "neighbours",
+                "of": 5,
+                "seeded": 1,
+                "share": {
+                  "d": 5,
+                  "n": 1
+                }
+              }
+            ],
+            "kind": "swc",
+            "name": "DiagManager",
+            "score": {
+              "d": 1000000,
+              "n": 400000
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 400000
+          },
+          "target": {
+            "kind": "swc",
+            "name": "DiagManager",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": "the clearest of 1 requirement whose first candidate is core Core0",
+      "description": "Core0 load shall stay below its threshold.",
+      "document": "System Spec",
+      "fingerprint": "sha256:cbac9377a1d2f7f3bf09eeec30b791ad793a073142b9d518cb9c294d8a4dd891",
+      "id": "SYS-6",
+      "linked": [],
+      "lowAccuracy": false,
+      "pass": "labelling",
+      "title": "Core load",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "strong",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "name",
+              "phrase": "Ram"
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "memory",
+                "ram"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:6d21c44ce611a44e4ab1cb2412b89fd243f36b287b421c0955b69069e9678511",
+          "group": {
+            "evidence": [
+              {
+                "kind": "name",
+                "phrase": "Ram"
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "memory",
+                  "ram"
+                ]
+              }
+            ],
+            "kind": "memory",
+            "name": "Ram",
+            "score": {
+              "d": 1000000,
+              "n": 1250000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 1250000
+          },
+          "target": {
+            "kind": "memory",
+            "name": "Ram",
+            "owner": null
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "SYS-4"
+              ],
+              "kind": "neighbours",
+              "of": 5,
+              "seeded": 1,
+              "share": {
+                "d": 5,
+                "n": 1
+              }
+            }
+          ],
+          "fingerprint": "sha256:4882f1d571e5694270ea475179eac031a409d4c9d9b68728e7dfcfaa53b77c68",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "SYS-4"
+                ],
+                "kind": "neighbours",
+                "of": 5,
+                "seeded": 1,
+                "share": {
+                  "d": 5,
+                  "n": 1
+                }
+              }
+            ],
+            "kind": "swc",
+            "name": "DiagManager",
+            "score": {
+              "d": 1000000,
+              "n": 400000
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 400000
+          },
+          "target": {
+            "kind": "swc",
+            "name": "DiagManager",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "Ram usage shall be bounded.",
+      "document": "System Spec",
+      "fingerprint": "sha256:a84569c0a7059e9c9ec9127d0a289f6f246fab5c61fbf88b45bd2672f9701e52",
+      "id": "SYS-7",
+      "linked": [],
+      "lowAccuracy": false,
+      "pass": "labelling",
+      "title": "Memory budget",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "SYS-3"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "SYS-3"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 1000000
+              }
+            }
+          ],
+          "fingerprint": "sha256:111dcb8d3cf71004a8e2519f9e78a993b423b617ec3fea5680ef2a36eff5f644",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "SYS-3"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 1,
+                "share": {
+                  "d": 4,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "SYS-3"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              }
+            ],
+            "kind": "partition",
+            "name": "SafePartition",
+            "score": {
+              "d": 1000000,
+              "n": 2000000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2000000
+          },
+          "target": {
+            "kind": "partition",
+            "name": "SafePartition",
+            "owner": null
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "SYS-4"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            }
+          ],
+          "fingerprint": "sha256:4882f1d571e5694270ea475179eac031a409d4c9d9b68728e7dfcfaa53b77c68",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "SYS-4"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 1,
+                "share": {
+                  "d": 4,
+                  "n": 1
+                }
+              }
+            ],
+            "kind": "swc",
+            "name": "DiagManager",
+            "score": {
+              "d": 1000000,
+              "n": 400000
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 400000
+          },
+          "target": {
+            "kind": "swc",
+            "name": "DiagManager",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "The vehicle software composition shall group the components.",
+      "document": "System Spec",
+      "fingerprint": "sha256:bb88aaf3590fa40ce60df4368b2d8977568a532cece524c180c4cd132362b5a8",
+      "id": "SYS-1",
+      "linked": [
+        {
+          "confirmed": true,
+          "member": "SYS-1@1",
+          "target": {
+            "kind": "composition",
+            "name": "VehicleTop",
+            "owner": null
+          },
+          "version": 1
+        }
+      ],
+      "lowAccuracy": false,
+      "pass": "labelling",
+      "title": "Vehicle composition",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "SYS-3"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "SYS-3"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 1000000
+              }
+            }
+          ],
+          "fingerprint": "sha256:111dcb8d3cf71004a8e2519f9e78a993b423b617ec3fea5680ef2a36eff5f644",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "SYS-3"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 1,
+                "share": {
+                  "d": 4,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "SYS-3"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              }
+            ],
+            "kind": "partition",
+            "name": "SafePartition",
+            "score": {
+              "d": 1000000,
+              "n": 2000000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2000000
+          },
+          "target": {
+            "kind": "partition",
+            "name": "SafePartition",
+            "owner": null
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "task",
+                "cyclic"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:c99a5c9f1675fac763d9da29f0068d63f462f653d22f17a9d16a998074d486f1",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "task",
+                  "cyclic"
+                ]
+              }
+            ],
+            "kind": "task",
+            "name": "Task100ms",
+            "score": {
+              "d": 1000000,
+              "n": 645413
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 1000000
+          },
+          "target": {
+            "kind": "task",
+            "name": "Task100ms",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "The fast cyclic task shall run every ten milliseconds.",
+      "document": "System Spec",
+      "fingerprint": "sha256:0818e24092f0b929d375b807e01297135d4e0df2214febe8a8e086de250bcf1a",
+      "id": "SYS-2",
+      "linked": [
+        {
+          "confirmed": true,
+          "member": "SYS-2@1",
+          "target": {
+            "kind": "task",
+            "name": "Task10ms",
+            "owner": null
+          },
+          "version": 1
+        }
+      ],
+      "lowAccuracy": false,
+      "pass": "labelling",
+      "title": "Fast task",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "SYS-1"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "SYS-1"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 1000000
+              }
+            },
+            {
+              "kind": "text",
+              "terms": [
+                "software"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:b25c4c19d815bbcb8d4ca76d9cb68c1b6cb366d20e94e9c591d5255966268877",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "SYS-1"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 1,
+                "share": {
+                  "d": 4,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "SYS-1"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 1000000
+                }
+              },
+              {
+                "kind": "text",
+                "terms": [
+                  "software"
+                ]
+              }
+            ],
+            "kind": "composition",
+            "name": "VehicleTop",
+            "score": {
+              "d": 1000000,
+              "n": 2477624
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 2861013
+          },
+          "target": {
+            "kind": "composition",
+            "name": "VehicleTop",
+            "owner": null
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "SYS-2"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            },
+            {
+              "count": 1,
+              "examples": [
+                "SYS-2"
+              ],
+              "kind": "similar",
+              "score": {
+                "d": 1000000,
+                "n": 943083
+              }
+            }
+          ],
+          "fingerprint": "sha256:6f1ef6db59f8a9bd4267ca418bca1ef4a14ecddba4a4adec4615d1da89e23270",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "SYS-2"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 1,
+                "share": {
+                  "d": 4,
+                  "n": 1
+                }
+              },
+              {
+                "count": 1,
+                "examples": [
+                  "SYS-2"
+                ],
+                "kind": "similar",
+                "score": {
+                  "d": 1000000,
+                  "n": 947192
+                }
+              }
+            ],
+            "kind": "task",
+            "name": "Task10ms",
+            "score": {
+              "d": 1000000,
+              "n": 1915507
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 1908933
+          },
+          "target": {
+            "kind": "task",
+            "name": "Task10ms",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "Safety software shall run in the safety partition.",
+      "document": "System Spec",
+      "fingerprint": "sha256:af0a54c8d70749f261ba930ae1b7bca3dfc5f329411af2cf9dafd5d52f0e63eb",
+      "id": "SYS-3",
+      "linked": [
+        {
+          "confirmed": true,
+          "member": "SYS-3@1",
+          "target": {
+            "kind": "partition",
+            "name": "SafePartition",
+            "owner": null
+          },
+          "version": 1
+        }
+      ],
+      "lowAccuracy": false,
+      "pass": "labelling",
+      "title": "Safety partition",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "stored"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:7fdfb2c6f36fc49aa0491889909f839c59e879f889aa1fc792bebcfd84997198",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "stored",
+                  "diagnostic",
+                  "faults"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "DiagManager",
+            "score": {
+              "d": 1000000,
+              "n": 1000000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 964367
+          },
+          "target": {
+            "kind": "port",
+            "name": "pDiag",
+            "owner": "DiagManager"
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "stored"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:59dbf77655d2cd322b3f41637e2d7f120b0390b4b82875b5443ca8c941dd35c5",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "stored"
+                ]
+              }
+            ],
+            "kind": "interface",
+            "name": "IDiag",
+            "score": {
+              "d": 1000000,
+              "n": 488065
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 1000000
+          },
+          "target": {
+            "kind": "interface",
+            "name": "IDiag",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "Diagnostic faults shall be stored and reported.",
+      "document": "System Spec",
+      "fingerprint": "sha256:2f2c7211f9d969f6105d2361f52522293d4cdd16a4478dae938d795792e70d8f",
+      "id": "SYS-4",
+      "linked": [
+        {
+          "confirmed": true,
+          "member": "SYS-4@1",
+          "target": {
+            "kind": "swc",
+            "name": "DiagManager",
+            "owner": null
+          },
+          "version": 1
+        }
+      ],
+      "lowAccuracy": false,
+      "pass": "labelling",
+      "title": "Diagnostics",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "SYS-4"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            }
+          ],
+          "fingerprint": "sha256:4882f1d571e5694270ea475179eac031a409d4c9d9b68728e7dfcfaa53b77c68",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "SYS-4"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 1,
+                "share": {
+                  "d": 4,
+                  "n": 1
+                }
+              }
+            ],
+            "kind": "swc",
+            "name": "DiagManager",
+            "score": {
+              "d": 1000000,
+              "n": 400000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 400000
+          },
+          "target": {
+            "kind": "swc",
+            "name": "DiagManager",
+            "owner": null
+          }
+        },
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "examples": [
+                "SYS-1"
+              ],
+              "kind": "neighbours",
+              "of": 4,
+              "seeded": 1,
+              "share": {
+                "d": 4,
+                "n": 1
+              }
+            }
+          ],
+          "fingerprint": "sha256:b25c4c19d815bbcb8d4ca76d9cb68c1b6cb366d20e94e9c591d5255966268877",
+          "group": {
+            "evidence": [
+              {
+                "examples": [
+                  "SYS-1"
+                ],
+                "kind": "neighbours",
+                "of": 4,
+                "seeded": 1,
+                "share": {
+                  "d": 4,
+                  "n": 1
+                }
+              }
+            ],
+            "kind": "composition",
+            "name": "VehicleTop",
+            "score": {
+              "d": 1000000,
+              "n": 400000
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 400000
+          },
+          "target": {
+            "kind": "composition",
+            "name": "VehicleTop",
+            "owner": null
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "The gateway shall forward bus frames.",
+      "document": "System Spec",
+      "fingerprint": "sha256:97c42804ec20442f4ceb81b85dddbd2967ef54a6548c1d438aa81ed1f3506e35",
+      "id": "SYS-5",
+      "linked": [
+        {
+          "confirmed": true,
+          "member": "SYS-5@1",
+          "target": {
+            "kind": "swc",
+            "name": "GatewayStub",
+            "owner": null
+          },
+          "version": 1
+        }
+      ],
+      "lowAccuracy": false,
+      "pass": "labelling",
+      "title": "Gateway",
+      "version": 1
+    },
+    {
+      "candidates": [
+        {
+          "band": "medium",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "fault",
+                "stored"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:59dbf77655d2cd322b3f41637e2d7f120b0390b4b82875b5443ca8c941dd35c5",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "fault",
+                  "stored"
+                ]
+              }
+            ],
+            "kind": "interface",
+            "name": "IDiag",
+            "score": {
+              "d": 1000000,
+              "n": 1000000
+            }
+          },
+          "place": 1,
+          "score": {
+            "d": 1000000,
+            "n": 1000000
+          },
+          "target": {
+            "kind": "interface",
+            "name": "IDiag",
+            "owner": null
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "fault",
+                "stored"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:7fdfb2c6f36fc49aa0491889909f839c59e879f889aa1fc792bebcfd84997198",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "fault",
+                  "stored"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "DiagManager",
+            "score": {
+              "d": 1000000,
+              "n": 876505
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 970670
+          },
+          "target": {
+            "kind": "port",
+            "name": "pDiag",
+            "owner": "DiagManager"
+          }
+        },
+        {
+          "band": "weak",
+          "decision": null,
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "fault"
+              ]
+            }
+          ],
+          "fingerprint": "sha256:2433252c1cb49e9f60c855770ad5cacd2e657a7fafa74555a0603612b23704ba",
+          "group": {
+            "evidence": [
+              {
+                "kind": "text",
+                "terms": [
+                  "fault",
+                  "stored"
+                ]
+              }
+            ],
+            "kind": "swc",
+            "name": "DiagManager",
+            "score": {
+              "d": 1000000,
+              "n": 876505
+            }
+          },
+          "place": 2,
+          "score": {
+            "d": 1000000,
+            "n": 544287
+          },
+          "target": {
+            "kind": "runnable",
+            "name": "HandleFault",
+            "owner": "DiagManager"
+          }
+        }
+      ],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "A stored fault shall be cleared on request.",
+      "document": null,
+      "fingerprint": "sha256:39b0cfb276a877e4c72d135053106beda165964e7db61904722a34282a40d5f5",
+      "id": "N-1",
+      "linked": [],
+      "lowAccuracy": true,
+      "pass": "review",
+      "title": "Fault clearing",
+      "version": 1
+    },
+    {
+      "candidates": [],
+      "chosen": [],
+      "chosenBecause": null,
+      "description": "Nothing in the model answers this.",
+      "document": null,
+      "fingerprint": "sha256:786f564f3f4f89db107119c3dcef095ac1e8b60eb56531be91efacd737535f31",
+      "id": "N-2",
+      "linked": [],
+      "lowAccuracy": true,
+      "pass": "review",
+      "title": "Unrelated",
+      "version": 1
+    }
+  ]
+}

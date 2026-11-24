@@ -1,0 +1,21 @@
+name: TwinReadsSWC
+type: application
+description: One runnable reading the same (port, element) pair twice, once by value
+ports:
+  - name: rIn
+    direction: require
+    interface: IExample
+runnables:
+  - name: TwinReadsRun
+    events:
+      - type: timing
+        period: 0.01
+    reads:
+      - port: rIn
+        element: value
+      - port: rIn
+        element: value
+        by: value
+memory:
+  RAM: 16
+handle_termination_and_restart: no_support

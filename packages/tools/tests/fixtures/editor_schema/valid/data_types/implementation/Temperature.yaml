@@ -1,0 +1,4 @@
+name: Temperature
+kind: reference_type
+base: float32
+description: Hand-built reference type fixture — the corpus ships only base and value types

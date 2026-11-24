@@ -1,0 +1,5 @@
+name: PlatformCounter_T
+kind: external_type
+external_ref: /Platform/ImplementationDataTypes/PlatformCounter_T
+external_dest: IMPLEMENTATION-DATA-TYPE
+description: Hand-built external data type stub fixture — the corpus declares no stub

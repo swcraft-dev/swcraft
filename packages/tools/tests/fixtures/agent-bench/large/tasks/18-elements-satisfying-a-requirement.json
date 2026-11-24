@@ -1,0 +1,61 @@
+{
+  "id": "18-elements-satisfying-a-requirement",
+  "task": 18,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which elements satisfy requirement Rq03abcdef? List them with their layer.",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "with_layer": [
+        {
+          "name": "Swc003abcdefghij",
+          "layer": "swc"
+        },
+        {
+          "name": "P3",
+          "layer": "port",
+          "owner": "Swc001abcdefghij"
+        },
+        {
+          "name": "R1",
+          "layer": "runnable",
+          "owner": "Swc003abcdefghij"
+        },
+        {
+          "name": "If0003abcdefghij",
+          "layer": "interface"
+        },
+        {
+          "name": "Root",
+          "layer": "composition"
+        },
+        {
+          "name": "Ts03abcdef",
+          "layer": "task"
+        },
+        {
+          "name": "Cp1abcdefg",
+          "layer": "hardware"
+        }
+      ],
+      "mentions_none": [
+        "Swc002abcdefghij",
+        "If0002abcdefghij",
+        "Ts02abcdef"
+      ]
+    }
+  },
+  "reference": {
+    "satisfied_by": [
+      "composition Root",
+      "hardware Cp1abcdefg",
+      "interface If0003abcdefghij",
+      "swc Swc001abcdefghij (via port P3)",
+      "swc Swc003abcdefghij (runnable R1)",
+      "task Ts03abcdef"
+    ],
+    "computed_by": "swcraft query --dependents Rq03abcdef --depth 1 --format json"
+  }
+}

@@ -1,0 +1,277 @@
+{
+ "id": "root",
+ "layoutOptions": {
+  "elk.algorithm": "layered",
+  "elk.direction": "RIGHT",
+  "elk.padding": "[top=22,left=22,bottom=22,right=22]",
+  "elk.edgeRouting": "ORTHOGONAL",
+  "elk.hierarchyHandling": "INCLUDE_CHILDREN",
+  "elk.spacing.nodeNode": "40",
+  "elk.layered.spacing.nodeNodeBetweenLayers": "80",
+  "elk.spacing.edgeNode": "20",
+  "elk.layered.spacing.edgeNodeBetweenLayers": "30"
+ },
+ "children": [
+  {
+   "id": "frame",
+   "labels": [
+    {
+     "text": "Vehicle",
+     "width": 51.64,
+     "height": 16,
+     "x": 5,
+     "y": 5
+    }
+   ],
+   "layoutOptions": {
+    "elk.portConstraints": "FIXED_SIDE",
+    "elk.nodeSize.constraints": "PORTS",
+    "elk.padding": "[top=40,left=90,bottom=40,right=90]",
+    "elk.nodeLabels.placement": "H_LEFT V_TOP INSIDE",
+    "elk.portLabels.placement": "INSIDE NEXT_TO_PORT_IF_POSSIBLE"
+   },
+   "swcraft": {
+    "role": "frame",
+    "name": "Vehicle",
+    "title": "Vehicle",
+    "description": "The root. One member is a composition, the other a component whose member name differs from its type.",
+    "parents": [],
+    "opens": {
+     "file": "compositions/Vehicle.yaml",
+     "member": null
+    }
+   },
+   "ports": [],
+   "children": [
+    {
+     "id": "member.Chassis",
+     "labels": [
+      {
+       "text": "Chassis",
+       "width": 51.64,
+       "height": 16,
+       "x": 67.9,
+       "y": 5
+      }
+     ],
+     "layoutOptions": {
+      "elk.portConstraints": "FIXED_SIDE",
+      "elk.nodeLabels.placement": "H_CENTER V_TOP INSIDE",
+      "elk.portLabels.placement": "INSIDE NEXT_TO_PORT_IF_POSSIBLE",
+      "elk.nodeSize.constraints": "PORTS PORT_LABELS NODE_LABELS MINIMUM_SIZE",
+      "elk.nodeSize.minimum": "(160,60)",
+      "elk.spacing.portPort": "8"
+     },
+     "ports": [
+      {
+       "id": "port.Chassis.rDiag",
+       "width": 26,
+       "height": 14,
+       "labels": [
+        {
+         "text": "rDiag",
+         "width": 32.7,
+         "height": 14,
+         "x": 27,
+         "y": 0
+        }
+       ],
+       "layoutOptions": {
+        "elk.port.side": "WEST",
+        "elk.port.borderOffset": "-6",
+        "elk.port.anchor": "(0,7)"
+       },
+       "swcraft": {
+        "role": "port",
+        "owner": "Chassis",
+        "name": "rDiag",
+        "direction": "require",
+        "interface": "IDiag",
+        "interfaceKind": "client_server",
+        "interfaceWord": "client-server",
+        "description": "",
+        "opens": {
+         "file": "compositions/Chassis.yaml",
+         "member": "ports/rDiag"
+        }
+       },
+       "x": -20,
+       "y": 23
+      },
+      {
+       "id": "port.Chassis.pSpeedOut",
+       "width": 32,
+       "height": 14,
+       "labels": [
+        {
+         "text": "pSpeedOut",
+         "width": 55.9,
+         "height": 14,
+         "x": -56.9,
+         "y": 0
+        }
+       ],
+       "layoutOptions": {
+        "elk.port.side": "EAST",
+        "elk.port.borderOffset": "-6",
+        "elk.port.anchor": "(32,7)"
+       },
+       "swcraft": {
+        "role": "port",
+        "owner": "Chassis",
+        "name": "pSpeedOut",
+        "direction": "provide",
+        "interface": "ISpeed",
+        "interfaceKind": "sender_receiver",
+        "interfaceWord": "sender-receiver",
+        "description": "The speed the chassis publishes.",
+        "opens": {
+         "file": "compositions/Chassis.yaml",
+         "member": "ports/pSpeedOut"
+        }
+       },
+       "x": 181.44,
+       "y": 23
+      }
+     ],
+     "swcraft": {
+      "role": "member",
+      "name": "Chassis",
+      "type": "Chassis",
+      "kind": "composition",
+      "description": "The nested composition.",
+      "opens": {
+       "file": "compositions/Chassis.yaml",
+       "member": null
+      }
+     },
+     "$H": 461,
+     "x": 418.36,
+     "y": 61,
+     "width": 187.44,
+     "height": 60
+    },
+    {
+     "id": "member.Diag",
+     "labels": [
+      {
+       "text": "Diag : DiagServer",
+       "width": 122.32,
+       "height": 16,
+       "x": 38.7,
+       "y": 5
+      }
+     ],
+     "layoutOptions": {
+      "elk.portConstraints": "FIXED_SIDE",
+      "elk.nodeLabels.placement": "H_CENTER V_TOP INSIDE",
+      "elk.portLabels.placement": "INSIDE NEXT_TO_PORT_IF_POSSIBLE",
+      "elk.nodeSize.constraints": "PORTS PORT_LABELS NODE_LABELS MINIMUM_SIZE",
+      "elk.nodeSize.minimum": "(160,60)",
+      "elk.spacing.portPort": "8"
+     },
+     "ports": [
+      {
+       "id": "port.Diag.pDiag",
+       "width": 32,
+       "height": 14,
+       "labels": [
+        {
+         "text": "pDiag",
+         "width": 32.7,
+         "height": 14,
+         "x": -33.7,
+         "y": 0
+        }
+       ],
+       "layoutOptions": {
+        "elk.port.side": "EAST",
+        "elk.port.borderOffset": "-6",
+        "elk.port.anchor": "(32,7)"
+       },
+       "swcraft": {
+        "role": "port",
+        "owner": "Diag",
+        "name": "pDiag",
+        "direction": "provide",
+        "interface": "IDiag",
+        "interfaceKind": "client_server",
+        "interfaceWord": "client-server",
+        "description": "",
+        "opens": {
+         "file": "swc/chassis/DiagServer.yaml",
+         "member": "ports/pDiag"
+        }
+       },
+       "x": 199.72,
+       "y": 23
+      }
+     ],
+     "swcraft": {
+      "role": "member",
+      "name": "Diag",
+      "type": "DiagServer",
+      "kind": "component",
+      "description": "Serves the diagnostic status.",
+      "opens": {
+       "file": "swc/chassis/DiagServer.yaml",
+       "member": null
+      }
+     },
+     "$H": 468,
+     "x": 146.64,
+     "y": 61,
+     "width": 205.72,
+     "height": 60
+    }
+   ],
+   "edges": [
+    {
+     "id": "connector.diag_link",
+     "sources": [
+      "port.Diag.pDiag"
+     ],
+     "targets": [
+      "port.Chassis.rDiag"
+     ],
+     "swcraft": {
+      "role": "connector",
+      "name": "diag_link",
+      "description": "",
+      "loop": false,
+      "opens": {
+       "file": "connectors/diag_link.yaml",
+       "member": null
+      }
+     },
+     "sections": [
+      {
+       "id": "connector.diag_link_s0",
+       "startPoint": {
+        "x": 378.36,
+        "y": 91
+       },
+       "endPoint": {
+        "x": 398.36,
+        "y": 91
+       },
+       "incomingShape": "port.Diag.pDiag",
+       "outgoingShape": "port.Chassis.rDiag"
+      }
+     ],
+     "container": "frame"
+    }
+   ],
+   "$H": 458,
+   "x": 22,
+   "y": 22,
+   "width": 721.8,
+   "height": 161
+  }
+ ],
+ "$H": 456,
+ "x": 0,
+ "y": 0,
+ "width": 765.8,
+ "height": 205
+}

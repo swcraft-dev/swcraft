@@ -1,0 +1,37 @@
+{
+  "id": "04-move-runnable",
+  "task": 4,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Move the runnable PublishOperatingState of VehicleStateManager from Task_100ms to Task_100ms_Low.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "tasks",
+        "name": "Task_100ms_Low",
+        "has": {
+          "runnables": [
+            {
+              "swc": "VehicleStateManager",
+              "runnable": "PublishOperatingState"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "tasks",
+        "name": "Task_100ms",
+        "lacks": {
+          "runnables": [
+            {
+              "runnable": "PublishOperatingState"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "note": "Task_100ms_Low is empty and in the same partition as Task_100ms, so the move needs no coexistence argument; VehicleStateManager.PublishOperatingState is the one Task_100ms runnable no sequence names, so no sequence has to follow it."
+}

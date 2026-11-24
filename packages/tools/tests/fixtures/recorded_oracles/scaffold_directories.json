@@ -1,0 +1,37 @@
+{
+  "declared": [
+    "swc",
+    "interfaces",
+    "data_types/implementation",
+    "connectors",
+    "requirements",
+    "compositions",
+    "tasks",
+    "sequences",
+    "hardware",
+    "data_types/mapping_sets",
+    "data_types/base",
+    "data_types/application",
+    "data_types/units",
+    "data_types/compu_methods",
+    "data_types/constraints"
+  ],
+  "scaffolded": [
+    "compositions",
+    "connectors",
+    "data_types/application",
+    "data_types/base",
+    "data_types/compu_methods",
+    "data_types/constraints",
+    "data_types/implementation",
+    "data_types/mapping_sets",
+    "data_types/units",
+    "hardware",
+    "interfaces",
+    "requirements",
+    "sequences",
+    "swc",
+    "tasks"
+  ],
+  "note": "`swcraft init` creates one model directory per declared layer, fifteen; `data_types/` is created only as the parent of the layer directories below it, which is no layer's directory and so no row. Each edit of this file states a layer the contract added, removed, renamed or moved: every surviving row is unchanged by it, so an edit is never a re-recording of the derivation against itself."
+}

@@ -1,0 +1,24 @@
+name: VehicleControl
+title: Vehicle control
+root: true
+description: >-
+  The top of the hierarchy: the five components of the showcase stand in it
+  side by side, and every connector the demo adds between them is drawn inside
+  it. A connector that names no composition belongs to the root.
+
+members:
+  - name: VehicleStateManager
+    type: VehicleStateManager
+    description: Publishes the vehicle operating state the other components read.
+  - name: BrakeTemperatureSensor
+    type: BrakeTemperatureSensor
+    description: Provides the brake temperature.
+  - name: BrakeController
+    type: BrakeController
+    description: Issues the brake request and reads the permitted brake action.
+  - name: DiagnosticManager
+    type: DiagnosticManager
+    description: Receives the thermal-protection events.
+  - name: InstrumentCluster
+    type: InstrumentCluster
+    description: Shows the thermal-protection status to the driver.

@@ -1,0 +1,115 @@
+{
+  "name": "consistency-violation-provider-below-element",
+  "description": "A component rated BELOW an element it produces. The provider rule has no exemption and that asymmetry with the consumer rule is deliberate: a producer below what it produces is a mis-declaration, and no measure repairs it. A DERIVED `QM` counts — a component nothing allocates a level to, producing a rated element, is precisely the mis-declaration a safety engineer wants named.",
+  "kind": "negative",
+  "context": {
+    "summary": "The bare `examples/basic` model: nothing declares an `asil` anywhere, so `ExampleSWC` derives QM. The change set rates `IExample.value`, which `ExampleSWC` provides through `pOut`, at ASIL D.",
+    "existing_elements": [
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "interfaces",
+            "element": "IExample",
+            "path": [
+              {
+                "field": "data_elements"
+              },
+              {
+                "member": "value"
+              },
+              {
+                "field": "asil"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly, so the refusal is the model rule and not the authorization boundary. It is not the safety guard either: RAISING a level makes checks refuse more, so nothing here was ever offered to a host as a weakening. The consumer is not reported beside the provider, and the asymmetry is the rule's: `ExampleConsumerSWC` also derives QM, and a consumer BELOW the element it takes is not a finding at all — only one above it is."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:5_M_ksCHQAIfmJvfJLqkHw",
+    "intent": "Rate the vehicle-speed signal at ASIL D.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "interfaces",
+          "element": "IExample",
+          "path": [
+            {
+              "field": "data_elements"
+            },
+            {
+              "member": "value"
+            },
+            {
+              "field": "asil"
+            }
+          ]
+        },
+        "value": "D"
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "asil"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "ports"
+          },
+          {
+            "member": "pOut"
+          },
+          {
+            "field": "interface"
+          }
+        ]
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample",
+        "path": [
+          {
+            "field": "data_elements"
+          },
+          {
+            "member": "value"
+          },
+          {
+            "field": "asil"
+          }
+        ]
+      }
+    ],
+    "notes": "Three addresses and three legal repairs the rule does not choose between: raise the component, lower the element, or change what the port is typed by. No requirement address appears, and the absence is informative — `ExampleSWC` derives its `QM` from a requirement that allocates nothing, so there is no levelled requirement to name. The consumer is not reported beside the provider: a component BELOW an element it takes is legitimate and only one above it is a finding, which is the asymmetry the two rules are built on."
+  }
+}

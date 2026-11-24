@@ -1,0 +1,5 @@
+id: SR-2
+title: Lamp state
+description: The lamp state shall be reported.
+version: 2
+source: external

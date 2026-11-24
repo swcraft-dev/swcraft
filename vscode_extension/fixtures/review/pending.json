@@ -1,0 +1,16 @@
+{
+  "format": 2,
+  "change_set_id": "cs-20261025T120000Z-0a1b2c",
+  "question": "delta",
+  "wait": "5f1e0c9a7b3d4e2f8a6b1c0d9e8f7a6b",
+  "baseline": "sha256:abababababababababababababababababababababababababababababababab",
+  "project": {
+    "name": "Vehicle Control",
+    "manifest": "/Users/dev/p/swcraft.yaml"
+  },
+  "client": "Codex",
+  "intent": "Add the wheel speed port",
+  "text": "\nChange set cs-20261025T120000Z-0a1b2c on «Vehicle»:\n  set Größe → 42 µs\n  日本 𝄞\n",
+  "digest": "sha256:cf4b337e345e8825ee109541573f44058f14904733dc2397c4c24d51dc88bfc9",
+  "created": "2026-10-26T12:00:00Z"
+}

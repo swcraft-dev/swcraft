@@ -1,0 +1,3 @@
+name: ProbeLength_Unit
+display_name: m
+description: A declared unit named like the private form an application type generates in its own package.

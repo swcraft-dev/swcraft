@@ -1,0 +1,31 @@
+{
+  "name": "envelope-change-set-without-baseline",
+  "description": "A change set with no `baseline`. The token is required by the request shape itself, so an implementation cannot offer a 'just apply it' path by leaving it out: `protocol.schema.json` rejects the envelope before any registry or authorization code sees it.",
+  "kind": "negative",
+  "context": {
+    "summary": "Any model. The vector is about the envelope, not about the content — the single `create` it carries is a legal data-type payload.",
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "change_set",
+    "intent": "Add the VehicleSpeed_kph value type.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": { "layer": "implementation_types", "element": "VehicleSpeed_kph" },
+        "value": {
+          "name": "VehicleSpeed_kph",
+          "kind": "value_type",
+          "base": "float32_base",
+          "unit": "kph"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "protocol-schema",
+    "notes": "The test asserts the fact of rejection by `protocol.schema.json` only: a `jsonschema` ValidationError has no stable mapping to an error code, so no message text is matched. Concurrency control is a property of the request shape, not an optional feature of an implementation."
+  }
+}

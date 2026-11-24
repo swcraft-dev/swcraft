@@ -1,0 +1,2587 @@
+{
+  "layers": {
+    "swc": {
+      "token": "swc",
+      "directory": "swc",
+      "nesting": "group",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": null,
+      "guidePage": "reference/model/swc",
+      "topLevelKinds": [
+        {
+          "kind": "swc",
+          "discriminatorValue": null,
+          "guideAnchor": "swc"
+        }
+      ]
+    },
+    "interfaces": {
+      "token": "interface",
+      "directory": "interfaces",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": "kind",
+      "guidePage": "reference/model/interfaces",
+      "topLevelKinds": [
+        {
+          "kind": "sender_receiver",
+          "discriminatorValue": "sender_receiver",
+          "guideAnchor": "sender_receiver"
+        },
+        {
+          "kind": "client_server",
+          "discriminatorValue": "client_server",
+          "guideAnchor": "client_server"
+        },
+        {
+          "kind": "external_interface",
+          "discriminatorValue": "external_interface",
+          "guideAnchor": "external_interface"
+        }
+      ]
+    },
+    "connectors": {
+      "token": "connector",
+      "directory": "connectors",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": null,
+      "guidePage": "reference/model/connectors",
+      "topLevelKinds": [
+        {
+          "kind": "connector",
+          "discriminatorValue": null,
+          "guideAnchor": "connector"
+        }
+      ]
+    },
+    "application_types": {
+      "token": "application_type",
+      "directory": "data_types/application",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": "kind",
+      "guidePage": "reference/model/application_types",
+      "topLevelKinds": [
+        {
+          "kind": "enum",
+          "discriminatorValue": "enum",
+          "guideAnchor": "enum"
+        },
+        {
+          "kind": "record",
+          "discriminatorValue": "record",
+          "guideAnchor": "record"
+        },
+        {
+          "kind": "array",
+          "discriminatorValue": "array",
+          "guideAnchor": "array"
+        },
+        {
+          "kind": "application_type",
+          "discriminatorValue": "application_type",
+          "guideAnchor": "application_type"
+        }
+      ]
+    },
+    "implementation_types": {
+      "token": "implementation_type",
+      "directory": "data_types/implementation",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": "kind",
+      "guidePage": "reference/model/implementation_types",
+      "topLevelKinds": [
+        {
+          "kind": "value_type",
+          "discriminatorValue": "value_type",
+          "guideAnchor": "value_type"
+        },
+        {
+          "kind": "reference_type",
+          "discriminatorValue": "reference_type",
+          "guideAnchor": "reference_type"
+        },
+        {
+          "kind": "external_type",
+          "discriminatorValue": "external_type",
+          "guideAnchor": "external_type"
+        },
+        {
+          "kind": "implementation_record",
+          "discriminatorValue": "implementation_record",
+          "guideAnchor": "implementation_record"
+        },
+        {
+          "kind": "implementation_array",
+          "discriminatorValue": "implementation_array",
+          "guideAnchor": "implementation_array"
+        },
+        {
+          "kind": "pointer",
+          "discriminatorValue": "pointer",
+          "guideAnchor": "pointer"
+        }
+      ]
+    },
+    "base_types": {
+      "token": "base_type",
+      "directory": "data_types/base",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": null,
+      "guidePage": "reference/model/base_types",
+      "topLevelKinds": [
+        {
+          "kind": "base_type",
+          "discriminatorValue": null,
+          "guideAnchor": "base_type"
+        }
+      ]
+    },
+    "requirements": {
+      "token": "requirement",
+      "directory": "requirements",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "id",
+      "filenameFrom": "id",
+      "discriminator": null,
+      "guidePage": "reference/model/requirements",
+      "topLevelKinds": [
+        {
+          "kind": "requirement",
+          "discriminatorValue": null,
+          "guideAnchor": "requirement"
+        }
+      ]
+    },
+    "compositions": {
+      "token": "composition",
+      "directory": "compositions",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": null,
+      "guidePage": "reference/model/compositions",
+      "topLevelKinds": [
+        {
+          "kind": "composition",
+          "discriminatorValue": null,
+          "guideAnchor": "composition"
+        }
+      ]
+    },
+    "tasks": {
+      "token": "task",
+      "directory": "tasks",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": null,
+      "guidePage": "reference/model/tasks",
+      "topLevelKinds": [
+        {
+          "kind": "task",
+          "discriminatorValue": null,
+          "guideAnchor": "task"
+        }
+      ]
+    },
+    "sequences": {
+      "token": "sequence",
+      "directory": "sequences",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": null,
+      "guidePage": "reference/model/sequences",
+      "topLevelKinds": [
+        {
+          "kind": "sequence",
+          "discriminatorValue": null,
+          "guideAnchor": "sequence"
+        }
+      ]
+    },
+    "hardware": {
+      "token": "hardware",
+      "directory": "hardware",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": "kind",
+      "guidePage": "reference/model/hardware",
+      "topLevelKinds": [
+        {
+          "kind": "processor",
+          "discriminatorValue": "processor",
+          "guideAnchor": "processor"
+        },
+        {
+          "kind": "core",
+          "discriminatorValue": "core",
+          "guideAnchor": "core"
+        },
+        {
+          "kind": "memory",
+          "discriminatorValue": "memory",
+          "guideAnchor": "memory"
+        },
+        {
+          "kind": "partition",
+          "discriminatorValue": "partition",
+          "guideAnchor": "partition"
+        }
+      ]
+    },
+    "mapping_sets": {
+      "token": "mapping_set",
+      "directory": "data_types/mapping_sets",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": null,
+      "guidePage": "reference/model/mapping_sets",
+      "topLevelKinds": [
+        {
+          "kind": "mapping_set",
+          "discriminatorValue": null,
+          "guideAnchor": "mapping_set"
+        }
+      ]
+    },
+    "units": {
+      "token": "unit",
+      "directory": "data_types/units",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": null,
+      "guidePage": "reference/model/units",
+      "topLevelKinds": [
+        {
+          "kind": "unit",
+          "discriminatorValue": null,
+          "guideAnchor": "unit"
+        }
+      ]
+    },
+    "compu_methods": {
+      "token": "compu_method",
+      "directory": "data_types/compu_methods",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": "kind",
+      "guidePage": "reference/model/compu_methods",
+      "topLevelKinds": [
+        {
+          "kind": "texttable",
+          "discriminatorValue": "texttable",
+          "guideAnchor": "texttable"
+        },
+        {
+          "kind": "linear",
+          "discriminatorValue": "linear",
+          "guideAnchor": "linear"
+        }
+      ]
+    },
+    "data_constraints": {
+      "token": "data_constraint",
+      "directory": "data_types/constraints",
+      "nesting": "flat",
+      "fileSuffix": ".yaml",
+      "identityField": "name",
+      "filenameFrom": "name",
+      "discriminator": null,
+      "guidePage": "reference/model/data_constraints",
+      "topLevelKinds": [
+        {
+          "kind": "data_constr",
+          "discriminatorValue": null,
+          "guideAnchor": "data_constr"
+        }
+      ]
+    }
+  },
+  "references": [
+    {
+      "field": "field:swc.port.interface",
+      "sourceLayer": "swc",
+      "sourceKind": "port",
+      "sourceField": "interface",
+      "targetLayer": "interfaces",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "ports",
+            "*",
+            "interface"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.variable.application_type",
+      "sourceLayer": "swc",
+      "sourceKind": "variable",
+      "sourceField": "application_type",
+      "targetLayer": "application_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "variables",
+            "*",
+            "application_type"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.variable.implementation_type",
+      "sourceLayer": "swc",
+      "sourceKind": "variable",
+      "sourceField": "implementation_type",
+      "targetLayer": "implementation_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "variables",
+            "*",
+            "implementation_type"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.data_element.application_type",
+      "sourceLayer": "interfaces",
+      "sourceKind": "data_element",
+      "sourceField": "application_type",
+      "targetLayer": "application_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "sender_receiver",
+          "path": [
+            "data_elements",
+            "*",
+            "application_type"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.data_element.implementation_type",
+      "sourceLayer": "interfaces",
+      "sourceKind": "data_element",
+      "sourceField": "implementation_type",
+      "targetLayer": "implementation_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "sender_receiver",
+          "path": [
+            "data_elements",
+            "*",
+            "implementation_type"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.argument.application_type",
+      "sourceLayer": "interfaces",
+      "sourceKind": "argument",
+      "sourceField": "application_type",
+      "targetLayer": "application_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "client_server",
+          "path": [
+            "operations",
+            "*",
+            "arguments",
+            "*",
+            "application_type"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.argument.implementation_type",
+      "sourceLayer": "interfaces",
+      "sourceKind": "argument",
+      "sourceField": "implementation_type",
+      "targetLayer": "implementation_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "client_server",
+          "path": [
+            "operations",
+            "*",
+            "arguments",
+            "*",
+            "implementation_type"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:connectors.connector.composition",
+      "sourceLayer": "connectors",
+      "sourceKind": "connector",
+      "sourceField": "composition",
+      "targetLayer": "compositions",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "connector",
+          "path": [
+            "composition"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:connectors.connector_endpoint.swc",
+      "sourceLayer": "connectors",
+      "sourceKind": "connector_endpoint",
+      "sourceField": "swc",
+      "targetLayer": "swc",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "connector",
+          "path": [
+            "from",
+            "swc"
+          ]
+        },
+        {
+          "topKind": "connector",
+          "path": [
+            "to",
+            "swc"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:connectors.connector_endpoint.composition",
+      "sourceLayer": "connectors",
+      "sourceKind": "connector_endpoint",
+      "sourceField": "composition",
+      "targetLayer": "compositions",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "connector",
+          "path": [
+            "from",
+            "composition"
+          ]
+        },
+        {
+          "topKind": "connector",
+          "path": [
+            "to",
+            "composition"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:application_types.enum.compu_method_ref",
+      "sourceLayer": "application_types",
+      "sourceKind": "enum",
+      "sourceField": "compu_method_ref",
+      "targetLayer": "compu_methods",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "enum",
+          "path": [
+            "compu_method_ref"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:application_types.array.element_type",
+      "sourceLayer": "application_types",
+      "sourceKind": "array",
+      "sourceField": "element_type",
+      "targetLayer": "application_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "array",
+          "path": [
+            "element_type"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:application_types.application_type.unit_ref",
+      "sourceLayer": "application_types",
+      "sourceKind": "application_type",
+      "sourceField": "unit_ref",
+      "targetLayer": "units",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "application_type",
+          "path": [
+            "unit_ref"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:application_types.application_type.compu_method_ref",
+      "sourceLayer": "application_types",
+      "sourceKind": "application_type",
+      "sourceField": "compu_method_ref",
+      "targetLayer": "compu_methods",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "application_type",
+          "path": [
+            "compu_method_ref"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:application_types.application_type.data_constr_ref",
+      "sourceLayer": "application_types",
+      "sourceKind": "application_type",
+      "sourceField": "data_constr_ref",
+      "targetLayer": "data_constraints",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "application_type",
+          "path": [
+            "data_constr_ref"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:application_types.record_field.type",
+      "sourceLayer": "application_types",
+      "sourceKind": "record_field",
+      "sourceField": "type",
+      "targetLayer": "application_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "record",
+          "path": [
+            "fields",
+            "*",
+            "type"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:implementation_types.value_type.base",
+      "sourceLayer": "implementation_types",
+      "sourceKind": "value_type",
+      "sourceField": "base",
+      "targetLayer": "base_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "value_type",
+          "path": [
+            "base"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:implementation_types.value_type.compu_method_ref",
+      "sourceLayer": "implementation_types",
+      "sourceKind": "value_type",
+      "sourceField": "compu_method_ref",
+      "targetLayer": "compu_methods",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "value_type",
+          "path": [
+            "compu_method_ref"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:implementation_types.reference_type.base",
+      "sourceLayer": "implementation_types",
+      "sourceKind": "reference_type",
+      "sourceField": "base",
+      "targetLayer": "implementation_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "reference_type",
+          "path": [
+            "base"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:implementation_types.reference_type.compu_method_ref",
+      "sourceLayer": "implementation_types",
+      "sourceKind": "reference_type",
+      "sourceField": "compu_method_ref",
+      "targetLayer": "compu_methods",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "reference_type",
+          "path": [
+            "compu_method_ref"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:implementation_types.implementation_array.element_type",
+      "sourceLayer": "implementation_types",
+      "sourceKind": "implementation_array",
+      "sourceField": "element_type",
+      "targetLayer": "implementation_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "implementation_array",
+          "path": [
+            "element_type"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:implementation_types.pointer.target",
+      "sourceLayer": "implementation_types",
+      "sourceKind": "pointer",
+      "sourceField": "target",
+      "targetLayer": "implementation_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "pointer",
+          "path": [
+            "target"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:implementation_types.implementation_element.type",
+      "sourceLayer": "implementation_types",
+      "sourceKind": "implementation_element",
+      "sourceField": "type",
+      "targetLayer": "implementation_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "implementation_record",
+          "path": [
+            "elements",
+            "*",
+            "type"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:compositions.composition_port.interface",
+      "sourceLayer": "compositions",
+      "sourceKind": "composition_port",
+      "sourceField": "interface",
+      "targetLayer": "interfaces",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "composition",
+          "path": [
+            "ports",
+            "*",
+            "interface"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:compositions.composition_member.type",
+      "sourceLayer": "compositions",
+      "sourceKind": "composition_member",
+      "sourceField": "type",
+      "targetLayer": "swc",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "composition",
+          "path": [
+            "members",
+            "*",
+            "type"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:compositions.composition_member.composition",
+      "sourceLayer": "compositions",
+      "sourceKind": "composition_member",
+      "sourceField": "composition",
+      "targetLayer": "compositions",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "composition",
+          "path": [
+            "members",
+            "*",
+            "composition"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:tasks.task.partition",
+      "sourceLayer": "tasks",
+      "sourceKind": "task",
+      "sourceField": "partition",
+      "targetLayer": "hardware",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "task",
+          "path": [
+            "partition"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:tasks.task_runnable_ref.swc",
+      "sourceLayer": "tasks",
+      "sourceKind": "task_runnable_ref",
+      "sourceField": "swc",
+      "targetLayer": "swc",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "task",
+          "path": [
+            "runnables",
+            "*",
+            "swc"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:sequences.sequence.task",
+      "sourceLayer": "sequences",
+      "sourceKind": "sequence",
+      "sourceField": "task",
+      "targetLayer": "tasks",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "sequence",
+          "path": [
+            "task"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:sequences.sequence_step.swc",
+      "sourceLayer": "sequences",
+      "sourceKind": "sequence_step",
+      "sourceField": "swc",
+      "targetLayer": "swc",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "sequence",
+          "path": [
+            "steps",
+            "*",
+            "swc"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:hardware.partition.core",
+      "sourceLayer": "hardware",
+      "sourceKind": "partition",
+      "sourceField": "core",
+      "targetLayer": "hardware",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "partition",
+          "path": [
+            "core"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:mapping_sets.map.application",
+      "sourceLayer": "mapping_sets",
+      "sourceKind": "map",
+      "sourceField": "application",
+      "targetLayer": "application_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "mapping_set",
+          "path": [
+            "maps",
+            "*",
+            "application"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:mapping_sets.map.implementation",
+      "sourceLayer": "mapping_sets",
+      "sourceKind": "map",
+      "sourceField": "implementation",
+      "targetLayer": "implementation_types",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "mapping_set",
+          "path": [
+            "maps",
+            "*",
+            "implementation"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:compu_methods.linear.unit",
+      "sourceLayer": "compu_methods",
+      "sourceKind": "linear",
+      "sourceField": "unit",
+      "targetLayer": "units",
+      "targetIdentityField": "name",
+      "paths": [
+        {
+          "topKind": "linear",
+          "path": [
+            "unit"
+          ]
+        }
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "field": "field:swc.swc.memory",
+      "sourceLayer": "swc",
+      "targetLayer": "hardware",
+      "targetKind": "memory",
+      "targetField": "name",
+      "resolution": "map-keys",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "memory"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.swc.data_type_mappings",
+      "sourceLayer": "swc",
+      "targetLayer": "mapping_sets",
+      "targetKind": "mapping_set",
+      "targetField": "name",
+      "resolution": "list-values",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "data_type_mappings"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.swc.satisfies",
+      "sourceLayer": "swc",
+      "targetLayer": "requirements",
+      "targetKind": "requirement",
+      "targetField": "id",
+      "resolution": "versioned-list-values",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.port.satisfies",
+      "sourceLayer": "swc",
+      "targetLayer": "requirements",
+      "targetKind": "requirement",
+      "targetField": "id",
+      "resolution": "versioned-list-values",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "ports",
+            "*",
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.runnable.satisfies",
+      "sourceLayer": "swc",
+      "targetLayer": "requirements",
+      "targetKind": "requirement",
+      "targetField": "id",
+      "resolution": "versioned-list-values",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.sender_receiver.satisfies",
+      "sourceLayer": "interfaces",
+      "targetLayer": "requirements",
+      "targetKind": "requirement",
+      "targetField": "id",
+      "resolution": "versioned-list-values",
+      "paths": [
+        {
+          "topKind": "sender_receiver",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.client_server.satisfies",
+      "sourceLayer": "interfaces",
+      "targetLayer": "requirements",
+      "targetKind": "requirement",
+      "targetField": "id",
+      "resolution": "versioned-list-values",
+      "paths": [
+        {
+          "topKind": "client_server",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.external_interface.satisfies",
+      "sourceLayer": "interfaces",
+      "targetLayer": "requirements",
+      "targetKind": "requirement",
+      "targetField": "id",
+      "resolution": "versioned-list-values",
+      "paths": [
+        {
+          "topKind": "external_interface",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:requirements.requirement.derived_from",
+      "sourceLayer": "requirements",
+      "targetLayer": "requirements",
+      "targetKind": "requirement",
+      "targetField": "id",
+      "resolution": "versioned-list-values",
+      "paths": [
+        {
+          "topKind": "requirement",
+          "path": [
+            "derived_from"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:compositions.composition.satisfies",
+      "sourceLayer": "compositions",
+      "targetLayer": "requirements",
+      "targetKind": "requirement",
+      "targetField": "id",
+      "resolution": "versioned-list-values",
+      "paths": [
+        {
+          "topKind": "composition",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:tasks.task.satisfies",
+      "sourceLayer": "tasks",
+      "targetLayer": "requirements",
+      "targetKind": "requirement",
+      "targetField": "id",
+      "resolution": "versioned-list-values",
+      "paths": [
+        {
+          "topKind": "task",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:hardware.processor.satisfies",
+      "sourceLayer": "hardware",
+      "targetLayer": "requirements",
+      "targetKind": "requirement",
+      "targetField": "id",
+      "resolution": "versioned-list-values",
+      "paths": [
+        {
+          "topKind": "processor",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:hardware.core.satisfies",
+      "sourceLayer": "hardware",
+      "targetLayer": "requirements",
+      "targetKind": "requirement",
+      "targetField": "id",
+      "resolution": "versioned-list-values",
+      "paths": [
+        {
+          "topKind": "core",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:hardware.memory.accessible",
+      "sourceLayer": "hardware",
+      "targetLayer": "hardware",
+      "targetKind": "core",
+      "targetField": "name",
+      "resolution": "list-values",
+      "paths": [
+        {
+          "topKind": "memory",
+          "path": [
+            "accessible"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:hardware.memory.satisfies",
+      "sourceLayer": "hardware",
+      "targetLayer": "requirements",
+      "targetKind": "requirement",
+      "targetField": "id",
+      "resolution": "versioned-list-values",
+      "paths": [
+        {
+          "topKind": "memory",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:hardware.partition.satisfies",
+      "sourceLayer": "hardware",
+      "targetLayer": "requirements",
+      "targetKind": "requirement",
+      "targetField": "id",
+      "resolution": "versioned-list-values",
+      "paths": [
+        {
+          "topKind": "partition",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    }
+  ],
+  "collections": [
+    {
+      "field": "field:swc.swc.ports",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "port"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "ports"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.swc.runnables",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "runnable"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.swc.variables",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "variable"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "variables"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.swc.exclusive_areas",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "exclusive_area"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "exclusive_areas"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.swc.memory",
+      "layer": "swc",
+      "collectionKind": "map",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "memory"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.swc.data_type_mappings",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "data_type_mappings"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.swc.satisfies",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.port.measures",
+      "layer": "swc",
+      "collectionKind": "map",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "ports",
+            "*",
+            "measures"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.port.com_specs",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "data_element",
+      "identityFields": [],
+      "memberKinds": [
+        "port_com_spec"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "ports",
+            "*",
+            "com_specs"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.port.satisfies",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "ports",
+            "*",
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.runnable.events",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [
+        "timing_event",
+        "init_event",
+        "operation_event",
+        "data_event",
+        "call_returned_event"
+      ],
+      "discriminatorField": "type",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "events"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.runnable.reads",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "composite",
+      "identityField": null,
+      "identityFields": [
+        "port",
+        "element"
+      ],
+      "memberKinds": [
+        "data_read"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "reads"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.runnable.writes",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "composite",
+      "identityField": null,
+      "identityFields": [
+        "port",
+        "element"
+      ],
+      "memberKinds": [
+        "data_write"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "writes"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.runnable.calls",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "composite",
+      "identityField": null,
+      "identityFields": [
+        "port",
+        "operation"
+      ],
+      "memberKinds": [
+        "operation_call"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "calls"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.runnable.reads_variables",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "variable",
+      "identityFields": [],
+      "memberKinds": [
+        "variable_read"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "reads_variables"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.runnable.writes_variables",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "variable",
+      "identityFields": [],
+      "memberKinds": [
+        "variable_write"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "writes_variables"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.runnable.can_enter",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "area",
+      "identityFields": [],
+      "memberKinds": [
+        "can_enter_area"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "can_enter"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.runnable.runs_inside",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "area",
+      "identityFields": [],
+      "memberKinds": [
+        "runs_inside_area"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "runs_inside"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.runnable.satisfies",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.timing_event.disabled_modes",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [
+        "disabled_mode"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "events",
+            "*",
+            "disabled_modes"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.data_event.disabled_modes",
+      "layer": "swc",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [
+        "disabled_mode"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "events",
+            "*",
+            "disabled_modes"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.sender_receiver.data_elements",
+      "layer": "interfaces",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "data_element"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "sender_receiver",
+          "path": [
+            "data_elements"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.sender_receiver.satisfies",
+      "layer": "interfaces",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "sender_receiver",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.client_server.operations",
+      "layer": "interfaces",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "operation"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "client_server",
+          "path": [
+            "operations"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.client_server.satisfies",
+      "layer": "interfaces",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "client_server",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.external_interface.operations",
+      "layer": "interfaces",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "external_interface",
+          "path": [
+            "operations"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.external_interface.data_elements",
+      "layer": "interfaces",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "external_interface",
+          "path": [
+            "data_elements"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.external_interface.satisfies",
+      "layer": "interfaces",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "external_interface",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:interfaces.operation.arguments",
+      "layer": "interfaces",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "argument"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "client_server",
+          "path": [
+            "operations",
+            "*",
+            "arguments"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:application_types.enum.literals",
+      "layer": "application_types",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "enum_literal"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "enum",
+          "path": [
+            "literals"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:application_types.record.fields",
+      "layer": "application_types",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "record_field"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "record",
+          "path": [
+            "fields"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:implementation_types.implementation_record.elements",
+      "layer": "implementation_types",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "implementation_element"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "implementation_record",
+          "path": [
+            "elements"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:requirements.requirement.derived_from",
+      "layer": "requirements",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "requirement",
+          "path": [
+            "derived_from"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:compositions.composition.ports",
+      "layer": "compositions",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "composition_port"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "composition",
+          "path": [
+            "ports"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:compositions.composition.members",
+      "layer": "compositions",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "composition_member"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "composition",
+          "path": [
+            "members"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:compositions.composition.delegations",
+      "layer": "compositions",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "delegation"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "composition",
+          "path": [
+            "delegations"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:compositions.composition.satisfies",
+      "layer": "compositions",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "composition",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:tasks.task.runnables",
+      "layer": "tasks",
+      "collectionKind": "list",
+      "memberIdentity": "composite",
+      "identityField": null,
+      "identityFields": [
+        "swc",
+        "instance",
+        "runnable"
+      ],
+      "memberKinds": [
+        "task_runnable_ref"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "task",
+          "path": [
+            "runnables"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:tasks.task.satisfies",
+      "layer": "tasks",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "task",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:sequences.sequence.steps",
+      "layer": "sequences",
+      "collectionKind": "list",
+      "memberIdentity": "composite",
+      "identityField": null,
+      "identityFields": [
+        "swc",
+        "instance",
+        "runnable"
+      ],
+      "memberKinds": [
+        "sequence_step"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "sequence",
+          "path": [
+            "steps"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:hardware.processor.satisfies",
+      "layer": "hardware",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "processor",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:hardware.core.satisfies",
+      "layer": "hardware",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "core",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:hardware.memory.accessible",
+      "layer": "hardware",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "memory",
+          "path": [
+            "accessible"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:hardware.memory.satisfies",
+      "layer": "hardware",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "memory",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:hardware.partition.satisfies",
+      "layer": "hardware",
+      "collectionKind": "list",
+      "memberIdentity": "whole_value",
+      "identityField": null,
+      "identityFields": [],
+      "memberKinds": [],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "partition",
+          "path": [
+            "satisfies"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:mapping_sets.mapping_set.maps",
+      "layer": "mapping_sets",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "application",
+      "identityFields": [],
+      "memberKinds": [
+        "map"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "mapping_set",
+          "path": [
+            "maps"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:compu_methods.texttable.entries",
+      "layer": "compu_methods",
+      "collectionKind": "list",
+      "memberIdentity": "field",
+      "identityField": "name",
+      "identityFields": [],
+      "memberKinds": [
+        "table_entry"
+      ],
+      "discriminatorField": null,
+      "paths": [
+        {
+          "topKind": "texttable",
+          "path": [
+            "entries"
+          ]
+        }
+      ]
+    }
+  ],
+  "memberReferences": [
+    {
+      "field": "field:swc.data_event.port",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:swc.swc.ports",
+          "layer": "swc",
+          "kind": "swc",
+          "path": [
+            "ports"
+          ],
+          "identityField": "name"
+        }
+      ],
+      "via": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "events",
+            "*",
+            "port"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.data_event.element",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:interfaces.sender_receiver.data_elements",
+          "layer": "interfaces",
+          "kind": "sender_receiver",
+          "path": [
+            "data_elements"
+          ],
+          "identityField": "name"
+        },
+        {
+          "id": "collection:interfaces.external_interface.data_elements",
+          "layer": "interfaces",
+          "kind": "external_interface",
+          "path": [
+            "data_elements"
+          ],
+          "identityField": null
+        }
+      ],
+      "via": "port",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "events",
+            "*",
+            "element"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.call_returned_event.port",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:swc.swc.ports",
+          "layer": "swc",
+          "kind": "swc",
+          "path": [
+            "ports"
+          ],
+          "identityField": "name"
+        }
+      ],
+      "via": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "events",
+            "*",
+            "port"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.call_returned_event.operation",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:interfaces.client_server.operations",
+          "layer": "interfaces",
+          "kind": "client_server",
+          "path": [
+            "operations"
+          ],
+          "identityField": "name"
+        },
+        {
+          "id": "collection:interfaces.external_interface.operations",
+          "layer": "interfaces",
+          "kind": "external_interface",
+          "path": [
+            "operations"
+          ],
+          "identityField": null
+        }
+      ],
+      "via": "port",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "events",
+            "*",
+            "operation"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.data_read.port",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:swc.swc.ports",
+          "layer": "swc",
+          "kind": "swc",
+          "path": [
+            "ports"
+          ],
+          "identityField": "name"
+        }
+      ],
+      "via": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "reads",
+            "*",
+            "port"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.data_read.element",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:interfaces.sender_receiver.data_elements",
+          "layer": "interfaces",
+          "kind": "sender_receiver",
+          "path": [
+            "data_elements"
+          ],
+          "identityField": "name"
+        },
+        {
+          "id": "collection:interfaces.external_interface.data_elements",
+          "layer": "interfaces",
+          "kind": "external_interface",
+          "path": [
+            "data_elements"
+          ],
+          "identityField": null
+        }
+      ],
+      "via": "port",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "reads",
+            "*",
+            "element"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.data_write.port",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:swc.swc.ports",
+          "layer": "swc",
+          "kind": "swc",
+          "path": [
+            "ports"
+          ],
+          "identityField": "name"
+        }
+      ],
+      "via": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "writes",
+            "*",
+            "port"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.data_write.element",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:interfaces.sender_receiver.data_elements",
+          "layer": "interfaces",
+          "kind": "sender_receiver",
+          "path": [
+            "data_elements"
+          ],
+          "identityField": "name"
+        },
+        {
+          "id": "collection:interfaces.external_interface.data_elements",
+          "layer": "interfaces",
+          "kind": "external_interface",
+          "path": [
+            "data_elements"
+          ],
+          "identityField": null
+        }
+      ],
+      "via": "port",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "writes",
+            "*",
+            "element"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.operation_call.port",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:swc.swc.ports",
+          "layer": "swc",
+          "kind": "swc",
+          "path": [
+            "ports"
+          ],
+          "identityField": "name"
+        }
+      ],
+      "via": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "calls",
+            "*",
+            "port"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.operation_call.operation",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:interfaces.client_server.operations",
+          "layer": "interfaces",
+          "kind": "client_server",
+          "path": [
+            "operations"
+          ],
+          "identityField": "name"
+        },
+        {
+          "id": "collection:interfaces.external_interface.operations",
+          "layer": "interfaces",
+          "kind": "external_interface",
+          "path": [
+            "operations"
+          ],
+          "identityField": null
+        }
+      ],
+      "via": "port",
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "calls",
+            "*",
+            "operation"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.variable_read.variable",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:swc.swc.variables",
+          "layer": "swc",
+          "kind": "swc",
+          "path": [
+            "variables"
+          ],
+          "identityField": "name"
+        }
+      ],
+      "via": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "reads_variables",
+            "*",
+            "variable"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.variable_write.variable",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:swc.swc.variables",
+          "layer": "swc",
+          "kind": "swc",
+          "path": [
+            "variables"
+          ],
+          "identityField": "name"
+        }
+      ],
+      "via": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "writes_variables",
+            "*",
+            "variable"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.can_enter_area.area",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:swc.swc.exclusive_areas",
+          "layer": "swc",
+          "kind": "swc",
+          "path": [
+            "exclusive_areas"
+          ],
+          "identityField": "name"
+        }
+      ],
+      "via": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "can_enter",
+            "*",
+            "area"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "field:swc.runs_inside_area.area",
+      "sourceLayer": "swc",
+      "collections": [
+        {
+          "id": "collection:swc.swc.exclusive_areas",
+          "layer": "swc",
+          "kind": "swc",
+          "path": [
+            "exclusive_areas"
+          ],
+          "identityField": "name"
+        }
+      ],
+      "via": null,
+      "paths": [
+        {
+          "topKind": "swc",
+          "path": [
+            "runnables",
+            "*",
+            "runs_inside",
+            "*",
+            "area"
+          ]
+        }
+      ]
+    }
+  ]
+}

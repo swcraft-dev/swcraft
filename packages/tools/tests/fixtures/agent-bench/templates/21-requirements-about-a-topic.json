@@ -1,0 +1,10 @@
+{
+  "id": "21-requirements-about-a-topic",
+  "task": 21,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "binding": "requirements_about_the_commonest_topic",
+  "oracle": "structural",
+  "prompt": "Find the requirements about {{phrase}}.",
+  "note": "The two adjacent title words the most requirements hold (at least two, at most half of them): every requirement whose title or description holds the phrase, and none whose text holds neither of its words. A stub is neither required nor refused."
+}

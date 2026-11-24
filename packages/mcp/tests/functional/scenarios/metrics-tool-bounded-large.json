@@ -1,0 +1,79 @@
+{
+  "id": "metrics-tool-bounded-large",
+  "function": "MCP `architecture_metrics`",
+  "tier": "large-bench",
+  "specimen": "large-bench",
+  "class": "boundary-at-scale",
+  "thresholds": {
+    "list_cap": {
+      "value": 10,
+      "because": "every list of the tool's answer that grows with the model stops at ten names and counts the rest (metrics_render.ANSWER_LIST_CAP)"
+    },
+    "page_rows": {
+      "value": 20,
+      "because": "the profile's long-list rule: the number, then the first twenty; a model past it is one whose per-component answer would not be bounded"
+    },
+    "host_spill_bytes": {
+      "value": 8192,
+      "because": "VS Code spills an answer larger than 8 192 bytes to a file (measured 2026-10-23)"
+    }
+  },
+  "steps": [
+    {
+      "id": "metrics",
+      "mcp": "architecture_metrics",
+      "arguments": {}
+    }
+  ],
+  "expectations": [
+    {
+      "step": "metrics",
+      "at": "state.size.components",
+      "count_above": "page_rows",
+      "because": "the precondition: the bench has far more components than a page, so an answer that grew with them would show it"
+    },
+    {
+      "step": "metrics",
+      "at": "state.size.components",
+      "count_equals": {
+        "locator": "model_components"
+      },
+      "because": "the answer is about this model: its components, counted off the files by the locator"
+    },
+    {
+      "step": "metrics",
+      "at": "state.coupling.dependencies",
+      "count_equals": {
+        "locator": "model_dependencies"
+      },
+      "because": "the directed dependencies of the bench, each pair once, counted off the files"
+    },
+    {
+      "step": "metrics",
+      "bytes_at_most": "host_spill_bytes",
+      "because": "the answer's size is bounded by constants, not by the model, and stays under the host's spill bound on the large bench"
+    },
+    {
+      "step": "metrics",
+      "at": "state.components",
+      "absent": true,
+      "because": "no per-component row, the part of an answer that grows with the model"
+    },
+    {
+      "step": "metrics",
+      "at": "state.composition_tables",
+      "absent": true,
+      "because": "no table per composition, whose size is not bounded by a constant"
+    },
+    {
+      "step": "metrics",
+      "at": "state.coupling.hubs.first",
+      "rows_at_most": "list_cap"
+    },
+    {
+      "step": "metrics",
+      "at": "state.integrity.unconnected.first",
+      "rows_at_most": "list_cap"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+name: BrakeTorqueLink
+from:
+  swc: BrakeController
+  port: pBrakeTorque
+to:
+  swc: BrakeActuator
+  port: rBrakeTorque

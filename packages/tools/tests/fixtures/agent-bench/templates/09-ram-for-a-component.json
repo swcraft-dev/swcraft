@@ -1,0 +1,10 @@
+{
+  "id": "09-ram-for-a-component",
+  "task": 9,
+  "group": "question",
+  "kind": "question",
+  "binding": "ram_left_on_a_core",
+  "oracle": "product-rule",
+  "prompt": "Is there enough RAM left on {{core}} for a new component that needs {{size_kb}} KB? Start with yes or no.",
+  "note": "The first core, by name, that exactly one RAM memory serves, that memory with a threshold below 1, consumers and a determinate budget; the size is the smallest whole number of KB that fits under neither reading of a KB (1 000 or 1 024 bytes), so the product's fits answers no. The threshold decides, never the raw free space. The expected answer is no by construction, so the record reads 09 beside 17, never alone."
+}

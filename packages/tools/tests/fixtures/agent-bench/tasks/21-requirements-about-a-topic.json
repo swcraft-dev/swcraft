@@ -1,0 +1,65 @@
+{
+  "id": "21-requirements-about-a-topic",
+  "task": 21,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Find the requirements about brake temperature.",
+  "note": "The bench mirrors showcase 4fdc642.",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "mentions_all": [
+        "REQ_BTP_DECOMP_MAIN",
+        "REQ_BTP_DECOMP_MONITOR",
+        "REQ_BTP_TEMPERATURE_RANGE",
+        "REQ_SHOWCASE_FEATURE_001",
+        "SWR-BRK-004",
+        "SWR-DIA-007",
+        "SWR-GEN-001",
+        "SWR-THP-001",
+        "SWR-THP-003",
+        "SWR-THP-006",
+        "SWR-THP-007",
+        "SWR-THP-009"
+      ],
+      "mentions_none": [
+        "REQ_BTP_CORE_LOAD",
+        "REQ_BTP_EXECUTION_CONTEXT",
+        "REQ_SHOWCASE_BASELINE_001",
+        "REQ_SHOWCASE_BASELINE_002",
+        "SWR-DIA-003",
+        "SWR-DIA-005",
+        "SWR-DIA-006",
+        "SWR-DIA-008",
+        "SWR-DIA-009",
+        "SWR-DIA-010",
+        "SWR-DRV-004",
+        "SWR-DRV-006",
+        "SWR-DRV-007",
+        "SWR-DRV-008",
+        "SWR-GEN-002",
+        "SWR-GEN-004",
+        "SWR-THP-011"
+      ]
+    }
+  },
+  "reference": {
+    "rule": "A requirement is about the phrase when its title or its description holds the phrase's words adjacent and in order, as whole words, case-insensitive, each word optionally followed by a plural s. The reply must name every such requirement; it must name none whose text holds none of the phrase's words (brake, temperature, thermal for the showcase: a thermal-protection requirement is not refused). HAZ_BTP_BRAKE_FADE is a stub with no text of its own and is neither required nor refused.",
+    "matches": [
+      "REQ_BTP_DECOMP_MAIN",
+      "REQ_BTP_DECOMP_MONITOR",
+      "REQ_BTP_TEMPERATURE_RANGE",
+      "REQ_SHOWCASE_FEATURE_001",
+      "SWR-BRK-004",
+      "SWR-DIA-007",
+      "SWR-GEN-001",
+      "SWR-THP-001",
+      "SWR-THP-003",
+      "SWR-THP-006",
+      "SWR-THP-007",
+      "SWR-THP-009"
+    ],
+    "computed_by": "the rule over every requirement's title and description, read through the product's loader; no query derivation searches text, so the test recomputes it from the loaded model"
+  }
+}

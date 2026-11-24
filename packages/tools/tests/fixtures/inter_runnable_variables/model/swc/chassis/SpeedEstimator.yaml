@@ -1,0 +1,43 @@
+name: SpeedEstimator
+type: application
+description: One component whose runnables share three inter-runnable variables.
+variables:
+- name: FilteredSpeed
+  access: implicit
+  application_type: VehicleSpeed
+  init: 0
+  description: Speed after the 10 ms filter, read by the 50 ms and the 100 ms runnables.
+  sw_calibration_access: read_only
+- name: PeakSpeed
+  access: explicit
+  implementation_type: uint16
+  init: 0
+- name: SpareCounter
+  access: explicit
+  implementation_type: uint8
+runnables:
+- name: FilterSpeed
+  events:
+  - type: timing
+    period: 0.01
+  writes_variables:
+  - variable: FilteredSpeed
+- name: LogSpeed
+  events:
+  - type: timing
+    period: 0.05
+  reads_variables:
+  - variable: FilteredSpeed
+    name: RV_Logged
+- name: MonitorSpeed
+  events:
+  - type: timing
+    period: 0.1
+  reads_variables:
+  - variable: FilteredSpeed
+  - variable: PeakSpeed
+  writes_variables:
+  - variable: PeakSpeed
+data_type_mappings:
+- SpeedMapping
+handle_termination_and_restart: no_support

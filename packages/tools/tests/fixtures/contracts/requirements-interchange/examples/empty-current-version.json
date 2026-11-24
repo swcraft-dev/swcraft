@@ -1,0 +1,15 @@
+{
+  "current_version": "",
+  "versions": {
+    "": {
+      "needs": {
+        "SWR-1": {
+          "id": "SWR-1",
+          "title": "Title of SWR-1",
+          "content": "The software shall do what SWR-1 says.",
+          "type": "req"
+        }
+      }
+    }
+  }
+}

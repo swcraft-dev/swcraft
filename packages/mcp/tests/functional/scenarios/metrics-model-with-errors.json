@@ -1,0 +1,133 @@
+{
+  "id": "metrics-model-with-errors",
+  "function": "`swcraft metrics`",
+  "tier": "generated-small",
+  "specimen": "scenario-import-conflicts-reported",
+  "class": "normal",
+  "project": "fresh",
+  "target": {
+    "conflicted": {
+      "question": "heaviest_sender_receiver_interfaces",
+      "first": 2
+    }
+  },
+  "thresholds": {
+    "none": {
+      "value": 0,
+      "because": "check-model's findings on this import are exactly the undeclared-interface errors, so no warning"
+    }
+  },
+  "steps": [
+    {
+      "id": "export",
+      "cli": [
+        "generate",
+        "arxml",
+        "--project",
+        "{manifest}"
+      ]
+    },
+    {
+      "id": "faults",
+      "export_faults": {
+        "interfaces": {
+          "$target": "conflicted"
+        },
+        "kind": "value",
+        "source": "dist/model.arxml",
+        "output": "faulted.arxml"
+      }
+    },
+    {
+      "id": "init",
+      "cli": [
+        "init",
+        "imported"
+      ]
+    },
+    {
+      "id": "import",
+      "cli": [
+        "import",
+        "model",
+        "--source",
+        "faulted.arxml",
+        "--project",
+        "imported/swcraft.yaml"
+      ]
+    },
+    {
+      "id": "check",
+      "cli": [
+        "check-model",
+        "--project",
+        "imported/swcraft.yaml",
+        "--format",
+        "json"
+      ],
+      "stdout": "json"
+    },
+    {
+      "id": "metrics",
+      "cli": [
+        "metrics",
+        "--project",
+        "imported/swcraft.yaml",
+        "--format",
+        "json"
+      ],
+      "stdout": "json"
+    }
+  ],
+  "expectations": [
+    {
+      "step": "import",
+      "exit_code": 0,
+      "because": "a conflict imports neither declaration and the import goes on"
+    },
+    {
+      "step": "check",
+      "exit_code": 1,
+      "because": "the precondition: the imported model has check-model errors"
+    },
+    {
+      "step": "check",
+      "findings_exactly": {
+        "pairs": [
+          {
+            "rule": "port.undeclared-interface",
+            "ports_naming": "conflicted"
+          }
+        ]
+      },
+      "because": "every finding is the one error rule, on the ports naming a conflicted interface, so the findings are all errors"
+    },
+    {
+      "step": "metrics",
+      "exit_code": 0,
+      "because": "the command is no gate: a model with errors is read, counted and answered, exit 0"
+    },
+    {
+      "step": "metrics",
+      "at": "state.integrity.errors",
+      "count_equals": {
+        "step": "check",
+        "at": "findings"
+      },
+      "because": "integrity counts check-model's own findings, no second rule engine"
+    },
+    {
+      "step": "metrics",
+      "at": "state.integrity.warnings",
+      "count_equals": {
+        "threshold": "none"
+      }
+    },
+    {
+      "step": "metrics",
+      "at": "answers.state",
+      "present": true,
+      "because": "the first answer is given on a model that does not pass"
+    }
+  ]
+}

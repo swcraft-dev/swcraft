@@ -1,0 +1,11 @@
+id: REQ_COMPOSITIONS_001
+title: The hierarchy is exported
+description: >-
+  Every component of this fixture satisfies this requirement, because
+  `check-model` warns about each declared SWC that satisfies none. That includes
+  the external stub: the rule is over the `swc` layer and gives `external: true`
+  no exemption, so the stub satisfies it too rather than being left as a
+  warning.
+req_type: req
+version: 1
+source: architecture

@@ -1,0 +1,5 @@
+name: ProbeF32Base
+kind: base_type
+size: 32
+encoding: IEEE754
+native_declaration: float32

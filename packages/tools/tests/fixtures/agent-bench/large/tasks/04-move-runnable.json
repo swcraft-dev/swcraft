@@ -1,0 +1,38 @@
+{
+  "id": "04-move-runnable",
+  "task": 4,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Move the runnable R1 of Swc044abcdefghij from Ts09abcde to Ts14abcde.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "tasks",
+        "name": "Ts14abcde",
+        "has": {
+          "runnables": [
+            {
+              "swc": "Swc044abcdefghij",
+              "runnable": "R1"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "tasks",
+        "name": "Ts09abcde",
+        "lacks": {
+          "runnables": [
+            {
+              "swc": "Swc044abcdefghij",
+              "runnable": "R1"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "note": "Ts09abcde and Ts14abcde share Pa2ab and the period 0.04 s, so the move needs no coexistence argument and no event change; Swc044abcdefghij.R1 is the first Ts09abcde runnable, in the task's order, no sequence names. Every component's runnable is called R1, so the assertions name the component."
+}

@@ -1,0 +1,127 @@
+{
+  "id": "metrics-figures-off-the-files",
+  "function": "`swcraft metrics`",
+  "tier": "generated-small",
+  "specimen": "scenario-impact-summary-bounded",
+  "class": "normal",
+  "thresholds": {
+    "none": {
+      "value": 0,
+      "because": "check-model exits 0 on this specimen, so it reports no error; and the precondition that it reports some warning"
+    }
+  },
+  "steps": [
+    {
+      "id": "metrics",
+      "cli": [
+        "metrics",
+        "--project",
+        "{manifest}",
+        "--format",
+        "json"
+      ],
+      "stdout": "json"
+    },
+    {
+      "id": "check",
+      "cli": [
+        "check-model",
+        "--project",
+        "{manifest}",
+        "--format",
+        "json"
+      ],
+      "stdout": "json"
+    }
+  ],
+  "expectations": [
+    {
+      "step": "metrics",
+      "exit_code": 0,
+      "because": "a run that could read the project exits 0: the command is no gate"
+    },
+    {
+      "step": "metrics",
+      "at": "state.size.components",
+      "count_equals": {
+        "locator": "model_components"
+      },
+      "because": "the components that are not external stubs, counted off the files by the locator"
+    },
+    {
+      "step": "metrics",
+      "at": "state.components",
+      "count_equals": {
+        "locator": "model_components"
+      },
+      "because": "the JSON document carries one row per declared component, none dropped"
+    },
+    {
+      "step": "metrics",
+      "at": "state.size.compositions",
+      "count_equals": {
+        "locator": "model_compositions"
+      },
+      "because": "the compositions, counted off the files"
+    },
+    {
+      "step": "metrics",
+      "at": "state.size.component_ports",
+      "count_equals": {
+        "locator": "model_component_ports"
+      },
+      "because": "the ports of the components that are not stubs, counted off the files"
+    },
+    {
+      "step": "metrics",
+      "at": "state.size.connectors",
+      "count_equals": {
+        "locator": "model_connectors"
+      },
+      "because": "the connectors, counted off the files"
+    },
+    {
+      "step": "metrics",
+      "at": "state.size.runnables",
+      "count_equals": {
+        "locator": "model_runnables"
+      },
+      "because": "the runnables of every component, counted off the files"
+    },
+    {
+      "step": "metrics",
+      "at": "state.coupling.dependencies",
+      "count_equals": {
+        "locator": "model_dependencies"
+      },
+      "because": "the directed dependencies, each pair once: the specimen's connectors outnumber its pairs, so a count of connectors fails"
+    },
+    {
+      "step": "check",
+      "exit_code": 0,
+      "because": "the precondition: the specimen has no check-model error, so every finding is a warning"
+    },
+    {
+      "step": "check",
+      "at": "findings",
+      "count_above": "none",
+      "because": "the precondition: the specimen has warnings, so the integrity count is a check the answer can fail"
+    },
+    {
+      "step": "metrics",
+      "at": "state.integrity.warnings",
+      "count_equals": {
+        "step": "check",
+        "at": "findings"
+      },
+      "because": "integrity counts check-model's own findings, no second rule engine; with no error every finding is a warning"
+    },
+    {
+      "step": "metrics",
+      "at": "state.integrity.errors",
+      "count_equals": {
+        "threshold": "none"
+      }
+    }
+  ]
+}

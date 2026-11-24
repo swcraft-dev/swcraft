@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="290" height="228" viewBox="0 0 290 228" font-family="Helvetica, Arial, sans-serif" data-view="deployment">
+<title>CPU — deployment</title>
+<rect class="background" width="100%" height="100%" fill="white"/>
+<g class="frame">
+<g class="frame" data-role="frame" data-name="CPU" data-type="CPU" data-kind="processor"><title>processor CPU</title><rect x="20" y="20" width="250" height="188" rx="4" fill="#fafafa" stroke="#333333" stroke-width="1.5"/></g>
+</g>
+<g class="members">
+<g class="member core" data-role="member" data-name="CORE0" data-type="CORE0" data-kind="core"><title>CORE0 (core)</title><rect x="32" y="46" width="226" height="150" rx="3" fill="#fff4d6" stroke="#333333" stroke-width="1"/></g>
+<g class="member partition" data-role="member" data-name="PARTITION0" data-type="PARTITION0" data-kind="partition"><title>PARTITION0 (partition)</title><rect x="44" y="72" width="202" height="112" rx="3" fill="#f3e5f5" stroke="#333333" stroke-width="1"/></g>
+<g class="member task" data-role="member" data-name="Task_10ms" data-type="Task_10ms" data-kind="task"><title>Task_10ms (task)</title><rect x="56" y="98" width="178" height="74" rx="3" fill="#e8f5e9" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="ExampleConsumerSWC" data-type="ExampleConsumerSWC" data-kind="component"><title>ExampleConsumerSWC (component)</title><rect x="68" y="124" width="154" height="36" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+</g>
+<g class="labels">
+<text class="frame-label" x="32" y="37" font-size="12" data-kind="processor" font-weight="bold">CPU</text>
+<text class="member-label" x="44" y="63" font-size="12" data-kind="core" font-weight="600">CORE0</text>
+<text class="member-label" x="56" y="89" font-size="12" data-kind="partition" font-weight="600">PARTITION0</text>
+<text class="member-label" x="68" y="115" font-size="12" data-kind="task" font-weight="600">Task_10ms</text>
+<text class="member-label" x="145" y="146.2" font-size="12" data-kind="component" text-anchor="middle">ExampleConsumerSWC</text>
+</g>
+</svg>

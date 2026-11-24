@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 3,
+  "name": "IExample",
+  "direction": "dependents",
+  "depth": 1,
+  "matched": {
+    "interface": [
+      {
+        "layer": "swc",
+        "name": "ExampleConsumerSWC",
+        "detail": "via port rIn",
+        "details": [
+          {
+            "kind": "port",
+            "value": "rIn"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "name": "ExampleSWC",
+        "detail": "via port pOut",
+        "details": [
+          {
+            "kind": "port",
+            "value": "pOut"
+          }
+        ]
+      }
+    ]
+  }
+}

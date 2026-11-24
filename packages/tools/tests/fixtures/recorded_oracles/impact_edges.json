@@ -1,0 +1,1294 @@
+{
+  "model": "impact_model",
+  "graph": [
+    {
+      "layer": "interface",
+      "name": "ISpeed",
+      "dependents": [
+        {
+          "layer": "swc",
+          "name": "SpeedControl",
+          "detail": "via port rIn",
+          "details": [
+            {
+              "kind": "port",
+              "value": "rIn"
+            }
+          ]
+        },
+        {
+          "layer": "swc",
+          "name": "SpeedSensor",
+          "detail": "via port pOut",
+          "details": [
+            {
+              "kind": "port",
+              "value": "pOut"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "Powertrain",
+          "detail": "via port pSpeedOut",
+          "details": [
+            {
+              "kind": "port",
+              "value": "pSpeedOut"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "layer": "interface",
+      "name": "IDiagnostics",
+      "dependents": [
+        {
+          "layer": "swc",
+          "name": "SpeedControl",
+          "detail": "via port rDiag",
+          "details": [
+            {
+              "kind": "port",
+              "value": "rDiag"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "Diagnostics",
+          "detail": "via port pDiag",
+          "details": [
+            {
+              "kind": "port",
+              "value": "pDiag"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "Powertrain",
+          "detail": "via port rDiagIn",
+          "details": [
+            {
+              "kind": "port",
+              "value": "rDiagIn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "layer": "swc",
+      "name": "SpeedSensor",
+      "dependents": [
+        {
+          "layer": "task",
+          "name": "Task_10ms",
+          "detail": "runnable SpeedSensor_Run",
+          "details": [
+            {
+              "kind": "runnable",
+              "value": "SpeedSensor_Run"
+            }
+          ]
+        },
+        {
+          "layer": "connector",
+          "name": "Sensor_to_Control",
+          "detail": "via port SpeedSensor.pOut",
+          "details": [
+            {
+              "kind": "endpoint",
+              "value": "SpeedSensor.pOut"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "Powertrain",
+          "detail": "member sensor",
+          "details": [
+            {
+              "kind": "member",
+              "value": "sensor"
+            }
+          ]
+        },
+        {
+          "layer": "sequence",
+          "name": "speed_cycle",
+          "detail": "step: SpeedSensor_Run",
+          "details": [
+            {
+              "kind": "step",
+              "value": "SpeedSensor_Run"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "layer": "swc",
+      "name": "SpeedControl",
+      "dependents": [
+        {
+          "layer": "task",
+          "name": "Task_10ms",
+          "detail": "runnable SpeedControl_Run",
+          "details": [
+            {
+              "kind": "runnable",
+              "value": "SpeedControl_Run"
+            }
+          ]
+        },
+        {
+          "layer": "connector",
+          "name": "Sensor_to_Control",
+          "detail": "via port SpeedControl.rIn",
+          "details": [
+            {
+              "kind": "endpoint",
+              "value": "SpeedControl.rIn"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "Powertrain",
+          "detail": "member control",
+          "details": [
+            {
+              "kind": "member",
+              "value": "control"
+            }
+          ]
+        },
+        {
+          "layer": "sequence",
+          "name": "speed_cycle",
+          "detail": "step: SpeedControl_Run",
+          "details": [
+            {
+              "kind": "step",
+              "value": "SpeedControl_Run"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "layer": "swc",
+      "name": "Shared",
+      "dependents": [
+        {
+          "layer": "task",
+          "name": "Task_20ms",
+          "detail": "runnable Shared_Run",
+          "details": [
+            {
+              "kind": "runnable",
+              "value": "Shared_Run"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "Diagnostics",
+          "detail": "member shared",
+          "details": [
+            {
+              "kind": "member",
+              "value": "shared"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "layer": "implementation_type",
+      "name": "uint16",
+      "dependents": [
+        {
+          "layer": "interface",
+          "name": "IDiagnostics",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "implementation_type",
+          "name": "SpeedFrame",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "implementation_type",
+      "name": "uint8",
+      "dependents": [
+        {
+          "layer": "interface",
+          "name": "IDiagnostics",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "mapping_set",
+          "name": "SpeedMapping",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "implementation_type",
+          "name": "SpeedFrame",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "application_type",
+      "name": "SpeedPhys",
+      "dependents": [
+        {
+          "layer": "interface",
+          "name": "IPhysical",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "application_type",
+          "name": "SpeedHistory",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "application_type",
+          "name": "SpeedRecord",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "mapping_set",
+          "name": "SpeedMapping",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "swc",
+          "name": "SpeedControl",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "application_type",
+      "name": "Quality",
+      "dependents": [
+        {
+          "layer": "interface",
+          "name": "IQualityQuery",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "application_type",
+          "name": "SpeedRecord",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "mapping_set",
+          "name": "SpeedMapping",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "implementation_type",
+      "name": "Speed",
+      "dependents": [
+        {
+          "layer": "interface",
+          "name": "ISpeed",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "implementation_type",
+          "name": "SpeedRef",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "mapping_set",
+          "name": "SpeedMapping",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "implementation_type",
+      "name": "ProbeGearValue",
+      "dependents": [
+        {
+          "layer": "implementation_type",
+          "name": "ProbeGearRef",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "base_type",
+      "name": "ProbeGearBase",
+      "dependents": [
+        {
+          "layer": "implementation_type",
+          "name": "ProbeGearValue",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "base_type",
+      "name": "float32_base",
+      "dependents": [
+        {
+          "layer": "implementation_type",
+          "name": "Speed",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "implementation_type",
+          "name": "float32",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "base_type",
+      "name": "uint16_base",
+      "dependents": [
+        {
+          "layer": "implementation_type",
+          "name": "uint16",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "base_type",
+      "name": "uint8_base",
+      "dependents": [
+        {
+          "layer": "implementation_type",
+          "name": "uint8",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "composition",
+      "name": "Diagnostics",
+      "dependents": [
+        {
+          "layer": "connector",
+          "name": "Diag_to_Powertrain",
+          "detail": "via port Diagnostics.pDiag",
+          "details": [
+            {
+              "kind": "endpoint",
+              "value": "Diagnostics.pDiag"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "VehicleTop",
+          "detail": "member diag",
+          "details": [
+            {
+              "kind": "member",
+              "value": "diag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "layer": "composition",
+      "name": "Powertrain",
+      "dependents": [
+        {
+          "layer": "connector",
+          "name": "Diag_to_Powertrain",
+          "detail": "via port Powertrain.rDiagIn",
+          "details": [
+            {
+              "kind": "endpoint",
+              "value": "Powertrain.rDiagIn"
+            }
+          ]
+        },
+        {
+          "layer": "connector",
+          "name": "Sensor_to_Control",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "composition",
+          "name": "VehicleTop",
+          "detail": "member powertrain",
+          "details": [
+            {
+              "kind": "member",
+              "value": "powertrain"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "layer": "composition",
+      "name": "VehicleTop",
+      "dependents": [
+        {
+          "layer": "connector",
+          "name": "Diag_to_Powertrain",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "task",
+      "name": "Task_10ms",
+      "dependents": [
+        {
+          "layer": "sequence",
+          "name": "speed_cycle",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "hardware",
+      "name": "RAM0",
+      "dependents": [
+        {
+          "layer": "swc",
+          "name": "SpeedControl",
+          "detail": "memory budget 1024 bytes",
+          "details": [
+            {
+              "kind": "budget",
+              "value": "1024"
+            }
+          ]
+        },
+        {
+          "layer": "swc",
+          "name": "SpeedSensor",
+          "detail": "memory budget 2048 bytes",
+          "details": [
+            {
+              "kind": "budget",
+              "value": "2048"
+            }
+          ]
+        },
+        {
+          "layer": "swc",
+          "name": "Shared",
+          "detail": "memory budget 256 bytes",
+          "details": [
+            {
+              "kind": "budget",
+              "value": "256"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "layer": "hardware",
+      "name": "ScratchPad",
+      "dependents": [
+        {
+          "layer": "swc",
+          "name": "SpeedSensor",
+          "detail": "memory budget 512 bytes",
+          "details": [
+            {
+              "kind": "budget",
+              "value": "512"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "layer": "hardware",
+      "name": "PARTITION0",
+      "dependents": [
+        {
+          "layer": "task",
+          "name": "Task_10ms",
+          "detail": "partition PARTITION0",
+          "details": [
+            {
+              "kind": "partition",
+              "value": "PARTITION0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "layer": "hardware",
+      "name": "PARTITION1",
+      "dependents": [
+        {
+          "layer": "task",
+          "name": "Task_20ms",
+          "detail": "partition PARTITION1",
+          "details": [
+            {
+              "kind": "partition",
+              "value": "PARTITION1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "layer": "hardware",
+      "name": "CORE0",
+      "dependents": [
+        {
+          "layer": "hardware",
+          "name": "RAM0",
+          "detail": "accessible from CORE0",
+          "details": [
+            {
+              "kind": "access",
+              "value": "CORE0"
+            }
+          ]
+        },
+        {
+          "layer": "hardware",
+          "name": "PARTITION0",
+          "detail": "core CORE0",
+          "details": [
+            {
+              "kind": "core",
+              "value": "CORE0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "layer": "hardware",
+      "name": "CORE1",
+      "dependents": [
+        {
+          "layer": "hardware",
+          "name": "RAM0",
+          "detail": "accessible from CORE1",
+          "details": [
+            {
+              "kind": "access",
+              "value": "CORE1"
+            }
+          ]
+        },
+        {
+          "layer": "hardware",
+          "name": "PARTITION1",
+          "detail": "core CORE1",
+          "details": [
+            {
+              "kind": "core",
+              "value": "CORE1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "layer": "mapping_set",
+      "name": "DiagMapping",
+      "dependents": [
+        {
+          "layer": "swc",
+          "name": "Shared",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "implementation_type",
+      "name": "SpeedFrame",
+      "dependents": [
+        {
+          "layer": "implementation_type",
+          "name": "SpeedFrames",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "swc",
+          "name": "SpeedControl",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "implementation_type",
+      "name": "SpeedFrames",
+      "dependents": [
+        {
+          "layer": "implementation_type",
+          "name": "SpeedFramesPtr",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "compu_method",
+      "name": "ProbeGearTable",
+      "dependents": [
+        {
+          "layer": "application_type",
+          "name": "ProbeGear",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "implementation_type",
+          "name": "ProbeGearRef",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "implementation_type",
+          "name": "ProbeGearValue",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "unit",
+      "name": "ProbeKmh",
+      "dependents": [
+        {
+          "layer": "application_type",
+          "name": "ProbeSpeedPhys",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "compu_method",
+          "name": "ProbeSpeedCompu",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "compu_method",
+      "name": "ProbeSpeedCompu",
+      "dependents": [
+        {
+          "layer": "application_type",
+          "name": "ProbeSpeedPhys",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "data_constraint",
+      "name": "ProbeSpeedLimits",
+      "dependents": [
+        {
+          "layer": "application_type",
+          "name": "ProbeSpeedPhys",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "requirement",
+      "name": "REQ_SPEED_001",
+      "dependents": [
+        {
+          "layer": "swc",
+          "name": "SpeedControl",
+          "detail": "runnable SpeedControl_Run",
+          "details": [
+            {
+              "kind": "runnable",
+              "value": "SpeedControl_Run"
+            }
+          ]
+        },
+        {
+          "layer": "swc",
+          "name": "SpeedSensor",
+          "detail": "via port pOut",
+          "details": [
+            {
+              "kind": "port",
+              "value": "pOut"
+            }
+          ]
+        },
+        {
+          "layer": "swc",
+          "name": "Shared",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "interface",
+          "name": "IDiagnostics",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "interface",
+          "name": "ISpeed",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "requirement",
+          "name": "REQ_SPEED_002",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "composition",
+          "name": "Powertrain",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "task",
+          "name": "Task_10ms",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "hardware",
+          "name": "CORE0",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "hardware",
+          "name": "CPU",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "hardware",
+          "name": "PARTITION0",
+          "detail": "",
+          "details": []
+        },
+        {
+          "layer": "hardware",
+          "name": "RAM0",
+          "detail": "",
+          "details": []
+        }
+      ]
+    },
+    {
+      "layer": "requirement",
+      "name": "REQ_SPEED_002",
+      "dependents": [
+        {
+          "layer": "composition",
+          "name": "Powertrain",
+          "detail": "",
+          "details": []
+        }
+      ]
+    }
+  ],
+  "impact_of": {
+    "SpeedSensor": {
+      "swc": [
+        {
+          "layer": "task",
+          "name": "Task_10ms",
+          "detail": "runnable SpeedSensor_Run",
+          "details": [
+            {
+              "kind": "runnable",
+              "value": "SpeedSensor_Run"
+            }
+          ]
+        },
+        {
+          "layer": "connector",
+          "name": "Sensor_to_Control",
+          "detail": "via port SpeedSensor.pOut",
+          "details": [
+            {
+              "kind": "endpoint",
+              "value": "SpeedSensor.pOut"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "Powertrain",
+          "detail": "member sensor",
+          "details": [
+            {
+              "kind": "member",
+              "value": "sensor"
+            }
+          ]
+        },
+        {
+          "layer": "sequence",
+          "name": "speed_cycle",
+          "detail": "step: SpeedSensor_Run",
+          "details": [
+            {
+              "kind": "step",
+              "value": "SpeedSensor_Run"
+            }
+          ]
+        },
+        {
+          "layer": "connector",
+          "name": "Diag_to_Powertrain",
+          "detail": "via port Powertrain.rDiagIn",
+          "details": [
+            {
+              "kind": "endpoint",
+              "value": "Powertrain.rDiagIn"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "VehicleTop",
+          "detail": "member powertrain",
+          "details": [
+            {
+              "kind": "member",
+              "value": "powertrain"
+            }
+          ]
+        }
+      ]
+    },
+    "Shared": {
+      "requirement": [],
+      "swc": [
+        {
+          "layer": "task",
+          "name": "Task_20ms",
+          "detail": "runnable Shared_Run",
+          "details": [
+            {
+              "kind": "runnable",
+              "value": "Shared_Run"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "Diagnostics",
+          "detail": "member shared",
+          "details": [
+            {
+              "kind": "member",
+              "value": "shared"
+            }
+          ]
+        },
+        {
+          "layer": "connector",
+          "name": "Diag_to_Powertrain",
+          "detail": "via port Diagnostics.pDiag",
+          "details": [
+            {
+              "kind": "endpoint",
+              "value": "Diagnostics.pDiag"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "VehicleTop",
+          "detail": "member diag",
+          "details": [
+            {
+              "kind": "member",
+              "value": "diag"
+            }
+          ]
+        }
+      ]
+    },
+    "RAM0": {
+      "hardware": [
+        {
+          "layer": "swc",
+          "name": "SpeedControl",
+          "detail": "memory budget 1024 bytes",
+          "details": [
+            {
+              "kind": "budget",
+              "value": "1024"
+            }
+          ]
+        },
+        {
+          "layer": "swc",
+          "name": "SpeedSensor",
+          "detail": "memory budget 2048 bytes",
+          "details": [
+            {
+              "kind": "budget",
+              "value": "2048"
+            }
+          ]
+        },
+        {
+          "layer": "swc",
+          "name": "Shared",
+          "detail": "memory budget 256 bytes",
+          "details": [
+            {
+              "kind": "budget",
+              "value": "256"
+            }
+          ]
+        },
+        {
+          "layer": "task",
+          "name": "Task_20ms",
+          "detail": "runnable Shared_Run",
+          "details": [
+            {
+              "kind": "runnable",
+              "value": "Shared_Run"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "Diagnostics",
+          "detail": "member shared",
+          "details": [
+            {
+              "kind": "member",
+              "value": "shared"
+            }
+          ]
+        },
+        {
+          "layer": "connector",
+          "name": "Diag_to_Powertrain",
+          "detail": "via ports Diagnostics.pDiag, Powertrain.rDiagIn",
+          "details": [
+            {
+              "kind": "endpoint",
+              "value": "Diagnostics.pDiag"
+            },
+            {
+              "kind": "endpoint",
+              "value": "Powertrain.rDiagIn"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "VehicleTop",
+          "detail": "members diag, powertrain",
+          "details": [
+            {
+              "kind": "member",
+              "value": "diag"
+            },
+            {
+              "kind": "member",
+              "value": "powertrain"
+            }
+          ]
+        },
+        {
+          "layer": "task",
+          "name": "Task_10ms",
+          "detail": "runnables SpeedSensor_Run, SpeedControl_Run",
+          "details": [
+            {
+              "kind": "runnable",
+              "value": "SpeedSensor_Run"
+            },
+            {
+              "kind": "runnable",
+              "value": "SpeedControl_Run"
+            }
+          ]
+        },
+        {
+          "layer": "connector",
+          "name": "Sensor_to_Control",
+          "detail": "via ports SpeedSensor.pOut, SpeedControl.rIn",
+          "details": [
+            {
+              "kind": "endpoint",
+              "value": "SpeedSensor.pOut"
+            },
+            {
+              "kind": "endpoint",
+              "value": "SpeedControl.rIn"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "Powertrain",
+          "detail": "members sensor, control",
+          "details": [
+            {
+              "kind": "member",
+              "value": "sensor"
+            },
+            {
+              "kind": "member",
+              "value": "control"
+            }
+          ]
+        },
+        {
+          "layer": "sequence",
+          "name": "speed_cycle",
+          "detail": "steps: SpeedSensor_Run, SpeedControl_Run",
+          "details": [
+            {
+              "kind": "step",
+              "value": "SpeedSensor_Run"
+            },
+            {
+              "kind": "step",
+              "value": "SpeedControl_Run"
+            }
+          ]
+        }
+      ]
+    },
+    "CORE0": {
+      "hardware": [
+        {
+          "layer": "hardware",
+          "name": "RAM0",
+          "detail": "accessible from CORE0",
+          "details": [
+            {
+              "kind": "access",
+              "value": "CORE0"
+            }
+          ]
+        },
+        {
+          "layer": "hardware",
+          "name": "PARTITION0",
+          "detail": "core CORE0",
+          "details": [
+            {
+              "kind": "core",
+              "value": "CORE0"
+            }
+          ]
+        },
+        {
+          "layer": "task",
+          "name": "Task_10ms",
+          "detail": "runnables SpeedSensor_Run, SpeedControl_Run; partition PARTITION0",
+          "details": [
+            {
+              "kind": "partition",
+              "value": "PARTITION0"
+            },
+            {
+              "kind": "runnable",
+              "value": "SpeedSensor_Run"
+            },
+            {
+              "kind": "runnable",
+              "value": "SpeedControl_Run"
+            }
+          ]
+        },
+        {
+          "layer": "sequence",
+          "name": "speed_cycle",
+          "detail": "steps: SpeedSensor_Run, SpeedControl_Run",
+          "details": [
+            {
+              "kind": "step",
+              "value": "SpeedSensor_Run"
+            },
+            {
+              "kind": "step",
+              "value": "SpeedControl_Run"
+            }
+          ]
+        },
+        {
+          "layer": "swc",
+          "name": "SpeedControl",
+          "detail": "memory budget 1024 bytes",
+          "details": [
+            {
+              "kind": "budget",
+              "value": "1024"
+            }
+          ]
+        },
+        {
+          "layer": "swc",
+          "name": "SpeedSensor",
+          "detail": "memory budget 2048 bytes",
+          "details": [
+            {
+              "kind": "budget",
+              "value": "2048"
+            }
+          ]
+        },
+        {
+          "layer": "swc",
+          "name": "Shared",
+          "detail": "memory budget 256 bytes",
+          "details": [
+            {
+              "kind": "budget",
+              "value": "256"
+            }
+          ]
+        },
+        {
+          "layer": "task",
+          "name": "Task_20ms",
+          "detail": "runnable Shared_Run",
+          "details": [
+            {
+              "kind": "runnable",
+              "value": "Shared_Run"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "Diagnostics",
+          "detail": "member shared",
+          "details": [
+            {
+              "kind": "member",
+              "value": "shared"
+            }
+          ]
+        },
+        {
+          "layer": "connector",
+          "name": "Diag_to_Powertrain",
+          "detail": "via ports Diagnostics.pDiag, Powertrain.rDiagIn",
+          "details": [
+            {
+              "kind": "endpoint",
+              "value": "Diagnostics.pDiag"
+            },
+            {
+              "kind": "endpoint",
+              "value": "Powertrain.rDiagIn"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "VehicleTop",
+          "detail": "members diag, powertrain",
+          "details": [
+            {
+              "kind": "member",
+              "value": "diag"
+            },
+            {
+              "kind": "member",
+              "value": "powertrain"
+            }
+          ]
+        },
+        {
+          "layer": "connector",
+          "name": "Sensor_to_Control",
+          "detail": "via ports SpeedSensor.pOut, SpeedControl.rIn",
+          "details": [
+            {
+              "kind": "endpoint",
+              "value": "SpeedSensor.pOut"
+            },
+            {
+              "kind": "endpoint",
+              "value": "SpeedControl.rIn"
+            }
+          ]
+        },
+        {
+          "layer": "composition",
+          "name": "Powertrain",
+          "detail": "members sensor, control",
+          "details": [
+            {
+              "kind": "member",
+              "value": "sensor"
+            },
+            {
+              "kind": "member",
+              "value": "control"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "format_impact": {
+    "SpeedSensor": "Impact of 'SpeedSensor':\n\nswc:\n  task Task_10ms (runnable SpeedSensor_Run)\n  connector Sensor_to_Control (via port SpeedSensor.pOut)\n  composition Powertrain (member sensor)\n  sequence speed_cycle (step: SpeedSensor_Run)\n  connector Diag_to_Powertrain (via port Powertrain.rDiagIn)\n  composition VehicleTop (member powertrain)",
+    "Shared": "Impact of 'Shared':\n\nrequirement:\n  (no dependents)\n\nswc:\n  task Task_20ms (runnable Shared_Run)\n  composition Diagnostics (member shared)\n  connector Diag_to_Powertrain (via port Diagnostics.pDiag)\n  composition VehicleTop (member diag)",
+    "RAM0": "Impact of 'RAM0':\n\nhardware:\n  swc SpeedControl (memory budget 1024 bytes)\n  swc SpeedSensor (memory budget 2048 bytes)\n  swc Shared (memory budget 256 bytes)\n  task Task_20ms (runnable Shared_Run)\n  composition Diagnostics (member shared)\n  connector Diag_to_Powertrain (via ports Diagnostics.pDiag, Powertrain.rDiagIn)\n  composition VehicleTop (members diag, powertrain)\n  task Task_10ms (runnables SpeedSensor_Run, SpeedControl_Run)\n  connector Sensor_to_Control (via ports SpeedSensor.pOut, SpeedControl.rIn)\n  composition Powertrain (members sensor, control)\n  sequence speed_cycle (steps: SpeedSensor_Run, SpeedControl_Run)",
+    "CORE0": "Impact of 'CORE0':\n\nhardware:\n  hardware RAM0 (accessible from CORE0)\n  hardware PARTITION0 (core CORE0)\n  task Task_10ms (runnables SpeedSensor_Run, SpeedControl_Run; partition PARTITION0)\n  sequence speed_cycle (steps: SpeedSensor_Run, SpeedControl_Run)\n  swc SpeedControl (memory budget 1024 bytes)\n  swc SpeedSensor (memory budget 2048 bytes)\n  swc Shared (memory budget 256 bytes)\n  task Task_20ms (runnable Shared_Run)\n  composition Diagnostics (member shared)\n  connector Diag_to_Powertrain (via ports Diagnostics.pDiag, Powertrain.rDiagIn)\n  composition VehicleTop (members diag, powertrain)\n  connector Sensor_to_Control (via ports SpeedSensor.pOut, SpeedControl.rIn)\n  composition Powertrain (members sensor, control)"
+  }
+}

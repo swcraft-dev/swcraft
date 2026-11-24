@@ -1,0 +1,7 @@
+id: CUST_001
+title: CUST_001
+description: Placeholder - named as a parent by SYS_001, not in the import.
+req_type: req
+version: 1
+source: external
+stub: true

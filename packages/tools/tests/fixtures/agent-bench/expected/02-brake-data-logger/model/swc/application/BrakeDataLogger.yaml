@@ -1,0 +1,21 @@
+name: BrakeDataLogger
+type: application
+ports:
+- name: rBrakeDiagnostics
+  direction: require
+  interface: IBrakeDiagnostics
+runnables:
+- name: LogSnapshot
+  events:
+  - type: timing
+    period: 0.1
+  calls:
+  - port: rBrakeDiagnostics
+    operation: ReadSnapshot
+  satisfies:
+  - REQ_BTP_DIAGNOSTICS@1
+memory:
+  RAM: 1024
+handle_termination_and_restart: no_support
+data_type_mappings:
+- BrakeThermalMappings

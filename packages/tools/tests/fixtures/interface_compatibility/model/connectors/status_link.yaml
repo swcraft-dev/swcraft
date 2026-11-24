@@ -1,0 +1,11 @@
+name: status_link
+from:
+  swc: Sensor
+  port: pStatus
+to:
+  swc: Display
+  port: rStatus
+description: >-
+  The sender-receiver pair: two ports naming two different interfaces, joined
+  because each of `IStatusBasic`'s two elements has a compatible counterpart of
+  the same name in `IStatusFull` (`[constr_1069]` 1(a)).

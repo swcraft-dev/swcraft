@@ -1,0 +1,10 @@
+id: SYS_003
+title: Brake light
+description: The brake light shall be on with every brake request.
+req_type: req
+version: 1
+source: external
+derived_from:
+- SYS_001@2
+asil: QM
+baseline: SYS-2.1

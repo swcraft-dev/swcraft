@@ -1,0 +1,5 @@
+name: Speed
+kind: value_type
+base: float32_base
+unit: km/h
+description: reference `data_types.alias.base` -> float32.

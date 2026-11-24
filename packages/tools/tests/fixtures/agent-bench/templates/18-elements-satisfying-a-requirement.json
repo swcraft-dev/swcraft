@@ -1,0 +1,10 @@
+{
+  "id": "18-elements-satisfying-a-requirement",
+  "task": 18,
+  "group": "requirements-and-traceability",
+  "kind": "question",
+  "binding": "elements_satisfying_the_most_linked_requirement",
+  "oracle": "structural",
+  "prompt": "Which elements satisfy requirement {{requirement}}? List them with their layer.",
+  "note": "The declared requirement, not a stub, with the most link sites: each site with its layer, a port's or a runnable's with its owning component, and up to three components with no link on it that the reply must not name."
+}

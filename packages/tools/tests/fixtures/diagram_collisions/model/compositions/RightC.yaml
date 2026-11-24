@@ -1,0 +1,6 @@
+name: RightC
+title: RightC
+description: Holds a member named Sensor of the type SensorB.
+members:
+  - name: Sensor
+    type: SensorB

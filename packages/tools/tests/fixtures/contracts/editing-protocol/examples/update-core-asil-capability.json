@@ -1,0 +1,94 @@
+{
+  "name": "update-core-asil-capability",
+  "description": "A core declared able to host a higher safety integrity level: the project's own statement that `CORE0`, as configured with its safety mechanisms, can host ASIL D where it was declared for B. Raising a capability makes `safety.partition-on-unqualified-core` (the successor, since contract `9.0.0`, of `safety.task-on-unqualified-core`) and `safety.memory-below-component` refuse fewer placements, so it is a safety act the host answers separately — and it is asked about here, where no finding stands for it to close, because a raise is an act and not a count.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with `REQ_EXAMPLE_001` allocating ASIL B — so both components derive B — `PARTITION0` rated B and `CORE0` declaring `asil_capability: B`. `Task_10ms` runs `ExampleConsumerSWC` in `PARTITION0` on `CORE0`, a B partition on a B core: equal, so the baseline reports nothing. The change set raises the capability to D.",
+    "existing_elements": [
+      {
+        "layer": "hardware",
+        "element": "CORE0"
+      },
+      {
+        "layer": "hardware",
+        "element": "PARTITION0"
+      },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_001"
+      },
+      {
+        "layer": "tasks",
+        "element": "Task_10ms"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "hardware",
+            "element": "CORE0",
+            "path": [
+              {
+                "field": "asil_capability"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly. It does NOT authorize the safety question: `asil_capability` is one of the scalar hardware fields whose direction the server classifies from the staged before/after values, and a capability raised from B to D refuses no component level where B refused C and D. `raise_capability` is the safety act, answered once for the whole change set, which is why the status is `committed` rather than `staged`."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:mp4rcQVVpVvnWRuzLSuuCA",
+    "intent": "Declare CORE0 able to host ASIL D.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "hardware",
+          "element": "CORE0",
+          "path": [
+            {
+              "field": "asil_capability"
+            }
+          ]
+        },
+        "value": "D"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:I9ExyNWwHX6RMkAWzidrwg",
+      "delta": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "hardware",
+            "element": "CORE0",
+            "path": [
+              {
+                "field": "asil_capability"
+              }
+            ]
+          },
+          "before": "B",
+          "after": "D",
+          "summary": "hardware/CORE0: ~ asil_capability B -> D"
+        }
+      ],
+      "audit_ref": "cs-20260910T220933Z-eca21b"
+    },
+    "notes": "`committed`, for the reason `update-memory-accessible-and-threshold.json` is: the host answered a second, independent question. The direction is decided by the set of levels the element refuses — a partition's on a core, a component's on a memory — every level above its capability, and nothing for an element that declares none — so a raise and a clear below D (`B` to none refuses nothing where B refused C and D) are weakenings, while a lowering and a capability declared where none stood make the two placement rules refuse more and are not; clearing a D capability is not one either, because a D capability already refuses nothing. The field is optional, so a clear is an `update` whose `after` is `null` and never a `remove` at the field. What the accepted result records is a DECLARATION: nothing in the model expresses the core's safety mechanisms, its lockstep mode or its assumptions of use, and nothing verifies that the core really can host ASIL D."
+  }
+}

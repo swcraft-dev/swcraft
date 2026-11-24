@@ -1,0 +1,10 @@
+{
+  "id": "03-new-interface-and-type",
+  "task": 3,
+  "group": "model-change",
+  "kind": "change",
+  "binding": "new_interface_and_type",
+  "oracle": "structural",
+  "prompt": "Add a sender-receiver interface {{interface}} with one data element {{element}} of a new application type {{app_type}} (percent, range 0 to 100). Give {{component}} a provide port {{port}} on it, and map {{app_type}} to {{implementation_type}} in {{mapping_set}}.",
+  "note": "The component with the most ports; the first mapping set it lists, else the one with the most maps; the value-category implementation type that set maps most often. The names introduced take the first free numeric suffix."
+}

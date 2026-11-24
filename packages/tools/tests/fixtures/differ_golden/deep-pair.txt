@@ -1,0 +1,43 @@
+SWCs:
+  ~ SpeedCtrlSWC
+      ports:
+        ~ pStatus
+            interface: 'IStatus' -> 'IState'
+        (order changed)
+      runnables:
+        ~ SpeedCtrl_Run
+            min_start_interval: 0.01 -> 0.02
+            events:
+              + (timing, 0.02) (added)
+              - (timing, 0.01) (removed)
+      memory:
+        + FLASH (added)
+        - ROM (removed)
+        ~ RAM
+            value: 1024 -> 2048
+      satisfies:
+        - REQ-SPEED-002@1 (removed)
+
+Interfaces:
+  ~ ICtrl
+      operations:
+        ~ ReadDtc
+            arguments:
+              ~ speed
+                  implementation_type: 'uint16' -> 'uint32'
+
+Implementation Types:
+  ~ Gear
+      literals:
+        (order changed)
+
+Tasks:
+  ~ Task_10ms
+      runnables:
+        - SpeedCtrlSWC.TorqueCalc_Run (removed)
+
+Sequences:
+  ~ SpeedFlow
+      steps:
+        ~ SpeedCtrlSWC.SpeedCtrl_Run
+            note: 'reads the sensor' -> 'reads the wheel sensor'

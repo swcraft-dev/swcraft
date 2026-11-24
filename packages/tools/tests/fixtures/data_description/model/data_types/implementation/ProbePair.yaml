@@ -1,0 +1,4 @@
+name: ProbePair
+kind: value_type
+base: ProbeU8Base
+compu_method_ref: ProbeTable

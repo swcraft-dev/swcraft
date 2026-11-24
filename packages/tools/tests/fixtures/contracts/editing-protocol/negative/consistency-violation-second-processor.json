@@ -1,0 +1,40 @@
+{
+  "name": "consistency-violation-second-processor",
+  "description": "A `create` of a second `processor` element. Nothing about the payload is wrong — it is exactly what discovery declares for the kind — and the identity is free, so neither the schema pass nor the identity pass has anything to say. What the assembled staged result breaks is the contract's one-processor rule, `hardware.multiple-processors`, which is a statement about the layer as a whole and therefore only checkable once the whole result exists.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, whose `hardware/` layer declares exactly one processor, `CPU`. The change set adds `CPU2` beside it.",
+    "existing_elements": [{ "layer": "hardware", "element": "CPU" }],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [{ "operation": "create", "address": { "layer": "hardware", "element": "CPU2" } }],
+      "notes": "The scope covers the create exactly, so the refusal is the model rule and not the authorization boundary."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Add a second processor.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": { "layer": "hardware", "element": "CPU2" },
+        "value": {
+          "name": "CPU2",
+          "kind": "processor",
+          "description": "A second processor"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      { "layer": "hardware", "element": "CPU" },
+      { "layer": "hardware", "element": "CPU2" }
+    ],
+    "notes": "BOTH processors are named, and neither is called the offender: the rule is that the layer holds one, and choosing which of the two to delete is a decision the rule does not make and the model cannot make for the architect. That is the same reason `hardware.no-processor` — the other half of the same rule — is reported against the layer itself, which has no element to name at all. A client repairs this by removing either address in a change set of its own."
+  }
+}

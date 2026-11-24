@@ -1,0 +1,71 @@
+{
+  "name": "schema-violation-join-path-outside-row",
+  "description": "A join path outside the declared row it reads: a `runnables.writes` row's member is identified by the composite `{port, element}`, so its values are `member.port` and `member.element`, and the `left` path `member` stops at an object rather than naming one value. Every path is checked against the row's DECLARED shape — the identity rule of each step of the member path, the computed values asked for and every earlier alias — before any row is computed, so the refusal does not depend on the model's rows.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, whose components carry no runnable access: the outer read answers NO row, and the path is refused all the same — the check reads the declarations, never the rows.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      }
+    ],
+    "baseline_state": "current",
+    "notes": "A read takes no scope and writes no audit record, refused or not."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "form": "index",
+    "members": "runnables.writes",
+    "join": [
+      {
+        "with": {
+          "address": {
+            "layer": "connectors"
+          },
+          "derived": [
+            "connection_ends"
+          ]
+        },
+        "on": [
+          {
+            "left": "member",
+            "right": "derived.connection_ends.provider.port"
+          }
+        ],
+        "as": "connection"
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc"
+      }
+    ],
+    "notes": "The address echoed back is the request's: a join path is a request key, not a path step. The message names the entry's alias, the side and the path, and lists the values the row does declare; it is not contract. The same request with `member.port` is answered (with no row on this model)."
+  }
+}

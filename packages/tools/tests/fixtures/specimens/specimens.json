@@ -1,0 +1,127 @@
+{
+  "generator": {
+    "bin_variable": "SWCRAFT_SPECIMENS_BIN",
+    "executable": "swcraft-specimens",
+    "imports": [
+      "swcraft_specimens",
+      "numpy",
+      "scipy.optimize",
+      "scipy.optimize._highspy._core",
+      "scipy.sparse",
+      "yaml"
+    ]
+  },
+  "specimens": {
+    "basic-twin": {
+      "model_sha256": "47111af6751af151b79dc082cc479f32be09694817a3df09e6dc8aac98a978f7",
+      "passport_sha256": "847e97fa82808af6b6a6ac80bbe2d322b8377fa1136de8fdb4c88be71fe01725"
+    },
+    "benchmark-default": {
+      "model_sha256": "c4b3e28f5b71fec67ef7bae9513631d8d58fe48518fac9d9e0e2a9e9237ffd4c",
+      "passport_sha256": "5981a3c7117ef73285b70593824b3c273d67eb4420a2d361a3ca8ead28c200ba"
+    },
+    "example-configuration-only-controlled": {
+      "model_sha256": "0943830ecf6b3a2ed0cced8a2791fa43a9e4a0a33bd156548f493b3b421b6d75",
+      "passport_sha256": "61434d6a3348025a8c2ea0b0121cfdd4a456b84c546a269a20c15c7de3117869"
+    },
+    "example-minimal": {
+      "model_sha256": "68ae6baa3bb2b44b60256ba325863b56a29f5bd9020101c96188211558ed5278",
+      "passport_sha256": "cd931358df19b36e17ef55bccb23f8eb9d70681e69fe3d1eccb1c527bd18185e"
+    },
+    "harness-two-rows": {
+      "model_sha256": "e97d0eb6a6d55c93f74ee1ce459175d4f546c7507db2aa7a4011a1f1c0e95104",
+      "passport_sha256": "16bdf659a892d6f34f5e2829551f2aec9e693a8422b150a4293d2dbbf463de95"
+    },
+    "large-bench": {
+      "model_sha256": "890131cf2b3b1e5b057a9c5199330e8cbe7fd8a8d2224ff61581f81e054d5cd2",
+      "passport_sha256": "717365fb237e7d65ed9b9f75ceba935107af4b34bdad4e6f84a4643b445bc590"
+    },
+    "map-bound": {
+      "model_sha256": "258fa11f4fd70f1723b6a1e6c7756c7f0116e3d306d6adc52fe1fcda0cbbc6eb",
+      "passport_sha256": "bfa27112854652eb782cbf8438ee57ce00b9e53ea8a7dbef5385002c5f7eb671"
+    },
+    "no-memory": {
+      "model_sha256": "f0ad194803a46fc0194a3afab1201647254adab1e08a444e6dff099f40df695d",
+      "passport_sha256": "1fa64e5022edb2c54e7cd29a6d7ebd65c74a3f0127b66d1a83226fdc73a52d7a"
+    },
+    "passport-small": {
+      "model_sha256": "4712d514f6237e4b7f5744edd9b715f6ebc10bdaab9c7429aca3032fe821ae40",
+      "passport_sha256": "02e6811b6d8f9ba9f531050d0d86f0e457cafd3ec8cc12d1a4062c395cbbe598"
+    },
+    "scenario-data-element-readers-paged": {
+      "because": {
+        "connectors.links": "sixty links, all on the popular interface, so sixty require ports name it and each one's runnable reads its data elements, and sixty provide ports the providers' runnables write through: three pages of twenty readers, about 13 KB unpaged, past the host's spill bound. Not taken from a real model",
+        "identifiers.max_length": "thirty-two: long identifiers; not taken from a real model",
+        "interfaces.fan_out.max": "a hundred and twenty: the sixty links' provide and require ports on the popular interface",
+        "interfaces.sender_receiver": "ten pair interfaces and two shared ones, of which the first is the popular interface"
+      },
+      "model_sha256": "d96ca6a741628eb367a78fd278a7ac33e0dc833a25a652b68a32180b285737a5",
+      "passport_sha256": "052b9e4c0daef1e56410d305a695186db22229ad1846914f8a8dfc545b05773f"
+    },
+    "scenario-effective-level-paged": {
+      "because": {
+        "hardware.rated_partitions": "no rated partition, so every component's effective level is QM and the level the scenario asks is the level of every component",
+        "identifiers.max_length": "sixty-four: long identifiers, so a row of the level list is about 150 bytes and the unpaged list is past the spill bound at this size; not taken from a real model",
+        "interfaces.sender_receiver": "one per provider and requirer pair, the generator's shape",
+        "layers.requirements": "the one baseline requirement the generator always writes, which carries no level, so no requirement raises a component's effective level",
+        "layers.swc": "a hundred components: five pages of twenty, about 15.5 KB unpaged, past the host's spill bound. Not taken from a real model"
+      },
+      "model_sha256": "dd0436eaae9cd547a47efe7cc22e58d354a59d5b3a78f448c901e47300f5dcb5",
+      "passport_sha256": "18449fd1da05d04c5c84ec3da666799ab88c7c2dd2cb23e79c16e40c93b33c89"
+    },
+    "scenario-find-sixteen-names": {
+      "because": {
+        "identifiers.max_length": "stands in for the long identities an import carries; not taken from a real model",
+        "layers.swc": "forty components whose names share one padded stem, so each of sixteen names matches many near spellings"
+      },
+      "model_sha256": "eeff5abf3ae0b72676087507be0bc7b339d8ab4349f8ed53441faee374df1160",
+      "passport_sha256": "a64183e51d689f0b29c7160156c605b268f9b6e6fe8d22905c6092b4654aa40e"
+    },
+    "scenario-fits-two-verdicts": {
+      "because": {
+        "hardware.memories": "one memory per core, the generator's per-core topology: a strict RAM sized so its budgets take about 60 % of it under a 0.8 threshold, every component declaring its budget, so an amount exists that fits the size and breaks the threshold (fits-two-verdicts, its split case), and the build report's Resources table has a row of each kind (build-report-written); not taken from a real model"
+      },
+      "model_sha256": "5601a9bedc31f1223dd917d9e739ccbaa255dc9c3feb161280e9d1ba9e128a14",
+      "passport_sha256": "a5656597cd52047feae59c08a9d227816d630af84f9d10c129765eb4cb738ac7"
+    },
+    "scenario-impact-summary-bounded": {
+      "model_sha256": "35a5f30348d0a9ca5ea7e904192a86077fd9a729f89afdfa4781a876d4359ebc",
+      "passport_sha256": "3ad1cb5d2f3f095aa9d170dab4808de7159f625019edc843a9d40798648a364b"
+    },
+    "scenario-import-conflicts-reported": {
+      "because": {
+        "connectors.links": "three links beyond the pairs, so one interface is named by four ports across four components and the two conflicted interfaces have referrer sets of different sizes"
+      },
+      "model_sha256": "5eb1ce9d6b1e5a2382f8b31527470213aa4778f6b09a08b3f8437577558a9fa2",
+      "passport_sha256": "e6da0930175fe912efa83c0a87cf054b007e5cced40b52d875448402f576b725"
+    },
+    "scenario-level-list-paged": {
+      "because": {
+        "hardware.cores": "four, one rated partition and one memory per core: the generator rates all partitions or none, and a rated partition needs its own core",
+        "hardware.rated_partitions": "four rated partitions (D, B, A and QM, the generator's ratings by core), so every component declares a level at or below its partition's and the levels split: QM, the commonest, holds about half the components, more than two pages but not the whole layer, so the recipe's filter on the rating is a check the answer can fail. Not taken from a real model",
+        "identifiers.max_length": "sixty-four: long identifiers, so a row of the level list is about 150 bytes and the unpaged list is past the spill bound at this size; not taken from a real model",
+        "interfaces.sender_receiver": "one per provider and requirer pair, the generator's shape",
+        "layers.requirements": "the one baseline requirement the generator always writes, which carries no level, so no requirement raises a component's effective level",
+        "layers.swc": "a hundred components: five pages of twenty, about 15.5 KB unpaged, past the host's spill bound. Not taken from a real model"
+      },
+      "model_sha256": "efa96bf06501d2dba511dcc947960f954a25cb6edf795a4a6ba82c597dcf466a",
+      "passport_sha256": "b90a3bd231712a37148e92724fab41297b2a579445e766a5e222adddf4336d03"
+    },
+    "scenario-sender-receiver-table-paged": {
+      "because": {
+        "identifiers.max_length": "thirty-two: long identifiers, so a row carries about 600 bytes of its thirteen identities; not taken from a real model",
+        "interfaces.sender_receiver": "one per pair: each connection speaks an interface of its own",
+        "layers.swc": "twenty-four: twelve provider and requirer pairs, each joined by one sender-receiver connector carrying two data elements, so the table has twenty-four rows -- about 14.7 KB unpaged, past the host's spill bound, and five pages of five. Not taken from a real model"
+      },
+      "model_sha256": "7a45ccab08232b39271a5aef7adc07242d07d2cd8d21c1123a0b43d9c0aad765",
+      "passport_sha256": "fd5ddf25cf8295f213ec1b76735e56c1584e89fd4c1eb335d0eed2c8f2a7cd43"
+    },
+    "scenario-unconnected-one-component": {
+      "because": {
+        "components.unconnected.max_on_one": "forty-two: more than two pages of twenty, so a continued page of this component that answered every remaining port would hold more than one page and fail its row bound; past forty-three the component would count as a hub on this configuration. Not taken from a real model"
+      },
+      "model_sha256": "ef2055e73d78daa2b06e82176b67c53d811d2fc23b286dd66b3c6f780938085e",
+      "passport_sha256": "88a460bfc350210d622c192311886ce0b547d875275f93a9655230d8042ba1b9"
+    }
+  }
+}

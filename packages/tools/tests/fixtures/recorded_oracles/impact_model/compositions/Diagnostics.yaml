@@ -1,0 +1,14 @@
+name: Diagnostics
+title: Diagnostics composition
+description: >-
+  The second leaf of the hierarchy, and the composition the assembly connector
+  starts from. Its one member is the SWC half of the name two layers carry.
+
+ports:
+  - name: pDiag
+    direction: provide
+    interface: IDiagnostics
+
+members:
+  - name: shared
+    type: Shared

@@ -1,0 +1,22 @@
+name: WlDataLogger
+type: application
+ports:
+- name: rLog
+  direction: require
+  interface: If0471abcdefghij
+runnables:
+- name: LogSnapshot
+  events:
+  - type: timing
+    period: 0.1
+  reads:
+  - port: rLog
+    element: D1
+  satisfies:
+  - Rq04abcdef@1
+memory:
+  Me1abc: 0
+  Me2abc: 0
+  Me3abc: 0
+  Me4abc: 1024
+handle_termination_and_restart: no_support

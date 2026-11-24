@@ -1,0 +1,7 @@
+name: CalibrationLink
+from:
+  swc: NvStorage
+  port: pCalibration
+to:
+  swc: BrakeController
+  port: rCalibration

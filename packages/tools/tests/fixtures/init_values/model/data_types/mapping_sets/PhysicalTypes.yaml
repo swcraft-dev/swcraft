@@ -1,0 +1,8 @@
+name: PhysicalTypes
+maps:
+- application: Count_T
+  implementation: uint8
+- application: Sample_T
+  implementation: float32
+- application: Mode_T
+  implementation: uint8

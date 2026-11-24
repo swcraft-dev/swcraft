@@ -1,0 +1,6 @@
+name: IPhysical
+kind: sender_receiver
+data_elements:
+  - name: speed
+    application_type: SpeedPhys
+description: reference `interfaces.data_element.application_type` -> SpeedPhys.

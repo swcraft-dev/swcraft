@@ -1,0 +1,70 @@
+{
+  "id": "06-rename-data-element",
+  "task": 6,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Rename the data element request of IBrakeRequest to brakeRequest.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "interfaces",
+        "name": "IBrakeRequest",
+        "has": {
+          "data_elements": [
+            {
+              "name": "brakeRequest"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "interfaces",
+        "name": "IBrakeRequest",
+        "lacks": {
+          "data_elements": [
+            {
+              "name": "request"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "BrakeController",
+        "has": {
+          "runnables": [
+            {
+              "name": "ProcessBrakeRequest",
+              "writes": [
+                {
+                  "port": "pBrakeRequest",
+                  "element": "brakeRequest"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "BrakeThermalProtection",
+        "has": {
+          "runnables": [
+            {
+              "name": "EvaluateThermalProtection",
+              "reads": [
+                {
+                  "port": "rBrakeRequest",
+                  "element": "brakeRequest"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "note": "The element is written by BrakeController.ProcessBrakeRequest and read by BrakeThermalProtection.EvaluateThermalProtection; a rename that leaves either access on the old name fails check-model."
+}

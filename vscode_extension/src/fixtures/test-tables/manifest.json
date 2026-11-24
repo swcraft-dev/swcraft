@@ -1,0 +1,418 @@
+{
+  "schema_version": "1.0.0",
+  "swcraft_version": "0.22.0",
+  "contract_version": "12.6.0",
+  "project": "swcraft-basic-example",
+  "facts_digest": "1b8dc53ffc6b7dcd9d870dc89de1119e5c245d3dcd61c5cd914ab673a6eee22f",
+  "empty_cell": "An empty cell means 'not declared in the model' and nothing else; a collection is always written, [] or {} when it declares no member; what is unmapped is a status column's explicit value, never an empty cell.",
+  "tables": [
+    {
+      "file": "components.csv",
+      "revision": 1,
+      "rows": 2,
+      "row_id": "component:<Type>, one row per component type",
+      "review_states": {
+        "accepted": 1,
+        "stale": 0,
+        "rejected": 1,
+        "not-reviewed": 0
+      },
+      "fact_columns": [
+        "component",
+        "kind",
+        "external",
+        "asil_declared",
+        "asil_effective",
+        "memory",
+        "satisfies",
+        "occurrences",
+        "runnables",
+        "description"
+      ],
+      "columns": [
+        {
+          "name": "row_id",
+          "owner": "swcraft",
+          "meaning": "The row's stable identity: names only, never a task, period, partition, core, file or comment."
+        },
+        {
+          "name": "component",
+          "owner": "swcraft",
+          "meaning": "The component type's name."
+        },
+        {
+          "name": "kind",
+          "owner": "swcraft",
+          "meaning": "The component type's kind: application, service or ecu_abstraction."
+        },
+        {
+          "name": "external",
+          "owner": "swcraft",
+          "meaning": "Whether the component is declared external: true or false."
+        },
+        {
+          "name": "asil_declared",
+          "owner": "swcraft",
+          "meaning": "The safety level the component declares; empty when it declares none."
+        },
+        {
+          "name": "asil_effective",
+          "owner": "swcraft",
+          "meaning": "The effective safety level: the declared one, else the highest level of the requirements allocated to the component; QM when nothing is allocated."
+        },
+        {
+          "name": "memory",
+          "owner": "swcraft",
+          "meaning": "The component's declared memory map, memory name to bytes, as a JSON object."
+        },
+        {
+          "name": "satisfies",
+          "owner": "swcraft",
+          "meaning": "The requirement links the component declares, as written, as a JSON list."
+        },
+        {
+          "name": "occurrences",
+          "owner": "swcraft",
+          "meaning": "How many occurrences of the type the root composition reaches."
+        },
+        {
+          "name": "runnables",
+          "owner": "swcraft",
+          "meaning": "How many runnables the type declares."
+        },
+        {
+          "name": "description",
+          "owner": "swcraft",
+          "meaning": "The description as written in the model."
+        },
+        {
+          "name": "source_ref",
+          "owner": "swcraft",
+          "meaning": "The file declaring the component type, relative to model_root (not a fact; not hashed)."
+        },
+        {
+          "name": "facts_hash",
+          "owner": "swcraft",
+          "meaning": "The first 16 hex digits of sha256 over the row's table, revision, row_id and fact columns."
+        },
+        {
+          "name": "verification_method",
+          "owner": "test",
+          "meaning": "The test side's: how the row is verified. SWCraft carries it, never writes it."
+        },
+        {
+          "name": "comment",
+          "owner": "test",
+          "meaning": "The test side's comment. SWCraft carries it, never writes it."
+        },
+        {
+          "name": "accepted",
+          "owner": "test",
+          "meaning": "The test side's verdict: yes, no or empty. A comment or a method alone accepts nothing."
+        },
+        {
+          "name": "accepted_facts_hash",
+          "owner": "test",
+          "meaning": "The facts_hash the verdict refers to; none when no facts could be found. Clear it to accept the current facts."
+        },
+        {
+          "name": "review_state",
+          "owner": "swcraft",
+          "meaning": "Computed by SWCraft: not-reviewed, accepted, rejected, or stale when the verdict refers to other facts."
+        }
+      ]
+    },
+    {
+      "file": "component-placement.csv",
+      "revision": 1,
+      "rows": 2,
+      "row_id": "occurrence:<path> for each occurrence reachable from the root composition (member names joined by /), unplaced:<Type> for a type with no occurrence",
+      "review_states": {
+        "accepted": 0,
+        "stale": 0,
+        "rejected": 0,
+        "not-reviewed": 2
+      },
+      "fact_columns": [
+        "occurrence",
+        "component",
+        "placement",
+        "tasks",
+        "partitions",
+        "cores",
+        "mapping"
+      ],
+      "columns": [
+        {
+          "name": "row_id",
+          "owner": "swcraft",
+          "meaning": "The row's stable identity: names only, never a task, period, partition, core, file or comment."
+        },
+        {
+          "name": "occurrence",
+          "owner": "swcraft",
+          "meaning": "The occurrence's path, member names joined by /; empty when the type has no occurrence."
+        },
+        {
+          "name": "component",
+          "owner": "swcraft",
+          "meaning": "The component type's name."
+        },
+        {
+          "name": "placement",
+          "owner": "swcraft",
+          "meaning": "in-composition when the root composition reaches the occurrence, not-in-composition otherwise."
+        },
+        {
+          "name": "tasks",
+          "owner": "swcraft",
+          "meaning": "The distinct tasks the occurrence's runnables are mapped to, sorted, as a JSON list."
+        },
+        {
+          "name": "partitions",
+          "owner": "swcraft",
+          "meaning": "The distinct partitions of those tasks, sorted, as a JSON list."
+        },
+        {
+          "name": "cores",
+          "owner": "swcraft",
+          "meaning": "The distinct cores of those partitions, sorted, as a JSON list."
+        },
+        {
+          "name": "mapping",
+          "owner": "swcraft",
+          "meaning": "Placement: all-mapped, partly-mapped, not-mapped or no-runnables; scheduling: mapped or not-mapped."
+        },
+        {
+          "name": "source_ref",
+          "owner": "swcraft",
+          "meaning": "The file declaring the component type, relative to model_root (not a fact; not hashed)."
+        },
+        {
+          "name": "facts_hash",
+          "owner": "swcraft",
+          "meaning": "The first 16 hex digits of sha256 over the row's table, revision, row_id and fact columns."
+        },
+        {
+          "name": "verification_method",
+          "owner": "test",
+          "meaning": "The test side's: how the row is verified. SWCraft carries it, never writes it."
+        },
+        {
+          "name": "comment",
+          "owner": "test",
+          "meaning": "The test side's comment. SWCraft carries it, never writes it."
+        },
+        {
+          "name": "accepted",
+          "owner": "test",
+          "meaning": "The test side's verdict: yes, no or empty. A comment or a method alone accepts nothing."
+        },
+        {
+          "name": "accepted_facts_hash",
+          "owner": "test",
+          "meaning": "The facts_hash the verdict refers to; none when no facts could be found. Clear it to accept the current facts."
+        },
+        {
+          "name": "review_state",
+          "owner": "swcraft",
+          "meaning": "Computed by SWCraft: not-reviewed, accepted, rejected, or stale when the verdict refers to other facts."
+        }
+      ]
+    },
+    {
+      "file": "runnable-scheduling.csv",
+      "revision": 1,
+      "rows": 2,
+      "row_id": "occurrence:<path>:<runnable> for each runnable of an occurrence, unplaced:<Type>:<runnable> for each runnable of a type with no occurrence",
+      "review_states": {
+        "accepted": 0,
+        "stale": 1,
+        "rejected": 0,
+        "not-reviewed": 1
+      },
+      "fact_columns": [
+        "occurrence",
+        "component",
+        "runnable",
+        "symbol",
+        "mapping",
+        "task",
+        "task_position",
+        "task_period_s",
+        "task_priority",
+        "partition",
+        "core",
+        "events",
+        "min_start_interval_s",
+        "concurrent",
+        "wcet",
+        "wcet_type",
+        "description"
+      ],
+      "columns": [
+        {
+          "name": "row_id",
+          "owner": "swcraft",
+          "meaning": "The row's stable identity: names only, never a task, period, partition, core, file or comment."
+        },
+        {
+          "name": "occurrence",
+          "owner": "swcraft",
+          "meaning": "The occurrence's path, member names joined by /; empty when the type has no occurrence."
+        },
+        {
+          "name": "component",
+          "owner": "swcraft",
+          "meaning": "The component type's name."
+        },
+        {
+          "name": "runnable",
+          "owner": "swcraft",
+          "meaning": "The runnable's name."
+        },
+        {
+          "name": "symbol",
+          "owner": "swcraft",
+          "meaning": "The runnable's declared entry-point symbol; empty when none is declared (the symbol is then the name)."
+        },
+        {
+          "name": "mapping",
+          "owner": "swcraft",
+          "meaning": "Placement: all-mapped, partly-mapped, not-mapped or no-runnables; scheduling: mapped or not-mapped."
+        },
+        {
+          "name": "task",
+          "owner": "swcraft",
+          "meaning": "The task the runnable is mapped to; empty when not mapped."
+        },
+        {
+          "name": "task_position",
+          "owner": "swcraft",
+          "meaning": "The runnable's 1-based place among the task's entries, the declared order: never an execution order."
+        },
+        {
+          "name": "task_period_s",
+          "owner": "swcraft",
+          "meaning": "The task's period in seconds."
+        },
+        {
+          "name": "task_priority",
+          "owner": "swcraft",
+          "meaning": "The task's priority."
+        },
+        {
+          "name": "partition",
+          "owner": "swcraft",
+          "meaning": "The task's partition."
+        },
+        {
+          "name": "core",
+          "owner": "swcraft",
+          "meaning": "The core the task's partition is placed on; empty when none is declared."
+        },
+        {
+          "name": "events",
+          "owner": "swcraft",
+          "meaning": "The runnable's events, each an object of its declared fields (periods as period_s, in seconds)."
+        },
+        {
+          "name": "min_start_interval_s",
+          "owner": "swcraft",
+          "meaning": "The runnable's minimum start interval in seconds."
+        },
+        {
+          "name": "concurrent",
+          "owner": "swcraft",
+          "meaning": "Whether the runnable may run concurrently with itself: true or false."
+        },
+        {
+          "name": "wcet",
+          "owner": "swcraft",
+          "meaning": "The runnable's execution-time budget as written (for example 400us): a budget, not a measurement."
+        },
+        {
+          "name": "wcet_type",
+          "owner": "swcraft",
+          "meaning": "Whether the budget is gross or net, as declared; empty when no budget is declared."
+        },
+        {
+          "name": "description",
+          "owner": "swcraft",
+          "meaning": "The description as written in the model."
+        },
+        {
+          "name": "source_ref",
+          "owner": "swcraft",
+          "meaning": "The file declaring the component type, relative to model_root (not a fact; not hashed)."
+        },
+        {
+          "name": "facts_hash",
+          "owner": "swcraft",
+          "meaning": "The first 16 hex digits of sha256 over the row's table, revision, row_id and fact columns."
+        },
+        {
+          "name": "verification_method",
+          "owner": "test",
+          "meaning": "The test side's: how the row is verified. SWCraft carries it, never writes it."
+        },
+        {
+          "name": "comment",
+          "owner": "test",
+          "meaning": "The test side's comment. SWCraft carries it, never writes it."
+        },
+        {
+          "name": "accepted",
+          "owner": "test",
+          "meaning": "The test side's verdict: yes, no or empty. A comment or a method alone accepts nothing."
+        },
+        {
+          "name": "accepted_facts_hash",
+          "owner": "test",
+          "meaning": "The facts_hash the verdict refers to; none when no facts could be found. Clear it to accept the current facts."
+        },
+        {
+          "name": "review_state",
+          "owner": "swcraft",
+          "meaning": "Computed by SWCraft: not-reviewed, accepted, rejected, or stale when the verdict refers to other facts."
+        }
+      ]
+    }
+  ],
+  "orphaned_annotations": {
+    "file": "orphaned-annotations.csv",
+    "rows": 1,
+    "columns": [
+      {
+        "name": "table",
+        "owner": "swcraft",
+        "meaning": "The table the orphaned annotation was written for."
+      },
+      {
+        "name": "row_id",
+        "owner": "swcraft",
+        "meaning": "The row's stable identity: names only, never a task, period, partition, core, file or comment."
+      },
+      {
+        "name": "verification_method",
+        "owner": "test",
+        "meaning": "The test side's: how the row is verified. SWCraft carries it, never writes it."
+      },
+      {
+        "name": "comment",
+        "owner": "test",
+        "meaning": "The test side's comment. SWCraft carries it, never writes it."
+      },
+      {
+        "name": "accepted",
+        "owner": "test",
+        "meaning": "The test side's verdict: yes, no or empty. A comment or a method alone accepts nothing."
+      },
+      {
+        "name": "accepted_facts_hash",
+        "owner": "test",
+        "meaning": "The facts_hash the verdict refers to; none when no facts could be found. Clear it to accept the current facts."
+      }
+    ]
+  }
+}

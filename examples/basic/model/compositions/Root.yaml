@@ -1,0 +1,16 @@
+name: Root
+title: Root composition
+root: true
+description: >-
+  The top of the hierarchy: every component this project declares stands in it
+  once, and the connector between them is drawn inside it. A connector that
+  names no composition belongs to the root, which is why Example_to_Consumer
+  carries no `composition:` key.
+
+members:
+  - name: ExampleSWC
+    type: ExampleSWC
+    description: The provider of IExample.
+  - name: ExampleConsumerSWC
+    type: ExampleConsumerSWC
+    description: The consumer of IExample.

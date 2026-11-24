@@ -1,0 +1,10 @@
+id: SYS_REQ[13]
+title: Wheel slip reaction
+description: The brake request shall be reduced while a wheel slips.
+req_type: req
+version: 1
+source: external
+derived_from:
+- SYS_REQ[12]@1
+asil: B
+baseline: SYS-2.1

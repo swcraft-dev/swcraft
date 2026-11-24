@@ -1,0 +1,32 @@
+{
+  "name": "read-data-types-layer-paged",
+  "description": "The second answer to the layer that does not fit: after the filter chooses WHICH things are answered, the page chooses HOW MANY. This is the SECOND page of `base_types` — four of the twelve base types, continuing past `float64_base` — and the response carries a `page` block stating what a window cannot state about itself: `total` 12 (the whole set, post-filter and pre-page), `returned` 4, `truncated` true, and `next` the identity to send as the following request's `after`. The page is KEYSET and not an offset: the model is re-read from the files on every request, so an offset would silently skip or repeat elements under a concurrent edit, while a cursor continues exactly where the last page stopped and is refused with `broken-reference` if the element it names has been removed since. The window is taken in the address' own published order — for a layer, the registry's element-kind rank and then reader order — which is why `int8_base` follows `int64_base` here and not `int16_base`: the readers' order is an ordinal sort of the identities, and `int64_base` < `int8_base` in ASCII. Every form already answers in that order, so a client that walks the pages and one that reads the whole layer see one sequence.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. Its `base_types` layer (`data_types/base/`, a layer of its own since contract `8.0.0`) holds twelve base types of one kind, so the whole layer is one page walk in the readers' order: `bool_base`, `boolean_base`, `float32_base`, `float64_base`, `int16_base`, `int32_base`, `int64_base`, `int8_base`, `uint16_base`, `uint32_base`, `uint64_base`, `uint8_base`.",
+    "existing_elements": [
+      { "layer": "base_types", "element": "int16_base" },
+      { "layer": "base_types", "element": "int32_base" },
+      { "layer": "base_types", "element": "int64_base" },
+      { "layer": "base_types", "element": "int8_base" }
+    ],
+    "notes": "`limit` and `after` are legal where there is a set to window — a layer address and a collection address — and `schema-violation` at every other address shape, each of which already names one thing. `after` requires `limit`: a page is a bounded window, and \"everything after X\" with no bound is the whole-set read the page exists to replace. The three read keys compose in one request and none of them knows about the others: `where` filters, the page windows what the filter left, and `form` chooses how much of each thing comes back. `discover` publishes `reads.hint_page_size`, the size a refusal offers when a page is still too large; a request may name any `limit` it likes."
+  },
+  "input": {
+    "operation": "read",
+    "address": { "layer": "base_types" },
+    "form": "index",
+    "limit": 4,
+    "after": "float64_base"
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": { "layer": "base_types" },
+      "form": "index",
+      "page": { "total": 12, "returned": 4, "truncated": true, "next": "int8_base" },
+      "value": { "count": 4, "identities": ["int16_base", "int32_base", "int64_base", "int8_base"] }
+    },
+    "notes": "`truncated` is NOT a restatement of `next`'s presence, and the LAST page of a walk is where the two come apart: it carries fewer things than the set has (`truncated: true`) and there is nothing after it (`next` omitted). A client reading `truncated: false` knows it is holding the whole set. The `index` form is asked for here so the vector states one thing at a time — the page block against a value small enough to read — and the composition is the point: the page chose the four things and the form chose that each of them comes back as its identity alone. `count` is the count of the WINDOW and `page.total` the count of the set, which is exactly the confusion the block removes: a count read off a page that does not say it is a page is the wrong count."
+  }
+}

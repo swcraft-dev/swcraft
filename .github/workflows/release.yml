@@ -1,0 +1,722 @@
+# The open copy's release, run by GitHub Actions in the public repository
+# github.com/swcraft-dev/swcraft: the three workstation archives built from a tag and
+# attached, each with its SHA256SUMS-<platform>, to that tag's GitHub Release.
+#
+# What runs where:
+#
+#   * Linux and Windows run `build` and the archive's stages, then smoke-test the archive
+#     they built: install it into a temporary home and run the installed `swcraft`
+#     (`--version`, `init` and `validate` on the scaffold, `validate` on a generated
+#     specimen). Their full gate is the work repository's `verify`, which passed on the
+#     tagged commit before the tag reached this repository.
+#   * macOS runs the full `scripts/dev.py verify` stages, split into four jobs so that none
+#     approaches GitHub's six-hour job limit: every VERIFY_STAGES stage but `install` runs in
+#     exactly one job, in VERIFY_STAGES' order, and `install` runs first in each (each job is
+#     a fresh machine). `macos-integration` waits for `macos-archive`, which builds the
+#     archive once and hands it on as a run artifact kept seven days, so a failed job can be
+#     re-run without rebuilding the others. packages/tools/tests/test_github_release_workflow.py
+#     holds the split.
+#   * `test-slow` runs without an export flag: the real-export suites are not in this repository.
+#
+# Three ways in:
+#
+#   * a tag push `v*` builds, checks and publishes the release final;
+#   * a push to the branch `release-candidate` (made by the work repository's publish
+#     command, `--candidate`, with the commit the release will carry) runs the macOS jobs
+#     alone and publishes nothing; the publish command asks GitHub for that green run before
+#     it pushes `main` and the tag. A dispatch on that branch is the same run;
+#   * any other dispatch runs everything and publishes a draft (`draft`, default on). On a
+#     branch it can only make a draft of the tag `v<version>` the tree's version names, at the
+#     dispatched commit, and refuses when that tag exists here at another commit; on a tag it
+#     behaves as the tag push when `draft` is off, and it never replaces a published
+#     release's assets while `draft` is on.
+#
+# The release body is docs/release-notes/<version>.md from the tree; a tag without its note,
+# or one that does not name the tree's version, fails by name. A note longer than a release
+# page holds is replaced by a link to it.
+#
+# Hygiene: top-level `permissions: contents: read`, and `contents: write` for `publish` alone,
+# which uses the run's own token; no repository secret is read; no cache step. Every action is
+# GitHub's own, pinned by its full commit SHA with its release tag in the comment. Python 3.11
+# comes from setup-python on Linux and Windows and from proto on macOS; Node.js and moon are
+# installed by proto (pinned, checked by SHA-256) at the versions the root and the template's
+# .prototools name, read from those files by the step, so no version is written twice.
+#
+# Every job carries `if: github.server_url == 'https://github.com'`, so the file is inert on
+# any other host that reads .github/workflows/. No pull-request workflow exists: the
+# repository takes no pull requests.
+#
+# What this does not reach: whether GitHub's runners behave as the YAML says (a run answers
+# that); and the Linux and Windows archives are smoke-tested only, built from the same tree as
+# the work repository's gate but not byte-compared with its build.
+
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+    branches: ["release-candidate"]
+  workflow_dispatch:
+    inputs:
+      draft:
+        description: "Publish a draft (always, on a branch); a published release is never replaced while this is on"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+env:
+  PROTO_CLI_VERSION: "0.61.3"
+
+jobs:
+  linux:
+    if: github.server_url == 'https://github.com' && github.ref != 'refs/heads/release-candidate'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    # The tree's version, for the publish job's concurrency group (read by the smoke step).
+    outputs:
+      version: ${{ steps.smoke.outputs.version }}
+    steps:
+      - name: The host this build runs on
+        run: |
+          python3 -c 'import locale, platform; print(platform.platform(), "preferred encoding", locale.getpreferredencoding(False))'
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.11"
+
+      - name: Node.js by proto, at the root .prototools' version
+        timeout-minutes: 10
+        env:
+          PROTO_CLI_SHA256: 9f1874ca0dcb006d6b761b9ac04445017d6ec9d2811791cff8fae15fc20f2339
+          PROTO_TARGET: x86_64-unknown-linux-gnu
+        run: |
+          set -euo pipefail
+          export PROTO_HOME="$RUNNER_TEMP/proto"
+          mkdir -p "$PROTO_HOME/bin"
+          curl -fsSL --retry 3 -o "$RUNNER_TEMP/proto.tar.xz" "https://github.com/moonrepo/proto/releases/download/v$PROTO_CLI_VERSION/proto_cli-$PROTO_TARGET.tar.xz"
+          echo "$PROTO_CLI_SHA256  $RUNNER_TEMP/proto.tar.xz" | sha256sum -c -
+          tar -xJf "$RUNNER_TEMP/proto.tar.xz" -C "$PROTO_HOME/bin" --strip-components=1 "proto_cli-$PROTO_TARGET/proto" "proto_cli-$PROTO_TARGET/proto-shim"
+          NODE_VERSION=$(python -c 'import tomllib; print(tomllib.load(open(".prototools", "rb"))["node"])')
+          "$PROTO_HOME/bin/proto" install node "$NODE_VERSION"
+          echo "$PROTO_HOME/tools/node/$NODE_VERSION/bin" >> "$GITHUB_PATH"
+          "$PROTO_HOME/tools/node/$NODE_VERSION/bin/node" --version
+
+      - name: install
+        timeout-minutes: 30
+        run: python scripts/dev.py install
+      - name: build
+        timeout-minutes: 30
+        run: python scripts/dev.py build
+      - name: artifacts
+        timeout-minutes: 30
+        run: python scripts/dev.py artifacts
+      - name: runtime
+        timeout-minutes: 30
+        run: |
+          python scripts/dev.py runtime
+          cat dist/runtime/RUNTIME.json
+      - name: wheelhouse
+        timeout-minutes: 30
+        run: python scripts/dev.py wheelhouse
+      - name: workstation-archive
+        timeout-minutes: 20
+        run: |
+          python scripts/dev.py workstation-archive
+          cat dist/workstation/SHA256SUMS
+          wc -c dist/workstation/*.zip
+
+      - name: smoke-test the archive
+        id: smoke
+        timeout-minutes: 30
+        run: |
+          set -euo pipefail
+          VERSION=$(python -c 'import re; print(re.search(r"__version__ = \"([^\"]+)\"", open("packages/tools/src/swcraft_tools/_version.py", encoding="utf-8").read()).group(1))')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          UNPACKED="$RUNNER_TEMP/unpacked"; HOME_DIR="$RUNNER_TEMP/swcraft-home"; WORK="$RUNNER_TEMP/smoke"
+          mkdir -p "$UNPACKED" "$WORK"
+          unzip -q "dist/workstation/swcraft-$VERSION-linux-x64.zip" -d "$UNPACKED"
+          (cd "$UNPACKED" && ./swcraft_install.sh --home "$HOME_DIR" --no-path --no-vsix)
+          BIN="$HOME_DIR/current/bin"
+          "$BIN/swcraft" --version | tee "$WORK/version.txt"
+          grep -qx "swcraft $VERSION" "$WORK/version.txt"
+          cd "$WORK"
+          "$BIN/swcraft" init scaffold
+          "$BIN/swcraft" validate --project scaffold/swcraft.yaml
+          "$BIN/swcraft-specimens" generate small --out specimen
+          "$BIN/swcraft" validate --project specimen/swcraft.yaml
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: workstation-linux-x64
+          path: |
+            dist/workstation/*.zip
+            dist/workstation/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 7
+
+  windows:
+    if: github.server_url == 'https://github.com' && github.ref != 'refs/heads/release-candidate'
+    runs-on: windows-2022
+    timeout-minutes: 240
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      # The work repository's Windows host asserts its code page and long paths because
+      # its gate is the platform claim; here the job builds and smoke-tests, so the host
+      # is reported, not asserted. git's own long-path switch is set as there: it is
+      # unprivileged, and git for Windows ignores the system flag.
+      - name: The host this build runs on
+        run: |
+          $acp = (Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\Nls\CodePage').ACP
+          $lp = (Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem' -Name LongPathsEnabled -ErrorAction SilentlyContinue).LongPathsEnabled
+          Write-Host "ANSI code page $acp, LongPathsEnabled $lp"
+          git config --global core.longpaths true
+          if ($LASTEXITCODE -ne 0) { throw "git config exited with $LASTEXITCODE" }
+          Write-Host "git core.longpaths $(git config --get core.longpaths)"
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.11"
+
+      - name: Node.js by proto, at the root .prototools' version
+        timeout-minutes: 10
+        env:
+          PROTO_CLI_SHA256: 961f77314599308cbee5c5fca5edb95c3054b7d189f93743700f22796df291ed
+          PROTO_TARGET: x86_64-pc-windows-msvc
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $env:PROTO_HOME = Join-Path $env:RUNNER_TEMP 'proto'
+          $bin = Join-Path $env:PROTO_HOME 'bin'
+          New-Item -ItemType Directory -Force $bin | Out-Null
+          $zip = Join-Path $env:RUNNER_TEMP 'proto.zip'
+          Invoke-WebRequest -Uri "https://github.com/moonrepo/proto/releases/download/v$($env:PROTO_CLI_VERSION)/proto_cli-$($env:PROTO_TARGET).zip" -OutFile $zip -MaximumRetryCount 3 -RetryIntervalSec 5
+          $sha = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLower()
+          if ($sha -ne $env:PROTO_CLI_SHA256) { throw "proto's archive is $sha, not the pinned $($env:PROTO_CLI_SHA256)" }
+          Expand-Archive $zip -DestinationPath $bin -Force
+          $node = (python -c 'import tomllib; print(tomllib.load(open(".prototools", "rb"))["node"])').Trim()
+          if ($LASTEXITCODE -ne 0) { throw "reading .prototools exited with $LASTEXITCODE" }
+          & (Join-Path $bin 'proto.exe') install node $node
+          if ($LASTEXITCODE -ne 0) { throw "proto install node exited with $LASTEXITCODE" }
+          $nodeDir = Join-Path $env:PROTO_HOME "tools\node\$node"
+          Add-Content $env:GITHUB_PATH $nodeDir
+          & (Join-Path $nodeDir 'node.exe') --version
+
+      - name: install
+        timeout-minutes: 30
+        run: python scripts/dev.py install
+      - name: build
+        timeout-minutes: 30
+        run: python scripts/dev.py build
+      - name: artifacts
+        timeout-minutes: 30
+        run: python scripts/dev.py artifacts
+      - name: runtime
+        timeout-minutes: 30
+        run: |
+          python scripts/dev.py runtime
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-Content dist\runtime\RUNTIME.json
+      - name: wheelhouse
+        timeout-minutes: 30
+        run: python scripts/dev.py wheelhouse
+      - name: workstation-archive
+        timeout-minutes: 20
+        run: |
+          python scripts/dev.py workstation-archive
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-Content dist\workstation\SHA256SUMS
+          Get-ChildItem dist\workstation\*.zip | ForEach-Object { "$($_.Length) $($_.Name)" }
+
+      - name: smoke-test the archive
+        timeout-minutes: 45
+        env:
+          SWCRAFT_NO_PAUSE: "1"
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $version = (python -c 'import re; print(re.search(r"__version__ = \"([^\"]+)\"", open("packages/tools/src/swcraft_tools/_version.py", encoding="utf-8").read()).group(1))').Trim()
+          if ($LASTEXITCODE -ne 0) { throw "reading the version exited with $LASTEXITCODE" }
+          $unpacked = Join-Path $env:RUNNER_TEMP 'unpacked'
+          $homeDir = Join-Path $env:RUNNER_TEMP 'swcraft-home'
+          $work = Join-Path $env:RUNNER_TEMP 'smoke'
+          New-Item -ItemType Directory -Force $unpacked, $work | Out-Null
+          Expand-Archive "dist\workstation\swcraft-$version-windows-x64.zip" -DestinationPath $unpacked
+          Push-Location $unpacked
+          & .\swcraft_install.cmd --home $homeDir --no-path --no-vsix
+          if ($LASTEXITCODE -ne 0) { throw "swcraft_install.cmd exited with $LASTEXITCODE" }
+          Pop-Location
+          $bin = Join-Path $homeDir 'current\Scripts'
+          $swcraft = Join-Path $bin 'swcraft.exe'
+          $said = (& $swcraft --version).Trim()
+          if ($LASTEXITCODE -ne 0) { throw "swcraft --version exited with $LASTEXITCODE" }
+          Write-Host $said
+          if ($said -ne "swcraft $version") { throw "the installed swcraft says '$said', not 'swcraft $version'" }
+          Set-Location $work
+          & $swcraft init scaffold
+          if ($LASTEXITCODE -ne 0) { throw "swcraft init exited with $LASTEXITCODE" }
+          & $swcraft validate --project scaffold/swcraft.yaml
+          if ($LASTEXITCODE -ne 0) { throw "swcraft validate (the scaffold) exited with $LASTEXITCODE" }
+          & (Join-Path $bin 'swcraft-specimens.exe') generate small --out specimen
+          if ($LASTEXITCODE -ne 0) { throw "swcraft-specimens generate exited with $LASTEXITCODE" }
+          & $swcraft validate --project specimen/swcraft.yaml
+          if ($LASTEXITCODE -ne 0) { throw "swcraft validate (the specimen) exited with $LASTEXITCODE" }
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: workstation-windows-x64
+          path: |
+            dist/workstation/*.zip
+            dist/workstation/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 7
+
+  # The four macOS jobs' setup is copied, not shared (no composite action;
+  # packages/tools/tests/test_github_release_workflow.py holds the copies equal). Python is the
+  # root .prototools' release installed by proto, not setup-python: the workstation archive
+  # refuses an interpreter whose platform tag is not macosx-*-arm64, and the step asserts that
+  # tag at once. Links can be made here, so a link case fails instead of skipping
+  # (SWCRAFT_REQUIRE_SYMLINKS).
+  macos-checks:
+    if: github.server_url == 'https://github.com'
+    runs-on: macos-15
+    timeout-minutes: 300
+    env:
+      SWCRAFT_REQUIRE_SYMLINKS: "1"
+    steps:
+      - name: The host is the platform the gate names
+        run: |
+          python3 - <<'EOF'
+          import locale, platform, sys
+          enc = locale.getpreferredencoding(False)
+          print(f"{platform.platform()} python {sys.version.split()[0]} preferred encoding {enc}")
+          assert enc.lower().replace("-", "") == "utf8", f"a macOS runner must be UTF-8, not {enc}"
+          EOF
+          command -v ditto >/dev/null || { echo "ditto is absent: the artifact suite unpacks the archive with it"; exit 1; }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: the git identity for tests that commit
+        run: |
+          git config --global user.name "SWCraft release check"
+          git config --global user.email "release-check@example.invalid"
+      - name: Python and Node.js by proto, at the root .prototools' versions
+        timeout-minutes: 15
+        env:
+          PROTO_CLI_SHA256: 7444f88179119e6aa580c95b95b3d3de971a1071279e8eed9e51465a74e216b8
+          PROTO_TARGET: aarch64-apple-darwin
+        run: |
+          set -euo pipefail
+          export PROTO_HOME="$RUNNER_TEMP/proto"
+          mkdir -p "$PROTO_HOME/bin"
+          curl -fsSL --retry 3 -o "$RUNNER_TEMP/proto.tar.xz" "https://github.com/moonrepo/proto/releases/download/v$PROTO_CLI_VERSION/proto_cli-$PROTO_TARGET.tar.xz"
+          echo "$PROTO_CLI_SHA256  $RUNNER_TEMP/proto.tar.xz" | shasum -a 256 -c -
+          tar -xJf "$RUNNER_TEMP/proto.tar.xz" -C "$PROTO_HOME/bin" --strip-components=1 "proto_cli-$PROTO_TARGET/proto" "proto_cli-$PROTO_TARGET/proto-shim"
+          PYTHON_VERSION=$(sed -n 's/^python *= *"\([^"]*\)".*/\1/p' .prototools)
+          test -n "$PYTHON_VERSION"
+          "$PROTO_HOME/bin/proto" install python "$PYTHON_VERSION"
+          PYTHON_EXE=$("$PROTO_HOME/bin/proto" bin python "$PYTHON_VERSION")
+          PYTHON_BIN=$(dirname "$PYTHON_EXE")
+          test -x "$PYTHON_BIN/python"
+          export PATH="$PYTHON_BIN:$PATH"
+          echo "$PYTHON_BIN" >> "$GITHUB_PATH"
+          python -c 'import sys, sysconfig; tag = sysconfig.get_platform(); print("python", sys.version.split()[0], tag); assert tag.startswith("macosx-") and tag.endswith("-arm64"), f"{tag} is no arm64 interpreter: the macOS archive is built on one alone"'
+          python -m venv "$RUNNER_TEMP/venv-probe"
+          "$RUNNER_TEMP/venv-probe/bin/python" -c 'import encodings'
+          rm -rf "$RUNNER_TEMP/venv-probe"
+          NODE_VERSION=$(python -c 'import tomllib; print(tomllib.load(open(".prototools", "rb"))["node"])')
+          "$PROTO_HOME/bin/proto" install node "$NODE_VERSION"
+          echo "$PROTO_HOME/tools/node/$NODE_VERSION/bin" >> "$GITHUB_PATH"
+          "$PROTO_HOME/tools/node/$NODE_VERSION/bin/node" --version
+      - name: install
+        timeout-minutes: 30
+        run: python scripts/dev.py install
+      - name: lint
+        timeout-minutes: 15
+        run: python scripts/dev.py lint
+      - name: test
+        timeout-minutes: 120
+        run: python scripts/dev.py test
+      - name: build
+        timeout-minutes: 30
+        run: python scripts/dev.py build
+      - name: docs
+        timeout-minutes: 15
+        run: python scripts/dev.py docs
+      - name: test-large-bench
+        timeout-minutes: 45
+        run: python scripts/dev.py test-large-bench
+
+  macos-slow:
+    if: github.server_url == 'https://github.com'
+    runs-on: macos-15
+    timeout-minutes: 300
+    env:
+      SWCRAFT_REQUIRE_SYMLINKS: "1"
+    steps:
+      - name: The host is the platform the gate names
+        run: |
+          python3 - <<'EOF'
+          import locale, platform, sys
+          enc = locale.getpreferredencoding(False)
+          print(f"{platform.platform()} python {sys.version.split()[0]} preferred encoding {enc}")
+          assert enc.lower().replace("-", "") == "utf8", f"a macOS runner must be UTF-8, not {enc}"
+          EOF
+          command -v ditto >/dev/null || { echo "ditto is absent: the artifact suite unpacks the archive with it"; exit 1; }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: the git identity for tests that commit
+        run: |
+          git config --global user.name "SWCraft release check"
+          git config --global user.email "release-check@example.invalid"
+      - name: Python and Node.js by proto, at the root .prototools' versions
+        timeout-minutes: 15
+        env:
+          PROTO_CLI_SHA256: 7444f88179119e6aa580c95b95b3d3de971a1071279e8eed9e51465a74e216b8
+          PROTO_TARGET: aarch64-apple-darwin
+        run: |
+          set -euo pipefail
+          export PROTO_HOME="$RUNNER_TEMP/proto"
+          mkdir -p "$PROTO_HOME/bin"
+          curl -fsSL --retry 3 -o "$RUNNER_TEMP/proto.tar.xz" "https://github.com/moonrepo/proto/releases/download/v$PROTO_CLI_VERSION/proto_cli-$PROTO_TARGET.tar.xz"
+          echo "$PROTO_CLI_SHA256  $RUNNER_TEMP/proto.tar.xz" | shasum -a 256 -c -
+          tar -xJf "$RUNNER_TEMP/proto.tar.xz" -C "$PROTO_HOME/bin" --strip-components=1 "proto_cli-$PROTO_TARGET/proto" "proto_cli-$PROTO_TARGET/proto-shim"
+          PYTHON_VERSION=$(sed -n 's/^python *= *"\([^"]*\)".*/\1/p' .prototools)
+          test -n "$PYTHON_VERSION"
+          "$PROTO_HOME/bin/proto" install python "$PYTHON_VERSION"
+          PYTHON_EXE=$("$PROTO_HOME/bin/proto" bin python "$PYTHON_VERSION")
+          PYTHON_BIN=$(dirname "$PYTHON_EXE")
+          test -x "$PYTHON_BIN/python"
+          export PATH="$PYTHON_BIN:$PATH"
+          echo "$PYTHON_BIN" >> "$GITHUB_PATH"
+          python -c 'import sys, sysconfig; tag = sysconfig.get_platform(); print("python", sys.version.split()[0], tag); assert tag.startswith("macosx-") and tag.endswith("-arm64"), f"{tag} is no arm64 interpreter: the macOS archive is built on one alone"'
+          python -m venv "$RUNNER_TEMP/venv-probe"
+          "$RUNNER_TEMP/venv-probe/bin/python" -c 'import encodings'
+          rm -rf "$RUNNER_TEMP/venv-probe"
+          NODE_VERSION=$(python -c 'import tomllib; print(tomllib.load(open(".prototools", "rb"))["node"])')
+          "$PROTO_HOME/bin/proto" install node "$NODE_VERSION"
+          echo "$PROTO_HOME/tools/node/$NODE_VERSION/bin" >> "$GITHUB_PATH"
+          "$PROTO_HOME/tools/node/$NODE_VERSION/bin/node" --version
+      - name: install
+        timeout-minutes: 30
+        run: python scripts/dev.py install
+      # No export flag: the real-export suites are closed and not in this repository.
+      - name: test-slow
+        timeout-minutes: 270
+        run: python scripts/dev.py test-slow
+
+  macos-archive:
+    if: github.server_url == 'https://github.com'
+    runs-on: macos-15
+    timeout-minutes: 300
+    env:
+      SWCRAFT_REQUIRE_SYMLINKS: "1"
+    steps:
+      - name: The host is the platform the gate names
+        run: |
+          python3 - <<'EOF'
+          import locale, platform, sys
+          enc = locale.getpreferredencoding(False)
+          print(f"{platform.platform()} python {sys.version.split()[0]} preferred encoding {enc}")
+          assert enc.lower().replace("-", "") == "utf8", f"a macOS runner must be UTF-8, not {enc}"
+          EOF
+          command -v ditto >/dev/null || { echo "ditto is absent: the artifact suite unpacks the archive with it"; exit 1; }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: the git identity for tests that commit
+        run: |
+          git config --global user.name "SWCraft release check"
+          git config --global user.email "release-check@example.invalid"
+      - name: Python and Node.js by proto, at the root .prototools' versions
+        timeout-minutes: 15
+        env:
+          PROTO_CLI_SHA256: 7444f88179119e6aa580c95b95b3d3de971a1071279e8eed9e51465a74e216b8
+          PROTO_TARGET: aarch64-apple-darwin
+        run: |
+          set -euo pipefail
+          export PROTO_HOME="$RUNNER_TEMP/proto"
+          mkdir -p "$PROTO_HOME/bin"
+          curl -fsSL --retry 3 -o "$RUNNER_TEMP/proto.tar.xz" "https://github.com/moonrepo/proto/releases/download/v$PROTO_CLI_VERSION/proto_cli-$PROTO_TARGET.tar.xz"
+          echo "$PROTO_CLI_SHA256  $RUNNER_TEMP/proto.tar.xz" | shasum -a 256 -c -
+          tar -xJf "$RUNNER_TEMP/proto.tar.xz" -C "$PROTO_HOME/bin" --strip-components=1 "proto_cli-$PROTO_TARGET/proto" "proto_cli-$PROTO_TARGET/proto-shim"
+          PYTHON_VERSION=$(sed -n 's/^python *= *"\([^"]*\)".*/\1/p' .prototools)
+          test -n "$PYTHON_VERSION"
+          "$PROTO_HOME/bin/proto" install python "$PYTHON_VERSION"
+          PYTHON_EXE=$("$PROTO_HOME/bin/proto" bin python "$PYTHON_VERSION")
+          PYTHON_BIN=$(dirname "$PYTHON_EXE")
+          test -x "$PYTHON_BIN/python"
+          export PATH="$PYTHON_BIN:$PATH"
+          echo "$PYTHON_BIN" >> "$GITHUB_PATH"
+          python -c 'import sys, sysconfig; tag = sysconfig.get_platform(); print("python", sys.version.split()[0], tag); assert tag.startswith("macosx-") and tag.endswith("-arm64"), f"{tag} is no arm64 interpreter: the macOS archive is built on one alone"'
+          python -m venv "$RUNNER_TEMP/venv-probe"
+          "$RUNNER_TEMP/venv-probe/bin/python" -c 'import encodings'
+          rm -rf "$RUNNER_TEMP/venv-probe"
+          NODE_VERSION=$(python -c 'import tomllib; print(tomllib.load(open(".prototools", "rb"))["node"])')
+          "$PROTO_HOME/bin/proto" install node "$NODE_VERSION"
+          echo "$PROTO_HOME/tools/node/$NODE_VERSION/bin" >> "$GITHUB_PATH"
+          "$PROTO_HOME/tools/node/$NODE_VERSION/bin/node" --version
+      - name: install
+        timeout-minutes: 30
+        run: python scripts/dev.py install
+      - name: artifacts
+        timeout-minutes: 30
+        run: python scripts/dev.py artifacts
+      - name: runtime
+        timeout-minutes: 30
+        run: |
+          python scripts/dev.py runtime
+          cat dist/runtime/RUNTIME.json
+      - name: wheelhouse
+        timeout-minutes: 30
+        run: python scripts/dev.py wheelhouse
+      - name: workstation-archive
+        timeout-minutes: 20
+        run: |
+          python scripts/dev.py workstation-archive
+          cat dist/workstation/SHA256SUMS
+          wc -c dist/workstation/*.zip
+      # Uploaded before test-artifacts, as the work repository's runs do, and read back by
+      # macos-integration and publish: the macOS archive is built once.
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: workstation-macos-arm64
+          path: |
+            dist/workstation/*.zip
+            dist/workstation/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 7
+      - name: test-artifacts
+        timeout-minutes: 150
+        run: python scripts/dev.py test-artifacts
+
+  macos-integration:
+    if: github.server_url == 'https://github.com'
+    needs: macos-archive
+    runs-on: macos-15
+    timeout-minutes: 180
+    env:
+      SWCRAFT_REQUIRE_SYMLINKS: "1"
+    steps:
+      - name: The host is the platform the gate names
+        run: |
+          python3 - <<'EOF'
+          import locale, platform, sys
+          enc = locale.getpreferredencoding(False)
+          print(f"{platform.platform()} python {sys.version.split()[0]} preferred encoding {enc}")
+          assert enc.lower().replace("-", "") == "utf8", f"a macOS runner must be UTF-8, not {enc}"
+          EOF
+          command -v ditto >/dev/null || { echo "ditto is absent: the artifact suite unpacks the archive with it"; exit 1; }
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: the git identity for tests that commit
+        run: |
+          git config --global user.name "SWCraft release check"
+          git config --global user.email "release-check@example.invalid"
+      - name: Python and Node.js by proto, at the root .prototools' versions
+        timeout-minutes: 15
+        env:
+          PROTO_CLI_SHA256: 7444f88179119e6aa580c95b95b3d3de971a1071279e8eed9e51465a74e216b8
+          PROTO_TARGET: aarch64-apple-darwin
+        run: |
+          set -euo pipefail
+          export PROTO_HOME="$RUNNER_TEMP/proto"
+          mkdir -p "$PROTO_HOME/bin"
+          curl -fsSL --retry 3 -o "$RUNNER_TEMP/proto.tar.xz" "https://github.com/moonrepo/proto/releases/download/v$PROTO_CLI_VERSION/proto_cli-$PROTO_TARGET.tar.xz"
+          echo "$PROTO_CLI_SHA256  $RUNNER_TEMP/proto.tar.xz" | shasum -a 256 -c -
+          tar -xJf "$RUNNER_TEMP/proto.tar.xz" -C "$PROTO_HOME/bin" --strip-components=1 "proto_cli-$PROTO_TARGET/proto" "proto_cli-$PROTO_TARGET/proto-shim"
+          PYTHON_VERSION=$(sed -n 's/^python *= *"\([^"]*\)".*/\1/p' .prototools)
+          test -n "$PYTHON_VERSION"
+          "$PROTO_HOME/bin/proto" install python "$PYTHON_VERSION"
+          PYTHON_EXE=$("$PROTO_HOME/bin/proto" bin python "$PYTHON_VERSION")
+          PYTHON_BIN=$(dirname "$PYTHON_EXE")
+          test -x "$PYTHON_BIN/python"
+          export PATH="$PYTHON_BIN:$PATH"
+          echo "$PYTHON_BIN" >> "$GITHUB_PATH"
+          python -c 'import sys, sysconfig; tag = sysconfig.get_platform(); print("python", sys.version.split()[0], tag); assert tag.startswith("macosx-") and tag.endswith("-arm64"), f"{tag} is no arm64 interpreter: the macOS archive is built on one alone"'
+          python -m venv "$RUNNER_TEMP/venv-probe"
+          "$RUNNER_TEMP/venv-probe/bin/python" -c 'import encodings'
+          rm -rf "$RUNNER_TEMP/venv-probe"
+          NODE_VERSION=$(python -c 'import tomllib; print(tomllib.load(open(".prototools", "rb"))["node"])')
+          "$PROTO_HOME/bin/proto" install node "$NODE_VERSION"
+          echo "$PROTO_HOME/tools/node/$NODE_VERSION/bin" >> "$GITHUB_PATH"
+          "$PROTO_HOME/tools/node/$NODE_VERSION/bin/node" --version
+          echo "PROTO_HOME=$PROTO_HOME" >> "$GITHUB_ENV"
+      # moon at the version the architecture template pins: the stage proves a scaffolded
+      # project's own build, and the repository's root .prototools pins no moon.
+      - name: moon by proto, at the template's .prototools version
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          MOON_VERSION=$(python -c 'import tomllib; print(tomllib.load(open("packages/tools/src/swcraft_tools/templates/vehicle-architecture/.prototools", "rb"))["moon"])')
+          "$PROTO_HOME/bin/proto" install moon "$MOON_VERSION"
+          echo "$PROTO_HOME/tools/moon/$MOON_VERSION" >> "$GITHUB_PATH"
+          "$PROTO_HOME/tools/moon/$MOON_VERSION/moon" --version
+      - name: install
+        timeout-minutes: 30
+        run: python scripts/dev.py install
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: workstation-macos-arm64
+          path: dist/workstation
+      # moon detects a CI environment (CI, GITHUB_ACTIONS) and then diffs `HEAD~1`; the
+      # project the acceptance scaffolds has no history, so the variables are cleared, as
+      # on the work repository's runners.
+      - name: test-model-integration
+        timeout-minutes: 120
+        env:
+          CI: ""
+          GITHUB_ACTIONS: ""
+          GITEA_ACTIONS: ""
+        run: python scripts/dev.py test-model-integration
+
+  publish:
+    if: github.server_url == 'https://github.com' && github.ref != 'refs/heads/release-candidate'
+    needs: [linux, windows, macos-checks, macos-slow, macos-archive, macos-integration]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # One group per release version, whatever ref started the run: a tag run and a dispatch
+    # for the same release never publish at once, so a draft run that starts after the tag
+    # run published finds the release published and refuses to replace its assets. Never
+    # cancelled in progress; GitHub still cancels a run's publish that is *pending* in the
+    # group when a newer one queues, which publishes nothing and shows as cancelled.
+    concurrency:
+      group: release-publish-${{ github.repository }}-v${{ needs.linux.outputs.version }}
+      cancel-in-progress: false
+    permissions:
+      contents: write
+    env:
+      # Once for the job: the version step and the release step read the same draft mode.
+      DRAFT: ${{ github.event_name == 'workflow_dispatch' && inputs.draft }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: the version and the tag
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          version=$(python3 -c 'import re; print(re.search(r"__version__ = \"([^\"]+)\"", open("packages/tools/src/swcraft_tools/_version.py", encoding="utf-8").read()).group(1))')
+          if [ "$REF_TYPE" = tag ]; then
+            tag="$REF_NAME"
+            if [ "$tag" != "v$version" ]; then
+              echo "The tag $tag does not name this tree's version $version (packages/tools/src/swcraft_tools/_version.py): nothing is released." >&2
+              exit 1
+            fi
+          else
+            tag="v$version"
+            if [ "$DRAFT" != true ]; then
+              echo "A dispatch on $REF_NAME, which is not a tag, can only make a draft: dispatch with draft on, or on the tag $tag." >&2
+              exit 1
+            fi
+            # A draft's assets must be built from the commit its tag names: an existing tag at
+            # another commit is refused, so no asset is attached under a tag it was not built from.
+            err=$(mktemp)
+            if found=$(gh api "repos/$GH_REPO/git/ref/tags/$tag" --jq '.object.type + " " + .object.sha' 2>"$err"); then
+              read -r kind tagged <<<"$found"
+              # An annotated tag is peeled to its commit; the publish command makes lightweight ones.
+              if [ "$kind" = tag ]; then tagged=$(gh api "repos/$GH_REPO/git/tags/$tagged" --jq .object.sha); fi
+              if [ "$tagged" != "$GITHUB_SHA" ]; then
+                echo "The tag $tag already exists here at $tagged, not at the dispatched $GITHUB_SHA: dispatch on the tag instead." >&2
+                exit 1
+              fi
+            elif ! grep -q "HTTP 404" "$err"; then
+              cat "$err" >&2
+              exit 1
+            fi
+          fi
+          note="docs/release-notes/$version.md"
+          if [ ! -f "$note" ]; then
+            echo "No release note at $note for $tag: every v* tag is a full release with a note." >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "note=$note" >> "$GITHUB_OUTPUT"
+          echo "releasing $tag from $note"
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: workstation-*
+          path: downloaded
+
+      - name: the release files
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          for platform in linux-x64 windows-x64 macos-arm64; do
+            from="downloaded/workstation-$platform"
+            archive="$from/swcraft-$VERSION-$platform.zip"
+            if [ ! -f "$archive" ] || [ ! -f "$from/SHA256SUMS" ]; then
+              echo "The $platform build left no swcraft-$VERSION-$platform.zip with its SHA256SUMS: nothing is released." >&2
+              exit 1
+            fi
+            cp "$archive" assets/
+            cp "$from/SHA256SUMS" "assets/SHA256SUMS-$platform"
+          done
+          ls -l assets
+          cat assets/SHA256SUMS-*
+
+      - name: create or update the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          REF_TYPE: ${{ github.ref_type }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+          NOTE: ${{ steps.version.outputs.note }}
+        run: |
+          set -euo pipefail
+          # A release page holds at most 125 000 characters; a longer note is linked instead.
+          python3 - "$NOTE" "$TAG" "$GH_REPO" release-body.md <<'PY'
+          import sys
+          note, tag, repo, out = sys.argv[1:]
+          text = open(note, encoding="utf-8").read()
+          if len(text) > 125000:
+              text = f"The release note is too long for this page: https://github.com/{repo}/blob/{tag}/{note}\n"
+          open(out, "w", encoding="utf-8", newline="\n").write(text)
+          PY
+          err=$(mktemp)
+          if is_draft=$(gh release view "$TAG" --json isDraft --jq .isDraft 2>"$err"); then
+            exists=true
+          elif grep -q "release not found" "$err"; then
+            exists=false
+          else
+            cat "$err" >&2
+            exit 1
+          fi
+          if [ "$exists" = false ]; then
+            create_args=(--title "SWCraft $VERSION" --notes-file release-body.md)
+            if [ "$DRAFT" = true ]; then create_args+=(--draft); fi
+            if [ "$REF_TYPE" = tag ]; then create_args+=(--verify-tag); else create_args+=(--target "$GITHUB_SHA"); fi
+            gh release create "$TAG" assets/* "${create_args[@]}"
+          elif [ "$DRAFT" = true ] && [ "$is_draft" != true ]; then
+            echo "The release $TAG is already published: a dispatch with draft on does not replace its assets. Dispatch on the tag with draft off to re-upload into it." >&2
+            exit 1
+          else
+            gh release upload "$TAG" assets/* --clobber
+            gh release edit "$TAG" --title "SWCraft $VERSION" --notes-file release-body.md
+            if [ "$DRAFT" != true ]; then
+              gh release edit "$TAG" --draft=false
+            fi
+          fi
+          echo "release: https://github.com/$GH_REPO/releases/tag/$TAG"

@@ -1,0 +1,39 @@
+{
+  "name": "traversal-identity-create-address",
+  "description": "The write-side half of the same rule: a change-set `create` whose element identity is a path traversal. A `create` is the one moment a client-supplied token contributes a path component, so this is the address at which admitting a traversal would actually write outside the layer directory — and it is refused by `$defs/identity` at the envelope, before any registry or authorization code runs.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. The payload is an ordinary, schema-valid `implementation_types` value type and the approved scope covers the operation, so nothing but the identity is wrong: neither the payload check, nor the identity-conflict check, nor the authorization gate would have caught this one.",
+    "existing_elements": [{ "layer": "base_types", "element": "float32_base" }],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        { "operation": "create", "address": { "layer": "implementation_types", "element": "VehicleSpeed_kph" } }
+      ],
+      "notes": "A scope cannot express the traversal either — its `address.element` draws from the same `$defs/identity`, so there is no approval that could make this create legal."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Add a speed value type.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": { "layer": "implementation_types", "element": "../../../.ssh/authorized_keys" },
+        "value": {
+          "name": "VehicleSpeed_kph",
+          "kind": "value_type",
+          "base": "float32_base",
+          "unit": "kph"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "protocol-schema",
+    "notes": "The refusal is pass A, so the change set is never staged, never diffed and never authorized — and the real model is byte-identical for the ordinary reason that nothing before step 6 touches it. Note that the mismatch between the address identity and `value.name` is NOT what refuses this: that would be a semantic check the engine performs, and it must never be the only thing standing between a client and a write outside `model_root`."
+  }
+}

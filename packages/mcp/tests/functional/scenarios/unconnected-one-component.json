@@ -1,0 +1,254 @@
+{
+  "id": "unconnected-one-component",
+  "function": "MCP `read` — `members`, with `derived`",
+  "finding": {
+    "release": "0.19.0",
+    "row": 2
+  },
+  "tier": "generated-small",
+  "specimen": "scenario-unconnected-one-component",
+  "class": "boundary-at-scale",
+  "target": {
+    "component": "most_unconnected_component"
+  },
+  "thresholds": {
+    "page_rows": {
+      "value": 20,
+      "because": "the profile's long-list rule: the number, then the first twenty; the recipes' page"
+    },
+    "host_spill_bytes": {
+      "value": 8192,
+      "because": "VS Code spills an answer larger than 8 192 bytes to a file (measured 2026-10-23)"
+    }
+  },
+  "steps": [
+    {
+      "id": "component-count",
+      "recipe": "A component's unconnected ports",
+      "request": 0,
+      "fill": {
+        "<COMPONENT>": "component"
+      }
+    },
+    {
+      "id": "component-page",
+      "recipe": "A component's unconnected ports",
+      "request": -1,
+      "fill": {
+        "<COMPONENT>": "component"
+      }
+    },
+    {
+      "id": "component-next",
+      "recipe": "A component's unconnected ports",
+      "request": -1,
+      "fill": {
+        "<COMPONENT>": "component"
+      },
+      "continues": "component-page"
+    },
+    {
+      "id": "layer-count",
+      "recipe": "Ports that nothing connects",
+      "request": 0
+    },
+    {
+      "id": "layer-page",
+      "recipe": "Ports that nothing connects",
+      "request": -1
+    },
+    {
+      "id": "layer-next",
+      "recipe": "Ports that nothing connects",
+      "request": -1,
+      "continues": "layer-page"
+    },
+    {
+      "id": "component-unlimited",
+      "recipe": "A component's unconnected ports",
+      "request": -1,
+      "fill": {
+        "<COMPONENT>": "component"
+      },
+      "drop": [
+        "limit"
+      ]
+    }
+  ],
+  "expectations": [
+    {
+      "step": "component-count",
+      "at": "count",
+      "count_above": "page_rows",
+      "because": "the precondition: the component's unconnected ports are more than one page"
+    },
+    {
+      "step": "component-count",
+      "at": "count",
+      "count_equals": {
+        "passport": "components.unconnected.max_on_one"
+      },
+      "because": "the join on element answers that one component's unconnected ports alone"
+    },
+    {
+      "step": "component-page",
+      "at": "value.identities",
+      "count_equals": {
+        "threshold": "page_rows"
+      },
+      "because": "a recipe answers the number first, then the first twenty rows, the rest by the page's after"
+    },
+    {
+      "step": "component-page",
+      "at": "value.identities",
+      "rows_among": {
+        "locator": "unconnected_ports",
+        "of": "component"
+      },
+      "because": "every row is a distinct unconnected port of the target component, read off the model: a page that repeats a port, or answers ports of another component, fails though its counts agree"
+    },
+    {
+      "step": "component-page",
+      "at": "page.total",
+      "count_equals": {
+        "step": "component-count",
+        "at": "count"
+      },
+      "because": "the page states the count the recipe's first request answered"
+    },
+    {
+      "step": "component-page",
+      "at": "page.next",
+      "present": true,
+      "because": "the page carries the after that asks for the rest"
+    },
+    {
+      "step": "component-page",
+      "bytes_at_most": "host_spill_bytes"
+    },
+    {
+      "step": "component-next",
+      "at": "value.identities",
+      "disjoint_from": "component-page",
+      "because": "replaying the first page's after (which that page must state as truncated) answers ports the first page does not list, so the rest does come by the page's after"
+    },
+    {
+      "step": "component-next",
+      "at": "value.identities",
+      "rows_among": {
+        "locator": "unconnected_ports",
+        "of": "component"
+      },
+      "because": "every row is a distinct unconnected port of the target component, read off the model: a page that repeats a port, or answers ports of another component, fails though its counts agree"
+    },
+    {
+      "step": "component-next",
+      "at": "value.identities",
+      "rows_at_most": "page_rows",
+      "because": "a continued page is a page too: replaying the cursor answers at most the next twenty ports, never every port after it"
+    },
+    {
+      "step": "component-next",
+      "bytes_at_most": "host_spill_bytes"
+    },
+    {
+      "step": "component-next",
+      "at": "page.total",
+      "count_equals": {
+        "step": "component-count",
+        "at": "count"
+      },
+      "because": "the continued page states the same count"
+    },
+    {
+      "step": "layer-count",
+      "at": "count",
+      "count_above": "page_rows",
+      "because": "the precondition: the layer's unconnected ports are more than one page"
+    },
+    {
+      "step": "layer-count",
+      "at": "count",
+      "count_equals": {
+        "passport": "components.unconnected.total"
+      },
+      "because": "a connected port has no row, so the layer's member read answers exactly the unconnected set"
+    },
+    {
+      "step": "layer-page",
+      "at": "value.identities",
+      "count_equals": {
+        "threshold": "page_rows"
+      },
+      "because": "a recipe answers the number first, then the first twenty rows, the rest by the page's after"
+    },
+    {
+      "step": "layer-page",
+      "at": "value.identities",
+      "rows_among": {
+        "locator": "unconnected_ports"
+      },
+      "because": "every row is a distinct unconnected port of the model, read off the model: a page that repeats a port, or answers a connected one, fails though its counts agree"
+    },
+    {
+      "step": "layer-page",
+      "at": "page.total",
+      "count_equals": {
+        "step": "layer-count",
+        "at": "count"
+      },
+      "because": "the page states the count the recipe's first request answered"
+    },
+    {
+      "step": "layer-page",
+      "at": "page.next",
+      "present": true,
+      "because": "the page carries the after that asks for the rest"
+    },
+    {
+      "step": "layer-page",
+      "bytes_at_most": "host_spill_bytes"
+    },
+    {
+      "step": "layer-next",
+      "at": "value.identities",
+      "disjoint_from": "layer-page",
+      "because": "replaying the first page's after (which that page must state as truncated) answers ports the first page does not list, so the rest does come by the page's after"
+    },
+    {
+      "step": "layer-next",
+      "at": "value.identities",
+      "rows_among": {
+        "locator": "unconnected_ports"
+      },
+      "because": "every row is a distinct unconnected port of the model, read off the model: a page that repeats a port, or answers a connected one, fails though its counts agree"
+    },
+    {
+      "step": "layer-next",
+      "at": "value.identities",
+      "rows_at_most": "page_rows",
+      "because": "a continued page is a page too: replaying the cursor answers at most the next twenty ports, never every port after it"
+    },
+    {
+      "step": "layer-next",
+      "bytes_at_most": "host_spill_bytes"
+    },
+    {
+      "step": "layer-next",
+      "at": "page.total",
+      "count_equals": {
+        "step": "layer-count",
+        "at": "count"
+      },
+      "because": "the continued page states the same count"
+    },
+    {
+      "step": "component-unlimited",
+      "at": "value.identities",
+      "count_equals": {
+        "passport": "components.unconnected.max_on_one"
+      },
+      "because": "the join without the recipe's limit answers every row it selects, so it grows with the component; the recipe's limit is what bounds it"
+    }
+  ]
+}

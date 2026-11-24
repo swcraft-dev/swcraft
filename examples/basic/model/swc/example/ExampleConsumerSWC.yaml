@@ -1,0 +1,23 @@
+name: ExampleConsumerSWC
+type: application
+description: Example software component consuming data from ExampleSWC
+
+ports:
+  - name: rIn
+    direction: require
+    interface: IExample
+    description: Example input port requiring data
+
+runnables:
+  - name: ExampleConsumerRun
+    min_start_interval: 0.01
+    events:
+      - type: timing
+        period: 0.01
+
+memory:
+  RAM0: 1536
+
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_EXAMPLE_001@1

@@ -1,0 +1,15 @@
+name: ServerSwc
+type: application
+description: The server of the called operation; it declares no access list of its own.
+ports:
+- name: pControl
+  direction: provide
+  interface: IControl
+runnables:
+- name: ServerMain
+  events:
+  - type: timing
+    period: 0.05
+handle_termination_and_restart: no_support
+satisfies:
+- REQ-ACC-001@1

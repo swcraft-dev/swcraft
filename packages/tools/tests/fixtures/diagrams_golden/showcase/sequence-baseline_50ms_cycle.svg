@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="721.12" height="244" viewBox="0 0 721.12 244" font-family="Helvetica, Arial, sans-serif" data-view="sequence-baseline_50ms_cycle">
+<title>baseline_50ms_cycle — sequence diagram</title>
+<defs><marker id="swcraft-arrow" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 8 4 L 0 8 z" fill="#555555"/></marker><marker id="swcraft-arrow-open" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 8 4 L 0 8" fill="none" stroke="#555555" stroke-width="1.2"/></marker><marker id="swcraft-arrow-lit" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 8 4 L 0 8 z" fill="#1a5fb4"/></marker><marker id="swcraft-arrow-open-lit" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 8 4 L 0 8" fill="none" stroke="#1a5fb4" stroke-width="1.2"/></marker></defs>
+<rect class="background" width="100%" height="100%" fill="white"/>
+<g class="frame">
+<g class="frame" data-role="frame" data-name="baseline_50ms_cycle"><title>sequence baseline_50ms_cycle
+Baseline 50 ms cycle
+task Task_50ms</title><rect x="10" y="10" width="701.12" height="224" rx="4" fill="#fafafa" stroke="#333333" stroke-width="1.5"/></g>
+</g>
+<g class="lifelines">
+<g class="lifeline task" data-role="lifeline" data-name="Task_50ms" data-kind="task"><title>Task_50ms (task, every 50 ms)</title><rect x="30" y="44" width="100" height="40" rx="3" fill="#eeeeee" stroke="#333333" stroke-width="1"/><line x1="80" y1="84" x2="80" y2="224" stroke="#555555" stroke-width="1" stroke-dasharray="5 4"/></g>
+<g class="lifeline component" data-role="lifeline" data-name="BrakeTemperatureSensor" data-kind="component"><title>BrakeTemperatureSensor (component)</title><rect x="170" y="44" width="169.52" height="40" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/><line x1="254.76" y1="84" x2="254.76" y2="224" stroke="#555555" stroke-width="1" stroke-dasharray="5 4"/></g>
+<g class="lifeline component" data-role="lifeline" data-name="BrakeController" data-kind="component"><title>BrakeController (component)</title><rect x="379.52" y="44" width="121.88" height="40" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/><line x1="440.46" y1="84" x2="440.46" y2="224" stroke="#555555" stroke-width="1" stroke-dasharray="5 4"/></g>
+<g class="lifeline component" data-role="lifeline" data-name="VehicleStateManager" data-kind="component"><title>VehicleStateManager (component)</title><rect x="541.4" y="44" width="149.72" height="40" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/><line x1="616.26" y1="84" x2="616.26" y2="224" stroke="#555555" stroke-width="1" stroke-dasharray="5 4"/></g>
+</g>
+<g class="activations">
+<rect class="activation-bar" data-lifeline="BrakeTemperatureSensor" x="249.76" y="122" width="10" height="10" fill="white" stroke="#222222" stroke-width="1"/>
+<rect class="activation-bar" data-lifeline="BrakeController" x="435.46" y="158" width="10" height="10" fill="white" stroke="#222222" stroke-width="1"/>
+<rect class="activation-bar" data-lifeline="VehicleStateManager" x="611.26" y="194" width="10" height="10" fill="white" stroke="#222222" stroke-width="1"/>
+</g>
+<g class="messages">
+<g class="message activation" data-role="activation" data-name="PublishBrakeTemperature" data-source="Task_50ms" data-target="BrakeTemperatureSensor"><title>activation Task_50ms -&gt; BrakeTemperatureSensor: PublishBrakeTemperature</title><path d="M 80 122 L 245.76 122" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#swcraft-arrow)"/></g>
+<g class="message activation" data-role="activation" data-name="ProcessBrakeRequest" data-source="Task_50ms" data-target="BrakeController"><title>activation Task_50ms -&gt; BrakeController: ProcessBrakeRequest</title><path d="M 80 158 L 431.46 158" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#swcraft-arrow)"/></g>
+<g class="message activation" data-role="activation" data-name="PublishOperatingState" data-source="Task_50ms" data-target="VehicleStateManager"><title>activation Task_50ms -&gt; VehicleStateManager: PublishOperatingState</title><path d="M 80 194 L 607.26 194" fill="none" stroke="#555555" stroke-width="1.2" marker-end="url(#swcraft-arrow)"/></g>
+</g>
+<g class="labels">
+<text class="frame-label" x="18" y="30" font-size="12" data-kind="sequence" font-weight="bold">sd baseline_50ms_cycle — Baseline 50 ms cycle</text>
+<text class="lifeline-label" x="80" y="61" font-size="12" data-kind="task" text-anchor="middle" font-weight="600">Task_50ms</text>
+<text class="lifeline-detail" x="80" y="76" font-size="10" text-anchor="middle" fill="#444444">every 50 ms</text>
+<text class="lifeline-label" x="254.76" y="68" font-size="12" data-kind="component" text-anchor="middle" font-weight="600">BrakeTemperatureSensor</text>
+<text class="lifeline-label" x="440.46" y="68" font-size="12" data-kind="component" text-anchor="middle" font-weight="600">BrakeController</text>
+<text class="lifeline-label" x="616.26" y="68" font-size="12" data-kind="component" text-anchor="middle" font-weight="600">VehicleStateManager</text>
+<text class="message-label" x="164.88" y="114" font-size="10" text-anchor="middle" fill="#333333">PublishBrakeTemperature</text>
+<text class="message-label" x="257.73" y="150" font-size="10" text-anchor="middle" fill="#333333">ProcessBrakeRequest</text>
+<text class="message-label" x="345.63" y="186" font-size="10" text-anchor="middle" fill="#333333">PublishOperatingState</text>
+</g>
+</svg>

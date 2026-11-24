@@ -1,0 +1,7 @@
+name: thermal_status_display
+task: Task_100ms
+title: Thermal status display
+steps:
+- swc: DiagnosticManager
+  runnable: ProcessDiagnosticEvent
+  note: Records a thermal protection event before the cluster asks for a snapshot.

@@ -1,0 +1,61 @@
+{
+  "id": "find-sixteen-names-large",
+  "function": "MCP `find` — `names`",
+  "finding": {
+    "release": "0.19.0",
+    "row": 3
+  },
+  "tier": "large-bench",
+  "specimen": "large-bench",
+  "class": "boundary-at-scale",
+  "target": {
+    "components": "largest_components"
+  },
+  "thresholds": {
+    "find_candidates_total": {
+      "value": 16,
+      "because": "find answers at most sixteen candidates in all, min(5, max(1, 16 // names)) per name: the bound find sets"
+    },
+    "host_spill_bytes": {
+      "value": 8192,
+      "because": "VS Code spills an answer larger than 8 192 bytes to a file (measured 2026-10-23)"
+    }
+  },
+  "steps": [
+    {
+      "id": "find-sixteen",
+      "mcp": "find",
+      "arguments": {
+        "names": {
+          "$target": "components"
+        }
+      }
+    }
+  ],
+  "expectations": [
+    {
+      "step": "find-sixteen",
+      "at": "results.*.more",
+      "count_above": "find_candidates_total",
+      "because": "the precondition: the sixteen names match more than sixteen further candidates, so the bound decides the answer's size"
+    },
+    {
+      "step": "find-sixteen",
+      "at": "results.*.candidates",
+      "rows_at_most": "find_candidates_total",
+      "because": "sixteen names answer at most sixteen candidates in all"
+    },
+    {
+      "step": "find-sixteen",
+      "bytes_at_most": "host_spill_bytes"
+    },
+    {
+      "step": "find-sixteen",
+      "at": "results.*.candidates.0.address.element",
+      "values_equal": {
+        "target": "components"
+      },
+      "because": "each name resolves to its own element first: its exact component, ahead of its composition member (whose element is the composition) and of the near spellings"
+    }
+  ]
+}

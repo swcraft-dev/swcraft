@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://swcraft.dev/schemas/manifest.schema.json",
+  "title": "SWCraft project manifest",
+  "description": "The `swcraft.yaml` at a project's root: its name, where the YAML model lives, where the generators write, the AUTOSAR release the ARXML targets and the SWCraft release the project is pinned to. Every path is relative to the directory holding this file.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "description": "The project's name; a label for reports and diagrams, not an AUTOSAR identifier.",
+      "type": "string"
+    },
+    "schema_version": {
+      "description": "Version of this manifest format. Unrelated to `arxml_version`.",
+      "type": "string",
+      "default": "1.0"
+    },
+    "model_root": {
+      "description": "Directory holding the YAML model layers (`swc/`, `interfaces/`, ...), relative to the project directory. No generated path may be inside it.",
+      "type": "string",
+      "default": "model"
+    },
+    "dist_root": {
+      "description": "Directory for generated build outputs, relative to the project directory; cleaned by every build.",
+      "type": "string",
+      "default": "dist"
+    },
+    "views_root": {
+      "description": "Directory the diagram generator writes its SVG views and HTML pages into, relative to the project directory; cleaned by every build.",
+      "type": "string",
+      "default": "views"
+    },
+    "outputs": {
+      "description": "Where the ARXML and needs.json generators write their files; the diagrams go to `views_root`.",
+      "$ref": "#/definitions/OutputPaths",
+      "default": {
+        "arxml": "dist/model.arxml",
+        "needs": "dist/needs.json"
+      }
+    },
+    "arxml_version": {
+      "description": "AUTOSAR release the generated ARXML targets. Overridable for one run with `--arxml-version`, which is never written back.",
+      "type": "string",
+      "enum": [
+        "4.2.2",
+        "4.3.0"
+      ],
+      "default": "4.2.2"
+    },
+    "toolchain_version": {
+      "description": "The SWCraft release this project is built with, as one exact `major.minor.patch` version and never a range. Every `swcraft` subcommand that reads a manifest compares it with the toolchain it is running as: one that writes or gates refuses a mismatch, the read-only ones report it and answer anyway. `swcraft-mcp`, `swcraft-agent` and `python -m swcraft_mcp.server` read the same manifest and compare nothing. Leave it out and nothing is compared.",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "definitions": {
+    "OutputPaths": {
+      "description": "Where the ARXML and needs.json generators write, relative to the project directory.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "arxml": {
+          "description": "Path of the generated AUTOSAR ARXML file, relative to the project directory.",
+          "type": "string",
+          "default": "dist/model.arxml"
+        },
+        "needs": {
+          "description": "Path of the Sphinx-Needs `needs.json` file `swcraft generate needs` writes, relative to the project directory.",
+          "type": "string",
+          "default": "dist/needs.json"
+        }
+      }
+    }
+  }
+}

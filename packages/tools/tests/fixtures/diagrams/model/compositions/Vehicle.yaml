@@ -1,0 +1,10 @@
+name: Vehicle
+title: Vehicle
+root: true
+description: The root. One member is a composition, the other a component whose member name differs from its type.
+members:
+  - name: Chassis
+    composition: Chassis
+    description: The nested composition.
+  - name: Diag
+    type: DiagServer

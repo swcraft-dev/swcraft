@@ -1,0 +1,10 @@
+id: SWR-BRK-005
+title: Brake request rejection
+description: A brake request that exceeds the permitted brake action shall be limited,
+  not rejected.
+req_type: req
+version: 1
+source: external
+document: SRS Brake Control
+baseline: '1.0'
+revision: '1'

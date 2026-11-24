@@ -1,0 +1,98 @@
+# Allocation experiment `relieve`
+
+Experiment 'relieve': inter-partition volume 500 bytes x Hz now; N = 1: 400 (optimal); N = 2: 0 (optimal); 1 candidate at N = 2.
+
+## Fingerprint
+
+- Kind: allocation
+- Configuration: defaults, no configuration file
+- Output: `dist/experiments/relieve`
+- Model: `sha256:0` over 0 layer files
+- SWCraft: 0
+- Solver: SciPy <version>
+- search.max_moves: 2
+- search.candidates: 1
+- search.candidates_at: 2
+- search.tolerance: 0
+- search.time_limit_s: 10
+- constraints.locked: W, Y
+- constraints.allowed_partitions: none
+
+## Current state
+
+| Core | Enforcement | Load | Threshold | Breach |
+|---|---|---|---|---|
+| C1 | strict | 81.00% | 81.50% | — |
+| C2 | strict | 10.00% | 80.00% | — |
+
+Inter-partition volume: 500 bytes x Hz.
+Inter-partition calls: 0.
+
+## Freedom table
+
+| Component | Level | Partition | Target | Class | Reasons |
+|---|---|---|---|---|---|
+| W | QM | PC (core C2) | PA (core C1) | locked | the component is named in the experiment's locked; opens: editing the experiment |
+| W | QM | PC (core C2) | PB (core C1) | locked | the component is named in the experiment's locked; opens: editing the experiment |
+| X | QM | PA (core C1) | PB (core C1) | admissible | an unrated partition (an assumption, listed below) |
+| X | QM | PA (core C1) | PC (core C2) | admissible | an unrated partition (an assumption, listed below) |
+| Y | QM | PB (core C1) | PA (core C1) | locked | the component is named in the experiment's locked; opens: editing the experiment |
+| Y | QM | PB (core C1) | PC (core C2) | locked | the component is named in the experiment's locked; opens: editing the experiment |
+| Z | QM | PA (core C1) | PB (core C1) | admissible | an unrated partition (an assumption, listed below) |
+| Z | QM | PA (core C1) | PC (core C2) | admissible | an unrated partition (an assumption, listed below) |
+
+## Curve
+
+N = 0, the current state: 500 bytes x Hz. Every objective includes the constant C0 = 0 bytes x Hz once.
+
+| N | Status | Objective (bytes x Hz) | Moves | Note |
+|---|---|---|---|---|
+| 1 | optimal | 400 | Z: PA -> PC | — |
+| 2 | optimal | 0 | X: PA -> PB; Z: PA -> PC | — |
+
+## Candidates
+
+At N = 2. The enumeration ended: at K.
+
+### Candidate 1: 0 bytes x Hz (within tolerance of the proved optimum)
+
+- **X**: partition PA (core C1) -> partition PB (core C1)
+  - runnable X_Run: task TA -> task TB
+- **Z**: partition PA (core C1) -> partition PC (core C2)
+  - runnable Z_Run: task TZ -> task TC
+
+Inter-partition volume: 500 -> 0 bytes x Hz. Inter-partition calls: 0 -> 0.
+
+| Touched core | Load before | Load after | Threshold |
+|---|---|---|---|
+| C1 | 81.00% | 77.00% | 81.50% |
+| C2 | 10.00% | 15.00% | 80.00% |
+
+Links that cease to be inter-partition:
+- X.pXY -> Y.rXY (value): 400 bytes x Hz
+- Z.pZW -> W.rZW (value): 100 bytes x Hz
+
+What applying the move takes, one wcet edit per touched task:
+- task TA (partition PA): wcet keep 100us (the zero rule: no declared runnable budget is left in it, and the moves free 100us)
+- task TB (partition PB): wcet 7000us -> 7100us (-0us +100us)
+- task TC (partition PC): wcet 1000us -> 1500us (-0us +500us)
+- task TZ (partition PA): wcet 1000us -> 500us (-500us +0us)
+
+## Dropped move sets
+
+- at N = 1: X: PA -> PB; the source budget is kept (zero rule) (rule:hardware.threshold-breach)
+
+## Data gaps and assumptions
+
+- a runnable costs the same on every core: its declared wcet is not scaled by the target core
+- bytes x Hz is not a transport cost: it is the logical volume a link carries, never a bus or a communication-stack cost
+- sizes are logical: bits from the base type's size over 8; alignment, padding and every transport overhead (headers, serialisation, protection) are excluded
+- client-server calls are counted, never costed
+- memory stays where it is: a memory only bounds where a component may move
+- no task is created, moved whole or re-budgeted: each candidate states the wcet edit of every task it touches and applies none
+- an advisory core's breach is reported and never constrained
+- the constant C0 = 0 bytes x Hz is the cost of the crossing links whose crossing no admissible move changes; every objective this report states includes it once
+- moving 'X' into partition 'PB' is admissible: an unrated partition
+- moving 'X' into partition 'PC' is admissible: an unrated partition
+- moving 'Z' into partition 'PB' is admissible: an unrated partition
+- moving 'Z' into partition 'PC' is admissible: an unrated partition

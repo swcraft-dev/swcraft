@@ -1,0 +1,9 @@
+id: SWR-BRK-006
+title: Brake request timing
+description: Processing of a brake request shall complete within 10 ms.
+req_type: req
+version: 1
+source: external
+document: SRS Brake Control
+baseline: '1.0'
+revision: '1'

@@ -1,0 +1,57 @@
+{
+  "id": "27-go-back-to-an-earlier-release",
+  "task": 27,
+  "group": "guide-question",
+  "kind": "guide",
+  "status": "ready",
+  "prompt": "The new SWCraft release broke something for us. How do I go back to the previous release?",
+  "expect": {
+    "model": "unchanged",
+    "guide": {
+      "sections": [
+        "upgrading#going-back"
+      ],
+      "must": [
+        {
+          "id": "pin-back",
+          "any_of": [
+            "toolchain_version"
+          ],
+          "case_sensitive": true
+        }
+      ],
+      "must_not": [
+        {
+          "id": "rollback-command",
+          "any_of": [
+            "swcraft rollback",
+            "swcraft roll-back",
+            "swcraft downgrade"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "pip",
+          "any_of": [
+            "pip install",
+            "pip3 install"
+          ],
+          "case_sensitive": false
+        }
+      ]
+    },
+    "calls": {
+      "forbidden": [
+        "change_set",
+        "build",
+        "validate",
+        "export_component",
+        "import_component"
+      ]
+    }
+  },
+  "reference": {
+    "runs": "candidate builds only: a build without the guide tool fails the read and cited criteria by construction, so a guide question is never run on a baseline",
+    "baseline": "76a5f6532's upgrading.md has Going back with the same text (the previous archive, no rollback command, the pin lowered, the model back to its commit where the release reorganised a layer)."
+  }
+}

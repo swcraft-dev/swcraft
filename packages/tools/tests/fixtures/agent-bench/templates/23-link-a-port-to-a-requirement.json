@@ -1,0 +1,10 @@
+{
+  "id": "23-link-a-port-to-a-requirement",
+  "task": 23,
+  "group": "requirements-and-traceability",
+  "kind": "change",
+  "binding": "link_a_port_to_a_requirement",
+  "oracle": "structural",
+  "prompt": "Link the port {{component}}.{{port}} to requirement {{requirement}}@{{version}}.",
+  "note": "The declared, non-stub requirement with the most link sites, at its latest version, and the first provide port of the component with the most ports not already linked to it; the port keeps the links it has."
+}

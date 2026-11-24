@@ -1,0 +1,29 @@
+{
+  "id": "23-link-a-port-to-a-requirement",
+  "task": 23,
+  "group": "requirements-and-traceability",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Link the port BrakeController.pBrakeRequest to requirement REQ_BTP_DIAGNOSTICS@1.",
+  "note": "The maintainer's wording names pBrakePressure, a port the showcase does not have; pBrakeRequest is BrakeController's one provide port. The bench mirrors showcase 4fdc642.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "swc",
+        "name": "BrakeController",
+        "has": {
+          "ports": [
+            {
+              "name": "pBrakeRequest",
+              "satisfies": [
+                "REQ_SHOWCASE_BASELINE_001@1",
+                "REQ_BTP_DIAGNOSTICS@1"
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

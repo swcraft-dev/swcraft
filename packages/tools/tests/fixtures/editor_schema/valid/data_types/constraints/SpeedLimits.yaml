@@ -1,0 +1,5 @@
+name: SpeedLimits
+min: 0.0
+max: 400.0
+level: 0
+description: Hand-built data constraint fixture — the corpus declares no data constraint element

@@ -1,0 +1,3 @@
+name: CPU
+kind: processor
+description: The one processor a model must declare.

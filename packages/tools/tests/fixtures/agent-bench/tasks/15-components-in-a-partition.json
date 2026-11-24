@@ -1,0 +1,27 @@
+{
+  "id": "15-components-in-a-partition",
+  "task": 15,
+  "group": "relations-and-containment",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which components are inside partition P_Brake?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "mentions_all": [
+        "BrakeController",
+        "BrakeTemperatureSensor",
+        "BrakeThermalProtection"
+      ],
+      "mentions_none": [
+        "DiagnosticManager",
+        "InstrumentCluster",
+        "VehicleStateManager"
+      ]
+    }
+  },
+  "reference": {
+    "path": "P_Brake runs Task_50ms, which maps the runnables of BrakeTemperatureSensor (two instances, front and rear), BrakeThermalProtection and BrakeController",
+    "computed_by": "swcraft query --request {address: {layer: swc}, form: index, derived: [partitions]}"
+  }
+}

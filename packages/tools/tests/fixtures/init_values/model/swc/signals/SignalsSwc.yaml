@@ -1,0 +1,20 @@
+name: SignalsSwc
+type: application
+description: One component carrying both COM-SPEC positions for the valued interface.
+ports:
+- name: pSignals
+  direction: provide
+  interface: ISignals
+- name: rSignals
+  direction: require
+  interface: ISignals
+data_type_mappings:
+- PhysicalTypes
+runnables:
+- name: SignalsMain
+  events:
+  - type: timing
+    period: 0.01
+handle_termination_and_restart: no_support
+satisfies:
+- REQ-INIT-001@1

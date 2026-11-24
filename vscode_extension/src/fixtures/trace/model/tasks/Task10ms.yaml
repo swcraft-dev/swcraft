@@ -1,0 +1,4 @@
+name: Task10ms
+period: 0.01
+priority: 10
+partition: AppPartition

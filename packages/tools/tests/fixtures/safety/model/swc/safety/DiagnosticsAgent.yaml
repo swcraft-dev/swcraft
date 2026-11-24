@@ -1,0 +1,27 @@
+name: DiagnosticsAgent
+type: application
+description: Nothing allocates a level to it, so it DERIVES QM — and a derived QM producing a rated element is still a mis-declaration.
+ports:
+- name: pPlain
+  direction: provide
+  interface: IPlainSignals
+- name: pDiag
+  direction: provide
+  interface: IDiagnostics
+  measures:
+    Read: A measure on a provide port of a client-server interface — unreadable twice over.
+- name: rSafety
+  direction: require
+  interface: ISafetySignals
+  measures:
+    torgue: A key misspelling 'torque', which the interface does not declare.
+runnables:
+- name: Diagnose
+  events:
+  - type: timing
+    period: 0.1
+memory:
+  RAM0: 128
+handle_termination_and_restart: no_support
+satisfies:
+- REQ-SAFETY-003@1

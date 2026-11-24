@@ -1,0 +1,11 @@
+{
+  "session_id": "sess_39b8ab01-bd76-4d94-9a7f-6512477c5f7b",
+  "hook_event_name": "PreToolUse",
+  "cwd": "/project",
+  "tool_name": "list_directory",
+  "tool_input": {
+    "path": "/project/model/compositions",
+    "explanation": "Check what composition files exist in the model directory.",
+    "depth": null
+  }
+}

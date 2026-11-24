@@ -1,0 +1,89 @@
+{
+  "name": "read-several-addresses",
+  "description": "A `read` with `addresses` answers each address as a single read of it would be, in order, under one budget: an element that does not exist is that entry's `broken-reference`, beside the reads that succeeded, rather than a refusal of the batch.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` and `IExample` exist; no component named `Logger` does.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      }
+    ],
+    "notes": "A read needs no approved scope, carries no baseline token and produces no audit record; a batch is several of them."
+  },
+  "input": {
+    "operation": "read",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "Logger"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      }
+    ],
+    "form": "summary"
+  },
+  "expected": {
+    "response": {
+      "response": "reads",
+      "answers": [
+        {
+          "response": "read",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC"
+          },
+          "form": "summary",
+          "value": {
+            "name": "ExampleSWC",
+            "group": "example",
+            "ports": 1,
+            "runnables": 1,
+            "variables": 0,
+            "exclusive_areas": 0,
+            "memory": 1,
+            "data_type_mappings": 0,
+            "satisfies": 1
+          }
+        },
+        {
+          "response": "error",
+          "error": "broken-reference",
+          "failure_class": "invalid",
+          "message": "no 'swc' element with name 'Logger'",
+          "addresses": [
+            {
+              "layer": "swc",
+              "element": "Logger"
+            }
+          ]
+        },
+        {
+          "response": "read",
+          "address": {
+            "layer": "interfaces",
+            "element": "IExample"
+          },
+          "form": "summary",
+          "value": {
+            "name": "IExample",
+            "kind": "sender_receiver",
+            "data_elements": 1,
+            "satisfies": 0
+          }
+        }
+      ]
+    }
+  }
+}

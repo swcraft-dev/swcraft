@@ -1,0 +1,94 @@
+{
+  "name": "read-swc-ports-members-summary-omits-unset-interface",
+  "description": "The summary's null convention, stated on the one field an agent most needs from a default read: **what each port is typed by**. A summary publishes every scalar REFERENCE to another element — required or optional — beside the identity, the required scalars and the collection counts, so a port's `interface` is in it. A reference that is not set is OMITTED rather than published as `null`: its absence from a summary means exactly that it is unset, and on a port that happens in one place, a port of an external component stub, which names no interface because the export that declared it states none. The importer's hint beside it, `observed_interface`, is not a declared reference and is in `full` only. On this model the default answer measures 531 wire bytes against 775 for `form: \"full\"` (one copy, since 2026-10-09: a tool result is sent once, as its compact document carried as a JSON string; measured 2026-10-09, 888 against 1 348 in the two-copy unit before it), which publishes `interface: null`, `observed_interface` and `description` on every row.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model plus one external component stub, `SupplierStub`, whose one port `rSupplied` declares no interface and carries `observed_interface: IExample`. The base's two ports each name `IExample`.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "ports"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "ports"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "SupplierStub",
+        "path": [
+          {
+            "field": "ports"
+          }
+        ]
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      }
+    ],
+    "notes": "The same convention holds for the other five optional scalar references of the contract, each of which is one of two alternatives or an optional owner: a connector's `composition` (unset means the root composition), a connector endpoint's `swc` or `composition` and a composition member's `type` or `composition` (exactly one of each pair is set, so a summary shows the one that is). A connector endpoint is selected whole — all three of its fields are references or required — so `summary` is not a narrower step at `connector.from` / `.to` and an explicit one is answered `full`."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "members": "ports"
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "swc"
+      },
+      "form": "summary",
+      "members": "ports",
+      "value": [
+        {
+          "element": "ExampleConsumerSWC",
+          "member": {
+            "name": "rIn",
+            "direction": "require",
+            "interface": "IExample",
+            "measures": 0,
+            "com_specs": 0,
+            "satisfies": 0
+          }
+        },
+        {
+          "element": "ExampleSWC",
+          "member": {
+            "name": "pOut",
+            "direction": "provide",
+            "interface": "IExample",
+            "measures": 0,
+            "com_specs": 0,
+            "satisfies": 0
+          }
+        },
+        {
+          "element": "SupplierStub",
+          "member": {
+            "name": "rSupplied",
+            "direction": "require",
+            "measures": 0,
+            "com_specs": 0,
+            "satisfies": 0
+          }
+        }
+      ]
+    },
+    "notes": "The stub's row has no `interface` key and no `null`: a client reads `\"interface\" not in member` as *this port names no interface*, and never has to tell a published `null` from a narrowed-away field. It also has no `observed_interface`, which is a hint the importer recorded and not a declaration; a client that wants it asks for `form: \"full\"` or filters on it with `where`, which works in every form."
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "name": "read-requirements-derived-realised-by",
+  "description": "A set-valued computed value on the requirements layer: `derived: [\"realised_by\"]` adds to each requirement one row per `satisfies` member naming it, across the five link-carrying layers, as `{\"layer\", \"element\", \"member\", \"kind\", \"stated\"}` — `member` the port or runnable holding the link and `null` for an element's own list, `kind` one of the seven site kinds (`swc`, `port`, `runnable`, `interface`, `composition`, `task`, or a hardware element's own kind), `stated` the version the link states and `null` for a bare id or a malformed suffix. The sites are the ones the trace rules read, enumerated over the loaded state in the contract's layer order, then element order, then file order; an element-form member names no requirement and is no site. A requirement nothing realises has no row: `allocation` (`{\"sites\", \"elements\", \"allocated\"}`, one row per requirement) answers which requirements are unallocated, and `stale_links` which links need confirming.",
+  "kind": "example",
+  "context": {
+    "summary": "The base model, whose two components each name `REQ_EXAMPLE_001@1` in their own `satisfies`, with a bare `REQ_EXAMPLE_001` on `ExampleConsumerSWC`'s port `rIn`, `REQ_EXAMPLE_001@1` on the interface `IExample`, and a second requirement, `REQ_EXAMPLE_002`, that nothing names. So `REQ_EXAMPLE_001` answers four rows — two components, a port and an interface — and `REQ_EXAMPLE_002` none.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "ports"
+          },
+          {
+            "member": "rIn"
+          },
+          {
+            "field": "satisfies"
+          }
+        ]
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample",
+        "path": [
+          {
+            "field": "satisfies"
+          }
+        ]
+      },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_002"
+      }
+    ],
+    "baseline_state": "current",
+    "notes": "A read takes no scope and writes no audit record."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "requirements"
+    },
+    "form": "index",
+    "derived": [
+      "realised_by"
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "read",
+      "address": {
+        "layer": "requirements"
+      },
+      "form": "index",
+      "derived": [
+        "realised_by"
+      ],
+      "value": {
+        "count": 4,
+        "identities": [
+          {
+            "element": "REQ_EXAMPLE_001",
+            "derived": {
+              "realised_by": {
+                "layer": "swc",
+                "element": "ExampleConsumerSWC",
+                "member": null,
+                "kind": "swc",
+                "stated": 1
+              }
+            }
+          },
+          {
+            "element": "REQ_EXAMPLE_001",
+            "derived": {
+              "realised_by": {
+                "layer": "swc",
+                "element": "ExampleConsumerSWC",
+                "member": "rIn",
+                "kind": "port",
+                "stated": null
+              }
+            }
+          },
+          {
+            "element": "REQ_EXAMPLE_001",
+            "derived": {
+              "realised_by": {
+                "layer": "swc",
+                "element": "ExampleSWC",
+                "member": null,
+                "kind": "swc",
+                "stated": 1
+              }
+            }
+          },
+          {
+            "element": "REQ_EXAMPLE_001",
+            "derived": {
+              "realised_by": {
+                "layer": "interfaces",
+                "element": "IExample",
+                "member": null,
+                "kind": "interface",
+                "stated": 1
+              }
+            }
+          }
+        ]
+      }
+    },
+    "notes": "`REQ_EXAMPLE_002` has no row: a set-valued computed value drops the row it has no value for, so \"which requirements does nothing realise\" is `derived: [\"allocation\"]` with `where: [{\"field\": \"derived.allocation.allocated\", \"equals\": false}]`, never the index minus these rows. The three requirement values apply at the elements of the `requirements` layer alone: asked at another layer or at a member path they are `schema-violation`, never a blank."
+  }
+}

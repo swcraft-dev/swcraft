@@ -1,0 +1,17 @@
+name: IProbeSignals
+kind: sender_receiver
+data_elements:
+- name: speed
+  application_type: ProbeSpeed
+  init: 100
+- name: mixed
+  application_type: ProbeMixed
+- name: length
+  application_type: ProbeLength
+- name: gear
+  application_type: ProbeGear
+  init: ProbeOn
+- name: pair
+  application_type: ProbePair
+- name: raw
+  implementation_type: ProbeU8Ref

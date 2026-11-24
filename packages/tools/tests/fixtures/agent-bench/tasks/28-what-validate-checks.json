@@ -1,0 +1,82 @@
+{
+  "id": "28-what-validate-checks",
+  "task": 28,
+  "group": "guide-question",
+  "kind": "guide",
+  "status": "ready",
+  "prompt": "What does swcraft validate check, and what doesn't it check?",
+  "expect": {
+    "model": "unchanged",
+    "guide": {
+      "sections": [
+        "cli#the-two-commands-that-grade",
+        "getting-started#validate-the-gate",
+        "index#what-swcraft-is-not",
+        "reference/cli#swcraft-validate",
+        "reference/rules",
+        "reference/tools#validate"
+      ],
+      "must": [
+        {
+          "id": "warnings-flag",
+          "any_of": [
+            "--warnings-as-errors"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "xsd",
+          "any_of": [
+            "XSD"
+          ],
+          "case_sensitive": false
+        }
+      ],
+      "must_not": [
+        {
+          "id": "ships-xsd",
+          "any_of": [
+            "ships the AUTOSAR XSD",
+            "ships the XSD",
+            "ships with the XSD",
+            "bundles the XSD",
+            "bundled XSD",
+            "XSD is bundled",
+            "built-in XSD"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "checks-code",
+          "any_of": [
+            "compiles the C code",
+            "compiles the code",
+            "checks the C code"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "validate-writes-nothing",
+          "any_of": [
+            "validate writes nothing",
+            "validate leaves nothing"
+          ],
+          "case_sensitive": false
+        }
+      ]
+    },
+    "calls": {
+      "forbidden": [
+        "change_set",
+        "build",
+        "validate",
+        "export_component",
+        "import_component"
+      ]
+    }
+  },
+  "reference": {
+    "runs": "candidate builds only: a build without the guide tool fails the read and cited criteria by construction, so a guide question is never run on a baseline",
+    "baseline": "76a5f6532's cli.md (The two commands that grade), getting-started.md (Validate - the gate) and index.md (What SWCraft is not) say the same: every check, the ARXML generated and checked against the AUTOSAR schema or structurally without a licensed XSD, warnings exit 0 unless --warnings-as-errors."
+  }
+}

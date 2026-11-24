@@ -1,0 +1,10 @@
+name: Task_100ms
+period: 0.1
+priority: 5
+partition: Partition0
+wcet: 6000us
+runnables:
+- swc: DiagnosticManager
+  runnable: ProcessDiagnosticEvent
+- swc: InstrumentCluster
+  runnable: UpdateThermalStatus

@@ -1,0 +1,38 @@
+{
+  "current_version": "SYS-2.1",
+  "project": "Brake system requirements tool export",
+  "versions": {
+    "SYS-2.1": {
+      "needs": {
+        "SYS_REQ[12]": {
+          "content": "The system shall detect wheel slip during braking.",
+          "id": "SYS_REQ[12]",
+          "safety": "B",
+          "status": "approved",
+          "title": "Wheel slip detection",
+          "type": "sysreq"
+        },
+        "SYS_REQ[13]": {
+          "content": "The brake request shall be reduced while a wheel slips.",
+          "id": "SYS_REQ[13]",
+          "parent": [
+            "SYS_REQ[12]"
+          ],
+          "safety": "B",
+          "status": "approved",
+          "title": "Wheel slip reaction",
+          "type": "sysreq"
+        },
+        "[[SYS_REQ_14]]": {
+          "content": "The driver shall be warned while a wheel slips.",
+          "id": "[[SYS_REQ_14]]",
+          "safety": "A",
+          "status": "approved",
+          "title": "Wheel slip warning",
+          "type": "sysreq"
+        }
+      },
+      "needs_amount": 3
+    }
+  }
+}

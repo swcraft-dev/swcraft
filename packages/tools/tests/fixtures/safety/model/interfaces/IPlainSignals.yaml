@@ -1,0 +1,9 @@
+name: IPlainSignals
+kind: sender_receiver
+description: A low-rated element and an unrated one, for the consumer rule and its exemption.
+data_elements:
+- name: status
+  implementation_type: uint8
+  asil: A
+- name: debug
+  implementation_type: uint8

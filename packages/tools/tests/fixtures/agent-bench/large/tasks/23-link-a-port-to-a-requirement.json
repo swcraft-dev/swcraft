@@ -1,0 +1,27 @@
+{
+  "id": "23-link-a-port-to-a-requirement",
+  "task": 23,
+  "group": "requirements-and-traceability",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Link the port Swc075abcdefghij.P1 to requirement Rq03abcdef@1.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "swc",
+        "name": "Swc075abcdefghij",
+        "has": {
+          "ports": [
+            {
+              "name": "P1",
+              "satisfies": [
+                "Rq03abcdef@1"
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

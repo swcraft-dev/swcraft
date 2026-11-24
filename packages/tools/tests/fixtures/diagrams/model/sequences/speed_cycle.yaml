@@ -1,0 +1,9 @@
+name: speed_cycle
+task: Task_10ms
+title: Speed cycle
+steps:
+  - swc: Sensor
+    runnable: SensorRun
+  - swc: Controller
+    runnable: ControlRun
+    note: closes the loop

@@ -1,0 +1,8 @@
+name: ISignals
+kind: sender_receiver
+description: The one sender-receiver interface every read and every write here goes through.
+data_elements:
+- name: speed
+  implementation_type: uint8
+- name: level
+  implementation_type: uint8

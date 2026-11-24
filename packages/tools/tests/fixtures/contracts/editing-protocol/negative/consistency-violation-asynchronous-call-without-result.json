@@ -1,0 +1,156 @@
+{
+  "name": "consistency-violation-asynchronous-call-without-result",
+  "description": "An asynchronous call with no result point in a 4.2.2 project (contract `12.7.0`, `rule:swc.call.async-without-result`, `[constr_2006]` as R4.2.2 states it: an asynchronous call point is referenced by exactly one result point). Every element and every reference is admissible, and nothing in the assembled result fetches the call's result -- no `poll: true` on the call and no `call_returned` event naming it -- so pass D refuses it as a `consistency-violation` at the call. The rule is the validator's first that reads the version: the manifest's `arxml_version`, absent here.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, whose manifest states no `arxml_version`, so the project is judged at 4.2.2. The change set is `examples/create-asynchronous-call-and-its-call-returned-event.json` without its event. At 4.3.0, where R4.3.0 says *at most one*, the same change set is accepted.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleConsumerRun"
+          }
+        ]
+      },
+      {
+        "layer": "interfaces",
+        "element": "IDiagnosticService"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rDiag"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleConsumerRun"
+              },
+              {
+                "field": "calls"
+              },
+              {
+                "member": {
+                  "port": "rDiag",
+                  "operation": "ReadDtc"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers both requested addresses exactly, so the refusal is pass D's and not the scope gate's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Call ReadDtc through a new port rDiag without waiting.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "ports"
+            },
+            {
+              "member": "rDiag"
+            }
+          ]
+        },
+        "value": {
+          "name": "rDiag",
+          "direction": "require",
+          "interface": "IDiagnosticService"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleConsumerRun"
+            },
+            {
+              "field": "calls"
+            },
+            {
+              "member": {
+                "port": "rDiag",
+                "operation": "ReadDtc"
+              }
+            }
+          ]
+        },
+        "value": {
+          "port": "rDiag",
+          "operation": "ReadDtc",
+          "asynchronous": true
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleConsumerRun"
+          },
+          {
+            "field": "calls"
+          },
+          {
+            "member": {
+              "port": "rDiag",
+              "operation": "ReadDtc"
+            }
+          }
+        ]
+      }
+    ],
+    "notes": "The address is the call, the one place each repair reaches: `poll: true` on it, so the calling runnable fetches the result itself; a `call_returned` event naming its pair on the runnable that takes the result; or `arxml_version: \"4.3.0\"` in the manifest. The model stays byte-identical."
+  }
+}

@@ -1,0 +1,7 @@
+name: SpeedMapping
+maps:
+- application: SpeedPhys
+  implementation: Speed
+- application: Quality
+  implementation: uint8
+description: reference `mapping_sets.map.application` and `.implementation` -> data_types.

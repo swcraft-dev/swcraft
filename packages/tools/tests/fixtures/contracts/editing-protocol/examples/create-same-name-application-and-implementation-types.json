@@ -1,0 +1,235 @@
+{
+  "name": "create-same-name-application-and-implementation-types",
+  "description": "One change set declares an application type and an implementation type under ONE name, the mapping set that pairs them, and an interface with a data element on each side. Since contract `8.0.0` identity is `(layer, name)`, so the two creates are two identities and neither is an `identity-conflict`; a data element states the side of its type in one of two fields, `application_type` or `implementation_type`, and each is resolved in its own layer. Each type states its bounds inline and so generates a `SyntheticTorque_Range` of its own, into the package of its own layer, where the two do not collide.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, whose `base_types` layer declares `float32_base`. Neither `application_types` nor `implementation_types` declares `SyntheticTorque`, and no mapping set or interface of the names the change set creates exists.",
+    "existing_elements": [
+      {
+        "layer": "base_types",
+        "element": "float32_base"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "SyntheticTorque"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "SyntheticTorque"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "mapping_sets",
+            "element": "SyntheticTorqueMapping"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "ISyntheticTorque"
+          }
+        }
+      ],
+      "notes": "The scope covers every create exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Declare the synthetic torque's physical and stored views under one name, pair them, and carry each on the bus.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "application_types",
+          "element": "SyntheticTorque"
+        },
+        "value": {
+          "name": "SyntheticTorque",
+          "kind": "application_type",
+          "unit": "Nm",
+          "range": {
+            "min": -500.0,
+            "max": 500.0
+          },
+          "description": "Synthetic torque, physical view"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "implementation_types",
+          "element": "SyntheticTorque"
+        },
+        "value": {
+          "name": "SyntheticTorque",
+          "kind": "value_type",
+          "base": "float32_base",
+          "value_min": -500.0,
+          "value_max": 500.0,
+          "description": "Synthetic torque, stored"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "mapping_sets",
+          "element": "SyntheticTorqueMapping"
+        },
+        "value": {
+          "name": "SyntheticTorqueMapping",
+          "maps": [
+            {
+              "application": "SyntheticTorque",
+              "implementation": "SyntheticTorque"
+            }
+          ],
+          "description": "Pairs the two views of the synthetic torque, which share one name"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "ISyntheticTorque"
+        },
+        "value": {
+          "name": "ISyntheticTorque",
+          "kind": "sender_receiver",
+          "data_elements": [
+            {
+              "name": "physical",
+              "application_type": "SyntheticTorque"
+            },
+            {
+              "name": "stored",
+              "implementation_type": "SyntheticTorque"
+            }
+          ],
+          "description": "Both views of the synthetic torque"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "ISyntheticTorque"
+          },
+          "after": {
+            "name": "ISyntheticTorque",
+            "kind": "sender_receiver",
+            "data_elements": [
+              {
+                "name": "physical",
+                "application_type": "SyntheticTorque",
+                "implementation_type": null,
+                "init": null,
+                "asil": null,
+                "description": "",
+                "sw_impl_policy": null,
+                "sw_calibration_access": null
+              },
+              {
+                "name": "stored",
+                "application_type": null,
+                "implementation_type": "SyntheticTorque",
+                "init": null,
+                "asil": null,
+                "description": "",
+                "sw_impl_policy": null,
+                "sw_calibration_access": null
+              }
+            ],
+            "description": "Both views of the synthetic torque",
+            "package": null,
+            "is_service": false,
+            "satisfies": []
+          },
+          "summary": "interfaces: + ISyntheticTorque"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "SyntheticTorque"
+          },
+          "after": {
+            "name": "SyntheticTorque",
+            "kind": "application_type",
+            "unit": "Nm",
+            "conversion": null,
+            "range": {
+              "min": -500.0,
+              "max": 500.0
+            },
+            "unit_ref": null,
+            "compu_method_ref": null,
+            "data_constr_ref": null,
+            "description": "Synthetic torque, physical view",
+            "package": null
+          },
+          "summary": "application_types: + SyntheticTorque"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "SyntheticTorque"
+          },
+          "after": {
+            "name": "SyntheticTorque",
+            "kind": "value_type",
+            "base": "float32_base",
+            "unit": "",
+            "value_min": -500.0,
+            "value_max": 500.0,
+            "compu_method_ref": null,
+            "description": "Synthetic torque, stored",
+            "package": null
+          },
+          "summary": "implementation_types: + SyntheticTorque"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "mapping_sets",
+            "element": "SyntheticTorqueMapping"
+          },
+          "after": {
+            "name": "SyntheticTorqueMapping",
+            "maps": [
+              {
+                "application": "SyntheticTorque",
+                "implementation": "SyntheticTorque"
+              }
+            ],
+            "description": "Pairs the two views of the synthetic torque, which share one name",
+            "package": null
+          },
+          "summary": "mapping_sets: + SyntheticTorqueMapping"
+        }
+      ]
+    },
+    "notes": "The delta is compared as a set; it is displayed in the contract's layer order, so the interface the change set creates last is listed first and the mapping set, the last layer, last. Each data element carries both type fields in the delta's `after`, the one it does not state as `null`: the delta publishes every declared field. No port in this model speaks the interface, so `data-type.application-type-unmapped` has nothing to judge, and the staged result is consistent."
+  }
+}

@@ -1,0 +1,16 @@
+name: Task_100ms
+period: 0.1
+priority: 4
+partition: PARTITION0
+wcet: 2ms
+runnables:
+- swc: BrakeActuator
+  runnable: ApplyTorque
+- swc: BrakeController
+  runnable: OnBlockWritten
+- swc: NvStorage
+  runnable: WriteBlockServer
+- swc: NvStorage
+  runnable: ReadBlockServer
+- swc: NvStorage
+  runnable: GetVersionServer

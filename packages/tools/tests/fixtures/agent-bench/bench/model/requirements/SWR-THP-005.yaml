@@ -1,0 +1,10 @@
+id: SWR-THP-005
+title: Thermal protection event
+description: A thermal protection event shall be raised when the permitted brake action
+  is reduced.
+req_type: req
+version: 1
+source: external
+document: SRS Thermal Protection
+baseline: '1.0'
+revision: '1'

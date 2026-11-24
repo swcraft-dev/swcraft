@@ -1,0 +1,9 @@
+name: RAM0
+kind: memory
+type: RAM
+size: 4096
+accessible:
+- CORE0
+threshold: 0.5
+asil_capability: B
+description: The one memory every component budgets. Rated B, so the ASIL D component charging it a non-zero budget is reported, and the derived-B component charging it zero is not.

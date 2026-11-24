@@ -1,0 +1,8 @@
+# Both sides name a declared data type of the wrong kind. The schema types each
+# side as a plain string, because which kinds a side may name is a fact of the
+# named type's own file; only check-model reads that file.
+name: WrongKinds
+maps:
+  - application: uint8
+    implementation: uint8_base
+description: Accepted by the schema, refused by check-model

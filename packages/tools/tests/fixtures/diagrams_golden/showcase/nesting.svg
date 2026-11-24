@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="863.28" height="114" viewBox="0 0 863.28 114" font-family="Helvetica, Arial, sans-serif" data-view="nesting">
+<title>VehicleControl — nesting</title>
+<rect class="background" width="100%" height="100%" fill="white"/>
+<g class="frame">
+<g class="frame" data-role="frame" data-name="VehicleControl" data-type="VehicleControl" data-kind="composition"><title>composition VehicleControl
+Vehicle control</title><rect x="20" y="20" width="823.28" height="74" rx="4" fill="#fafafa" stroke="#333333" stroke-width="1.5"/></g>
+</g>
+<g class="members">
+<g class="member component" data-role="member" data-name="VehicleStateManager" data-type="VehicleStateManager" data-kind="component"><title>VehicleStateManager (component)</title><rect x="32" y="46" width="157.72" height="36" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="BrakeTemperatureSensor" data-type="BrakeTemperatureSensor" data-kind="component"><title>BrakeTemperatureSensor (component)</title><rect x="201.72" y="46" width="177.52" height="36" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="BrakeController" data-type="BrakeController" data-kind="component"><title>BrakeController (component)</title><rect x="391.24" y="46" width="129.88" height="36" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="DiagnosticManager" data-type="DiagnosticManager" data-kind="component"><title>DiagnosticManager (component)</title><rect x="533.12" y="46" width="143.08" height="36" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="InstrumentCluster" data-type="InstrumentCluster" data-kind="component"><title>InstrumentCluster (component)</title><rect x="688.2" y="46" width="143.08" height="36" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+</g>
+<g class="labels">
+<text class="frame-label" x="32" y="37" font-size="12" data-kind="composition" font-weight="bold">VehicleControl — Vehicle control</text>
+<text class="member-label" x="110.86" y="68.2" font-size="12" data-kind="component" text-anchor="middle">VehicleStateManager</text>
+<text class="member-label" x="290.48" y="68.2" font-size="12" data-kind="component" text-anchor="middle">BrakeTemperatureSensor</text>
+<text class="member-label" x="456.18" y="68.2" font-size="12" data-kind="component" text-anchor="middle">BrakeController</text>
+<text class="member-label" x="604.66" y="68.2" font-size="12" data-kind="component" text-anchor="middle">DiagnosticManager</text>
+<text class="member-label" x="759.74" y="68.2" font-size="12" data-kind="component" text-anchor="middle">InstrumentCluster</text>
+</g>
+</svg>

@@ -1,0 +1,51 @@
+{
+  "id": "13-unconnected-ports",
+  "task": 13,
+  "group": "search-and-statistics",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which ports are unconnected?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "with_owner": [
+        {
+          "owner": "Swc005abcdefghij",
+          "name": "P1"
+        },
+        {
+          "owner": "Swc006abcdefghij",
+          "name": "P1"
+        },
+        {
+          "owner": "Swc007abcdefghij",
+          "name": "P1"
+        },
+        {
+          "owner": "Swc008abcdefghij",
+          "name": "P1"
+        },
+        {
+          "owner": "Swc009abcdefghij",
+          "name": "P1"
+        },
+        {
+          "owner": "Swc010abcdefghij",
+          "name": "P15"
+        }
+      ]
+    }
+  },
+  "reference": {
+    "ports": [
+      "Swc005abcdefghij.P1",
+      "Swc006abcdefghij.P1",
+      "Swc007abcdefghij.P1",
+      "Swc008abcdefghij.P1",
+      "Swc009abcdefghij.P1",
+      "Swc010abcdefghij.P15"
+    ],
+    "computed_by": "every component port that is the endpoint of no connector and no delegation; the test recomputes it from the loaded model"
+  },
+  "note": "Port names repeat across the bench's components, so a reply names each unconnected port with its own component (the with_owner check): Swc005abcdefghij.P1, Swc006abcdefghij.P1, Swc007abcdefghij.P1, Swc008abcdefghij.P1, Swc009abcdefghij.P1, Swc010abcdefghij.P15."
+}

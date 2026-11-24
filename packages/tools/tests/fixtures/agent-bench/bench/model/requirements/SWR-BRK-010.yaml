@@ -1,0 +1,10 @@
+id: SWR-BRK-010
+title: Brake controller degraded mode
+description: In degraded mode the brake controller shall keep the last permitted brake
+  action.
+req_type: req
+version: 1
+source: external
+document: SRS Brake Control
+baseline: '1.0'
+revision: '1'

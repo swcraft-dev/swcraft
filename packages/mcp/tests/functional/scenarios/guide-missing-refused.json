@@ -1,0 +1,27 @@
+{
+  "id": "guide-missing-refused",
+  "function": "MCP `guide`",
+  "tier": "generated-small",
+  "specimen": "scenario-impact-summary-bounded",
+  "class": "refusal",
+  "guide": "absent",
+  "thresholds": {},
+  "steps": [
+    {
+      "id": "search",
+      "mcp": "guide",
+      "arguments": {
+        "search": "check the model"
+      },
+      "text": "refusal"
+    }
+  ],
+  "expectations": [
+    {
+      "step": "search",
+      "at": "refusal",
+      "literal_equals": "guide-missing: this installation carries no guide for the assistant to read; the guide comes with a SWCraft installation, so reinstall SWCraft to get it",
+      "because": "an installation with no guide is refused in one sentence that names no location; the locator's own refusal, which names absolute paths, is never forwarded"
+    }
+  ]
+}

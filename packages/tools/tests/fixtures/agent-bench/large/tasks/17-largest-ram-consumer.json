@@ -1,0 +1,55 @@
+{
+  "id": "17-largest-ram-consumer",
+  "task": 17,
+  "group": "relations-and-containment",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Which component takes the most of Me1abc?",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "first_of": {
+        "candidates": [
+          "Swc001abcdefghij",
+          "Swc002abcdefghij",
+          "Swc003abcdefghij",
+          "Swc004abcdefghij",
+          "Swc005abcdefghij",
+          "Swc006abcdefghij",
+          "Swc007abcdefghij",
+          "Swc008abcdefghij",
+          "Swc009abcdefghij",
+          "Swc010abcdefghij",
+          "Swc011abcdefghij",
+          "Swc012abcdefghij",
+          "Swc013abcdefghij",
+          "Swc014abcdefghij",
+          "Swc015abcdefghij",
+          "Swc016abcdefghij",
+          "Swc017abcdefghij",
+          "Swc018abcdefghij",
+          "Swc019abcdefghij",
+          "Swc020abcdefghij",
+          "Swc021abcdefghij",
+          "Swc022abcdefghij",
+          "Swc023abcdefghij",
+          "Swc024abcdefghij",
+          "Swc025abcdefghij"
+        ],
+        "expected": "Swc001abcdefghij"
+      }
+    }
+  },
+  "reference": {
+    "top": {
+      "Swc001abcdefghij": 16384,
+      "Swc002abcdefghij": 8192,
+      "Swc003abcdefghij": 4096,
+      "Swc010abcdefghij": 4096,
+      "Swc018abcdefghij": 4096
+    },
+    "consumers": 25,
+    "computed_by": "swcraft resource-report"
+  },
+  "note": "Every component declares a budget for each of the four strict RAMs, 0 outside its own partition's; the candidates are the components with a non-zero budget in Me1abc."
+}

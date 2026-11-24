@@ -1,0 +1,9 @@
+id: SWR-THP-007
+title: Brake temperature range
+description: The brake temperature shall be carried from -40 degC to 1000 degC.
+req_type: req
+version: 1
+source: external
+document: SRS Thermal Protection
+baseline: '1.0'
+revision: '1'

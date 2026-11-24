@@ -1,0 +1,37 @@
+name: Sub
+title: Producing sub-composition
+description: >-
+  Two boundary ports, three members -- one of them named differently from its
+  type and one of them an external stub -- two delegations and the assembly
+  connector drawn at this level.
+
+ports:
+  - name: rTrigger
+    direction: require
+    interface: ITrigger
+  - name: pSignalOut
+    direction: provide
+    interface: ISignal
+
+members:
+  - name: Alpha
+    type: Beta
+    description: The member whose name differs from the type it instantiates.
+  - name: Gamma
+    type: Gamma
+    description: A member named after its own type, the ordinary case.
+  - name: Ext
+    type: ExternalStub
+    description: The external stub; it declares no port, so nothing delegates to it.
+
+delegations:
+  - name: Sub_pSignalOut_Alpha
+    port: pSignalOut
+    member: Alpha
+    member_port: pOut
+    description: The provide-side delegation, an INNER-PORT-IREF of the P variant.
+  - name: Sub_rTrigger_Gamma
+    port: rTrigger
+    member: Gamma
+    member_port: rTrig
+    description: A require-side delegation, an INNER-PORT-IREF of the R variant.

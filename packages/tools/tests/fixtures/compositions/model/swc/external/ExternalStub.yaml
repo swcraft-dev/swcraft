@@ -1,0 +1,12 @@
+name: ExternalStub
+type: application
+external: true
+external_ref: /Other/Project/SupplierPlatforms/Bsw/ExternalStub
+external_dest: APPLICATION-SW-COMPONENT-TYPE
+description: >-
+  A component this model declares a prototype for and no type for: the writer
+  emits the two verbatim strings below as the prototype's TYPE-TREF and DEST and
+  emits no APPLICATION-SW-COMPONENT-TYPE at all. It carries no ports, so nothing
+  can be wired to it.
+satisfies:
+- REQ_COMPOSITIONS_001@1

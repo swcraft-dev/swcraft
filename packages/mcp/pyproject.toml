@@ -1,0 +1,85 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "swcraft-mcp"
+version = "0.24.0"
+description = "SWCraft MCP server: FastMCP wrapper over the swcraft_tools Python API."
+requires-python = ">=3.11"
+license = "Apache-2.0"
+# Every entry is a direct use, declared directly: nothing is left to arrive transitively
+# (packages/tools/tests/test_version_policy.py audits it). The swcraft-tools pin is exact because the
+# distributions move in lockstep.
+#
+# `anyio` bridges the async editing tools to the synchronous engine (`anyio.to_thread.run_sync`). Both
+# halves are imported as submodules: since anyio 4.15.0 the package is lazy, and a bare `import anyio`
+# leaves `anyio.from_thread` an AttributeError that `_ask()` would swallow into `abandoned`
+# (tests/test_review_mode.py pins the spelling). `mcp` is direct because the review boundary appends its
+# host note as an `mcp.types.TextContent`.
+#
+# The `fastmcp` floor excludes releases without `Context.elicit(message, response_type)` and its three
+# result types, without which `SWCRAFT_REVIEW=elicit` could not reach a human. The ceiling `<4`: fastmcp
+# 4.0.0 changed elicitation so that the greenfield acceptance's reviewed change set comes back
+# `abandoned`. Raising it is a migration with that scenario as its oracle, never a routine bump.
+dependencies = [
+    "anyio>=4.0",
+    "fastmcp>=3.4.5,<4",
+    "mcp>=1.29.0",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    "swcraft-tools==0.24.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    # `dev.py test` runs this suite under `-n auto --dist loadgroup` too.
+    "pytest-xdist>=3.6",
+    # The per-test timeout.
+    "pytest-timeout>=2.3",
+    "ruff>=0.6",
+    # The functional harness validates each scenario file against its schema, which refers to the
+    # passport schema: `jsonschema` validates, `referencing` builds the two-file registry.
+    "jsonschema>=4.18",
+    "referencing>=0.30",
+    # `lint`'s type check (the [tool.mypy] table below); `types-PyYAML` types server.py's `yaml`.
+    "mypy>=1.10,<2",
+    "types-PyYAML>=6.0,<7",
+]
+
+[project.scripts]
+swcraft-mcp = "swcraft_mcp.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/swcraft_mcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# The suite's own helpers live in tests/support/; the `tools` helpers and conftest it shares are in
+# ../tools/tests and ../tools/tests/support, imported by top-level name. A missing helper fails
+# collection, never skips. The entries precede the standard library, so a helper named like an
+# importable module would shadow it; nothing checks this suite's own helper names.
+pythonpath = ["tests/support", "../tools/tests", "../tools/tests/support"]
+# pytest-timeout's stage ceiling; the fast gate's value and the reasons are in packages/tools/pyproject.toml.
+timeout = 1200
+required_plugins = ["pytest-timeout>=2.3"]
+markers = [
+    "slow: marks a suite that is minutes rather than seconds -- it scaffolds projects, spawns real processes or waits on one. Deselected from the fast 'dev.py test' gate, executed only by 'dev.py test-slow', which 'dev.py verify' invokes and which may NOT collect nothing here (scripts/dev.py MARKER_STAGE_OWNERS). The suites are not restated here: packages/tools/tests/test_slow_marker_inventory.py derives them from the marks",
+    "functional: marks a functional scenario of tests/functional/ (a model generated from a passport configuration, a product function driven through its real entry point). A selection label for '-m functional', NOT deselected: the generated-small tier belongs in the fast 'dev.py test' gate, so this marker has no stage of its own and scripts/dev.py FAST_TEST_DESELECT does not name it. A large-bench case carries large_bench beside it, and that marker is deselected and has its stage",
+    "large_bench: marks a functional scenario whose tier is large-bench (tests/functional/test_scenarios.py TIER_MARKS): it reads the agent task benchmark's large bench, about 3 700 element files, generated once per session. The case carries functional too, so '-m functional' still selects every scenario. Deselected from the fast 'dev.py test' gate, executed only by 'dev.py test-large-bench', which 'dev.py verify' invokes and which may NOT collect nothing here (scripts/dev.py MARKER_STAGE_OWNERS)",
+    "real_models: marks the calibration of the passport chain on real exports (tests/functional/test_real_models.py): one case per *.arxml file in the directory SWCRAFT_REAL_MODELS names, labelled by sorted file order and never by name, or the one placeholder case when there is none. Each export is imported, passported, regenerated as a specimen and paired with it; report-only until the chain is green on every export, then blocking (tests/functional/real_models.py CALIBRATION_BLOCKING). Deselected from the fast 'dev.py test' gate, executed only by 'dev.py test-real-models', which is NOT a 'dev.py verify' stage, not a bump step and runs in no CI job: the exports exist on the maintainer's machine alone. Unset, the case skips; --require-real-models turns that into a failure (tests/functional/real_models.py)",
+]
+
+# `lint`'s type check: scripts/run_python_lint.py runs mypy here because this table exists; the flags'
+# reasons are in packages/tools/pyproject.toml. `swcraft_tools` is read through its editable install's
+# `py.typed` marker. No third-party override: every import of this package is typed.
+[tool.mypy]
+python_version = "3.11"
+platform = "linux"
+files = ["src/swcraft_mcp"]
+mypy_path = "src"
+warn_unused_ignores = true
+warn_redundant_casts = true
+enable_error_code = ["ignore-without-code"]

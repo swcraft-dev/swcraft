@@ -1,0 +1,9 @@
+id: SWR-BRK-008
+title: Brake pressure ramp
+description: The brake pressure shall ramp up at no more than 200 bar/s.
+req_type: req
+version: 1
+source: external
+document: SRS Brake Control
+baseline: '1.0'
+revision: '1'

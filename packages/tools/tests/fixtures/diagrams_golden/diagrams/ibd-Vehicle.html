@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vehicle — internal block diagram — Diagram fixture</title>
+<style>
+html, body { height: 100%; margin: 0; }
+body { display: flex; flex-direction: column; font: 14px Helvetica, Arial, sans-serif; color: #222222; }
+header { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 6px 12px;
+  border-bottom: 1px solid #cccccc; background: #f6f6f6; }
+header h1 { font-size: 15px; margin: 0; font-weight: 600; }
+nav { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+nav a { color: #1a5fb4; text-decoration: none; }
+nav a:hover { text-decoration: underline; }
+.controls { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-left: auto; }
+.controls input { width: 14em; }
+.controls output { min-width: 5em; color: #555555; }
+main { flex: 1; min-height: 0; overflow: hidden; background: white; }
+main > svg { display: block; width: 100%; height: 100%; touch-action: none; user-select: none; cursor: grab; }
+main > svg.panning { cursor: grabbing; }
+main > svg > g.labels { pointer-events: none; }
+main > svg > g.labels > g.edge-count { pointer-events: auto; }
+main > svg > g.labels > g.frame-up { pointer-events: auto; cursor: pointer; }
+svg g.frame-up text { fill: #1a5fb4; }
+svg g.frame-up:hover text { text-decoration: underline; }
+nav .placed-in.highlight { outline: 2px solid #1a5fb4; outline-offset: 2px; }
+svg .link { cursor: pointer; }
+svg .link:hover > rect { stroke: #1a5fb4; stroke-width: 2px; }
+svg .hit rect:not(.hit-band), svg .hit path:not(.hit-band), svg .hit circle, svg .hit line { stroke: #e8590c;
+  stroke-width: 2.5px; }
+svg .current rect:not(.hit-band), svg .current path:not(.hit-band), svg .current circle, svg .current line {
+  stroke: #c92a2a; stroke-width: 4px; }
+svg .highlight rect:not(.port-hit):not(.hit-band), svg .highlight path:not(.hit-band), svg .highlight circle,
+  svg .highlight line { stroke: #1a5fb4; }
+svg g.edge.highlight { stroke-width: 2.5px; }
+svg g.edge.highlight path:not(.hit-band) { marker-end: url(#swcraft-arrow-lit); }
+svg g.message.highlight path:not(.hit-band) { stroke-width: 2.5px; marker-end: url(#swcraft-arrow-open-lit); }
+svg g.message.activation.highlight path:not(.hit-band) { marker-end: url(#swcraft-arrow-lit); }
+svg g.port.highlight rect:not(.port-hit):not(.hit-band), svg g.port.highlight path:not(.hit-band),
+  svg g.port.highlight circle, svg g.port.highlight line { stroke-width: 2px; }
+svg .selected > rect:not(.hit-band), svg .selected > path:not(.hit-band), svg .selected > line { stroke: #1a5fb4;
+  stroke-width: 2.5px; }
+svg .hit-band { fill: none !important; stroke: transparent !important; stroke-width: 8px !important;
+  vector-effect: non-scaling-stroke; pointer-events: stroke; }
+svg g.member.highlight rect:not(.hit-band), svg g.lifeline.highlight rect:not(.hit-band) { stroke-width: 2px; }
+#tip { position: fixed; left: 0; top: 0; z-index: 10; max-width: min(40em, calc(100vw - 8px));
+  max-height: calc(100vh - 8px); overflow: hidden; overflow-wrap: anywhere; padding: 3px 6px; background: white;
+  border: 1px solid #cccccc; border-radius: 3px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); font-size: 12px;
+  white-space: pre-line; pointer-events: none; }
+#tip[hidden] { display: none; }
+#connectors { position: fixed; right: 12px; bottom: 32px; width: 38em; max-width: 90vw; max-height: 60vh; display: flex;
+  flex-direction: column; background: white; border: 1px solid #cccccc; border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25); font-size: 13px; }
+#connectors[hidden] { display: none; }
+#connectors .panel-head { display: flex; gap: 8px; align-items: baseline; padding: 6px 8px; font-weight: 600;
+  border-bottom: 1px solid #cccccc; background: #f6f6f6; }
+#connectors .panel-head button { margin-left: auto; }
+#connectors ol { margin: 0; padding: 6px 8px 8px 30px; overflow-y: auto; }
+#connectors li { margin: 2px 0; overflow-wrap: anywhere; }
+#connectors li .note { display: block; color: #555555; font-size: 12px; }
+#selection { display: flex; gap: 8px; align-items: center; padding: 3px 12px; border-top: 1px solid #cccccc;
+  background: #eef4fb; font-size: 13px; }
+#selection[hidden] { display: none; }
+#selection span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+footer { min-height: 17px; padding: 3px 12px; border-top: 1px solid #cccccc; background: #f6f6f6; font-size: 13px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+</style>
+</head>
+<body data-view="ibd-Vehicle">
+<header>
+<h1>Vehicle — internal block diagram</h1>
+<nav><a href="index.html">Diagram fixture</a> <a href="overview-Vehicle.html">overview</a> <a href="nesting.html">nesting</a> <a href="ibd-Vehicle.svg">SVG file</a> <span>contains:</span> <a href="ibd-Chassis.html">Chassis</a></nav>
+<div class="controls">
+<input type="search" id="search" placeholder="Search names" aria-label="Search names">
+<button type="button" id="search-previous" title="Previous match">&#8593;</button>
+<button type="button" id="search-next" title="Next match">&#8595;</button>
+<output id="search-count" for="search"></output>
+<button type="button" id="zoom-in" title="Zoom in">+</button>
+<button type="button" id="zoom-out" title="Zoom out">&#8722;</button>
+<button type="button" id="zoom-fit" title="Show the whole view">Fit</button>
+<button type="button" id="reload" title="Read the page again from disk">Reload</button>
+</div>
+</header>
+<main id="canvas">
+<svg xmlns="http://www.w3.org/2000/svg" width="765.8" height="205" viewBox="0 0 765.8 205" font-family="Helvetica, Arial, sans-serif" data-view="ibd-Vehicle">
+<title>Vehicle — internal block diagram</title>
+<style>g.edges use{stroke-width:10px;stroke-dasharray:none}</style>
+<rect class="background" width="100%" height="100%" fill="white"/>
+<g class="frame">
+<g class="frame" data-role="frame" data-name="Vehicle"><title>composition Vehicle
+The root. One member is a composition, the other a component whose member name differs from its type.</title><rect x="22" y="22" width="721.8" height="161" rx="4" fill="#fafafa" stroke="#333333" stroke-width="1.5"/></g>
+</g>
+<g class="edges">
+<g class="edge connector" data-role="connector" data-name="diag_link" data-source="p3" data-target="p1" stroke-width="1"><title>connector diag_link: Diag.pDiag -&gt; Chassis.rDiag</title><path id="e1" d="M 400.36 113 L 420.36 113" fill="none" stroke="#555555"/><use href="#e1" opacity="0"/></g>
+</g>
+<g class="members">
+<g class="member composition" data-role="member" data-name="Chassis" data-type="Chassis" data-kind="composition"><title>Chassis (composition)
+The nested composition.</title><rect x="440.36" y="83" width="187.44" height="60" rx="3" fill="#fff4d6" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="Diag" data-type="DiagServer" data-kind="component"><title>Diag : DiagServer (component)
+Serves the diagnostic status.</title><rect x="168.64" y="83" width="205.72" height="60" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+</g>
+<g class="ports">
+<g id="p1" class="port require client-server" data-role="port" data-owner="Chassis" data-name="rDiag" data-interface="IDiag"><title>Chassis.rDiag: require IDiag (client-server)
+· ReadStatus(out status: uint8)</title><rect class="port-box" x="434.36" y="107" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="434.36" y1="113" x2="426.36" y2="113" stroke="#222222" stroke-width="1.2"/><path d="M 420.36 107 A 6 6 0 0 1 420.36 119" fill="none" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="420.36" y="107" width="26" height="12" opacity="0"/></g>
+<g id="p2" class="port provide sender-receiver" data-role="port" data-owner="Chassis" data-name="pSpeedOut" data-interface="ISpeed"><title>Chassis.pSpeedOut: provide ISpeed (sender-receiver)
+· speed: uint8
+The speed the chassis publishes.</title><rect class="port-box" x="621.8" y="107" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="633.8" y1="113" x2="637.8" y2="113" stroke="#222222" stroke-width="1.2"/><path d="M 637.8 107 L 647.8 107 L 653.8 113 L 647.8 119 L 637.8 119 Z" fill="white" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="621.8" y="107" width="32" height="12" opacity="0"/></g>
+<g id="p3" class="port provide client-server" data-role="port" data-owner="Diag" data-name="pDiag" data-interface="IDiag"><title>Diag.pDiag: provide IDiag (client-server)
+· ReadStatus(out status: uint8)</title><rect class="port-box" x="368.36" y="107" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="380.36" y1="113" x2="388.36" y2="113" stroke="#222222" stroke-width="1.2"/><circle cx="394.36" cy="113" r="6" fill="white" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="368.36" y="107" width="32" height="12" opacity="0"/></g>
+</g>
+<g class="labels">
+<text class="frame-label" x="29" y="38.6" font-size="12" data-kind="composition" font-weight="bold">Vehicle</text>
+<text class="member-label" x="510.26" y="99.6" font-size="12" data-kind="composition" font-weight="600">Chassis</text>
+<text class="port-label in-member" x="449.36" y="116" font-size="10" fill="#444444" data-kind="composition" text-anchor="start">rDiag</text>
+<text class="port-label in-member" x="618.8" y="116" font-size="10" fill="#444444" data-kind="composition" text-anchor="end">pSpeedOut</text>
+<text class="member-label" x="209.34" y="99.6" font-size="12" data-kind="component" font-weight="600">Diag : DiagServer</text>
+<text class="port-label in-member" x="365.36" y="116" font-size="10" fill="#444444" data-kind="component" text-anchor="end">pDiag</text>
+</g>
+</svg>
+</main>
+<aside id="connectors" hidden><div class="panel-head"><span id="connectors-head"></span><button type="button" id="connectors-close" title="Close the list">&#215;</button></div><ol id="connectors-list"></ol></aside>
+<div id="selection" hidden><span id="selection-text"></span><button type="button" id="selection-next" title="Select the next drawing of this element" hidden>Next</button><button type="button" id="open-in-model" title="Open this element's YAML file beside the diagram" hidden>Open in model</button></div>
+<footer id="status" role="status"></footer>
+<div id="tip" role="tooltip" hidden></div>
+<script type="application/json" id="swcraft-links">{"Chassis": "ibd-Chassis.html"}</script>
+<script type="application/json" id="swcraft-up">{}</script>
+<script type="application/json" id="swcraft-model">{"0": {"file": "compositions/Vehicle.yaml", "member": null}, "1": {"file": "connectors/diag_link.yaml", "member": null}, "2": {"file": "compositions/Chassis.yaml", "member": null}, "3": {"file": "swc/chassis/DiagServer.yaml", "member": null}, "4": {"file": "compositions/Chassis.yaml", "member": "ports/rDiag"}, "5": {"file": "compositions/Chassis.yaml", "member": "ports/pSpeedOut"}, "6": {"file": "swc/chassis/DiagServer.yaml", "member": "ports/pDiag"}}</script>
+<script>(function () {
+  "use strict";
+  var canvas = document.getElementById("canvas");
+  var svg = canvas ? canvas.querySelector("svg") : null;
+  if (!svg) {
+    return;
+  }
+  // A composition box descends; the view's own frame -- the nesting view's root -- does not,
+  // or every press on empty space inside the picture would leave the page.
+  var LINKABLE = '[data-kind="composition"][data-type]:not([data-role="frame"])';
+  // The host: in the VS Code tab the bridge defines window.swcraftHost before this script runs;
+  // a browser has none, and every call below then does exactly what the page did before.
+  var host = window.swcraftHost || null;
+
+  function go(href) {
+    if (host) {
+      host.navigate(href);
+    } else {
+      window.location.href = href;
+    }
+  }
+
+  function reloadPage() {
+    if (host) {
+      host.reload();
+    } else {
+      window.location.reload();
+    }
+  }
+
+  // What a drawn element opens in the model: its ordinal among the [data-role] elements, in
+  // document order -- the generator's count -- keys its entry. Read only with a host; a block
+  // that is not JSON is read as no entry at all, so pan, zoom and search still start.
+  var model = {};
+  var modelBlock = host ? document.getElementById("swcraft-model") : null;
+  if (modelBlock) {
+    try {
+      model = JSON.parse(modelBlock.textContent || "{}") || {};
+    } catch (error) {
+      model = {};
+    }
+  }
+  var drawn = Array.prototype.slice.call(svg.querySelectorAll("[data-role]"));
+  var ordinals = new Map();
+  drawn.forEach(function (element, index) {
+    ordinals.set(element, index);
+  });
+
+  function entryOf(element) {
+    var key = element && ordinals.has(element) ? String(ordinals.get(element)) : null;
+    return key !== null && Object.prototype.hasOwnProperty.call(model, key) ? model[key] : null;
+  }
+
+  // The hit band: every sub-element -- a port, a line, a message -- gains one clone of its hit
+  // shape, with no role, so the ordinals above do not move. The page style draws it as a
+  // transparent stroke of a fixed screen width, so a small target is hit where the eye places it
+  // at every zoom; it lies inside the sub-element's own group, so closest("[data-role]") finds it.
+  var SUB_ELEMENTS =
+    '[data-role="port"], [data-role="connector"], [data-role="delegation"], [data-role="bundle"], ' +
+    '[data-role="activation"], [data-role="data"]';
+  Array.prototype.forEach.call(svg.querySelectorAll(SUB_ELEMENTS), function (element) {
+    var port = element.getAttribute("data-role") === "port";
+    var shape = element.querySelector(port ? "rect.port-hit" : "path");
+    if (!shape) {
+      return;
+    }
+    // The namespace is the inlined picture's own: the page names no URL.
+    var band = document.createElementNS(svg.namespaceURI, port ? "rect" : "path");
+    (port ? ["x", "y", "width", "height"] : ["d"]).forEach(function (name) {
+      if (shape.hasAttribute(name)) {
+        band.setAttribute(name, shape.getAttribute(name));
+      }
+    });
+    band.setAttribute("class", "hit-band");
+    element.appendChild(band);
+  });
+  var links = {};
+  var linkBlock = document.getElementById("swcraft-links");
+  if (linkBlock) {
+    links = JSON.parse(linkBlock.textContent || "{}");
+  }
+  // The way up: the frame's name leads to the one composition that places this one, or,
+  // placed in several, marks the header's list of them and chooses none.
+  var up = {};
+  var upBlock = document.getElementById("swcraft-up");
+  if (upBlock) {
+    up = JSON.parse(upBlock.textContent || "{}");
+  }
+
+  function goUp() {
+    var targets = Object.keys(up).map(function (parent) {
+      return up[parent];
+    });
+    if (targets.length === 1) {
+      go(targets[0]);
+      return;
+    }
+    var list = document.getElementById("placed-in");
+    if (list) {
+      list.classList.add("highlight");
+      var first = list.querySelector("a");
+      if (first) {
+        first.focus();
+      }
+    }
+  }
+  var box = (svg.getAttribute("viewBox") || "").trim().split(/[ ,]+/).map(Number);
+  var home = { x: box[0], y: box[1], width: box[2], height: box[3] };
+  var view = { x: home.x, y: home.y, width: home.width, height: home.height };
+
+  function apply() {
+    svg.setAttribute("viewBox", [view.x, view.y, view.width, view.height].join(" "));
+  }
+
+  function toDiagram(clientX, clientY) {
+    var matrix = svg.getScreenCTM();
+    if (!matrix) {
+      return { x: view.x + view.width / 2, y: view.y + view.height / 2 };
+    }
+    return new DOMPoint(clientX, clientY).matrixTransform(matrix.inverse());
+  }
+
+  function zoom(factor, cx, cy) {
+    var width = view.width / factor;
+    if (width < home.width / 50 || width > home.width * 20) {
+      return;
+    }
+    view.x = cx - (cx - view.x) / factor;
+    view.y = cy - (cy - view.y) / factor;
+    view.width = width;
+    view.height = view.height / factor;
+    apply();
+  }
+
+  function zoomCentre(factor) {
+    zoom(factor, view.x + view.width / 2, view.y + view.height / 2);
+  }
+
+  function fit() {
+    view = { x: home.x, y: home.y, width: home.width, height: home.height };
+    apply();
+  }
+
+  svg.addEventListener(
+    "wheel",
+    function (event) {
+      event.preventDefault();
+      var point = toDiagram(event.clientX, event.clientY);
+      zoom(event.deltaY < 0 ? 1.2 : 1 / 1.2, point.x, point.y);
+    },
+    { passive: false }
+  );
+
+  var press = null;
+  svg.addEventListener("pointerdown", function (event) {
+    hideTip();
+    if (event.button !== 0) {
+      return;
+    }
+    var matrix = svg.getScreenCTM();
+    press = {
+      id: event.pointerId,
+      clientX: event.clientX,
+      clientY: event.clientY,
+      x: view.x,
+      y: view.y,
+      scale: matrix ? matrix.a : 1,
+      moved: false,
+      origin: event.target,
+      modified: Boolean(event.ctrlKey || event.metaKey),
+      target: event.target.closest ? event.target.closest(LINKABLE) : null,
+      up: event.target.closest ? event.target.closest("g.frame-up") : null
+    };
+    svg.setPointerCapture(event.pointerId);
+  });
+  svg.addEventListener("pointermove", function (event) {
+    showTip(event);
+    if (!press || event.pointerId !== press.id) {
+      return;
+    }
+    var dx = event.clientX - press.clientX;
+    var dy = event.clientY - press.clientY;
+    if (!press.moved && Math.abs(dx) + Math.abs(dy) > 3) {
+      press.moved = true;
+      svg.classList.add("panning");
+    }
+    if (press.moved) {
+      view.x = press.x - dx / press.scale;
+      view.y = press.y - dy / press.scale;
+      apply();
+    }
+  });
+  function release(event) {
+    if (!press || event.pointerId !== press.id) {
+      return;
+    }
+    var pressed = !press.moved && event.type === "pointerup";
+    var clicked = pressed ? press.target : null;
+    var climbed = pressed ? press.up : null;
+    var origin = press.origin;
+    var modified = press.modified;
+    press = null;
+    svg.classList.remove("panning");
+    // A click chooses the selection itself: a reveal's other drawings are no longer offered --
+    // a Ctrl/Cmd+click that opens included, so no count or Next is left on the bar.
+    if (pressed) {
+      dropReveal();
+    }
+    // With a host, Ctrl/Cmd+click on a drawn element that has an entry opens it in the model,
+    // before the click-through and the pin: a member composition opens its file and stays here.
+    var element = pressed && origin.closest ? origin.closest("[data-role]") : null;
+    var entry = host ? entryOf(element) : null;
+    if (entry && modified) {
+      openEntry(element, entry);
+      return;
+    }
+    if (climbed) {
+      goUp();
+      return;
+    }
+    if (clicked) {
+      var target = links[clicked.getAttribute("data-type")];
+      if (target) {
+        go(target);
+        return;
+      }
+    }
+    if (pressed) {
+      // A click keeps what it lights until a click on empty space, which lights nothing.
+      // On an overview's count square, or on a port carrying its interface's whole list, it
+      // also opens the list panel; a second click on the same owner, like a click on empty
+      // space, closes it and lights nothing.
+      var owner = origin.closest ? origin.closest("g.edge-count, g.port") : null;
+      if (owner && !listingOf(owner)) {
+        owner = null;
+      }
+      if (owner && owner === panelSquare) {
+        closePanel();
+        pin(null);
+        select(null, null);
+        return;
+      }
+      var subject = subjectOf(origin);
+      pin(subject);
+      select(entry ? element : null, subject);
+      if (owner) {
+        showConnectors(owner);
+      } else {
+        closePanel();
+      }
+    }
+  }
+  svg.addEventListener("pointerup", release);
+  svg.addEventListener("pointercancel", release);
+
+  Array.prototype.forEach.call(svg.querySelectorAll(LINKABLE), function (element) {
+    if (links[element.getAttribute("data-type")]) {
+      element.classList.add("link");
+    }
+  });
+
+  // The highlight: a line lights with the two ends it names, an end -- an IBD's port, an
+  // overview's box, a sequence's lifeline -- with every line it has and the ends at their
+  // far side. Both indexes are built here, once; a pointer move only reads them.
+  var ENDS = '[data-role="port"][id], [data-role="member"][id], [data-role="lifeline"]';
+  var statusLine = document.getElementById("status");
+  var ends = {};
+  var lines = {};
+  var named = {};
+  var lit = [];
+  var litSubject = null;
+  var pinned = null;
+
+  function endKey(element) {
+    return element.id || element.getAttribute("data-name");
+  }
+
+  Array.prototype.forEach.call(svg.querySelectorAll(ENDS), function (element) {
+    ends[endKey(element)] = element;
+  });
+  Array.prototype.forEach.call(svg.querySelectorAll("[data-source][data-target]"), function (line) {
+    named[line.getAttribute("data-name")] = line;
+    [line.getAttribute("data-source"), line.getAttribute("data-target")].forEach(function (end) {
+      lines[end] = (lines[end] || []).concat([line]);
+    });
+  });
+
+  // What a pointer on *target* stands for: a line (an overview's count square stands for
+  // its pair's line), an end -- connected or not, which then lights alone -- or nothing.
+  function subjectOf(target) {
+    if (!target || !target.closest) {
+      return null;
+    }
+    var square = target.closest("g.edge-count");
+    if (square) {
+      return named[square.getAttribute("data-name")] || null;
+    }
+    var line = target.closest("[data-source][data-target]");
+    if (line) {
+      return line;
+    }
+    var end = target.closest(ENDS);
+    return end || null;
+  }
+
+  // Every drawn element's <title> text, keyed by the element: filled once, below, when the
+  // titles are removed from the page. One source of text for the status line, the panel's
+  // heading and the tooltip.
+  var titles = new Map();
+
+  function titleOf(element) {
+    return titles.get(element) || "";
+  }
+
+  function mark(element) {
+    element.classList.add("highlight");
+    lit.push(element);
+  }
+
+  function light(subject) {
+    lit.forEach(function (element) {
+      element.classList.remove("highlight");
+    });
+    lit = [];
+    litSubject = subject;
+    renderStatus();
+    if (!subject) {
+      return;
+    }
+    mark(subject);
+    var joined = subject.hasAttribute("data-source") ? [subject] : lines[endKey(subject)] || [];
+    joined.forEach(function (line) {
+      mark(line);
+      [line.getAttribute("data-source"), line.getAttribute("data-target")].forEach(function (end) {
+        if (ends[end]) {
+          mark(ends[end]);
+        }
+      });
+    });
+  }
+
+  function pin(subject) {
+    pinned = subject;
+    light(subject);
+  }
+
+  // The status line shows the title of what is lit; with a host it stays empty while something
+  // is selected, because the bar under the picture already shows the selection.
+  function renderStatus() {
+    if (statusLine) {
+      statusLine.textContent = host && selected ? "" : litSubject ? titleOf(litSubject) : "";
+    }
+  }
+
+  // The selection, with a host: a plain click on any drawn element with an entry selects it --
+  // a pinnable one is pinned as before, any other gets the outline class "selected" -- and the
+  // bar under the picture shows its text and the Open in model button. In a browser the bar
+  // stays hidden and nothing is ever selected.
+  var selectionBar = document.getElementById("selection");
+  var selectionText = document.getElementById("selection-text");
+  var openButton = document.getElementById("open-in-model");
+  var nextButton = document.getElementById("selection-next");
+  var selected = null;
+  var selectedEntry = null;
+  // A reveal's drawings of the element on this view, in document order, and the one selected:
+  // the bar offers the next while there is more than one, until a click chooses for itself.
+  var revealList = [];
+  var revealAt = 0;
+  // The bar's line for the revealed drawing before its "k of n" was added.
+  var revealLine = "";
+
+  function select(element, subject) {
+    applySelection(element, subject);
+    renderStatus();
+  }
+
+  function applySelection(element, subject) {
+    if (selected) {
+      selected.classList.remove("selected");
+    }
+    nextButton.hidden = true;
+    selected = element;
+    selectedEntry = element ? entryOf(element) : null;
+    if (element && element !== subject) {
+      element.classList.add("selected");
+    }
+    if (!element) {
+      selectionBar.hidden = true;
+      return;
+    }
+    if (selectedEntry.refused) {
+      showLine(refusalLine(element, selectedEntry));
+      return;
+    }
+    showLine(titleOf(element).split("\n")[0] || element.getAttribute("data-name") || "", true);
+  }
+
+  function showLine(text, openable) {
+    selectionText.textContent = text;
+    openButton.hidden = !openable;
+    selectionBar.hidden = false;
+  }
+
+  function refusalLine(element, entry) {
+    var name = element.getAttribute("data-name") || "";
+    return entry.refused === "several-files"
+      ? name + " is declared in more than one file \u2014 Check Model names them"
+      : name + " is declared in no file \u2014 Check Model reports it";
+  }
+
+  // Opening hands the file and the member to the host; the editor beside takes the focus and
+  // the page no longer hears the pointer leave, so the tooltip is hidden first. A refused entry
+  // opens nothing and says why on the line under the picture.
+  function openEntry(element, entry) {
+    holdTip();
+    if (entry.refused) {
+      showLine(refusalLine(element, entry));
+      return;
+    }
+    host.open(entry.file, typeof entry.member === "string" ? entry.member : null);
+  }
+
+  openButton.addEventListener("click", function () {
+    if (host && selected && selectedEntry && !selectedEntry.refused) {
+      openEntry(selected, selectedEntry);
+    }
+  });
+
+  // The list panel: an overview's count square names its pair and its count in its
+  // <title>, and carries the connectors themselves in a <desc> that draws nothing, one row
+  // per line. A row is the connector's own IBD line and its interface, and -- after a tab --
+  // the description drawn under it. A port whose interface has more lines than its hover
+  // shows carries every line in a <desc> of its own, one whole row per line, no note. The
+  // panel is what lists them -- the native tooltip truncated a long list and could neither
+  // wrap nor scroll -- and it is opened, and closed again, by the click that pins the subject.
+  var panel = document.getElementById("connectors");
+  var panelHead = document.getElementById("connectors-head");
+  var panelList = document.getElementById("connectors-list");
+  var panelSquare = null;
+
+  function closePanel() {
+    panelSquare = null;
+    if (panel) {
+      panel.hidden = true;
+      panelList.textContent = "";
+    }
+  }
+
+  function listingOf(element) {
+    return element.querySelector ? element.querySelector("desc.connector-list, desc.member-list") : null;
+  }
+
+  function connectorsOf(element) {
+    var listing = listingOf(element);
+    return listing
+      ? (listing.textContent || "").split("\n").filter(function (name) {
+          return name !== "";
+        })
+      : [];
+  }
+
+  function showConnectors(owner) {
+    if (!panel) {
+      return;
+    }
+    // A connector row's tab parts a note from its line; a member row is shown whole.
+    var notes = listingOf(owner).classList.contains("connector-list");
+    panelSquare = owner;
+    panelHead.textContent = titleOf(owner).split("\n")[0];
+    panelList.textContent = "";
+    connectorsOf(owner).forEach(function (row) {
+      var parts = notes ? row.split("\t") : [row];
+      var item = document.createElement("li");
+      item.textContent = parts[0];
+      if (parts.length > 1 && parts[1] !== "") {
+        var note = document.createElement("span");
+        note.className = "note";
+        note.textContent = parts.slice(1).join(" ");
+        item.appendChild(note);
+      }
+      panelList.appendChild(item);
+    });
+    panel.hidden = false;
+  }
+
+  // The close button ends what the click that opened the list began, as a second click on the
+  // same owner does: the pin and the selection go together, so no Open in model outlives them.
+  if (panel) {
+    document.getElementById("connectors-close").addEventListener("click", function () {
+      closePanel();
+      pin(null);
+      select(null, null);
+    });
+  }
+
+  // The page's own tooltip, at once and next to the pointer: the cached title of the nearest
+  // titled ancestor of what the pointer is on, whatever the highlight's subject is. An
+  // ancestor walk and a cache lookup, never a query.
+  var tip = document.getElementById("tip");
+
+  function tipText(target) {
+    for (var element = target; element && element !== svg; element = element.parentNode) {
+      if (titles.has(element)) {
+        return titles.get(element);
+      }
+    }
+    return "";
+  }
+
+  function hideTip() {
+    if (tip) {
+      tip.hidden = true;
+    }
+  }
+
+  // With a host the tooltip is held hidden from an open and from the window's blur until the
+  // pointer moves on: at the release Chromium fires pointerover at the element just opened, and
+  // the editor beside then takes the focus, so the page never hears the pointer leave. Only a
+  // pointermove away from where the hold began shows it again. Without a host nothing holds it.
+  var tipHeld = null;
+  var pointerAt = { x: 0, y: 0 };
+
+  function holdTip() {
+    hideTip();
+    tipHeld = { x: pointerAt.x, y: pointerAt.y };
+  }
+
+  function showTip(event) {
+    pointerAt = { x: event.clientX, y: event.clientY };
+    if (tipHeld) {
+      if (event.type !== "pointermove" || (event.clientX === tipHeld.x && event.clientY === tipHeld.y)) {
+        hideTip();
+        return;
+      }
+      tipHeld = null;
+    }
+    var text = tip && !press ? tipText(event.target) : "";
+    if (!text) {
+      hideTip();
+      return;
+    }
+    if (tip.textContent !== text) {
+      tip.textContent = text;
+    }
+    tip.hidden = false;
+    // Kept inside the window: flipped to the pointer's other side where it would overflow.
+    var width = window.innerWidth || 0;
+    var height = window.innerHeight || 0;
+    var x = event.clientX + 14;
+    var y = event.clientY + 18;
+    if (width && x + (tip.offsetWidth || 0) > width - 4) {
+      x = Math.max(4, event.clientX - (tip.offsetWidth || 0) - 8);
+    }
+    if (height && y + (tip.offsetHeight || 0) > height - 4) {
+      y = Math.max(4, event.clientY - (tip.offsetHeight || 0) - 8);
+    }
+    tip.style.left = x + "px";
+    tip.style.top = y + "px";
+  }
+
+  // One delegated listener: the pointer resting on an element lights what it stands for,
+  // unless a click pinned something or a press is under way; the tooltip shows either way.
+  svg.addEventListener("pointerover", function (event) {
+    showTip(event);
+    if (pinned || press) {
+      return;
+    }
+    light(subjectOf(event.target));
+  });
+  svg.addEventListener("pointerout", hideTip);
+
+  var input = document.getElementById("search");
+  var count = document.getElementById("search-count");
+  var titled = Array.prototype.filter
+    .call(svg.querySelectorAll("title"), function (title) {
+      return title.parentNode !== svg;
+    })
+    .map(function (title) {
+      // The search reads the list beside the title, so a bundle is still found by any one of
+      // its connectors' names now that the title carries the head line alone, and a port by
+      // a member line past its hover's cap.
+      var element = title.parentNode;
+      var text = (title.textContent || "") + "\n" + connectorsOf(element).join("\n");
+      return { element: element, text: text.toLowerCase() };
+    });
+  // The search has read the titles; now the cache takes them and the nodes leave the page's
+  // DOM -- the view's own heading too, which would become the late native tooltip over the
+  // whole picture -- so the browser has nothing to show beside the page's tooltip.
+  Array.prototype.forEach.call(svg.querySelectorAll("title"), function (title) {
+    var owner = title.parentNode;
+    if (owner !== svg) {
+      titles.set(owner, title.textContent || "");
+    }
+    owner.removeChild(title);
+  });
+  var hits = [];
+  var current = -1;
+
+  function clearMarks() {
+    hits.forEach(function (element) {
+      element.classList.remove("hit");
+      element.classList.remove("current");
+    });
+    hits = [];
+    current = -1;
+  }
+
+  function reveal(element) {
+    var bounds = element.getBBox();
+    var grow = Math.max(1, (bounds.width * 1.5) / view.width, (bounds.height * 1.5) / view.height);
+    view.width = view.width * grow;
+    view.height = view.height * grow;
+    view.x = bounds.x + bounds.width / 2 - view.width / 2;
+    view.y = bounds.y + bounds.height / 2 - view.height / 2;
+    apply();
+  }
+
+  function show(index) {
+    if (!hits.length) {
+      return;
+    }
+    if (current >= 0) {
+      hits[current].classList.remove("current");
+    }
+    current = (index + hits.length) % hits.length;
+    hits[current].classList.add("current");
+    count.value = current + 1 + " of " + hits.length;
+    reveal(hits[current]);
+  }
+
+  function search() {
+    clearMarks();
+    var query = input.value.trim().toLowerCase();
+    if (!query) {
+      count.value = "";
+      return;
+    }
+    hits = titled
+      .filter(function (item) {
+        return item.text.indexOf(query) >= 0;
+      })
+      .map(function (item) {
+        return item.element;
+      });
+    hits.forEach(function (element) {
+      element.classList.add("hit");
+    });
+    if (hits.length) {
+      show(0);
+    } else {
+      count.value = "no match";
+    }
+  }
+
+  input.addEventListener("input", search);
+  input.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      show(event.shiftKey ? current - 1 : current + 1);
+    } else if (event.key === "Escape") {
+      input.value = "";
+      search();
+    }
+  });
+  document.getElementById("search-next").addEventListener("click", function () {
+    show(current + 1);
+  });
+  document.getElementById("search-previous").addEventListener("click", function () {
+    show(current - 1);
+  });
+  document.getElementById("zoom-in").addEventListener("click", function () {
+    zoomCentre(1.25);
+  });
+  document.getElementById("zoom-out").addEventListener("click", function () {
+    zoomCentre(1 / 1.25);
+  });
+  document.getElementById("zoom-fit").addEventListener("click", fit);
+  document.getElementById("reload").addEventListener("click", function () {
+    reloadPage();
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      hideTip();
+    }
+    if (event.target === input || event.ctrlKey || event.metaKey || event.altKey) {
+      return;
+    }
+    if (event.key === "+" || event.key === "=") {
+      zoomCentre(1.25);
+    } else if (event.key === "-") {
+      zoomCentre(1 / 1.25);
+    } else if (event.key === "0") {
+      fit();
+    }
+  });
+
+  // Arriving by the way up: the fragment names the member one came from, which is marked
+  // with the highlight, kept as a click keeps it, and panned to.
+  // In the tab the host hands the fragment over, already decoded.
+  var arrival = "";
+  try {
+    arrival = host
+      ? String((host.state && host.state.fragment) || "")
+      : decodeURIComponent(window.location.hash.slice(1));
+  } catch (error) {
+    arrival = "";
+  }
+  if (arrival) {
+    Array.prototype.some.call(svg.querySelectorAll('[data-role="member"]'), function (element) {
+      if (element.getAttribute("data-name") !== arrival) {
+        return false;
+      }
+      pin(element);
+      reveal(element);
+      return true;
+    });
+  }
+
+  // Show in Diagram, with a host -- a jump, never a search: the element is selected exactly as
+  // a click on it selects it, and centred. Of the file's drawn elements, those of the member
+  // where that member is drawn, else the element's own (no member), else any of the file's;
+  // drawn more than once, the first is selected and the bar says how many with a Next button.
+  // The search box and its marks are not touched; the search box gives up the focus so the
+  // page's keys work.
+  function revealModel(request) {
+    if (!request || typeof request.file !== "string") {
+      return;
+    }
+    var ofFile = drawn.filter(function (element) {
+      var entry = entryOf(element);
+      return entry !== null && entry.file === request.file;
+    });
+    function ofMember(member) {
+      return ofFile.filter(function (element) {
+        var held = entryOf(element).member;
+        return member === null ? typeof held !== "string" : held === member;
+      });
+    }
+    var found = typeof request.member === "string" ? ofMember(request.member) : [];
+    if (!found.length) {
+      found = ofMember(null);
+    }
+    if (!found.length) {
+      found = ofFile;
+    }
+    if (document.activeElement === input && input.blur) {
+      input.blur();
+    }
+    closePanel();
+    if (!found.length) {
+      var name = typeof request.name === "string" && request.name ? request.name : request.file;
+      dropReveal();
+      pin(null);
+      select(null, null);
+      showLine(name + " is not on this diagram as last generated");
+      return;
+    }
+    revealList = found;
+    selectRevealed(0);
+  }
+
+  function selectRevealed(index) {
+    revealAt = index;
+    var element = revealList[index];
+    var subject = subjectOf(element);
+    pin(subject);
+    select(element, subject);
+    if (revealList.length > 1) {
+      revealLine = selectionText.textContent;
+      selectionText.textContent += " \u2014 " + (index + 1) + " of " + revealList.length + " on this diagram";
+      nextButton.hidden = false;
+    }
+    reveal(element);
+  }
+
+  // Drops a reveal's offer of its other drawings, on any path that ends it: the list is
+  // emptied, Next is hidden, and a bar still showing the revealed drawing loses its count.
+  function dropReveal() {
+    if (revealList.length > 1 && selected === revealList[revealAt]) {
+      selectionText.textContent = revealLine;
+    }
+    revealList = [];
+    nextButton.hidden = true;
+  }
+
+  nextButton.addEventListener("click", function () {
+    if (revealList.length > 1) {
+      selectRevealed((revealAt + 1) % revealList.length);
+    }
+  });
+
+  if (host) {
+    window.addEventListener("blur", holdTip);
+    host.on("reveal", revealModel);
+    if (host.state && host.state.reveal) {
+      revealModel(host.state.reveal);
+    }
+  }
+})();
+</script>
+</body>
+</html>

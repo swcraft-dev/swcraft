@@ -1,0 +1,6 @@
+id: REQ-SAFETY-003
+title: Diagnostics
+description: Allocates NO level, so the component that satisfies it derives QM rather than inheriting one.
+req_type: req
+version: 1
+source: architecture

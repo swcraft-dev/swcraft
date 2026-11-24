@@ -1,0 +1,152 @@
+{
+  "passport_version": "1.0.0",
+  "contract_version": "12.0.0",
+  "layers": {
+    "swc": 15,
+    "interfaces": 23,
+    "connectors": 23,
+    "application_types": 0,
+    "implementation_types": 8,
+    "base_types": 3,
+    "requirements": 5,
+    "compositions": 4,
+    "tasks": 36,
+    "sequences": 0,
+    "hardware": 11,
+    "mapping_sets": 0,
+    "units": 0,
+    "compu_methods": 0,
+    "data_constraints": 0
+  },
+  "components": {
+    "ports": {
+      "total": 46,
+      "top": [
+        7,
+        5,
+        4,
+        4,
+        4,
+        3,
+        3,
+        3
+      ]
+    },
+    "hubs": [
+      7
+    ],
+    "unconnected": {
+      "total": 0,
+      "max_on_one": 0
+    },
+    "by_declared_level": {
+      "QM": 10,
+      "A": 0,
+      "B": 0,
+      "C": 5,
+      "D": 0
+    },
+    "runnables": 57
+  },
+  "interfaces": {
+    "sender_receiver": 21,
+    "client_server": 2,
+    "fan_out": {
+      "max": 2,
+      "top": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    }
+  },
+  "connectors": {
+    "assembly": 23,
+    "delegation": 2,
+    "links": 9
+  },
+  "hardware": {
+    "cores": 3,
+    "partitions": 3,
+    "memories": 4,
+    "rated_partitions": 0
+  },
+  "tasks": {
+    "idle": 17
+  },
+  "requirements": {
+    "on_all_site_kinds": 0,
+    "on_one_port": 0,
+    "unallocated": 0,
+    "stale_links": 0,
+    "links": 22
+  },
+  "identifiers": {
+    "max_length": 51,
+    "swc": {
+      "max_length": 25,
+      "mean_length": 22.133
+    },
+    "interfaces": {
+      "max_length": 21,
+      "mean_length": 18.13
+    },
+    "connectors": {
+      "max_length": 51,
+      "mean_length": 45.348
+    },
+    "application_types": {
+      "max_length": 0,
+      "mean_length": 0
+    },
+    "implementation_types": {
+      "max_length": 11,
+      "mean_length": 7.625
+    },
+    "base_types": {
+      "max_length": 8,
+      "mean_length": 7.667
+    },
+    "requirements": {
+      "max_length": 31,
+      "mean_length": 27.0
+    },
+    "compositions": {
+      "max_length": 28,
+      "mean_length": 19.5
+    },
+    "tasks": {
+      "max_length": 23,
+      "mean_length": 20.667
+    },
+    "sequences": {
+      "max_length": 0,
+      "mean_length": 0
+    },
+    "hardware": {
+      "max_length": 15,
+      "mean_length": 9.091
+    },
+    "mapping_sets": {
+      "max_length": 0,
+      "mean_length": 0
+    },
+    "units": {
+      "max_length": 0,
+      "mean_length": 0
+    },
+    "compu_methods": {
+      "max_length": 0,
+      "mean_length": 0
+    },
+    "data_constraints": {
+      "max_length": 0,
+      "mean_length": 0
+    }
+  }
+}

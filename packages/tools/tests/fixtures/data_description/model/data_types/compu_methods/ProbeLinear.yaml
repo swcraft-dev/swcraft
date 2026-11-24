@@ -1,0 +1,6 @@
+name: ProbeLinear
+kind: linear
+unit: ProbeUnitSpeed
+factor: 0.5
+offset: -10.0
+description: A linear conversion physical = internal * 0.5 - 10.

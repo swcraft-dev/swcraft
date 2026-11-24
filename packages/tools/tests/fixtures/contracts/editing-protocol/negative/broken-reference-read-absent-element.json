@@ -1,0 +1,56 @@
+{
+  "name": "broken-reference-read-absent-element",
+  "description": "A `read` at an element the model does not hold. The envelope is right in every respect — a declared layer, an `element` that is a legal single path segment — so pass A has nothing to say; only the model can tell that `swc` holds no `SpeedSensorSWC`. A read miss is a REJECTION like any other, answered with one `errorResult`, and not an exception the seam lets escape.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, whose `swc` layer holds `ExampleSWC` and `ExampleConsumerSWC` and no `SpeedSensorSWC`.",
+    "layers_present": [
+      "swc",
+      "interfaces",
+      "connectors",
+      "application_types",
+      "implementation_types",
+      "base_types",
+      "requirements",
+      "compositions",
+      "tasks",
+      "sequences",
+      "hardware",
+      "mapping_sets",
+      "units",
+      "compu_methods",
+      "data_constraints"
+    ],
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      }
+    ],
+    "baseline_state": "current",
+    "notes": "No `authorization` block, because a read takes no scope at all: reads are generic, unscoped and unaudited, and a refused read writes no audit record either — it has no lifecycle to record."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc",
+      "element": "SpeedSensorSWC"
+    }
+  },
+  "expected": {
+    "expected_error": "broken-reference",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "SpeedSensorSWC"
+      }
+    ],
+    "notes": "`broken-reference` is 'an address naming an element that is not there', and it is the same code pass C gives an inapplicable operation for the same reason. The sibling half of the split is `unknown-field`, which answers a layer or a field the REGISTRY does not declare — `{layer: nosuchlayer}` and `ExampleSWC.safety_level` — so the line is the registry's vocabulary against the model's content. The address echoed back is the one the client sent, which is what it has to change; the message names the step that failed and is not contract."
+  }
+}

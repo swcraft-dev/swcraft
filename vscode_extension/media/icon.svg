@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+  <!-- SWCraft: two software components joined by one stepped connector.
+       Ports sit on the facing edges: the provide port is filled, the require
+       socket is open. The line steps at right angles.
+       Monochrome by design: the Activity Bar paints it via currentColor. -->
+  <rect x="1" y="13.6" width="8.6" height="7.2"/>
+  <rect x="14.4" y="3.2" width="8.6" height="7.2"/>
+  <rect x="8.1" y="15.7" width="3" height="3" fill="currentColor"/>
+  <rect x="12.9" y="5.3" width="3" height="3"/>
+  <path d="M11.1 17.2 H12.15 V6.8 H12.9" stroke-linejoin="miter"/>
+</svg>

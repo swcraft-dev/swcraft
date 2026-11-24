@@ -1,0 +1,1335 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swcraft.dev/contracts/editing-protocol/protocol.schema.json",
+  "title": "SWCraft editing protocol",
+  "description": "The request and response shapes of the schema-driven transactional authoring protocol, implemented by swcraft_tools.editing (engine.handle_request is the seam). The document deliberately does NOT restate schema.py: an operation's `value` payload is arbitrary JSON here, because the registry validates it against the model schema at staging time and reports a `schema-violation` failure. For the same reason `layer`, `element` and field names are strings rather than closed enums — the registry derives the declared inventory from schema.py, so a layer, field or element kind the registry does not declare is an `unknown-field` failure, not a malformed request.",
+  "$comment": "Cross-file references from vector.schema.json resolve against this $id; the last path segment equals this file's name on disk, so a resolver may be built from either. This document is a definitions library and deliberately declares NO root `$ref`: a union of $defs/request and $defs/response would accept a response where a request belongs, which is precisely the mistake a validator built from it must not be able to make, so consumers address `#/$defs/request` or `#/$defs/response` explicitly. `error_class_map` is a contract annotation rather than a validation keyword: it maps every member of $defs/errorCode to exactly one member of $defs/failureClass, so a vector cannot pair `stale-baseline` with `failure_class: \"invalid\"` and still pass the gate. Its source of truth is the decision record's `## Error codes` fenced block, which the closed consistency test parses and compares against this map rather than restating either. The map's own pairing rule IS enforceable by a validator and is stated as such: $defs/errorDetail and $defs/errorResult each carry an `allOf` of four conditional branches that reproduce this map exactly (pinned by the same module), so a client holding nothing but a JSON Schema validator refuses a disagreeing pair where the SWCraft parser does. Every `\"type\": \"integer\"` here is JSON Schema's integer, a number with no fractional part: `2.0` is the integer 2, and the SWCraft parser reads it so at every such field (one validator, `swcraft_tools.query.integral`) and writes every integer back as a plain integer (the contracts README).",
+  "error_class_map": {
+    "schema-violation": "invalid",
+    "unknown-field": "invalid",
+    "invalid-identifier": "invalid",
+    "broken-reference": "invalid",
+    "identity-conflict": "invalid",
+    "immutable-field": "invalid",
+    "stale-baseline": "stale",
+    "unauthorized-delta": "unauthorized",
+    "partial-change-set": "partial",
+    "consistency-violation": "invalid",
+    "over-budget": "invalid"
+  },
+  "$defs": {
+    "operationName": {
+      "description": "The five protocol operations. This is the closed set the `replacement_operation` field of the MCP tool decision table draws from. `rename` is deliberately absent: identity is fixed at `create`, and a rename is expressed as `remove` + `create` + the reference updates in one change set.",
+      "enum": ["discover", "read", "create", "update", "remove"]
+    },
+
+    "changeOperationName": {
+      "description": "The three operations a change set may carry.",
+      "enum": ["create", "update", "remove"]
+    },
+
+    "name": {
+      "description": "An element identity or a declared field/step name. Deliberately not constrained to the AUTOSAR `Identifier` pattern: `requirements` are identified by `id` (`REQ-SPEED-001`), which is legal model content and illegal as an ARXML identifier. The identifier rule is checked by the engine on the *emitted* form and reported as `invalid-identifier`, which is a semantic rejection rather than a malformed request.",
+      "type": "string",
+      "minLength": 1
+    },
+
+    "identity": {
+      "description": "An element identity — the value of a layer's declared identity field, and the ONE client-supplied token the registry composes a storage path from (a `create` names a file after it: one YAML file per element). It is therefore held to a single path segment: `.` and `..` are refused outright, and so is any value carrying `/`, `\\` or NUL. That is the no-traversal rule made structural — a traversal identity such as `../../etc/passwd` is a malformed request the envelope has no branch for, not a value some later layer has to sanitize (negative/traversal-identity-read-address.json, negative/traversal-identity-create-address.json). It is deliberately NOT the AUTOSAR `Identifier` pattern, which `requirements` ids (`REQ-SPEED-001`) legitimately violate; the identifier rule is checked by the engine on the *emitted* form and reported as `invalid-identifier`.",
+      "type": "string",
+      "pattern": "^(?!\\.\\.?$)[^/\\\\\\x00]+$"
+    },
+
+    "layerName": {
+      "description": "A model layer as the registry declares it (`swc`, `interfaces`, `connectors`, `data_types`, `requirements`, `compositions`, `tasks`, `sequences`, `hardware`). Not an enum: the registry derives the layer set from schema.py, and an undeclared layer is an `unknown-field` failure.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+
+    "revisionToken": {
+      "description": "The baseline revision token: opaque and version-prefixed, derived from `model_fingerprint()` in packages/tools/src/swcraft_tools/session.py. The body after the prefix carries no client-checkable meaning — it is deliberately not the bare digest, so the framing rules stay changeable without a protocol break. Clients compare tokens for equality and nothing else.",
+      "type": "string",
+      "pattern": "^rev[0-9]+:[A-Za-z0-9_-]{8,512}$"
+    },
+
+    "memberIdentity": {
+      "description": "How one member of a nested collection is identified, published per collection by discovery. `field` — a single declared identity field, carried as a string (`{member: \"pOut\"}`). `composite` — a tuple of declared fields, carried as an object (`{member: {\"swc\": \"X\", \"instance\": null, \"runnable\": \"R\"}}`, the `(swc, instance, runnable)` triple of `Task.runnables` and `Sequence.steps` since contract `9.0.0`). An identity field the member kind declares OPTIONAL — `swc` and `instance`, exactly one of which a member sets — reads as `null` when it is absent, in an address as in a payload: `{\"swc\": \"X\", \"runnable\": \"R\"}` and `{\"swc\": \"X\", \"instance\": null, \"runnable\": \"R\"}` name one member, and a scope written in one spelling covers a change written in the other. A REQUIRED identity field (`runnable`) is never read so: an identity without it names nothing. What a server EMITS — a delta's address, a `full` member, an `index` identity, a page cursor — always carries every declared key, the absent one spelled `null`; a `summary` row omits an unset selector, and its remaining keys still address the member. `whole_value` — the member IS its identity, carried as the member's own value (`{member: \"REQ_EXAMPLE_001@1\"}` for `SWComponent.satisfies`, `{member: {\"type\": \"timing\", \"period\": 0.01}}` for `Runnable.events`); such a LIST member has no addressable interior, so the only operations on it are `create` and `remove`, and a change to it projects as one of each. A `whole_value` LIST is a MULTISET: its owners impose no uniqueness rule, so the same value may appear more than once; `create` adds ONE occurrence, `remove` removes ONE occurrence, and a duplicate is never reported as `identity-conflict` (`examples/create-and-remove-duplicate-runnable-events.json`). A map declares `whole_value` too, and there it reads differently in exactly one respect: the ENTRY's identity is its key (`differ.py`'s `_self_key` over `SWComponent.memory`, whose dumped items are the pool names), while the entry's VALUE is ordinary addressable content an `update` at `{key: ...}` writes. The STEP form is decided by `collectionDescriptor.kind` (`member` for a list, `key` for a map), not by this field. The three values are exactly `differ.py`'s `_name_key`, `_swc_runnable_key` and `_value_key`/`_self_key`, so the address vocabulary and the review surface's vocabulary are one.",
+      "enum": ["field", "composite", "whole_value"]
+    },
+
+    "pathStep": {
+      "description": "One step into an element: a declared field, a nested collection member by its identity, or a map key. Exactly one form per step. There is deliberately NO ordinal form: nothing in an address is positional, because an approved `{index: 0}` denotes a different item as soon as anything is inserted before it, and the differ that produces the review surface never matches positionally either. `field` and `key` are names; a `member` identity is any JSON value, for the reason its own `$comment` gives.",
+      "type": "object",
+      "oneOf": [
+        {
+          "properties": { "field": { "$ref": "#/$defs/name" } },
+          "required": ["field"],
+          "additionalProperties": false
+        },
+        {
+          "$comment": "A member step. Its value is the member's identity in whichever of the three forms `collectionDescriptor.member_identity` publishes for that collection, and the schema deliberately admits ANY JSON value here: a `field` identity is a string and a `composite` one an object, but a `whole_value` identity is the member's own value, which for a declared member kind may equally be a number, a boolean, an array or null. Which values are legal members of which collection is a registry fact validated against schema.py over the staged result — reported as `unknown-field` or `schema-violation` — exactly as an operation's `value` payload is; constraining it here would restate schema.py, which this document deliberately does not do. A `whole_value` LIST is additionally a MULTISET: `create` adds one occurrence, `remove` removes one, duplicates are legal and are never `identity-conflict`, and a `remove` plus a `create` of the same value is a multiset operation rather than the banned same-identity replacement.",
+          "properties": {
+            "member": {
+              "$comment": "Any JSON value, including null."
+            }
+          },
+          "required": ["member"],
+          "additionalProperties": false
+        },
+        {
+          "properties": { "key": { "$ref": "#/$defs/name" } },
+          "required": ["key"],
+          "additionalProperties": false
+        }
+      ]
+    },
+
+    "address": {
+      "description": "A structured, identity-based address. Never a string path: no directory, filename, extension, path separator or `swc/{group}` group directory appears here in either direction, and nothing in it is positional. `element` is the value of the layer's declared identity field (`name`; `id` for `requirements`), constrained to a single path segment by $defs/identity because it is the one client token the registry turns into a file name. A `path` without an `element` is not an address.",
+      "type": "object",
+      "properties": {
+        "layer": { "$ref": "#/$defs/layerName" },
+        "element": { "$ref": "#/$defs/identity" },
+        "path": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/pathStep" },
+          "minItems": 1
+        }
+      },
+      "required": ["layer"],
+      "dependentRequired": { "path": ["element"] },
+      "additionalProperties": false
+    },
+
+    "elementAddress": {
+      "description": "An address that names an element, optionally with a path into it.",
+      "allOf": [
+        { "$ref": "#/$defs/address" },
+        { "required": ["element"] }
+      ]
+    },
+
+    "fieldAddress": {
+      "description": "An address that names a field, nested member or map entry of an element — an `update` target.",
+      "allOf": [
+        { "$ref": "#/$defs/address" },
+        { "required": ["element", "path"] }
+      ]
+    },
+
+    "value": {
+      "description": "A declared payload. Arbitrary JSON at the protocol level on purpose: the registry validates it against schema.py over the staged result, so a type, bound, enum-member or NaN/Infinity violation is a `schema-violation` rejection rather than a malformed request.",
+      "$comment": "Any JSON, including null."
+    },
+
+    "request": {
+      "description": "A protocol request. `discover`, `read` and `find` are single-operation requests; the three change-set operations are always carried by the `change_set` transaction envelope, which is why `change_set` appears here and is not itself one of the five operations of $defs/operationName.",
+      "oneOf": [
+        { "$ref": "#/$defs/discoverRequest" },
+        { "$ref": "#/$defs/readRequest" },
+        { "$ref": "#/$defs/readManyRequest" },
+        { "$ref": "#/$defs/modelMapRequest" },
+        { "$ref": "#/$defs/findRequest" },
+        { "$ref": "#/$defs/countRequest" },
+        { "$ref": "#/$defs/changeSetRequest" }
+      ]
+    },
+
+    "readManyRequest": {
+      "description": "A batched read: up to 16 addresses answered in ONE response, in order, each entry exactly as a single `readRequest` of that address with this `form` would be answered — including a refusal, which is that entry's `errorResult` and not the batch's. The budget is measured over the whole answer; an over-budget batch is refused with the single reads as its `hints`. The set keys (`where`, the page, `members`, `derived`, `join`) belong to one address and are refused here.",
+      "type": "object",
+      "properties": {
+        "operation": { "const": "read" },
+        "addresses": { "type": "array", "items": { "$ref": "#/$defs/address" }, "minItems": 1, "maxItems": 16 },
+        "form": { "$ref": "#/$defs/readForm" }
+      },
+      "required": ["operation", "addresses"],
+      "additionalProperties": false
+    },
+
+    "findRequest": {
+      "description": "The `find` request, in exactly one of its forms. `names`: each name resolved across every layer's identities and the member names of components (ports, runnables), interfaces (data elements, operations) and compositions (ports, members, delegations) — exact, then case-insensitive, then by its words, then a near spelling — answered with up to five candidates per name — fewer when the request carries more than three names (four for four, three for five, two for six to eight, one for nine to sixteen), sixteen in all; bounded by the number of names, never by the model. The sixteen-in-all bound is the server's behaviour: this schema checks the per-name ceiling of five alone. `text`: the requirements whose `id`, `title` and `description` hold every word of the phrase — each query word equal to or a prefix of a distinct word of that text, never a substring — answered with up to sixteen in `id` order and `more` counting the rest; the requirements layer alone, so element names never take its places. `for_requirement`: the trace search's ranking for that one requirement — the ranking `swcraft experiment trace` computes under its default configuration, the project's rejected decisions and its name words — with `candidates` places (1 to 10, default 3), never re-ordered; `candidates` belongs to this form alone.",
+      "type": "object",
+      "properties": {
+        "operation": { "const": "find" },
+        "names": { "type": "array", "items": { "type": "string", "minLength": 1, "pattern": "\\S" }, "minItems": 1, "maxItems": 16 },
+        "text": { "type": "string", "minLength": 1, "pattern": "\\S" },
+        "for_requirement": { "type": "string", "minLength": 1, "pattern": "\\S" },
+        "candidates": { "type": "integer", "minimum": 1, "maximum": 10 }
+      },
+      "required": ["operation"],
+      "oneOf": [{ "required": ["names"] }, { "required": ["text"] }, { "required": ["for_requirement"] }],
+      "dependentRequired": { "candidates": ["for_requirement"] },
+      "additionalProperties": false
+    },
+
+    "countRequest": {
+      "description": "A read with `form: \"count\"` (accepted and not published in `reads.forms`): the number of things the same `readRequest` without a page would answer — the elements of a layer, the members of a collection or of a member slice, or the identity rows of a `derived`/`join` read — after `where`. No `limit`, no `after`. A count carrying `derived` or `join` counts identity rows, which are answered over a set, so it is addressed at a layer as such a read is (`$defs/layerOnlyAddress`).",
+      "type": "object",
+      "properties": {
+        "operation": { "const": "read" },
+        "address": { "$ref": "#/$defs/address" },
+        "form": { "const": "count" },
+        "where": { "$ref": "#/$defs/readRequest/properties/where" },
+        "members": { "$ref": "#/$defs/readRequest/properties/members" },
+        "derived": { "$ref": "#/$defs/readRequest/properties/derived" },
+        "join": { "$ref": "#/$defs/readRequest/properties/join" }
+      },
+      "required": ["operation", "address", "form"],
+      "additionalProperties": false,
+      "if": { "$ref": "#/$defs/rowRequest" },
+      "then": { "properties": { "address": { "$ref": "#/$defs/layerOnlyAddress" } } }
+    },
+
+    "modelMapRequest": {
+      "description": "A read with NO address: the bounded model map — every layer's element count, the identities of the layers holding at most fifty elements, in registry order, and the baseline token of the state they were read from. One call answers what exists, how much of it, and what a change set is stated against.",
+      "type": "object",
+      "properties": { "operation": { "const": "read" } },
+      "required": ["operation"],
+      "additionalProperties": false
+    },
+
+    "discoverRequest": {
+      "description": "Answers 'which layers, element kinds and fields are editable in this project, at which version, against which baseline'. Optionally narrowed to one layer, and optionally widened to `full`: `form` is optional, an omitted one is served in the channel's default — `summary`, the protocol's, or `baseline` for a project-wide `discover` over the MCP server, which publishes its default in `reads.discover.default_form`; a `discover` naming a `layer` is `summary` on both — and the response echoes the form it was served in. `null` is refused rather than read as 'no form named' — an omitted key is how this protocol says nothing.",
+      "type": "object",
+      "properties": {
+        "operation": { "const": "discover" },
+        "layer": { "$ref": "#/$defs/layerName" },
+        "form": { "$ref": "#/$defs/discoverForm" }
+      },
+      "required": ["operation"],
+      "additionalProperties": false
+    },
+
+    "whereClause": {
+      "description": "A single test over one DECLARED field, in the vocabulary `discover` publishes. Exactly one of `equals` and `exists`: `equals` compares the field's published value as JSON — the same canonical equality a `member` step is resolved by, so `1` reaches a float field holding `1.0` and `true` never reaches one holding `1` — and `exists` asks whether the thing carries a VALUE for the field: a field it does not carry, a `null` and the empty string `\"\"` are no value, while every other value — `0`, `false` and an empty map `{}` included — is one; that is a different question from `equals: null`, which matches a DECLARED field holding `null` and nothing else. There are deliberately no comparison operators and no `or`: one operator is a vocabulary and three is a query language, so a bound such as `period < 0.01` is served by reading the projection and comparing client-side. A clause naming a field no element kind at the address declares is `unknown-field`; one naming a COLLECTION field is `schema-violation`, because a collection is a set with an address of its own and is filtered there. A `field` spelled `derived.NAME.PATH` names a COMPUTED value of the row instead: `NAME` is one of the request's own `derived` names and `PATH` a leaf of its published `shape` — the row path a join condition names (`derived.effective_level.rating`, `derived.core.core`); the clause is applied once the values are computed and before the page is cut, so a `count` counts the rows it keeps, and `swcraft query --request` accepts the same clause. A `NAME` the request does not ask for in `derived`, and a `PATH` naming no value of that shape, are both `unknown-field`; so is `exists: false` or `equals: null` over a SET-VALUED name (`rows: \"one per value\"`), because a computed value with no value yields no row and such a clause would never select an element without one — 'none' is the layer's index minus the rows the value yields. Over a single-valued name (`rows: \"one\"`) both keep their meaning (`derived.core.core` `exists: false` keeps a task whose core does not resolve). A joined read's clause names a value of its own row; the outer read's names a value of the outer row.",
+      "type": "object",
+      "properties": {
+        "field": { "$ref": "#/$defs/name" },
+        "equals": { "$ref": "#/$defs/value" },
+        "exists": { "type": "boolean" }
+      },
+      "required": ["field"],
+      "additionalProperties": false,
+      "oneOf": [
+        { "required": ["equals"], "not": { "required": ["exists"] } },
+        { "required": ["exists"], "not": { "required": ["equals"] } }
+      ]
+    },
+
+    "readForm": {
+      "description": "How WIDE a read answers, never how deep: `summary` publishes each element's identity, its placement, its discriminator, its required scalar fields, every scalar reference to another element (required or optional — a port's `interface`, a connector's `composition`, an endpoint's `swc` or `composition`, a composition member's `type` or `composition`) and every collection as a COUNT; an optional reference that is not set is OMITTED from a summary rather than published as null, so its absence there means exactly that it is unset, and so is the unset selector of a composite member identity (a task entry's or a sequence step's `swc` or `instance`, contract `9.0.0`), whose remaining keys still address the member — `full` publishes it as null, and `full` alone publishes the fields a summary drops (a port's `observed_interface` among them); `full` publishes every declared field; `index` publishes identities and a count alone, each identity in the very form the address step that reaches that member accepts back — a string for a `field` collection, an OBJECT keyed by the declared tuple for a `composite` one, the member itself for a `whole_value` list, and the key for a map entry — so an identity read out of an index is replayable verbatim as the next request's `member` (or `key`) step. No form truncates a value — a response that would exceed the server's budget is refused, never cut.",
+      "enum": ["summary", "full", "index"]
+    },
+
+    "discoverForm": {
+      "description": "How much PROSE a `discover` answers with, and whether it spells out the declared defaults — never which descriptors come back, and never how many. `summary` is every descriptor `description` stripped, and the three declared descriptor booleans — a layer's `optional`, a field's `required` and `immutable` — omitted where they are `false`: in a `summary` an absent one of the three MEANS `false`, a present one is `true`, and no other key is ever omitted for being `false` (`present: false` stays). The types, enum members, units, references, collections, identity and placement facts, `present`, the passport and the `reads` block are in both forms, so an element can be authored off a summary with no second round trip, and a field NAMED `description` keeps its `\"name\": \"description\"` row and loses only its own annotation. `full` is that same document with the prose in it and every one of the three booleans spelled out; a client that wants to index them without the rule asks for it. `index` is not a discover form: it is a read's 'identities and a count', and a discovery has no set of model things to index. `baseline` answers the passport, the `reads` block, the token and an EMPTY `layers` array — for a client that already holds the schema (the agent profile carries it generated) and needs only the token a change set is stated against; a `layer` beside it is still checked and narrows nothing. `summary` is the protocol's DEFAULT — the MCP server serves a project-wide `discover` naming no form as `baseline` instead, and publishes so in `reads.discover.default_form` — because this response is a function of the CONTRACT rather than of the model — the same to within a few dozen bytes on a two-element project and on a large one — and the prose was 60 % of it at 97.7 % of the server's response budget.",
+      "enum": ["summary", "full", "baseline"]
+    },
+
+    "memberPath": {
+      "description": "The `members` key of a read: the published name of a declared COLLECTION field, or a dotted PATH of them (`runnables.writes`) where each later step is a collection of the member kinds the previous step's collection declares. The pattern refuses an EMPTY step (`.`, `.ports`, `ports.`) and nothing else: which names are declared is the registry's answer, so an undeclared step is `unknown-field` from the engine and never a malformed request, exactly as a `$defs/name` field is.",
+      "type": "string",
+      "pattern": "^[^.]+(\\.[^.]+)*$"
+    },
+
+    "derivedNames": {
+      "description": "Computed values a read asks to be added to its identity rows, each the name of one entry of the server's vocabulary, published by `discover` as `readsCapability.derived`. A name outside it is `unknown-field` and a name at a set it does not apply at is `schema-violation`, both from the engine; the envelope's opinion is only that the array names at least one value and none twice.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/name" }
+    },
+
+    "layerOnlyAddress": {
+      "description": "A `$defs/address` that names a whole layer and nothing in it. Identity rows are answered over a set, so a request carrying `derived` or `join`, and every joined read, is addressed at a layer; an element, field, member or entry address is `schema-violation`.",
+      "$ref": "#/$defs/address",
+      "not": { "required": ["element"] }
+    },
+
+    "joinedRead": {
+      "description": "The read one `join` entry combines the outer rows with: a layer address with optionally `members`, `where` and `derived`, answered as identity rows. It carries no `form` (rows are always wrapped), no page (`limit`, `after`) and no `join` of its own — nested reads are answered whole, unmeasured and unrefused, and only the final joined answer is measured.",
+      "type": "object",
+      "properties": {
+        "address": { "$ref": "#/$defs/layerOnlyAddress" },
+        "members": { "$ref": "#/$defs/memberPath" },
+        "where": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/whereClause" }
+        },
+        "derived": { "$ref": "#/$defs/derivedNames" }
+      },
+      "required": ["address"],
+      "additionalProperties": false
+    },
+
+    "joinAlias": {
+      "description": "The key a join entry's matched row nests under in the combined row. Dot-free, so a row path never has two readings, and never one of the row's own keys. Draft 2020-12 cannot compare one array item against another, so the rule that no entry repeats an earlier entry's alias is the parser's alone (a declared one-sided exemption of the parity gate).",
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+      "not": { "enum": ["element", "through", "member", "key", "derived"] }
+    },
+
+    "joinCondition": {
+      "description": "One equality of an inner join: the value at `left` in the combined row so far equals the value at `right` in the joined read's row, compared canonically (the equality a `where` clause and a cursor use). Both are dotted row paths (`element`, `through.0`, `member.port`, `derived.NAME.KEY`, `ALIAS.…`), checked by the engine against the declared row shape before any row is read; a path outside it is `schema-violation`.",
+      "type": "object",
+      "properties": {
+        "left": { "$ref": "#/$defs/name" },
+        "right": { "$ref": "#/$defs/name" }
+      },
+      "required": ["left", "right"],
+      "additionalProperties": false
+    },
+
+    "join": {
+      "description": "An INNER join, applied entry by entry in order: an outer row combines with every row of the entry's joined read whose `right` values equal its own `left` values, the match nesting under `as`, and a row with no match is dropped. A later entry's `left` may reach an earlier entry's `as`. Identical combined rows collapse to one, and the whole row is the page cursor. Each `left` and `right` path names one value of the DECLARED row it reads — `element`, `through.N` (`through.N.F` for a composite step), `member` (`member.F` for a composite identity), `key`, `derived.NAME.…` down to a leaf of the name's published `shape`, and `AS.…` recursively — and a path outside that shape is `schema-violation` from the engine, decided before any row is read, so it is refused on an empty model too. At most 8 entries (`reads.join.max_entries`): a ninth is `schema-violation`, decided from the request alone.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "with": { "$ref": "#/$defs/joinedRead" },
+          "on": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "$ref": "#/$defs/joinCondition" }
+          },
+          "as": { "$ref": "#/$defs/joinAlias" }
+        },
+        "required": ["with", "on", "as"],
+        "additionalProperties": false
+      }
+    },
+
+    "rowRequest": {
+      "description": "The condition under which a read answers IDENTITY ROWS rather than today's shapes: it carries `derived` or `join`. Named so that the request and the response state the one condition once.",
+      "anyOf": [{ "required": ["derived"] }, { "required": ["join"] }]
+    },
+
+    "rowForm": {
+      "description": "What a read answering identity rows must state: `form: \"index\"`, explicitly (an implicit `index` would contradict the published default table, where `index` is never a default), at a layer address.",
+      "required": ["form"],
+      "properties": {
+        "form": { "const": "index" },
+        "address": { "$ref": "#/$defs/layerOnlyAddress" }
+      }
+    },
+
+    "readRequest": {
+      "description": "Generic, unscoped and unaudited; carries no baseline token. The address may be a whole layer, one element, or a field/member/entry of an element. `form` is optional: omitted, the address chooses (a layer and a collection answer `summary`, an element, a scalar field, a member and a map entry answer `full`), and the response states which form was served. `where` is the filter: AND-composed clauses applied AT THE ADDRESS and BEFORE the form, so a slice is summarized, indexed, measured and refused exactly as the unfiltered set is. It is legal where there is a set to select from — a LAYER address (selecting elements) and a COLLECTION address (selecting members) — and `schema-violation` at every other address shape, each of which already names one thing. An empty result is an ANSWER and not a refusal. An empty `where` ARRAY is refused: an omitted key is how this protocol says nothing. `limit` and `after` are the page, legal at the same two address shapes and applied AFTER the filter and BEFORE the form — so `total` counts the slice and the window is published in whatever width the form chooses. The three keys compose in one request and none of them knows about the others: `where` chooses WHICH things are answered, the page chooses HOW MANY, and `form` chooses HOW MUCH OF EACH. `members` is the member slice: the published name of one declared COLLECTION field, or a dotted path of them (`runnables.writes`), legal at a LAYER address alone, answering every member it reaches across the whole layer with the identity of its owning element beside it and, for a path, the identity of each member it was reached through (`through`). It is a request key and not an address because `$defs/address` is explicit that a `path` without an `element` is not an address \u2014 \"every port on interface A\" crosses elements, so no address names it. The other three keys are unchanged by it: `where` filters the MEMBERS, the page windows them, and `form` publishes each at the collection's own member rule. `members` at any other address shape is `schema-violation`, and so is an empty step; the first step resolves against the layer's top-level kinds and each later step against the member kinds of the collection the step before it chose, and a step no element kind at that step declares is `unknown-field`; a step that IS declared and is not a collection is `schema-violation`, the mirror of a `where` clause naming a collection field, and so is a map anywhere but the last step.",
+      "type": "object",
+      "properties": {
+        "operation": { "const": "read" },
+        "address": { "$ref": "#/$defs/address" },
+        "form": { "$ref": "#/$defs/readForm" },
+        "where": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/whereClause" }
+        },
+        "limit": {
+          "description": "At most this many elements or members, in the address' own published order — for a layer, the registry's element-kind rank and then reader order, which is the order every form already answers in. `0` is not a page and is refused by the bound: a page of nothing says nothing about the model. Any size may be asked for; a page that still exceeds the server's budget is refused like any other response, and the refusal hints the size `readsCapability.hint_page_size` publishes.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "members": {
+          "description": "The published name of one declared COLLECTION field, or a dotted path of them (`runnables.writes`), answering every member it reaches across the WHOLE layer, each row carrying the owning element's identity beside the member and, for a path, `through`: the identity of each intermediate member, in path order, between `element` and the member. A row is `{element, member}` for a list collection and `{element, key, member}` for a map one, `through` following `element` on a path, which are exactly the steps that reach that member from the layer; a map may only be the last step, and a one-step slice carries no `through`. The `index` form and the page cursor publish the same row MINUS the member, `through` included, so a `next` names one member of one element unambiguously and is replayable verbatim. Legal at a LAYER address alone.",
+          "$ref": "#/$defs/memberPath"
+        },
+        "after": {
+          "description": "The identity to continue PAST — a KEYSET cursor, never an offset, and it is the `next` a previous page carried, replayable verbatim (a string for a `field` collection or a layer element, an OBJECT keyed by the declared tuple for a `composite` one, the member itself for a `whole_value` list, the key for a map entry). Keyset because the model is re-read from the files on every request: an offset silently skips or repeats elements when the set changes under a walk, while a cursor continues exactly where the last page stopped and is refused with `broken-reference` when the element it names has been removed since — which is the model's content having moved, reported rather than papered over. It requires `limit` (`dependentRequired` below, the rule `$defs/address` states for `path` and `element`): a page is a bounded window, and \"everything after X\" with no bound is the whole-set read the page exists to replace.",
+          "$ref": "#/$defs/value"
+        },
+        "derived": { "$ref": "#/$defs/derivedNames" },
+        "join": { "$ref": "#/$defs/join" }
+      },
+      "required": ["operation", "address"],
+      "dependentRequired": { "after": ["limit"] },
+      "additionalProperties": false,
+      "if": { "$ref": "#/$defs/rowRequest" },
+      "then": { "$ref": "#/$defs/rowForm" }
+    },
+
+    "changeSetRequest": {
+      "description": "`{baseline, operations}`, applied all-or-nothing. Deterministic validation and the semantic diff run over the staged result, and commit applies exactly the reviewed delta. An empty change set is not a request.",
+      "type": "object",
+      "properties": {
+        "operation": { "const": "change_set" },
+        "baseline": { "$ref": "#/$defs/revisionToken" },
+        "intent": {
+          "description": "Optional prose stating what the change set is for. Reviewed alongside the delta; never a substitute for it.",
+          "type": "string",
+          "minLength": 1
+        },
+        "operations": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/changeOperation" },
+          "minItems": 1
+        },
+        "complete": {
+          "description": "Ask the server to add the operation a deterministic rule's UNIQUE repair needs when the staged result breaks that rule, instead of refusing it; the added operations run after the client's, through every pass, gate and review, and their delta entries carry `origin`. A repair that is not unique is refused as without the flag. Today one rule completes: `data-type.application-type-unmapped`, repaired by naming the one declared mapping set that carries every unmapped type in the component's `data_type_mappings`. `false` is how the key is omitted.",
+          "type": "boolean"
+        }
+      },
+      "required": ["operation", "baseline", "operations"],
+      "additionalProperties": false
+    },
+
+    "changeOperation": {
+      "description": "One operation of a change set. A rename is not a member: it is a `remove`, a `create` and the reference updates in the same change set.",
+      "oneOf": [
+        { "$ref": "#/$defs/createOperation" },
+        { "$ref": "#/$defs/updateOperation" },
+        { "$ref": "#/$defs/removeOperation" }
+      ]
+    },
+
+    "createOperation": {
+      "description": "A new element, nested collection member or map entry at its address, with the complete declared payload. A map entry follows element semantics: `create` is the verb for a key the baseline does NOT hold, `update` for one it does, and the two are not interchangeable because `operation` is part of the authorization scope key. A `create` at an identity already taken — an element, a member or a map key — is `identity-conflict`, and so is a `remove` and a `create` at the SAME identity in one change set: same-identity replacement is banned GLOBALLY, for every uniquely identified element and member, because the semantic differ has no delta entry that means \"the same thing, relocated or differently identified\". A member of a `whole_value` LIST is outside both halves — such a collection is a multiset, so a repeated value is legal and a `remove` plus a `create` of the same value is a multiset operation. A `create` of a list member APPENDS AT THE END; there is no insert-at-position, because there is no position in an address. Creating the first element of an absent layer materializes the layer as a registry-internal side effect — there is no operation that creates a layer by itself.",
+      "type": "object",
+      "properties": {
+        "operation": { "const": "create" },
+        "address": { "$ref": "#/$defs/elementAddress" },
+        "value": { "$ref": "#/$defs/value" }
+      },
+      "required": ["operation", "address", "value"],
+      "additionalProperties": false
+    },
+
+    "updateOperation": {
+      "description": "A new value at a field or at a map-entry address the baseline already holds; `create` is the verb for a key it does not, and an `update` at an absent key is `broken-reference`. Writing a field discovery declares immutable is an `immutable-field` rejection, not an omission from a signature — which includes every field inside a `whole_value` collection member, whose identity is its whole value, so changing one is a `remove` plus a `create` of the member rather than an update inside it. Reordering a collection is an `update` at the COLLECTION's field address carrying the complete reordered list; there is no move step.",
+      "type": "object",
+      "properties": {
+        "operation": { "const": "update" },
+        "address": { "$ref": "#/$defs/fieldAddress" },
+        "value": { "$ref": "#/$defs/value" },
+        "confirm_links": {
+          "description": "On the update of a requirement's version ({layer: requirements, element: R, path: [{field: version}]}, the value a positive integer, which may equal the current version), the server also confirms every `satisfies` link naming R at another version or at none — a `remove` of that member and a `create` of `R@<new>` in the same list, only the `remove` when the list holds `R@<new>` already — as delta entries with `origin: server`, run after the client's operations and after the removals of a `with_dependents` remove. A member whose suffix is not a version, and a `derived_from` member, are left alone. Refused `schema-violation` on any other address or value. Omitted when false.",
+          "type": "boolean"
+        }
+      },
+      "required": ["operation", "address", "value"],
+      "additionalProperties": false
+    },
+
+    "removeOperation": {
+      "description": "The addressed element, nested member or map entry. Carries no value. References are validated against the staged result, so a change set that clears the referrers and removes the target together is accepted as a whole.",
+      "type": "object",
+      "properties": {
+        "operation": { "const": "remove" },
+        "address": { "$ref": "#/$defs/elementAddress" },
+        "with_dependents": {
+          "description": "On the removal of a whole component (layer `swc`, no path), the server also removes every referrer — connectors on it, composition members typed by it and their delegations, task runnable entries and sequence steps naming it (a sequence losing its last step goes whole) — as delta entries with `origin: server`, run after the client's operations. Refused `schema-violation` on any other address. Omitted when false.",
+          "type": "boolean"
+        }
+      },
+      "required": ["operation", "address"],
+      "additionalProperties": false
+    },
+
+    "response": {
+      "description": "A protocol response. Every form carries a `response` discriminator; a rejection of any kind is the single error result.",
+      "oneOf": [
+        { "$ref": "#/$defs/discoverResponse" },
+        { "$ref": "#/$defs/readResponse" },
+        { "$ref": "#/$defs/readManyResponse" },
+        { "$ref": "#/$defs/modelMapResponse" },
+        { "$ref": "#/$defs/findResponse" },
+        { "$ref": "#/$defs/findTextResponse" },
+        { "$ref": "#/$defs/findCandidatesResponse" },
+        { "$ref": "#/$defs/countResponse" },
+        { "$ref": "#/$defs/changeSetResponse" },
+        { "$ref": "#/$defs/errorResult" }
+      ]
+    },
+
+    "readManyResponse": {
+      "description": "The answer to a `readManyRequest`: one entry per address, in the request's order, each a `readResponse` or the `errorResult` a single read of it would have earned.",
+      "type": "object",
+      "properties": {
+        "response": { "const": "reads" },
+        "answers": {
+          "type": "array",
+          "items": { "oneOf": [{ "$ref": "#/$defs/readResponse" }, { "$ref": "#/$defs/errorResult" }] },
+          "minItems": 1
+        }
+      },
+      "required": ["response", "answers"],
+      "additionalProperties": false
+    },
+
+    "modelMapResponse": {
+      "description": "The answer to a `modelMapRequest`, bounded: the baseline token, every declared layer's element count in `counts`, and in `layers` the identities its `index` read publishes, in that read's order, for the layers holding at most fifty elements only. Over the response budget the largest listed layer is dropped from `layers` until the answer fits; the counts stay. A layer counted and not listed is read by a filtered or paged `index` read.",
+      "type": "object",
+      "properties": {
+        "response": { "const": "map" },
+        "baseline": { "$ref": "#/$defs/revisionToken" },
+        "counts": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "layers": { "type": "object", "additionalProperties": { "type": "array", "maxItems": 50 } }
+      },
+      "required": ["response", "baseline", "counts", "layers"],
+      "additionalProperties": false
+    },
+
+    "findResponse": {
+      "description": "The answer to a `findRequest` in its `names` form: the baseline token and, per name in the request's order, up to five candidates — sixteen in all across the names, fewer each above three names; `maxItems` states the per-name ceiling alone — (an address to send back verbatim, the tier it matched at and a one-line identity) or `none`, with `more` counting further matches.",
+      "type": "object",
+      "properties": {
+        "response": { "const": "find" },
+        "baseline": { "$ref": "#/$defs/revisionToken" },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "candidates": {
+                "oneOf": [
+                  { "const": "none" },
+                  {
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address": { "$ref": "#/$defs/address" },
+                        "tier": { "enum": ["exact", "case", "word", "near"] },
+                        "identity": { "type": "string" }
+                      },
+                      "required": ["address", "tier", "identity"],
+                      "additionalProperties": false
+                    }
+                  }
+                ]
+              },
+              "more": { "type": "integer", "minimum": 1 }
+            },
+            "required": ["name", "candidates"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["response", "baseline", "results"],
+      "additionalProperties": false
+    },
+
+    "findTextResponse": {
+      "description": "The answer to a `findRequest` in its `text` form: the baseline token, the phrase echoed and up to sixteen requirements in `id` order — each its address, a one-line identity (the id and the title, at most 72 characters; never the `document` field) and the words of its text the phrase's words matched, in the phrase's order — or `none`, with `more` counting further matches.",
+      "type": "object",
+      "properties": {
+        "response": { "const": "find" },
+        "baseline": { "$ref": "#/$defs/revisionToken" },
+        "text": { "type": "string" },
+        "candidates": {
+          "oneOf": [
+            { "const": "none" },
+            {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 16,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "address": { "$ref": "#/$defs/address" },
+                  "identity": { "type": "string" },
+                  "words": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+                },
+                "required": ["address", "identity", "words"],
+                "additionalProperties": false
+              }
+            }
+          ]
+        },
+        "more": { "type": "integer", "minimum": 1 }
+      },
+      "required": ["response", "baseline", "text", "candidates"],
+      "additionalProperties": false
+    },
+
+    "findCandidatesResponse": {
+      "description": "The answer to a `findRequest` in its `for_requirement` form: the baseline token, the requirement echoed, `neighbours` (the other linked requirements of its document, the ranking's `n`), the places best first — each a target group with its score and evidence and its rows, each row the protocol `address` of the element or member whose `satisfies` list would carry the link, the search's own `target`, its score, band and evidence — or `none`, and the links the requirement already has, which the ranking leaves out of its rows: at most sixteen, the first in the address order, and when links were left out `existing_links_more` counts them and `existing_links_read` is the `read` request that pages every link of the requirement (an `index` read of the requirements layer, `where` on its `id`, `derived: [\"realised_by\"]`, one row per link, `limit` the published `hint_page_size`, continued by `after`), sent back verbatim; the two keys are carried together or not at all, and only beside a full list of sixteen links. Projected one to one from the trace search's ranking and never re-ordered; a `text` evidence record's `terms` are the terms the requirement shares with the target. Scores are millionths, `{n, d}` with `d` 1000000.",
+      "type": "object",
+      "properties": {
+        "response": { "const": "find" },
+        "baseline": { "$ref": "#/$defs/revisionToken" },
+        "for_requirement": { "type": "string" },
+        "neighbours": { "type": "integer", "minimum": 0 },
+        "places": {
+          "oneOf": [
+            { "const": "none" },
+            { "type": "array", "minItems": 1, "maxItems": 10, "items": { "$ref": "#/$defs/tracePlace" } }
+          ]
+        },
+        "existing_links": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "object",
+            "properties": {
+              "address": { "$ref": "#/$defs/address" },
+              "target": { "$ref": "#/$defs/traceTarget" },
+              "member": { "type": "string" },
+              "version": { "type": ["integer", "null"] },
+              "confirmed": { "type": "boolean" }
+            },
+            "required": ["address", "target", "member", "version", "confirmed"],
+            "additionalProperties": false
+          }
+        },
+        "existing_links_more": { "type": "integer", "minimum": 1 },
+        "existing_links_read": { "$ref": "#/$defs/readRequest" }
+      },
+      "required": ["response", "baseline", "for_requirement", "neighbours", "places", "existing_links"],
+      "dependentRequired": {
+        "existing_links_more": ["existing_links_read"],
+        "existing_links_read": ["existing_links_more"]
+      },
+      "dependentSchemas": {
+        "existing_links_more": { "properties": { "existing_links": { "minItems": 16 } } }
+      },
+      "additionalProperties": false
+    },
+
+    "tracePlace": {
+      "description": "One place of the trace search's ranking: a target group (a component with its ports and runnables, or one element of another kind), its score and evidence, and its rows.",
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "object",
+          "properties": { "kind": { "type": "string" }, "name": { "type": "string" } },
+          "required": ["kind", "name"],
+          "additionalProperties": false
+        },
+        "score": { "$ref": "#/$defs/traceFigure" },
+        "evidence": { "$ref": "#/$defs/traceEvidence" },
+        "rows": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "address": { "$ref": "#/$defs/address" },
+              "target": { "$ref": "#/$defs/traceTarget" },
+              "score": { "$ref": "#/$defs/traceFigure" },
+              "band": { "enum": ["strong", "medium", "weak"] },
+              "evidence": { "$ref": "#/$defs/traceEvidence" }
+            },
+            "required": ["address", "target", "score", "band", "evidence"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["group", "score", "evidence", "rows"],
+      "additionalProperties": false
+    },
+
+    "traceTarget": {
+      "description": "A trace search target as the search addresses it: its kind (`swc`, `port`, `runnable`, `interface`, `composition`, `task`, `processor`, `core`, `memory`, `partition`), its owner (the component of a port or a runnable, else null) and its name.",
+      "type": "object",
+      "properties": {
+        "kind": { "type": "string" },
+        "owner": { "type": ["string", "null"] },
+        "name": { "type": "string" }
+      },
+      "required": ["kind", "owner", "name"],
+      "additionalProperties": false
+    },
+
+    "traceFigure": {
+      "description": "An exact figure as the trace search writes one: `n` over `d`.",
+      "type": "object",
+      "properties": { "n": { "type": "integer" }, "d": { "type": "integer" } },
+      "required": ["n", "d"],
+      "additionalProperties": false
+    },
+
+    "traceEvidence": {
+      "description": "The trace search's closed evidence records, in their fixed order, each only when it adds to the score: `name` (the target's name in the text), `neighbours` (the share of the document's linked requirements seeded here), `similar` (the similar requirements' text) and `text` (the terms shared with the target).",
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": { "kind": { "const": "name" }, "phrase": { "type": "string" } },
+            "required": ["kind", "phrase"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": { "const": "neighbours" },
+              "share": { "oneOf": [{ "type": "integer" }, { "$ref": "#/$defs/traceFigure" }] },
+              "seeded": { "type": "integer" },
+              "of": { "type": "integer" },
+              "examples": { "type": "array", "items": { "type": "string" } }
+            },
+            "required": ["kind", "share", "seeded", "of", "examples"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": { "const": "similar" },
+              "score": { "$ref": "#/$defs/traceFigure" },
+              "count": { "type": "integer" },
+              "examples": { "type": "array", "items": { "type": "string" } }
+            },
+            "required": ["kind", "score", "count", "examples"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": { "const": "text" },
+              "terms": { "type": "array", "items": { "type": "string" } }
+            },
+            "required": ["kind", "terms"],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+
+    "countResponse": {
+      "description": "The answer to a `countRequest`: the address and the set keys echoed, and the count.",
+      "type": "object",
+      "properties": {
+        "response": { "const": "count" },
+        "address": { "$ref": "#/$defs/address" },
+        "count": { "type": "integer", "minimum": 0 },
+        "where": { "$ref": "#/$defs/readRequest/properties/where" },
+        "members": { "$ref": "#/$defs/readRequest/properties/members" },
+        "derived": { "$ref": "#/$defs/readRequest/properties/derived" },
+        "join": { "$ref": "#/$defs/readRequest/properties/join" }
+      },
+      "required": ["response", "address", "count"],
+      "additionalProperties": false
+    },
+
+    "discoverResponse": {
+      "description": "The project passport plus the editable inventory, all derived from schema.py through the registry. Nothing here is a hand-maintained list, which is what makes a newly declared schema field reachable without a protocol change.",
+      "type": "object",
+      "properties": {
+        "response": { "const": "discover" },
+        "project": { "$ref": "#/$defs/projectPassport" },
+        "baseline": { "$ref": "#/$defs/revisionToken" },
+        "reads": { "$ref": "#/$defs/readsCapability" },
+        "form": {
+          "description": "The form this answer was served in, echoed as `$defs/readResponse` echoes a read's and for its reason: a caller that omitted the argument can see which answer it got. It is what tells a client whether the descriptor prose it is holding was stripped and a `false` descriptor boolean left out (`summary`), or is the whole article with every boolean spelled out (`full`).",
+          "$ref": "#/$defs/discoverForm"
+        },
+        "layers": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/layerDescriptor" }
+        }
+      },
+      "required": ["response", "project", "baseline", "reads", "form", "layers"],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "description": "The `baseline` form publishes no layer descriptor: its `layers` is empty.",
+          "if": {
+            "properties": { "form": { "const": "baseline" } },
+            "required": ["form"]
+          },
+          "then": { "properties": { "layers": { "maxItems": 0 } } }
+        },
+        {
+          "description": "The `full` form carries every descriptor boolean: `optional` on each layer, `required` and `immutable` on each field. `$defs/layerDescriptor` and `$defs/fieldDescriptor` declare the three keys without requiring them, because whether they are present depends on the form, which only this object sees; the keys stay declared there because `additionalProperties` is evaluated against `properties` alone and does not see into this `then`.",
+          "if": {
+            "properties": { "form": { "const": "full" } },
+            "required": ["form"]
+          },
+          "then": {
+            "properties": {
+              "layers": {
+                "items": {
+                  "required": ["optional"],
+                  "properties": {
+                    "element_kinds": {
+                      "items": {
+                        "properties": {
+                          "fields": {
+                            "items": { "required": ["required", "immutable"] }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "The `summary` form omits each of the three descriptor booleans where it is `false`, so where one is present it is `true`: an absent `optional`, `required` or `immutable` means `false`. It is an explicit rule of this protocol at these three declared positions only, never a JSON Schema `default` and never a filter of false values — `present: false` and every other `false` stay on the wire.",
+          "if": {
+            "properties": { "form": { "const": "summary" } },
+            "required": ["form"]
+          },
+          "then": {
+            "properties": {
+              "layers": {
+                "items": {
+                  "properties": {
+                    "optional": { "const": true },
+                    "element_kinds": {
+                      "items": {
+                        "properties": {
+                          "fields": {
+                            "items": {
+                              "properties": {
+                                "required": { "const": true },
+                                "immutable": { "const": true }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+
+    "readsCapability": {
+      "description": "How this SERVER answers a `read`: the forms it publishes, the form each address shape answers in when the request names none, and the response budget above which an answer is REFUSED rather than truncated (`over-budget`). Published once per discovery — it is not project identity, so it is not in the passport, and it is the same for every layer, so it is not per layer. It exists so a client can learn the default table and the bound from the protocol instead of from a prompt: a host that reads no system prompt still knows that `{layer}` answers a summary and that asking for `full` may be refused. `budget_wire_bytes` is what the server enforces, never a value a request may raise — a budget the caller can lift is not a bound. `hint_page_size` is the page a refusal OFFERS, which is a different kind of figure: it bounds nothing and a request may name any `limit` it likes. It carries the nested `discover` block as well, because `budget_wire_bytes` is not a read-only bound: a `discover` is measured and refused against the same constant, so the forms IT answers in are published beside the figure that governs them rather than in a second top-level block that would restate the budget or leave it out.",
+      "type": "object",
+      "properties": {
+        "forms": {
+          "description": "Every form `read` accepts, in the enum's own order. A narrowing order (`full`, `summary`, `index`) is a different statement and belongs to an `over-budget` refusal's `hints`.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/readForm" },
+          "minItems": 1
+        },
+        "default_form": {
+          "description": "The form each address shape answers in when the request names none. A `layer` address names no element; a `collection` address ends on a field the registry declares a collection for; an `element` address stops at the element; a `field` address is anything inside one — a scalar field, a collection member, a map entry. `index` is never a default: a summary that fits is strictly more useful than a list of identities, and the narrower form is what a refusal offers instead.",
+          "type": "object",
+          "properties": {
+            "layer": { "$ref": "#/$defs/readForm" },
+            "collection": { "$ref": "#/$defs/readForm" },
+            "element": { "$ref": "#/$defs/readForm" },
+            "field": { "$ref": "#/$defs/readForm" }
+          },
+          "required": ["layer", "collection", "element", "field"],
+          "additionalProperties": false
+        },
+        "budget_wire_bytes": {
+          "description": "The server's response budget in the unit the host counts: the bytes one tool result puts on the wire. A response measured above it is refused with `over-budget`, carrying `measured` and the narrower requests that would be answered instead.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "hint_page_size": {
+          "description": "The page size a refusal's `hints` ask for. Published so a client reads the figure rather than guessing it, and so that what it is offered and what it is told agree. It is a DECLARED constant and not a size the server searched for: composing the hint by re-measuring successively smaller pages would make the most expensive refusal — the one whose answer already did not fit — the one that projects the same address half a dozen more times over. The client walks; the server does not binary-search, and a hinted page that still does not fit refuses in its turn with its own, shorter chain. It bounds NOTHING: a request's own `limit` is the client's and is not held to this figure.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "discover": {
+          "description": "How this server answers a `discover`: the forms it publishes and the one it serves when the request names none. There is no default TABLE here as there is for a read, because a discovery is addressed by nothing — one flat default, and the response echoes the form it was served in. The default is the CHANNEL's: `summary` from the CLI and every direct caller, `baseline` from the MCP server, whose agent host carries the schema in its profile. It is the form a project-wide `discover` naming no form is served in; a `discover` naming a `layer` is answered in `summary` on every channel, because `baseline` publishes no descriptor.",
+          "type": "object",
+          "properties": {
+            "forms": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/discoverForm" },
+              "minItems": 1
+            },
+            "default_form": { "$ref": "#/$defs/discoverForm" }
+          },
+          "required": ["forms", "default_form"],
+          "additionalProperties": false
+        },
+        "derived": {
+          "description": "The computed values a read's `derived` may name: each entry's `name`, where it applies (`at`), whether it multiplies rows (`rows`) and the nested keys of its value (`shape`). Read off the server's one vocabulary at the call, so what is published is what the engine answers. Always present; an empty array would be a server computing nothing.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/derivedValue" }
+        },
+        "join": {
+          "description": "How large a read's `join` may grow. `row_ceiling` is the most rows a join may build IN TOTAL: the rows every entry of the request builds, summed over the entries and counted exactly before each entry builds a combined row, so the ceiling bounds the combined rows the join builds, summed over its entries. It does not bound the joined reads: every entry's joined read, its slice and its `derived` values, is computed in full before the ceiling is consulted, and that cost is paid again on every page; `max_entries` bounds that repetition: the most entries one `join` may carry, a request of more refused with `schema-violation` before anything is read. A request whose next entry would take that total above it is refused with `over-budget`, carrying `measured` (`elements` the total, the refused entry included) and no `hints`, because a page would not reduce the work — every page computes the whole join — and a narrower question is the client's to state, with `where` on the outer read or a joined read. Below it the product is built and paged like any set, and the response budget applies to the page. It bounds the combined rows the join BUILDS, where `budget_wire_bytes` bounds the ANSWER, in bytes.",
+          "type": "object",
+          "properties": {
+            "row_ceiling": { "type": "integer", "minimum": 1 },
+            "max_entries": { "type": "integer", "minimum": 1 }
+          },
+          "required": ["row_ceiling", "max_entries"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["forms", "default_form", "budget_wire_bytes", "hint_page_size", "discover", "derived", "join"],
+      "additionalProperties": false
+    },
+
+    "derivedValue": {
+      "description": "One computed value a read may ask for. `at` is where it applies: the elements of `layer` when it names no `members`, otherwise the member paths listed, each spelled as a read's `members` spells it; a read naming the value anywhere else is refused with `schema-violation`. `rows` is `one` (one value per row) or `one per value` (a set-valued name: every value is a row of its own, and a row with no value is dropped). `shape` is the value's nested keys, each leaf `string`, `integer`, or `string|null`, `integer|null`, `boolean|null` (a `null` is an abstention: the value cannot be stated, and the row is kept).",
+      "type": "object",
+      "properties": {
+        "name": { "$ref": "#/$defs/name" },
+        "at": {
+          "type": "object",
+          "properties": {
+            "layer": { "$ref": "#/$defs/layerName" },
+            "members": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/memberPath" } }
+          },
+          "required": ["layer"],
+          "additionalProperties": false
+        },
+        "rows": { "enum": ["one", "one per value"] },
+        "shape": { "$ref": "#/$defs/derivedShape" }
+      },
+      "required": ["name", "at", "rows", "shape"],
+      "additionalProperties": false
+    },
+
+    "derivedShape": {
+      "description": "The nested keys of a computed value: an object whose every value is a leaf (`string` or `integer`, or `string|null`, `integer|null` or `boolean|null` for a value that may abstain) or another such object.",
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "anyOf": [
+          { "enum": ["string", "string|null", "integer", "integer|null", "boolean|null"] },
+          { "$ref": "#/$defs/derivedShape" }
+        ]
+      }
+    },
+
+    "projectPassport": {
+      "description": "Project identity, the AUTOSAR version the exporter emits and the lockstep toolchain version — and nothing else. These are project-level facts, not storage: NO ROOT IS PUBLISHED. `model_root`, `dist_root` and `views_root` are what `project_info` answers today and they are deliberately excluded: no protocol operation consumes them, and a passport that names the directories is a passport a client can start composing paths from, which contradicts the identity-based address and the rule that no answer names where the project is stored. A host that must show the user which project it is operating on reads the manifest it opened — host state, not protocol content. `swcraft_version` is what makes the absence of a `protocol_version` negotiation operable — 'one lockstep version already tells a client exactly which surface it is talking to' is only true if the client can read it, and discovery is the only place it can. Of `project_info`'s remaining fields, `model_hash` is excluded deliberately (the baseline token is `model_fingerprint()`-derived, never the server's cached unframed digest) and `project_root`, `schema_version`, `loaded_at` and `source` are excluded as host/load-time bookkeeping no protocol operation consumes; the decision table's `project_info` entry records the same list.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "arxml_version": { "enum": ["4.2.2", "4.3.0"] },
+        "swcraft_version": { "type": "string", "minLength": 1 }
+      },
+      "required": ["name", "arxml_version", "swcraft_version"],
+      "additionalProperties": false
+    },
+
+    "layerDescriptor": {
+      "description": "One layer of the editable inventory. `optional` is a registry property — since contract `2.0.0` no shipped layer declares it, and the key is still declared because a contract may declare one again; `present` is the state of this project. The pair distinguishes an ABSENT layer — the directory is not there, which for a mandatory layer is a `check-model` finding — from a PRESENT AND EMPTY one, whose element list is simply zero. A per-layer reader's empty list cannot express that difference, which is why discovery answers it. An absent layer still declares its element kinds and fields: they are registry facts, so a client can author its first element without a second round trip.",
+      "type": "object",
+      "properties": {
+        "layer": { "$ref": "#/$defs/layerName" },
+        "optional": {
+          "description": "Whether the registry declares this layer optional. Absent means `false`. A `full` discovery always carries the key; a `summary` leaves it out exactly where it is `false` and carries it only as `true` (both rules: `$defs/discoverResponse`'s `allOf`).",
+          "type": "boolean"
+        },
+        "present": { "type": "boolean" },
+        "identity_field": { "$ref": "#/$defs/name" },
+        "description": { "type": "string" },
+        "element_kinds": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/elementKindDescriptor" },
+          "minItems": 1
+        }
+      },
+      "required": ["layer", "present", "identity_field", "element_kinds"],
+      "additionalProperties": false
+    },
+
+    "elementKindDescriptor": {
+      "description": "One element kind of a layer. A layer holding two kinds (`interfaces`: sender-receiver and client-server) is a registry fact stated here, not a reason for a second tool. A layer's NESTED member kinds (`enum_literal`, `record_field`, `port`, `runnable`, `connector_endpoint`) are element kinds of that same layer — which is what lets a path step address one — but they have no file and no layer-level address, and `member_only` is how a client tells the two apart without reading the descriptions. `member_of` then says WHERE such a kind appears, so the inventory is not a flat list a client has to correlate by name.",
+      "type": "object",
+      "properties": {
+        "kind": { "$ref": "#/$defs/name" },
+        "discriminator_field": { "$ref": "#/$defs/name" },
+        "member_only": {
+          "description": "True for a kind that exists only as a member of a nested collection or as the value of an object-typed field: it has no file, no identity in the layer's namespace and no `{layer, element}` address, so a top-level `create` at one is a `broken-reference`. Absent means false — an ordinary, top-level-addressable element kind.",
+          "type": "boolean"
+        },
+        "member_of": {
+          "description": "Every place a `member_only` kind appears, as `{kind, field}` pairs naming the owning element kind of the same layer and the field it appears under — a collection field (`swc.runnables` holds `runnable`) or an object-typed field (`connector.from` and `connector.to` both hold `connector_endpoint`). Required whenever `member_only` is true: without it a nested kind is a name in a flat list and a client cannot tell which address reaches it.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": { "$ref": "#/$defs/name" },
+              "field": { "$ref": "#/$defs/name" }
+            },
+            "required": ["kind", "field"],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "description": { "type": "string" },
+        "fields": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/fieldDescriptor" },
+          "minItems": 1
+        }
+      },
+      "required": ["kind", "fields"],
+      "additionalProperties": false,
+      "if": {
+        "properties": { "member_only": { "const": true } },
+        "required": ["member_only"]
+      },
+      "then": { "required": ["member_of"] }
+    },
+
+    "fieldDescriptor": {
+      "description": "One declared field. `unit` is carried because the schema has fields whose unit is not derivable from the type (`Task.period` in seconds beside `hardware.memory.size` in bytes). `immutable` is published rather than implied, so a client knows the rule before it asks. `element_kind` is the link an OBJECT-typed field needs: `Connector.from`/`to` are `ConnectorEndpoint` objects addressed as `{field: \"from\"}` then `{field: \"swc\"}`, and without the link a client would have to consult `schema.py` to learn what is inside — which is exactly what discovery exists to prevent.",
+      "type": "object",
+      "properties": {
+        "name": { "$ref": "#/$defs/name" },
+        "type": { "type": "string", "minLength": 1 },
+        "required": {
+          "description": "Whether a value must be given. Absent means `false`. A `full` discovery always carries the key; a `summary` leaves it out exactly where it is `false` and carries it only as `true` (both rules: `$defs/discoverResponse`'s `allOf`).",
+          "type": "boolean"
+        },
+        "immutable": {
+          "description": "Whether the value is fixed once the element exists. Absent means `false`. A `full` discovery always carries the key; a `summary` leaves it out exactly where it is `false` and carries it only as `true` (both rules: `$defs/discoverResponse`'s `allOf`).",
+          "type": "boolean"
+        },
+        "description": { "type": "string" },
+        "unit": { "type": "string", "minLength": 1 },
+        "enum": { "type": "array", "minItems": 1 },
+        "reference": { "$ref": "#/$defs/referenceDescriptor" },
+        "element_kind": {
+          "description": "For an object-typed field: the element kind of the same layer that describes the object. Never set on a collection field — a collection's member kinds are `collection.member_kinds`.",
+          "$ref": "#/$defs/name"
+        },
+        "collection": { "$ref": "#/$defs/collectionDescriptor" }
+      },
+      "required": ["name", "type"],
+      "additionalProperties": false
+    },
+
+    "referenceDescriptor": {
+      "description": "A reference field's target: a layer and the identity field the value names. A reference value is an identity, never a path.",
+      "type": "object",
+      "properties": {
+        "layer": { "$ref": "#/$defs/layerName" },
+        "identity_field": { "$ref": "#/$defs/name" }
+      },
+      "required": ["layer", "identity_field"],
+      "additionalProperties": false
+    },
+
+    "collectionDescriptor": {
+      "description": "A nested collection: a list whose members are addressed by `{member: <identity>}`, or a map whose entries are addressed by `{key: <key>}`. `member_identity` is REQUIRED and is the field that makes an address constructible at all — with no ordinal step form left, a client that does not know whether a member is identified by one field, by a tuple of fields, or by its whole value cannot write the step. `member_kinds` is plural because a collection's members may be a union (`Runnable.events` is `list[TimingEvent | InitEvent]`), in which case `discriminator_field` names the field that tells them apart; it is absent for a collection of scalars (`SWComponent.satisfies` is `list[str]`, `SWComponent.memory` is `dict[str, int]`).",
+      "type": "object",
+      "properties": {
+        "kind": { "enum": ["list", "map"] },
+        "member_identity": { "$ref": "#/$defs/memberIdentity" },
+        "member_kinds": {
+          "description": "The element kinds of the same layer a member may be. One name for an ordinary collection, several for a union — and then `discriminator_field` says which field distinguishes them. Absent for a collection of scalars.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/name" },
+          "minItems": 1
+        },
+        "discriminator_field": { "$ref": "#/$defs/name" },
+        "identity_field": {
+          "description": "The single declared field a `field`-identified member is addressed by. Present exactly when `member_identity` is `field`.",
+          "$ref": "#/$defs/name"
+        },
+        "identity_fields": {
+          "description": "The declared fields a `composite`-identified member is addressed by, in the order the registry states them; the address step carries them as an object, so the order is documentation rather than protocol. A field the member kind declares optional may be left out of a step and reads as `null`; what a server emits carries all of them. Present exactly when `member_identity` is `composite`.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/name" },
+          "minItems": 2
+        }
+      },
+      "required": ["kind", "member_identity"],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "member_identity": { "const": "field" } }, "required": ["member_identity"] },
+          "then": { "required": ["identity_field"] },
+          "else": { "not": { "required": ["identity_field"] } }
+        },
+        {
+          "if": { "properties": { "member_identity": { "const": "composite" } }, "required": ["member_identity"] },
+          "then": { "required": ["identity_fields"] },
+          "else": { "not": { "required": ["identity_fields"] } }
+        }
+      ]
+    },
+
+    "readResponse": {
+      "description": "The addressed content, answered in exactly the field vocabulary discovery declared — so reads and change sets agree on field names by construction. `form` is required and is the form the value was PUBLISHED in, not the one the request carried: a request that named none reads the default off it, and a request whose form the address cannot express (`index` at anything but a layer or a collection) reads what was served instead. `where` is present ONLY when the request carried one, and is then the request's own clauses verbatim: a `where` is applied exactly as asked or the request is refused, so — unlike `form` — there is no served-versus-requested distinction to state, and its absence means nothing was filtered. Reading a count off a filtered answer without seeing the filter is exactly the confusion the echo removes. `members` is echoed on the same argument and one of its own: a member-slice row carries the owning element's identity and the member, and NOTHING in it names the collection the member came from \u2014 two slices of one layer would otherwise be told apart by guessing at member fields, and a client replaying a `next` cursor re-sends the key regardless.",
+      "type": "object",
+      "properties": {
+        "response": { "const": "read" },
+        "address": { "$ref": "#/$defs/address" },
+        "form": { "$ref": "#/$defs/readForm" },
+        "where": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/whereClause" }
+        },
+        "page": { "$ref": "#/$defs/page" },
+        "members": { "$ref": "#/$defs/memberPath" },
+        "derived": { "$ref": "#/$defs/derivedNames" },
+        "join": { "$ref": "#/$defs/join" },
+        "value": { "$ref": "#/$defs/value" }
+      },
+      "required": ["response", "address", "form", "value"],
+      "additionalProperties": false,
+      "if": { "$ref": "#/$defs/rowRequest" },
+      "then": { "$ref": "#/$defs/rowForm" }
+    },
+
+    "page": {
+      "description": "Where the answered window sits in the whole set. Present on a `readResponse` ONLY when the request carried a `limit`, and then stating the four things a windowed value cannot state about itself. `total` is how many things the address carries AFTER the filter and BEFORE the page, so a count read off a filtered, paged answer is the count of the slice and not of the layer. `returned` is how many this response carries. `truncated` says the two differ — it is NOT a restatement of `next`'s presence, and the last page of a walk is exactly where they come apart: it carries fewer things than the set has (`truncated: true`) and there is nothing after it (`next` omitted). `next` is the identity to send as the next request's `after`, in the very shape a cursor accepts back. The cross-key arithmetic (`returned <= total`, and `truncated` being exactly `returned < total`) is deliberately NOT stated here: Draft 2020-12 cannot compare one property against another, so stating it in a parser and not in this document would be precisely the schema/parser divergence the parity gate exists to catch. It is a property of the producer and is tested there.",
+      "type": "object",
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "returned": { "type": "integer", "minimum": 0 },
+        "truncated": { "type": "boolean" },
+        "next": { "$ref": "#/$defs/value" }
+      },
+      "required": ["total", "returned", "truncated"],
+      "additionalProperties": false
+    },
+
+    "changeSetResponse": {
+      "description": "The outcome of an accepted change set. `staged` carries the reviewable semantic delta; `committed` carries the delta that was applied, which is byte-for-byte the delta that was reviewed; `abandoned` states that the staged change set was dropped and the real model is unchanged. There is no commit request and no transaction handle: commit and abandon are host-side acts, so this is the only response one change set produces. `baseline` is the token the COMMIT PRODUCED on a `committed` response, and the token the request carried on a `staged` or `abandoned` one, because in those two the model has not moved.",
+      "type": "object",
+      "properties": {
+        "response": { "const": "change_set" },
+        "status": { "enum": ["staged", "committed", "abandoned"] },
+        "baseline": { "$ref": "#/$defs/revisionToken" },
+        "delta": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/deltaEntry" }
+        },
+        "audit_ref": {
+          "description": "The change-set id the lifecycle records of this exchange are logged under. Which responses carry it is a security decision, not a convenience: OMITTED on `staged` (an identifier returned there would read as a commit handle, and there is no commit request), PRESENT on `committed`, and OMITTED on a `committed` response whose audit append failed (`CommitLogError`) — the value asserts that the change set's record block is complete, which a failed append makes false. It may be present on `abandoned`. Reads and discovery produce no audit record at all.",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": ["response", "status", "baseline", "delta"],
+      "additionalProperties": false,
+      "if": { "properties": { "status": { "const": "staged" } }, "required": ["status"] },
+      "then": {
+        "description": "`audit_ref` is FORBIDDEN on a `staged` response — the security decision `audit_ref`'s own description states, stated here as a constraint so a validator refuses what the parser refuses. `ChangeSetResponse.__post_init__` and `.from_json` have always refused the pair; until this branch existed a `staged` response carrying a commit handle was a document the published schema ADMITTED. There is no `else`: `committed` normally carries the key and legitimately omits it when the audit append failed, and `abandoned` may carry it, so no other status has a rule to state.",
+        "not": { "required": ["audit_ref"] }
+      }
+    },
+
+    "deltaEntry": {
+      "description": "One entry of the semantic delta — the review surface, not a file diff. The delta is the `ModelDiff` PROJECTED onto this flat list at the finest granularity the address form can express: a changed field is one `update` at the field's address; an added or removed collection member is one `create`/`remove` at the MEMBER's address; a change inside a `whole_value` member is a `remove` plus a `create`, never an `update`; a pure reordering is one `update` of the whole collection. The mapping above is normative.",
+      "type": "object",
+      "properties": {
+        "operation": { "$ref": "#/$defs/changeOperationName" },
+        "address": { "$ref": "#/$defs/elementAddress" },
+        "before": { "$ref": "#/$defs/value" },
+        "after": { "$ref": "#/$defs/value" },
+        "summary": { "type": "string", "minLength": 1 },
+        "origin": {
+          "description": "Present only on a change set the server completed (`changeSetRequest.complete`): `server` for an entry the server's own operation produced, `client_and_server` for one the client's operation produced and a server operation added to. An entry without it is the client's.",
+          "enum": ["server", "client_and_server"]
+        },
+        "before_form": {
+          "description": "Present only on a `remove` at an ELEMENT address, where the delta leaves the engine (the `change_set` response and the review text): `summary` says `before` is not the whole element but its `summary` form — the one `read` answers for `form: \"summary\"`, its scalar fields and each collection as a count. Inside the engine the delta stays whole: the gates, the always-on safety guard and the commit read the whole value. Absent means `before` is whole; `read` answers the element whole until the change set commits, and the project's history after.",
+          "enum": ["summary"]
+        }
+      },
+      "required": ["operation", "address"],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "description": "`before_form` is carried by a `remove` at an element address alone: a removed member, a `create` and an `update` are never summarised.",
+          "if": { "required": ["before_form"] },
+          "then": {
+            "properties": {
+              "operation": { "const": "remove" },
+              "address": { "not": { "required": ["path"] } }
+            }
+          }
+        }
+      ]
+    },
+
+    "errorCode": {
+      "description": "The closed error-code enum. Codes are contract; messages are not. The source of truth is the decision record's `## Error codes` block, which the closed consistency test parses. `consistency-violation` is the tenth member: every element and every reference is individually admissible, but the assembled staged result violates a deterministic inter-element rule of the model — a uniqueness rule over emitted SHORT-NAMEs, a compatibility rule over endpoints that both resolve, budget or ordering arithmetic, or a second composition declaring itself the root. `over-budget` is the eleventh member: the response the request asks for would exceed the server's response budget, so it is REFUSED rather than truncated, and the refusal carries `hints` (the narrower reads the address admits) and `measured` (how big, against what, over how many elements). It is a `read` refusal alone — no change-set pass can produce it.",
+      "enum": [
+        "schema-violation",
+        "unknown-field",
+        "invalid-identifier",
+        "broken-reference",
+        "identity-conflict",
+        "immutable-field",
+        "stale-baseline",
+        "unauthorized-delta",
+        "partial-change-set",
+        "consistency-violation",
+        "over-budget"
+      ]
+    },
+
+    "failureClass": {
+      "description": "The four failure classes. Every one of them leaves the real model byte-identical.",
+      "enum": ["invalid", "unauthorized", "stale", "partial"]
+    },
+
+    "readHints": {
+      "description": "Complete, narrower requests the server would take INSTEAD, in the refusal chain's order (`full` then `summary` then `index`). Carried by `over-budget` alone. An item is a `readRequest` OR a `discoverRequest` \u2014 the two read-only shapes \u2014 and never a change set: a hint is a cheaper way to LOOK, so offering a mutation would be a category error, and the `oneOf` beside this sentence is where a client holding only a validator meets that rule. A read hint carries the SAME address it was asked about and only a narrower form — or a smaller PAGE of it at the size `readsCapability.hint_page_size` publishes, which is a step of the same kind: it changes how much of one address comes back and never which address; \"descend into the collection and page it\" is the agent's own move, taught by the prompt, and never a step of this chain. A refused `discover` is not addressed at all: its rejection omits `addresses`, its `measured.elements` counts the layer descriptors the refused response would have carried, and the requests it hints are narrower DISCOVERIES rather than reads. That chain has exactly TWO steps, because a discovery has two ways of being smaller: LESS PROSE — the same scope at `summary`, offered when `full` was what refused, and first because it answers the same question — and LESS SCOPE, one request per declared layer, offered when the whole project was asked for, each carrying the REQUESTED form rather than the narrower one, because a client that asked for `full` asked for the prose and one layer at a time is where the prose still fits. A layer-narrowed `summary` has no step below it and omits the key. A discover hint changes the SCOPE where a read hint may not change the address, and the two rules do not conflict: a discovery has no address, and a per-layer request is a narrowing of the project-wide one rather than a question about something else. What follows is the read chain, which is where every form-level rule below applies. They are the chain and not a promise that each one fits: a client replays the first, and if that refuses too it carries its own, shorter chain. A form is a step of the chain exactly where it publishes something the form above it does not, and that is read off the DECLARATION at every address shape alike — a layer, an element, a member, a required object, a collection. `summary` is offered only where it carries less, and there are three declared ways it does not: a `whole_value` collection answers VERBATIM, so its summary is byte-identical to its full answer; a collection every one of whose member kinds has the summary rules select EVERY declared field with no nested collection among them does the same (four of the shipped contract's forty-seven: `task.runnables`, since contract `7.0.0` `mapping_set.maps`, whose `map` declares the application type it pairs and the implementation type that stores it and nothing else, and since contract `12.2.0` `runnable.can_enter` and `runnable.runs_inside`, whose `can_enter_area` and `runs_inside_area` declare the area they name and nothing else — not `runnable.reads`, whose `data_read` carries the optional `by` a summary drops, nor since contract `8.0.0` `runnable.writes` and `runnable.calls`, whose `data_write` and `operation_call` carry an optional `name` a summary drops, as a `data_read` does too, not `sender_receiver.data_elements` since contract `3.1.0` gave `data_element` its optional `init`, and not `operation.arguments`, `enum.literals`, `record.fields` or `implementation_record.elements` since contract `7.10.0` gave `argument`, `enum_literal`, `record_field` and `implementation_element` an optional `description`, which a summary drops, nor since contract `8.0.0` `texttable.entries`, whose `table_entry` carries one too); and so does an ELEMENT, MEMBER or required-object address whose own kind is selected whole that way (ten shipped member kinds are — `can_enter_area`, `connector_endpoint`, `conversion`, `conversion_limits`, `disabled_mode`, `linear_limits`, `map`, `range`, `runs_inside_area`, `task_runnable_ref`; `can_enter_area` and `runs_inside_area` joined this set when contract `12.2.0` declared a runnable's two exclusive area lists, each entry its identity and nothing else; `conversion_limits` and `linear_limits` joined this set when contract `8.0.0` declared a scale's limits, whose two bounds are optional objects a summary selects none of; `data_write`, `init_event`, `operation_call` and `operation_event` left this set when contract `8.0.0` gave each event and access entry an optional `name`, which a summary drops; `timing_event` left this set and `disabled_mode` joined it when contract `7.11.0` gave the timing event its optional `disabled_modes`, a collection a summary counts, and declared the disabled mode with three required fields; `argument`, `enum_literal`, `implementation_element` and `record_field` left this set when contract `7.10.0` gave each an optional `description`; `connector_endpoint` left this set when contract `4.0.0` made both `swc` and `composition` optional, and is back since a summary selects every scalar reference, optional or not, which is all three of its fields — so an explicit summary of `connector.from` or `.to` is answered and echoed as `full`. Four of the six reach this by declaring no field a summary drops; `conversion` and `range`, contract `7.0.0`'s two NESTED member kinds, reach it from the opposite end — they declare only OPTIONAL scalars and sit under an `elementKind` field rather than under a collection, so the identity clause has no owning collection to take a name from and the selection is EMPTY, which would publish `{}`: byte-identical to the full answer for the declared identity conversion, and therefore no narrowing at all), which is why a COLLECTION is NOT the only place a narrow form drops out. In every one of those cases the summary response is in fact three wire bytes LARGER (one copy, since 2026-10-09; six in the two-copy unit before it), from the longer echoed `form`, so offering it would hand back a request guaranteed to refuse again. `index` is offered at a layer and at every collection but **twenty-three** (`runnable.events`, `memory.accessible`, `task.runnables`, since contract `7.0.0` `swc.data_type_mappings`, since contract `7.11.0` `timing_event.disabled_modes`, since contract `8.0.0` an interface stub's `external_interface.operations` and `external_interface.data_elements`, and since contract `11.0.0` the twelve trace-link lists `swc.satisfies`, `port.satisfies`, `runnable.satisfies`, `sender_receiver.satisfies`, `client_server.satisfies`, `external_interface.satisfies`, `composition.satisfies`, `task.satisfies`, `processor.satisfies`, `core.satisfies`, `memory.satisfies` and `partition.satisfies` and the requirement's `requirement.derived_from`, and since contract `12.2.0` a runnable's two exclusive area lists `runnable.can_enter` and `runnable.runs_inside`, and since contract `12.3.0` a data-received event's `data_event.disabled_modes`; `requirement.links` was one of them until contract `11.0.0` retired it), and the exception turns on the IDENTITY rather than on the container: an index publishes each member's identity in exactly the shape a `member` step accepts back, so it is narrower precisely where that identity drops something the published member carries. A `whole_value` LIST's identity IS the member, so its index wraps the very same values in `{count, identities}` and is larger, and such a collection has no step below `full`; `task.runnables` is that same case reached from a COMPOSITE identity, because `task_runnable_ref` declares `swc` and `runnable` and nothing else, so its identity OBJECT is the whole member and its index is the same wrapper around the same values — and `runnable.writes` and `runnable.calls` were that case again until contract `8.0.0` gave their `data_write` and `operation_call` an optional `name` their `{port, element}` / `{port, operation}` identity drops, so each keeps its index now, as `runnable.reads` always did for its optional `by`. A `whole_value` MAP's index is its KEYS ALONE — every entry's value dropped — so it IS narrower and is offered, from the full form and from the summary alike. Anywhere else `index` has nothing to index and is answered, and echoed, as `full`. A served narrow form that was not a step of the chain stands at `full`'s position, and the chain RESUMES AT `full` rather than after it — for BOTH narrow forms, because each of them carries no less than `full` does there. A served `summary` repeats `full`'s value under a longer echoed `form`, three wire bytes more; a served `index` at a `whole_value` list wraps `full`'s values in a `{count, identities}` object, 203 wire bytes against 173 on `swc.satisfies` (one copy, since contract `11.0.0`; 229 against 199 on the retired `requirement.links` before it, and 422 against 366 in the two-copy unit before 2026-10-09). Withholding `full` left the DEFAULT read of such an address refusing with no hint at all inside a three-byte budget window, and an explicit `index` inside a 30-byte one (six and 56 bytes in the two-copy unit), where a plain `full` answers. Below every narrower form, and only at a LAYER, a COLLECTION or a MEMBER SLICE, stands the PAGED step: the same request at the form that was SERVED, with `limit` set to `readsCapability.hint_page_size` and the request's own `after` kept, so a walk that busts continues from where it stopped rather than starting again. It is offered exactly where the refused response carried MORE units than that size \u2014 a set of one page or less would be offered itself, and a hint that replays the request is not a step, which is the rule a form that does not narrow is held to. It is the chain's LAST step, because a narrower form answers the same question while a page answers a PART of it; and it is what keeps a wide layer, collection or member slice from ending its chain empty. What can still dead-end is an element, a member or a scalar, which is one thing already and has no set to window. The chain's terminal step OMITS this key rather than sending an empty array, which is what tells a client the chain is exhausted and only `measured` is left.",
+      "type": "array",
+      "items": { "oneOf": [{ "$ref": "#/$defs/readRequest" }, { "$ref": "#/$defs/discoverRequest" }] },
+      "minItems": 1
+    },
+
+    "measured": {
+      "description": "The sizes behind an `over-budget` refusal. `wire_bytes` is what the host would have received for the refused response, MEASURED rather than estimated: one tool result is sent ONCE, as a text block whose text is the compact document carried as a JSON string — escaped, because the host still receives it inside a JSON-RPC message — and the server builds that copy and counts it. It is not a factor applied to a guess: a factor (twice the spaced serialization) is wrong, because escaping is unbounded relative to separator spacing. JSON-RPC framing is not counted, a fixed overhead no model content moves. `budget` is the server constant the figure was compared against, and `elements` is how many things the refused response would have carried (a layer's elements, a collection's members, 1 for a single element or scalar, the LAYER DESCRIPTORS of a refused discovery, the ANSWERS of a refused batched read, one per address whatever each answer holds, and the elements of every layer a refused model map counts). It counts the refused RESPONSE and never the model. One refusal is decided otherwise: a `join` refused above `readsCapability.join.row_ceiling` before it is built is decided by `elements` against that ceiling \u2014 `elements` is then the exact number of rows the whole join would have built, summed over every entry up to and including the refused one, a count of the request's WORK rather than of a response \u2014 while `wire_bytes` is the size the unpaged `index` answer of the refused entry's rows would have had were it the last entry, computed exactly from each row's size rather than built, and `budget` is stated for reference only, since nothing was compared against it. Carried by `over-budget` and by no other code.",
+      "type": "object",
+      "properties": {
+        "wire_bytes": { "type": "integer", "minimum": 0 },
+        "budget": { "type": "integer", "minimum": 0 },
+        "elements": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["wire_bytes", "budget", "elements"],
+      "additionalProperties": false
+    },
+
+    "errorDetail": {
+      "description": "One SECONDARY violation of an `errorResult`: a stable code, its failure class, a human-readable message, and the address(es) responsible where the failure has one (a malformed envelope or a stale baseline has none). This shape appears only inside `errorResult.additional`; the primary violation is carried by `errorResult`'s own `error`/`failure_class`/`message`/`addresses`, which are exactly these four fields hoisted one level so that a client reading only the top level always reads a real violation. `additional` never repeats the primary and is omitted when there is nothing but the primary — see `errorResult`.",
+      "type": "object",
+      "properties": {
+        "error": { "$ref": "#/$defs/errorCode" },
+        "failure_class": {
+          "description": "A CHECKED DENORMALIZATION of `error_class_map`, exactly as on `errorResult` — derivable from `error`, carried for the reader of one response, pinned in agreement by the consistency gate AND by this object's own `allOf`, which states the map as four conditional branches so a client holding nothing but a validator refuses a disagreeing pair too. The map is the source of truth.",
+          "$ref": "#/$defs/failureClass"
+        },
+        "message": { "type": "string", "minLength": 1 },
+        "addresses": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/address" },
+          "minItems": 1
+        },
+        "hints": { "$ref": "#/$defs/readHints" },
+        "measured": { "$ref": "#/$defs/measured" }
+      },
+      "required": ["error", "failure_class", "message"],
+      "additionalProperties": false,
+      "if": { "properties": { "error": { "const": "over-budget" } }, "required": ["error"] },
+      "then": {
+        "description": "`measured` is REQUIRED on an `over-budget` refusal. `hints` stays optional because the chain's terminal step legitimately omits it — and that omission is exactly why `measured` cannot be optional too: the size, the budget and the element count are what remains actionable once there is no narrower request to offer. The `else` beside this branch states the converse; packages/tools/src/swcraft_tools/editing/protocol.py enforces BOTH directions at construction AND at parse.",
+        "required": ["measured"]
+      },
+      "else": {
+        "description": "The converse, and the half a validator needs before it refuses what the parser refuses: on every OTHER code neither `hints` nor `measured` may appear at all. `Violation.__post_init__` has always rejected that combination, so until this branch existed an `unknown-field` carrying a refusal chain was a document the published schema ADMITTED and every SWCraft parser threw out — the same rule on one side and not its sibling. The two keys stay declared in this object's own `properties` rather than only inside the `then` branch because `additionalProperties: false` is evaluated against `properties` alone and does not see into `if`/`then`/`else`; forbidding them therefore has to be said here, explicitly.",
+        "not": { "anyOf": [{ "required": ["hints"] }, { "required": ["measured"] }] }
+      },
+      "allOf": [
+        {
+          "description": "`failure_class` is a CHECKED DENORMALIZATION of `error_class_map`, and this is where the check is stated to a validator. The map at the top of this document is the source of truth and these four branches are its executable form for a client that has only a JSON Schema validator: without them a document pairing `stale-baseline` with `invalid` would validate clean and be thrown out by every SWCraft parser, the schema and the parser disagreeing about the same wire. packages/tools/tests/test_editing_protocol_contracts.py asserts these branches reproduce `error_class_map` exactly, so the third copy in this file cannot drift from the first.",
+          "if": {
+            "properties": {
+              "error": {
+                "enum": [
+                  "schema-violation",
+                  "unknown-field",
+                  "invalid-identifier",
+                  "broken-reference",
+                  "identity-conflict",
+                  "immutable-field",
+                  "consistency-violation",
+                  "over-budget"
+                ]
+              }
+            },
+            "required": ["error"]
+          },
+          "then": { "properties": { "failure_class": { "const": "invalid" } } }
+        },
+        {
+          "description": "The same rule for the `stale` class.",
+          "if": { "properties": { "error": { "enum": ["stale-baseline"] } }, "required": ["error"] },
+          "then": { "properties": { "failure_class": { "const": "stale" } } }
+        },
+        {
+          "description": "The same rule for the `unauthorized` class.",
+          "if": { "properties": { "error": { "enum": ["unauthorized-delta"] } }, "required": ["error"] },
+          "then": { "properties": { "failure_class": { "const": "unauthorized" } } }
+        },
+        {
+          "description": "The same rule for the `partial` class.",
+          "if": { "properties": { "error": { "enum": ["partial-change-set"] } }, "required": ["error"] },
+          "then": { "properties": { "failure_class": { "const": "partial" } } }
+        }
+      ]
+    },
+
+    "errorResult": {
+      "description": "The one rejection shape. The PRIMARY violation is the first one the change set's pass order reaches, and it is carried by this object's own `error`/`failure_class`/`message`/`addresses`. Every further violation found in that same pass AND in any later pass that still ran is reported in `additional`, each with its own code and address, so one round trip reports everything a `check-model` run would. `additional` never repeats the primary, and it is omitted rather than empty when the primary is the only violation — pinned by negative/additional-violations-unknown-field-and-immutable-field.json. `failure_class` on this object is the class of the PRIMARY code; a rejection carrying violations of several classes still leaves the real model byte-identical, because all four classes do.",
+      "type": "object",
+      "properties": {
+        "response": { "const": "error" },
+        "error": { "$ref": "#/$defs/errorCode" },
+        "failure_class": {
+          "description": "The failure class of the PRIMARY code, and a CHECKED DENORMALIZATION: it is a pure function of `error` through this document's `error_class_map`, so it can never legitimately disagree, and this object's own `allOf` restates the map as four conditional branches so that a validator refuses a disagreeing pair exactly where the parser does; packages/tools/tests/test_editing_protocol_contracts.py pins that those branches reproduce `error_class_map` and that no shipped artifact disagrees with it. It is carried on the wire anyway because the class is what decides how a host answers — fix the request, re-approve, or re-`discover` — and making every reader of one response consult a second document to learn that is the worse trade. The map is the source of truth.",
+          "$ref": "#/$defs/failureClass"
+        },
+        "message": { "type": "string", "minLength": 1 },
+        "addresses": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/address" },
+          "minItems": 1
+        },
+        "hints": { "$ref": "#/$defs/readHints" },
+        "measured": { "$ref": "#/$defs/measured" },
+        "additional": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/errorDetail" },
+          "minItems": 1
+        }
+      },
+      "required": ["response", "error", "failure_class", "message"],
+      "additionalProperties": false,
+      "if": { "properties": { "error": { "const": "over-budget" } }, "required": ["error"] },
+      "then": {
+        "description": "`measured` is REQUIRED on an `over-budget` refusal. `hints` stays optional because the chain's terminal step legitimately omits it — and that omission is exactly why `measured` cannot be optional too: the size, the budget and the element count are what remains actionable once there is no narrower request to offer. The `else` beside this branch states the converse; packages/tools/src/swcraft_tools/editing/protocol.py enforces BOTH directions at construction AND at parse.",
+        "required": ["measured"]
+      },
+      "else": {
+        "description": "The converse, and the half a validator needs before it refuses what the parser refuses: on every OTHER code neither `hints` nor `measured` may appear at all. `Violation.__post_init__` has always rejected that combination, so until this branch existed an `unknown-field` carrying a refusal chain was a document the published schema ADMITTED and every SWCraft parser threw out — the same rule on one side and not its sibling. The two keys stay declared in this object's own `properties` rather than only inside the `then` branch because `additionalProperties: false` is evaluated against `properties` alone and does not see into `if`/`then`/`else`; forbidding them therefore has to be said here, explicitly.",
+        "not": { "anyOf": [{ "required": ["hints"] }, { "required": ["measured"] }] }
+      },
+      "allOf": [
+        {
+          "description": "`failure_class` is a CHECKED DENORMALIZATION of `error_class_map`, and this is where the check is stated to a validator. The map at the top of this document is the source of truth and these four branches are its executable form for a client that has only a JSON Schema validator: without them a document pairing `stale-baseline` with `invalid` would validate clean and be thrown out by every SWCraft parser, the schema and the parser disagreeing about the same wire. packages/tools/tests/test_editing_protocol_contracts.py asserts these branches reproduce `error_class_map` exactly, so the third copy in this file cannot drift from the first.",
+          "if": {
+            "properties": {
+              "error": {
+                "enum": [
+                  "schema-violation",
+                  "unknown-field",
+                  "invalid-identifier",
+                  "broken-reference",
+                  "identity-conflict",
+                  "immutable-field",
+                  "consistency-violation",
+                  "over-budget"
+                ]
+              }
+            },
+            "required": ["error"]
+          },
+          "then": { "properties": { "failure_class": { "const": "invalid" } } }
+        },
+        {
+          "description": "The same rule for the `stale` class.",
+          "if": { "properties": { "error": { "enum": ["stale-baseline"] } }, "required": ["error"] },
+          "then": { "properties": { "failure_class": { "const": "stale" } } }
+        },
+        {
+          "description": "The same rule for the `unauthorized` class.",
+          "if": { "properties": { "error": { "enum": ["unauthorized-delta"] } }, "required": ["error"] },
+          "then": { "properties": { "failure_class": { "const": "unauthorized" } } }
+        },
+        {
+          "description": "The same rule for the `partial` class.",
+          "if": { "properties": { "error": { "enum": ["partial-change-set"] } }, "required": ["error"] },
+          "then": { "properties": { "failure_class": { "const": "partial" } } }
+        }
+      ]
+    }
+  }
+}

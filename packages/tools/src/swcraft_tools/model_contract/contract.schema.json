@@ -1,0 +1,706 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swcraft.dev/contracts/model-contract/contract.schema.json",
+  "title": "SWCraft model contract",
+  "description": "The meta-schema of `model-contract.json`, the normative declaration of SWCraft's model structure. It declares what a layer, an element kind, a field, a collection, a reference, a storage record, a placement field and a rule ARE — never what any of them computes. Validation and generation algorithms stay in Python, and the Python symbols that realize a declaration live in `binding.json` alone, never here.",
+  "$comment": "Deliberately self-contained: no cross-file `$ref`, so a plain jsonschema Draft202012Validator suffices and the `referencing` registry that packages/tools/tests/fixtures/contracts/editing-protocol/protocol.schema.json needs is not pulled into a second place. Two identifier conventions coexist on purpose. An `id` is a prefixed CONTRACT identifier — `layer:swc`, `kind:data_types.alias`, `field:connectors.connector.from` — because it is the contract's public surface and a bare string must say what it identifies. Every other cross-reference inside a declaration — `storage.nesting`, `placement.field`, `reference.layer`, `collection.memberKinds`, `discriminatorField`, `elementKind` — is a BARE name in `editing/registry.py`'s vocabulary, because those values are projected straight back into the published descriptors, where a re-spelling would change shipped `discover` output. `ruleDecl.appliesTo` addresses contract entries and therefore carries prefixed identifiers.",
+  "type": "object",
+  "required": [
+    "contractVersion",
+    "swcraftVersion",
+    "layers",
+    "rules"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "contractVersion": {
+      "description": "The contract's own semantic version, independent of the product version. A consumer that does not know this major must reject the document rather than read it partially. It is NOT a sixth site under the version lockstep rule.",
+      "$ref": "#/$defs/semanticVersion"
+    },
+    "swcraftVersion": {
+      "description": "The product version this contract was reviewed against — a literal version quote, recorded so a reader can tell which `schema.py` the declaration was transcribed from.",
+      "$ref": "#/$defs/semanticVersion"
+    },
+    "layers": {
+      "description": "The model's layers, in the contract's order. Ten today; the order is the document's, not a set.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/layerDecl"
+      }
+    },
+    "retiredStorage": {
+      "description": "Directories a model kept its element files in under an earlier contract, and where those files belong now. Optional; an entry is a refusal, not a reader: a model holding an element file (the suffix of the layers it moved to, directly in the directory) in a retired directory is refused when it is read, naming the directory, the count of files and the directories they belong in. A retired directory that holds no element file, or none at all, is not an error. The kernel reads the table because it may not spell a layer's name.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/retiredStorageDecl"
+      }
+    },
+    "rules": {
+      "description": "The stable rule identifiers, in all three families: the cross-element vocabulary adopted verbatim from validator.CONSISTENCY_RULES, one identifier per element-local validator decorator, and the `model_config` keys that carry validation meaning. A rule's algorithm is never declared here, only that the rule exists, what it applies to and — through `binding.json` — who owns it.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ruleDecl"
+      }
+    }
+  },
+  "$defs": {
+    "semanticVersion": {
+      "description": "A three-part semantic version with no pre-release or build metadata.",
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "name": {
+      "description": "A bare name in the model's own vocabulary: a layer, element-kind or field name exactly as `editing/registry.py` publishes it and as the YAML model file spells it. A field name is its SERIALIZATION ALIAS (`from`, never `from_`).",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "directory": {
+      "description": "A layer's storage directory, model-root-relative: one or two segments, each of the `name` pattern, joined by `/`. No leading or trailing `/`, no empty segment, no third segment.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(/[a-z][a-z0-9_]*)?$"
+    },
+    "prose": {
+      "description": "Human-readable contract text. Several of these strings are shipped protocol text — they appear verbatim in the per-layer packages/tools/tests/fixtures/contracts/editing-protocol/examples/discover-layer-<layer>-full.json vectors, which are `discover` at `form: \"full\"`, the one form that carries descriptor prose (`summary` is the default), asked one layer at a time because a project-wide `full` is refused — so they are carried byte-for-byte and are the one place a Python symbol may legitimately be named.",
+      "type": "string",
+      "minLength": 1
+    },
+    "layerId": {
+      "type": "string",
+      "pattern": "^layer:[a-z][a-z0-9_]*$"
+    },
+    "kindId": {
+      "type": "string",
+      "pattern": "^kind:[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$"
+    },
+    "fieldId": {
+      "$comment": "The last segment is the serialization alias, so `Connector.from_` is `field:connectors.connector.from`.",
+      "type": "string",
+      "pattern": "^field:[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$"
+    },
+    "collectionId": {
+      "$comment": "A collection is declared on the field that holds it, so its identifier is that field's identifier under the `collection:` prefix — `collection:swc.swc.ports`. Declared here because the identifier scheme is the contract's public surface and 22.2 addresses collections by it; `collectionDecl` therefore carries no `id` of its own. Its first `$ref` use is `memberReferenceDecl.collections` (contract `10.1.0`).",
+      "type": "string",
+      "pattern": "^collection:[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$"
+    },
+    "ruleId": {
+      "$comment": "A cross-element rule's identifier is exactly `rule:` plus its existing validator.CONSISTENCY_RULES key, adopted rather than minted. Hyphens are therefore admissible in every segment after the prefix.",
+      "type": "string",
+      "pattern": "^rule:[a-z][a-z0-9_-]*(\\.[a-z][a-z0-9_-]*)+$"
+    },
+    "entryIdentifier": {
+      "description": "Any addressable contract entry: the four granularities the coverage checker expands and `ruleDecl.appliesTo` names.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/layerId"
+        },
+        {
+          "$ref": "#/$defs/kindId"
+        },
+        {
+          "$ref": "#/$defs/fieldId"
+        },
+        {
+          "$ref": "#/$defs/ruleId"
+        }
+      ]
+    },
+    "typeName": {
+      "description": "The published type vocabulary, byte-for-byte as `registry._type_name` / `_scalar_type_name` produce it: a scalar (`string`, `number`, `integer`, `boolean`), an element-kind name (`connector_endpoint`), `value` for a named recursive alias (a scalar, a list, or a mapping, which may nest — `InitValue`, contract `3.1.0`), `list[<member>]` with ` | `-separated members for a discriminated union, or `map[<key>, <value>]`. A structurally equivalent re-spelling is a defect, not a variant: these strings are shipped in the `discover` vectors.",
+      "type": "string",
+      "pattern": "^([a-z][a-z0-9_]*|list\\[[a-z][a-z0-9_]*( \\| [a-z][a-z0-9_]*)*\\]|map\\[[a-z][a-z0-9_]*, [a-z][a-z0-9_]*\\])$"
+    },
+    "scalar": {
+      "description": "A JSON scalar: a `Literal` member, or a declared default.",
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean"
+      ]
+    },
+    "layerDecl": {
+      "description": "One layer: its identity, its storage, its optionality, its at-most-one placement field and its element kinds.",
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "optional",
+        "identityField",
+        "storage",
+        "description",
+        "kinds"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/layerId"
+        },
+        "name": {
+          "$ref": "#/$defs/name"
+        },
+        "optional": {
+          "description": "Whether a project may omit the layer entirely. No layer is optional today; the key stays because optionality is a layer fact and not a property of the layers that happen to be declared. Optionality changes what a consumer DOES with the layer; it never removes the layer from a total consumer's coverage.",
+          "type": "boolean"
+        },
+        "arxmlBound": {
+          "description": "Whether the layer's declared names are emitted as AUTOSAR `SHORT-NAME`s, and are therefore subject to the Identifier rule (`[a-zA-Z][a-zA-Z0-9_]*`, at most 128 characters). `compositions` is one: its declared names are emitted as `COMPOSITION-SW-COMPONENT-TYPE` `SHORT-NAME`s. A layer that is not emits no `SHORT-NAME` at all, so applying the constraint to it would invent a rule AUTOSAR does not ask for. A fact about the ARXML boundary rather than about storage, declared here because it has two consumers (`validator.check_identifier_conformance` and `editing/diagnosis.py`) and no other home.",
+          "$comment": "Optional with a documented `false` fallback, following contract 1.1.0's `label`/`displayOrder` precedent. `layerDecl` has `additionalProperties: false` and a fixed `required` list, so making the key REQUIRED would stop an existing conforming 1.x document validating — major-bump behavior, which adding a declared fact is not. `false` is the safe fallback in both directions: a layer that does not answer is not identifier-checked, so an undeclared layer can never have an AUTOSAR constraint invented for it. The shipped contract nevertheless answers it on every layer, which `packages/tools/tests/test_model_contract.py` requires; the fallback exists for a contract document written against an older minor, not as licence for a shipped omission.",
+          "type": "boolean"
+        },
+        "identityField": {
+          "description": "The field whose value identifies an element of this layer — `name` everywhere except `requirements`, which uses `id`.",
+          "$ref": "#/$defs/name"
+        },
+        "storage": {
+          "$ref": "#/$defs/storageDecl"
+        },
+        "placement": {
+          "$comment": "At most one per layer, and exactly one in the whole contract (`swc.group`). A second is a contract decision, not a row anyone may add — `registry.build_registry` refuses one and so does the conformance gate.",
+          "$ref": "#/$defs/placementDecl"
+        },
+        "description": {
+          "$ref": "#/$defs/prose"
+        },
+        "absentDescription": {
+          "description": "The prose to publish when the layer is not present in a project. Declared only where the description reports project state rather than a contract fact — i.e. only for a layer a project may legally omit. No shipped layer declares one today.",
+          "$ref": "#/$defs/prose"
+        },
+        "label": {
+          "description": "The layer's rendered heading — `SWCs`, `Implementation Types` — which is neither the layer's name nor derivable from it. A presentation fact, declared because the diff renderer's text output is a byte oracle and the label is part of it. Optional: a layer with none is rendered under its own name.",
+          "$ref": "#/$defs/prose"
+        },
+        "token": {
+          "description": "The singular word this layer is called by when ONE of its elements is named — `swc`, `implementation_type`, `requirement`. It is the `layer` of `swcraft impact`'s public `ElementRef`, the key its per-layer identity maps are built under, the key of `validator`'s identifier-layer index, and (with underscores spelled as spaces) the noun a parse refusal names the layer by. Distinct from `name`, which is the PLURAL the layer itself is called by, and distinct from `label`, which is the rendered heading. Unique across the contract once the fallback is applied — a collision merges two layers into one report section — and a duplicate is refused by the kernel registry, which is the only reader that can see every layer at once.",
+          "$comment": "Optional with a documented fallback to the layer's own `name`, following contract 1.1.0's `label`/`displayOrder` precedent: `layerDecl` has `additionalProperties: false` and a fixed `required` list, so making the key REQUIRED would stop an existing conforming 1.x document validating — major-bump behavior. Declared rather than derived because the derivation it replaces — strip a trailing `s` — is not a rule about this model at all: it answers `taxe` for a layer named `taxes` and it answered this contract's ten only because all ten happen to be regular plurals. The old derivation additionally read `binding.snapshotAttributes`, a deprecated compatibility bridge, so a live fact depended on a legacy one. The fallback is the layer's own `name` and emphatically NOT that bridge. The shipped contract answers it on every layer, which `packages/tools/tests/test_model_contract.py` requires.",
+          "$ref": "#/$defs/name"
+        },
+        "displayOrder": {
+          "description": "Where the layer sorts when layers are PRESENTED, which is NOT the contract's own declaration order: `swcraft diff`'s sections and `swcraft impact`'s layer grouping both list requirements first, because requirements drive everything else. Those two rendered surfaces are its only readers; the compatibility adapters' field order is deliberately NOT one of them, because it is a backward-compatibility surface and is carried by the deprecated `binding.snapshotAttributes` key order instead. Unique across the contract where declared — a duplicate is refused by the kernel registry, which is the only reader that can see every layer at once. Optional: a layer with none sorts after every layer that declares one, ties broken by contract order.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "kinds": {
+          "description": "Every element kind of the layer, member-only kinds included. Empty is admissible at the schema level because the declaration is written in two passes (kinds first, fields second); the conformance gate has no such tolerance and fails an empty field inventory for a bound kind.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/kindDecl"
+          }
+        }
+      }
+    },
+    "storageDecl": {
+      "description": "How a layer's elements are stored. Storage is a contract fact but never a client-facing one: no consumer accepts a path, and `registry.compose_path` has no inverse.",
+      "type": "object",
+      "required": [
+        "directory",
+        "nesting",
+        "fileSuffix",
+        "filenameFrom"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "directory": {
+          "description": "The layer's directory under the model root: one segment, or two joined by `/` (`data_types/base`). Where the directory lies is not how deep the layer stores below it: that is `nesting`. The registry refuses two layers whose directories are equal, differ only in case, or one of which is a prefix of the other segment by segment (`data_types` beside `data_types/base`).",
+          "$ref": "#/$defs/directory"
+        },
+        "nesting": {
+          "description": "`flat` for a layer that stores its element files directly in its directory, or the name of this layer's placement field for a layer that stores them one level further down, in a directory the placement value names. A nested DIRECTORY (`directory` of two segments) and a nested PLACEMENT (this field) are different things: a layer whose directory has two segments is still `flat` unless it declares a placement. The value must be the layer's own `placement.field` — the conformance gate ties the two rather than trusting either.",
+          "$ref": "#/$defs/name"
+        },
+        "fileSuffix": {
+          "description": "The element file's suffix, leading dot included.",
+          "type": "string",
+          "pattern": "^\\.[a-z0-9]+$"
+        },
+        "filenameFrom": {
+          "description": "The field the file name is derived from — equal to its value unless a case-insensitive collision gives the file a suffix; identity is read from content, never from the name.",
+          "$ref": "#/$defs/name"
+        }
+      }
+    },
+    "placementDecl": {
+      "description": "A declared field whose persisted form is a component of the element's location rather than a key in its file. It has no `model_fields` counterpart by design (`reader.read_swc_model_with_placement`, whose docstring records that `SWComponent` has no `group` field and deliberately never will), which is why the conformance gate excludes the field it names from the bidirectional comparison — and proves the exclusion exactly one field wide.",
+      "type": "object",
+      "required": [
+        "kind",
+        "field",
+        "type",
+        "description"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "description": "The element kind the placement field belongs to. Carried explicitly rather than derived from the layer's single top-level kind, because that derivation holds only while the layer has exactly one.",
+          "$ref": "#/$defs/name"
+        },
+        "field": {
+          "description": "The field's name. The `fieldDecl` it names carries `placement: true`.",
+          "$ref": "#/$defs/name"
+        },
+        "type": {
+          "$ref": "#/$defs/typeName"
+        },
+        "description": {
+          "$ref": "#/$defs/prose"
+        }
+      }
+    },
+    "kindDecl": {
+      "description": "One element kind of one layer, including a kind that exists only inside another element.",
+      "type": "object",
+      "$comment": "`description` is NOT required here, although since contract `1.4.1` every kind of the shipped document carries one (it is the editor's hover text): completeness is gated on the shipped document by `test_every_kind_and_field_declares_a_description`, not by this meta-schema, because a newly required `kindDecl` key would be a major bump and the `1.0.0`-shaped synthetic extension fixture would stop validating.",
+      "required": [
+        "id",
+        "kind",
+        "memberOnly",
+        "fields"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kindId"
+        },
+        "kind": {
+          "description": "The kind's bare name. For a kind-discriminated class it equals that class's own `kind` literal.",
+          "$ref": "#/$defs/name"
+        },
+        "discriminatorField": {
+          "description": "The field that tells this kind apart from its siblings in a union — `kind` for the discriminated layers, `type` for the runnable-event union.",
+          "$ref": "#/$defs/name"
+        },
+        "memberOnly": {
+          "description": "Whether the kind has no file and no {layer, element} address of its own, existing only inside another element.",
+          "type": "boolean"
+        },
+        "memberOf": {
+          "description": "Where a member-only kind appears: the owning kind and the field that holds it. Absent for every kind that has a file of its own.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [
+              "kind",
+              "field"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "$ref": "#/$defs/name"
+              },
+              "field": {
+                "$ref": "#/$defs/name"
+              }
+            }
+          }
+        },
+        "description": {
+          "$ref": "#/$defs/prose"
+        },
+        "fields": {
+          "description": "Every declared field of the kind, under its serialization alias.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fieldDecl"
+          }
+        }
+      }
+    },
+    "fieldDecl": {
+      "description": "One declared field of one element kind: its name under the serialization alias, its shape, and the facts no type can carry.",
+      "$comment": "The `not` is the mutual exclusion between `reference`, `relation` and `memberReference`: a field declares at most one way of naming something another declaration holds. Written as three negated `required` pairs rather than as a `oneOf` over the branches, because a field may legally declare NONE and most do.",
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "type",
+        "required",
+        "immutable"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "reference",
+              "relation"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "reference",
+              "memberReference"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "relation",
+              "memberReference"
+            ]
+          }
+        }
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/fieldId"
+        },
+        "name": {
+          "description": "The SERIALIZATION ALIAS — the name the model file, the editing protocol and every non-Python consumer see. The Python attribute spelling, where it differs, lives in `binding.json`'s `fieldNames` and nowhere else.",
+          "$ref": "#/$defs/name"
+        },
+        "type": {
+          "$ref": "#/$defs/typeName"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "default": {
+          "description": "The declared default, where there is one. Carried because it is projectable from `FieldInfo.default` and therefore gate-checkable.",
+          "$comment": "Any JSON value, including null and a collection's empty default. Presence of the key is what declares a default; absence declares that the field has none."
+        },
+        "omitAtDefault": {
+          "description": "Whether the field is left OUT of the written model file while it still holds the declared `default`. The exception table beside `writer/elements.py`'s derived omission rule, and never that rule itself: the derived rule already drops any optional field still holding a default of `None`, `\"\"` or `{}`, needs no declaration, and is not what this key restates. Nor is it \"the default is falsy\": `field:swc.swc.ports` and `field:tasks.task.runnables` (both default `[]`) are emitted at exactly that falsy value, so a reader widening this key into a falsy rule would erase a field from every component and task file. Twenty-nine fields declare it. Four are on the runnable: `field:swc.runnable.min_start_interval`, whose `0.0` sits outside the derived rule and is omitted anyway so that pre-Phase-14 runnable YAML round-trips byte-identically, and — since contract `3.2.0` — its three access lists `reads`, `writes` and `calls`, whose empty default is emitted by the derived rule and omitted here for the same reason: a runnable file written before the lists existed comes back carrying no such key. Two more arrived with contract `4.0.0`, and they are the first members that are neither on the runnable nor a list: `field:swc.swc.external` and `field:compositions.composition.root`, both `boolean` with default `false`, which the derived rule does not drop either — without the declaration every existing component file would gain `external: false` on its next rewrite. Contract `7.0.0` added the seventh, `field:swc.swc.data_type_mappings`, whose empty default the derived rule drops and which is declared here for the runnable lists' own reason: a component file written before the `mapping_sets` layer existed comes back carrying no such key. Contract `7.7.0` added the eighth, `field:swc.runnable.concurrent` (`false`), and contract `7.11.0` four more: `is_service` on both interface kinds (`false`), `field:swc.port.com_specs` and `field:swc.timing_event.disabled_modes` (`[]`), each so a file written before the field comes back without it. Contract `8.0.0` added the external interface stub's `operations` and `data_elements` (`[]`) and contract `9.1.0` `field:hardware.partition.trust` (`non_trusted`). Contract `11.0.0` added thirteen: the twelve `satisfies` lists and `field:requirements.requirement.derived_from` (`[]`), so that no file written before them comes back carrying an empty list. Contract `11.1.0` added the twenty-ninth, `field:requirements.requirement.stub` (`false`), for the flags' reason: only a stub carries the key.",
+          "$comment": "Optional with a documented `false` fallback, following contract 1.1.0's `label`/`displayOrder` and 1.2.0's `arxmlBound` precedent. `fieldDecl` has `additionalProperties: false` and a fixed `required` list, so making the key REQUIRED would stop an existing conforming 1.x document validating — major-bump behavior, which adding a declared fact is not. `false` is the safe fallback: a field that answers nothing is written out at its default, which is what every field but these twenty-nine does. The shipped contract declares it on exactly the twenty-nine named above (one from 1.3.0 to 3.0.0, four from 3.2.0, six from 4.0.0, seven from 7.0.0, eight from 7.7.0, twelve from 7.11.0, fourteen from 8.0.0, fifteen from 9.1.0, twenty-eight from 11.0.0, twenty-nine since 11.1.0), which `packages/tools/tests/test_model_contract.py` requires as a set; declaring it on a field whose default IS covered by the derived rule would be a second statement of that rule rather than an exception to it.",
+          "type": "boolean"
+        },
+        "immutable": {
+          "description": "Whether the field may be changed after creation. Declared here, while `registry._is_immutable` keeps deriving it — the derivation stays as the gate's mechanical oracle precisely because a declared copy loses the protection deriving it gave.",
+          "type": "boolean"
+        },
+        "placement": {
+          "description": "Whether the field's value is a component of the element's location rather than a key in its file. True for exactly one field in the whole contract; the field then has no `model_fields` counterpart and the conformance gate excludes it from the bidirectional comparison.",
+          "type": "boolean"
+        },
+        "description": {
+          "$ref": "#/$defs/prose"
+        },
+        "unit": {
+          "description": "The unit of a numeric field, where the number alone is ambiguous — `Task.period` is seconds and `hardware.memory.size` is bytes.",
+          "$ref": "#/$defs/prose"
+        },
+        "enum": {
+          "description": "The field's admissible values, in declaration order. The order is part of the contract: it is the `Literal` members' order in the bound class.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/scalar"
+          }
+        },
+        "reference": {
+          "$ref": "#/$defs/referenceDecl"
+        },
+        "relation": {
+          "$ref": "#/$defs/relationDecl"
+        },
+        "memberReference": {
+          "$ref": "#/$defs/memberReferenceDecl"
+        },
+        "elementKind": {
+          "description": "The element kind an object-typed field holds. Distinct from `collection`, which holds many.",
+          "$ref": "#/$defs/name"
+        },
+        "collection": {
+          "$ref": "#/$defs/collectionDecl"
+        }
+      }
+    },
+    "referenceDecl": {
+      "description": "A field whose value identifies an element of another layer.",
+      "type": "object",
+      "required": [
+        "layer",
+        "identityField"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "layer": {
+          "description": "The target layer's bare name.",
+          "$ref": "#/$defs/name"
+        },
+        "identityField": {
+          "description": "The target layer's identity field. It must equal that layer's own `identityField`; the conformance gate checks it rather than assuming `name`.",
+          "$ref": "#/$defs/name"
+        }
+      }
+    },
+    "relationDecl": {
+      "description": "A field whose value names an element of another layer WITHOUT being that element's identity. Declared on the source field, as a sibling of `reference` and `collection` and never as a document-level list, so that the fact rides the `field` coverage granularity every partial consumer already owes a disposition for, and no relation can become an implicit omission. A `reference` resolves by the target layer's own `identityField` and needs no resolver; a relation resolves by some other declared field of the target, or by the keys or the members of a collection, and therefore names both the target field and the shape of the source value.",
+      "$comment": "`reference` and `relation` are mutually exclusive on one field (`fieldDecl`'s `allOf` of negated pairs, which also excludes `memberReference`): a field resolved both ways would have two answers to `what does this value name`. The declaration says nothing about what happens when the named target does not exist — the resolvers are unconditional and report what the SOURCE says, which is the behavior `impact.py` documents for an SWC `memory` key naming an undeclared memory (the complaint is `check_hardware_topology`'s, not the graph's).",
+      "type": "object",
+      "required": [
+        "layer",
+        "kind",
+        "field",
+        "resolution",
+        "direction",
+        "summary"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "layer": {
+          "description": "The target layer's bare name.",
+          "$ref": "#/$defs/name"
+        },
+        "kind": {
+          "description": "The target element kind's bare name. A relation targets ONE kind of the layer — `field:swc.swc.memory` names a `memory` and not any hardware element — which is the fact a reference has no room for.",
+          "$ref": "#/$defs/name"
+        },
+        "field": {
+          "description": "The declared field of that kind whose value a resolved key is matched against. It must be a field the target kind really declares; the kernel registry refuses a relation naming one it does not.",
+          "$ref": "#/$defs/name"
+        },
+        "resolution": {
+          "description": "The shape of the source value, and therefore which resolver `binding.json` binds: `field-value` for a scalar field, `map-keys` for the keys of a map, `list-values` for the members of a list, `versioned-list-values` for the members of a list of `<identity>@<version>` references, resolved to the identity alone (contract `11.0.0`); a member of the element form `<layer>:<name>` is not a member of the relation. The contract names the shape; the Python callable that realizes it lives in the binding alone.",
+          "type": "string",
+          "enum": [
+            "field-value",
+            "map-keys",
+            "list-values",
+            "versioned-list-values"
+          ]
+        },
+        "direction": {
+          "description": "Which way the dependency edge points once the key is resolved. `target-to-source` — the only value the sixteen shipped relations need — means the named element is the one depended upon and the declaring element is the dependent, which is the direction `impact.py`'s reverse graph is built in.",
+          "type": "string",
+          "enum": [
+            "target-to-source"
+          ]
+        },
+        "summary": {
+          "$ref": "#/$defs/prose"
+        }
+      }
+    },
+    "memberReferenceDecl": {
+      "description": "A field whose value names a MEMBER of a declared collection — not an element. The value is compared with the collection's `identityField` (a `field` collection) or with the scalar item itself (a `whole_value` list of scalars). Without `via` the collection is the one on the element holding the field; with `via` it is the one on the element reached through the sibling field `via` names: that sibling's own member reference selects a member whose kind carries exactly one `reference` into the layer owning the listed collections, and that reference names the element. Declared on the source field, as `reference` and `relation` are, so the fact rides the `field` coverage granularity.",
+      "$comment": "Mutually exclusive with `reference` and `relation` (`fieldDecl`'s `allOf`). It is not a `relation`: a relation names an element and is a dependency edge `impact` walks; a member reference names a member inside one, and no traversal walks it. No `binding.json` row exists for it, because there is no resolver to bind: its readers read the declaration as data. It restates what the validator's runnable-access rules enforce, and a test holds the two together by each rule's `appliesTo`.",
+      "type": "object",
+      "required": [
+        "collections",
+        "summary"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "collections": {
+          "description": "The collections a member may be found in, one per element kind the target may be; the first whose owner is the target's kind applies.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/collectionId"
+          }
+        },
+        "via": {
+          "description": "The name of a sibling field of the same kind, itself declaring a member reference without `via` of its own (one step, never a chain), through whose selected member the target element is reached. Absent: the collection is on the element holding the field.",
+          "$ref": "#/$defs/name"
+        },
+        "summary": {
+          "$ref": "#/$defs/prose"
+        }
+      }
+    },
+    "collectionDecl": {
+      "description": "A nested list or map, and how one member of it is identified. `memberIdentity` is the vocabulary an address is written in and the vocabulary the review surface reports in — differ.py's COLLECTION_IDENTITY, adopted rather than re-decided.",
+      "type": "object",
+      "required": [
+        "kind",
+        "memberIdentity"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "list",
+            "map"
+          ]
+        },
+        "memberIdentity": {
+          "description": "`field` — one field identifies a member; `composite` — several do; `whole_value` — every field is part of the identity, so the member has no addressable interior and the only operations on it are create and remove.",
+          "type": "string",
+          "enum": [
+            "field",
+            "composite",
+            "whole_value"
+          ]
+        },
+        "memberKinds": {
+          "description": "The element kinds a member may be, in declaration order. Empty for a collection of scalars.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/name"
+          }
+        },
+        "discriminatorField": {
+          "description": "The field that tells the member kinds apart, where there is more than one.",
+          "$ref": "#/$defs/name"
+        },
+        "identityField": {
+          "$ref": "#/$defs/name"
+        },
+        "identityFields": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/name"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "$comment": "Each member-identity strategy names exactly the identity keys it uses. A `field` collection with no `identityField`, or a `whole_value` one carrying identity keys at all, is a collection no client could address by the strategy it declares.",
+          "if": {
+            "properties": {
+              "memberIdentity": {
+                "const": "field"
+              }
+            },
+            "required": [
+              "memberIdentity"
+            ]
+          },
+          "then": {
+            "required": [
+              "identityField"
+            ],
+            "not": {
+              "required": [
+                "identityFields"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "memberIdentity": {
+                "const": "composite"
+              }
+            },
+            "required": [
+              "memberIdentity"
+            ]
+          },
+          "then": {
+            "required": [
+              "identityFields"
+            ],
+            "not": {
+              "required": [
+                "identityField"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "memberIdentity": {
+                "const": "whole_value"
+              }
+            },
+            "required": [
+              "memberIdentity"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "identityField"
+                  ]
+                },
+                {
+                  "required": [
+                    "identityFields"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "retiredStorageDecl": {
+      "description": "One retired storage directory: where element files lay, since which contract they may not, and the layer directories they belong in now.",
+      "type": "object",
+      "required": [
+        "directory",
+        "since",
+        "movedTo"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "directory": {
+          "description": "The retired directory, model-root-relative. No layer may store its elements in it.",
+          "$ref": "#/$defs/directory"
+        },
+        "since": {
+          "description": "The contract version from which a file in the directory is refused.",
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "movedTo": {
+          "description": "The layer directories its files belong in now, each a declared layer's `storage.directory`, in the order a refusal names them.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/directory"
+          }
+        }
+      }
+    },
+    "ruleDecl": {
+      "description": "One rule of the model, in one of three families. The contract states that the rule exists, what it applies to and — through `binding.json` — who owns it. What it computes stays in Python, verified by the behavioral suites.",
+      "type": "object",
+      "required": [
+        "id",
+        "family",
+        "appliesTo",
+        "summary"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ruleId"
+        },
+        "family": {
+          "description": "`element-local` — a validator decorator on one bound class; `cross-element` — the adopted validator.CONSISTENCY_RULES vocabulary; `schema-config` — a `model_config` key with validation meaning, whose `appliesTo` is derived and gate-checked rather than hand-written.",
+          "type": "string",
+          "enum": [
+            "element-local",
+            "cross-element",
+            "schema-config"
+          ]
+        },
+        "appliesTo": {
+          "description": "The contract entries the rule governs, as prefixed identifiers. A multi-field decorator is ONE rule with several entries — one callable, one identifier.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/entryIdentifier"
+          }
+        },
+        "summary": {
+          "description": "What the rule requires, in one sentence. For a cross-element rule this is its existing CONSISTENCY_RULES description, carried across.",
+          "$ref": "#/$defs/prose"
+        },
+        "severity": {
+          "description": "The class of the rule's findings. Absent means error: the finding refuses `check-model`, `validate`, the editing protocol's validation and the experiment. `warning` means the finding is listed by `check-model` and `validate`, leaves their exit code 0 unless `--warnings-as-errors` is given, and is never a refusal anywhere else. Only a warning rule carries the key — this is the exception table beside the derived rule, never a field every rule fills — which is why `warning` is the one value the schema admits.",
+          "type": "string",
+          "enum": [
+            "warning"
+          ]
+        }
+      }
+    }
+  }
+}

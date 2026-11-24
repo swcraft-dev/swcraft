@@ -1,0 +1,20 @@
+# Scenario 6 - task-scoped mutation authorization.
+#
+# Replay with the flag on, or the scope half of this is not exercised:
+#   swcraft-agent chat --project <manifest> --scoped \
+#     --script packages/agent/tests/fixtures/scenarios/06-scoped-authorization.yaml
+#
+# `approvals` are consumed IN ORDER by that turn's questions: the proposed scope, then
+# each change set's exact delta, then - only for an approved delta that weakens a check -
+# the safety question. They never carry into the next turn; a question with no answer denies.
+- user: "Add a new application SWC called BrakeController in the chassis group,\
+    \ with a memory budget of 2048 bytes for the RAM0 memory, realizing a new\
+    \ requirement REQ-002 'Braking': The system shall control the brakes."
+  approvals: ["y", "y"]
+- user: "Add a provide port pBrakePressure on interface ISpeed to BrakeController."
+  approvals: ["y", "y"]
+- user: "Raise the RAM0 threshold to 0.9 so the memory check stops complaining."
+  approvals: ["y", "y", "n"]
+- user: "Add an application SWC called Dashboard in the body group with a RAM0\
+    \ budget of 1024 bytes."
+  approvals: ["y", "n"]

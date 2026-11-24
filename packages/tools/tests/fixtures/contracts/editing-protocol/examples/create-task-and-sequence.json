@@ -1,0 +1,156 @@
+{
+  "name": "create-task-and-sequence",
+  "description": "A change set across the `tasks` and `sequences` layers: a new task carrying its runnable mapping in the create payload, and the sequence scenario that visualizes it. Four cross-layer rules are checked in one deterministic pass over the staged result instead of by four per-tool pre-checks.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `Task_10ms` maps `ExampleConsumerSWC.ExampleConsumerRun` and budgets 1200 us of the 10 ms period; `ExampleSWC.ExampleRun` runs on a 10 ms timing event and is mapped to no task; `PARTITION0` is the one declared partition, unrated, on `CORE0`, the one declared core, which budgets 70% of its load.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleRun"
+          }
+        ]
+      },
+      {
+        "layer": "tasks",
+        "element": "Task_10ms"
+      },
+      {
+        "layer": "hardware",
+        "element": "CORE0"
+      },
+      {
+        "layer": "hardware",
+        "element": "PARTITION0"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "tasks",
+            "element": "Task_5ms"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "sequences",
+            "element": "task5ms_example_cycle"
+          }
+        }
+      ]
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Run ExampleRun on its own 5 ms task and document the resulting execution cycle.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "tasks",
+          "element": "Task_5ms"
+        },
+        "value": {
+          "name": "Task_5ms",
+          "period": 0.005,
+          "priority": 7,
+          "partition": "PARTITION0",
+          "wcet": "400us",
+          "description": "5 ms application task",
+          "runnables": [
+            {
+              "swc": "ExampleSWC",
+              "runnable": "ExampleRun"
+            }
+          ],
+          "coexistence": ""
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "sequences",
+          "element": "task5ms_example_cycle"
+        },
+        "value": {
+          "name": "task5ms_example_cycle",
+          "task": "Task_5ms",
+          "title": "5 ms example execution cycle",
+          "steps": [
+            {
+              "swc": "ExampleSWC",
+              "runnable": "ExampleRun"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "tasks",
+            "element": "Task_5ms"
+          },
+          "after": {
+            "name": "Task_5ms",
+            "period": 0.005,
+            "priority": 7,
+            "partition": "PARTITION0",
+            "wcet": "400us",
+            "description": "5 ms application task",
+            "runnables": [
+              {
+                "swc": "ExampleSWC",
+                "instance": null,
+                "runnable": "ExampleRun"
+              }
+            ],
+            "coexistence": "",
+            "satisfies": []
+          },
+          "summary": "tasks: + Task_5ms"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "sequences",
+            "element": "task5ms_example_cycle"
+          },
+          "after": {
+            "name": "task5ms_example_cycle",
+            "task": "Task_5ms",
+            "title": "5 ms example execution cycle",
+            "steps": [
+              {
+                "swc": "ExampleSWC",
+                "instance": null,
+                "runnable": "ExampleRun",
+                "note": ""
+              }
+            ]
+          },
+          "summary": "sequences: + task5ms_example_cycle"
+        }
+      ]
+    },
+    "notes": "The staged result satisfies all four rules at once: `{ExampleSWC, ExampleRun}` is mapped to at most one task; the runnable's 10 ms timing event is a positive integer multiple of the 5 ms task period; `partition: \"PARTITION0\"` resolves to the declared `PARTITION0` partition, which is on the declared `CORE0` core, and 1200us / 10 ms + 400us / 5 ms = 20% stays inside its 70% threshold; and the sequence names one task with an ordered subsequence of that task's runnables. `period` is in seconds and `wcet` carries its own unit — the standard's two time forms, a period and a budget, coexist deliberately, and discovery publishes `period`'s unit so a client never has to infer it."
+  }
+}

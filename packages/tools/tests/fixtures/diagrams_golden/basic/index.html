@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>swcraft-basic-example</title>
+<style>
+body { margin: 0 auto; max-width: 960px; padding: 16px; font: 14px Helvetica, Arial, sans-serif; }
+a { color: #1a5fb4; }
+li { margin: 2px 0; }
+.file { color: #555555; font-size: 12px; }
+pre { background: #f6f6f6; padding: 8px; overflow-x: auto; }
+</style>
+</head>
+<body>
+<h1>swcraft-basic-example</h1>
+<section>
+<h2>Compositions</h2>
+<ul>
+<li><a href="ibd-Root.html">Root — internal block diagram</a> <span class="file">(<a href="ibd-Root.svg">SVG</a>)</span></li>
+<li><a href="overview-Root.html">Root — overview</a> <span class="file">(<a href="overview-Root.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section>
+<h2>Nesting</h2>
+<ul>
+<li><a href="nesting.html">Root — nesting</a> <span class="file">(<a href="nesting.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section>
+<h2>Deployment</h2>
+<ul>
+<li><a href="deployment.html">CPU — deployment</a> <span class="file">(<a href="deployment.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section>
+<h2>Sequences</h2>
+<ul>
+<li><a href="sequence-task10ms_consumer_cycle.html">task10ms_consumer_cycle — sequence diagram</a> <span class="file">(<a href="sequence-task10ms_consumer_cycle.svg">SVG</a>)</span></li>
+</ul>
+</section>
+<section id="report">
+<h2>Report</h2>
+<pre>Diagrams report: swcraft-basic-example
+
+Views: 5
+  ibd-Root                          682.24 x 205 px  3995 bytes
+  overview-Root                     650.34 x 175 px  3265 bytes
+  nesting                           350 x 114 px  1497 bytes
+  deployment                        290 x 228 px  2134 bytes
+  sequence-task10ms_consumer_cycle  440.44 x 172 px  3497 bytes
+
+Not drawn: 1 in 1 kind
+  not-run: 1
+    deployment  ExampleSWC: no task runs a runnable of it
+
+Drawn as a loop: none
+</pre>
+</section>
+<p><a href="report.txt">report.txt</a></p>
+<script type="application/json" id="swcraft-elements">{"compositions/Root.yaml": {"members": {}, "views": ["ibd-Root", "overview-Root", "nesting"]}, "connectors/Example_to_Consumer.yaml": {"members": {}, "views": ["ibd-Root"]}, "hardware/CORE0.yaml": {"members": {}, "views": ["deployment"]}, "hardware/CPU.yaml": {"members": {}, "views": ["deployment"]}, "hardware/PARTITION0.yaml": {"members": {}, "views": ["deployment"]}, "sequences/task10ms_consumer_cycle.yaml": {"members": {}, "views": ["sequence-task10ms_consumer_cycle"]}, "swc/example/ExampleConsumerSWC.yaml": {"members": {"ports/rIn": ["ibd-Root"], "runnables/ExampleConsumerRun": ["sequence-task10ms_consumer_cycle"]}, "views": ["ibd-Root", "overview-Root", "nesting", "deployment", "sequence-task10ms_consumer_cycle"]}, "swc/example/ExampleSWC.yaml": {"members": {"ports/pOut": ["ibd-Root"]}, "views": ["ibd-Root", "overview-Root", "nesting"]}, "tasks/Task_10ms.yaml": {"members": {}, "views": ["deployment", "sequence-task10ms_consumer_cycle"]}}</script>
+</body>
+</html>

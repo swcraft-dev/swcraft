@@ -1,0 +1,6 @@
+name: SpeedFrames
+kind: implementation_array
+element_type: SpeedFrame
+length: 2
+element_name: Element
+description: reference `data_types.implementation_array.element_type` -> SpeedFrame.

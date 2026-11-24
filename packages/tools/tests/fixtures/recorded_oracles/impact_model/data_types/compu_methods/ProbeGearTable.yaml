@@ -1,0 +1,7 @@
+name: ProbeGearTable
+kind: texttable
+entries:
+- name: ProbePark
+  value: 0
+- name: ProbeDrive
+  value: 1

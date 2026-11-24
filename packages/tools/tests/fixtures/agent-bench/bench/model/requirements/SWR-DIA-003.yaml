@@ -1,0 +1,9 @@
+id: SWR-DIA-003
+title: Snapshot read service
+description: The diagnostic manager shall serve a read snapshot request from the tester.
+req_type: req
+version: 1
+source: external
+document: SRS Diagnostics
+baseline: '1.0'
+revision: '1'

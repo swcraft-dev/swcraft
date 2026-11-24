@@ -1,0 +1,111 @@
+{
+  "name": "consistency-violation-mapping-set-pointer-mapped",
+  "description": "`[constr_1066]`'s refusal, and the one pairing `examples/create-implementation-composites-and-composite-map.json` never writes: an application type mapped onto a pointer. The pointer loads and the mapping set loads — both of its sides resolve to declared data types — so what refuses is the model rule that an application data type is never mapped to an implementation data type of category `DATA_REFERENCE`.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, whose `implementation_types` layer holds the value type `uint16`. The change set creates an application type, a pointer to `uint16` and a mapping set whose one pair maps the first onto the second.",
+    "existing_elements": [
+      {
+        "layer": "implementation_types",
+        "element": "uint16"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "WheelSpeed_Kph"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "implementation_types",
+            "element": "WheelSpeed_Ptr"
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "mapping_sets",
+            "element": "WheelSpeedMapping"
+          }
+        }
+      ],
+      "notes": "The scope covers the three addresses exactly, so the refusal is the model rule and not the authorization boundary."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Store the wheel speed behind a reference.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "application_types",
+          "element": "WheelSpeed_Kph"
+        },
+        "value": {
+          "name": "WheelSpeed_Kph",
+          "kind": "application_type",
+          "unit": "kph"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "implementation_types",
+          "element": "WheelSpeed_Ptr"
+        },
+        "value": {
+          "name": "WheelSpeed_Ptr",
+          "kind": "pointer",
+          "target": "uint16"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "mapping_sets",
+          "element": "WheelSpeedMapping"
+        },
+        "value": {
+          "name": "WheelSpeedMapping",
+          "maps": [
+            {
+              "application": "WheelSpeed_Kph",
+              "implementation": "WheelSpeed_Ptr"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "mapping_sets",
+        "element": "WheelSpeedMapping",
+        "path": [
+          {
+            "field": "maps"
+          },
+          {
+            "member": "WheelSpeed_Kph"
+          },
+          {
+            "field": "implementation"
+          }
+        ]
+      }
+    ],
+    "notes": "One address, the pair's `implementation` side, which is the repair: re-point it at an implementation type that stores the value, or remove the pair. The pointer itself is legal and stays so — it may be an argument's type or another pointer's target — and only mapping one is refused. The rule is checked before the mapping-set kind rules, so a map onto a pointer is this one finding and never an `unknown-implementation` one besides. SWCraft applies the same refusal to a pointer reached through a reference type or inside an implementation record or array the pair names; the direct pair is the one the constraint's text states."
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "broken-reference-remove-referenced-interface",
+  "description": "A `remove` of an element two ports still reference. Validation runs over the staged result, so the refusal names every dangling referrer at once rather than stopping at the first guard.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `IExample` is provided by `ExampleSWC.pOut` and required by `ExampleConsumerSWC.rIn`; the change set removes the interface and clears neither port.",
+    "existing_elements": [
+      { "layer": "interfaces", "element": "IExample" },
+      { "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "ports" }, { "member": "pOut" }] },
+      { "layer": "swc", "element": "ExampleConsumerSWC", "path": [{ "field": "ports" }, { "member": "rIn" }] }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        { "operation": "remove", "address": { "layer": "interfaces", "element": "IExample" } }
+      ]
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Retire the IExample interface.",
+    "operations": [
+      {
+        "operation": "remove",
+        "address": { "layer": "interfaces", "element": "IExample" }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "broken-reference",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [{ "field": "ports" }, { "member": "pOut" }, { "field": "interface" }]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [{ "field": "ports" }, { "member": "rIn" }, { "field": "interface" }]
+      }
+    ],
+    "notes": "The addresses are the referrers, not the removed element: that is what a client needs to write the change set that succeeds. Adding the two port removals — or two `update`s pointing them elsewhere — to this same change set makes it acceptable as a whole, so a removal needs no separate refusal guard or confirmation-token round trip."
+  }
+}

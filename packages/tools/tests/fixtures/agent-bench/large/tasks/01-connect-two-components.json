@@ -1,0 +1,52 @@
+{
+  "id": "01-connect-two-components",
+  "task": 1,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Add a sender port pForwardedOutput (interface If0001abcdefghij) to Swc075abcdefghij and a receiver port rForwardedOutput with the same interface to Swc076abcdefghij, and connect the two.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "swc",
+        "name": "Swc075abcdefghij",
+        "has": {
+          "ports": [
+            {
+              "name": "pForwardedOutput",
+              "direction": "provide",
+              "interface": "If0001abcdefghij"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "Swc076abcdefghij",
+        "has": {
+          "ports": [
+            {
+              "name": "rForwardedOutput",
+              "direction": "require",
+              "interface": "If0001abcdefghij"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "connectors",
+        "has": {
+          "from": {
+            "swc": "Swc075abcdefghij",
+            "port": "pForwardedOutput"
+          },
+          "to": {
+            "swc": "Swc076abcdefghij",
+            "port": "rForwardedOutput"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "consistency-violation-component-below-requirements",
+  "description": "A component declared BELOW the ASIL of a requirement allocated to it. Every identity resolves and every field is declared, so nothing here is dangling or unknown: what the assembled staged result breaks is `safety.component-below-requirements`, `[constr_6201]`'s direction — a component built to a level equal to or above the requirements allocated to it is legitimate, and only one built below them is not. The two addresses are the two legal repairs, and the rule chooses neither.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model with `REQ_EXAMPLE_001` already allocated at ASIL D. Neither component declares a level, so both DERIVE D and the baseline is valid. The change set declares `ExampleSWC` at ASIL B.",
+    "existing_elements": [
+      { "layer": "requirements", "element": "REQ_EXAMPLE_001" },
+      { "layer": "swc", "element": "ExampleSWC" },
+      { "layer": "swc", "element": "ExampleConsumerSWC" }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": { "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "asil" }] }
+        }
+      ],
+      "notes": "The scope covers the requested address exactly, so the refusal is the model rule and not the authorization boundary. It is also not the safety guard, and the reason is the ORDER and not an exemption: a component's own `asil` IS inside the guard (`examples/update-requirement-and-swc-asil.json` states both directions), and this very movement — an effective ASIL D lowered to a declared B — is what it would classify as `LOWER_ALLOCATION`. It never gets the chance: pass D runs BEFORE the delta is projected and before the guard sees anything, so a change set that mints a finding is refused rather than offered to a human as a weakening to accept. No host was ever asked and nothing here could have been approved past. That is the point of the pair — a level lowered under its requirements is REFUSED by validation rather than offered to a human as a weakening to accept."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Build ExampleSWC to ASIL B.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": { "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "asil" }] },
+        "value": "B"
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "consistency-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      { "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "asil" }] },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_001",
+        "path": [{ "field": "asil" }]
+      }
+    ],
+    "notes": "Two addresses, and the pair is the two legal repairs: raise the component to the level allocated to it, or lower the requirements above it. The rule does not choose between them, exactly as `consistency-violation-unreachable-memory.json` does not choose between moving the task and admitting the core. The refusal is SYMMETRIC in the model and not in the request: the same result — and the same two addresses — is reached by raising the requirement over a component that already declares B, so a client cannot escape it by editing the other side. What this refusal does NOT reach: a requirement reaches a component through the component's own `satisfies`, a port's or a runnable's, and a link on an interface, a composition, a task or a hardware element allocates no level, so a requirement allocated in the real project to such an element is, in this model, allocated to no component; and the rule compares two of the project's own declarations, so it says the declaration disagrees with the allocation the model carries and nothing about whether the allocation is right. A component that declares NOTHING is never reported here — its level IS the maximum allocated to it — while one that declares `QM` under this requirement is, because `QM` is a declaration that no ASIL is allocated and not an absence."
+  }
+}

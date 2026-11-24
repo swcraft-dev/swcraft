@@ -1,0 +1,32 @@
+{
+  "id": "09-ram-for-a-component",
+  "task": 9,
+  "group": "question",
+  "kind": "question",
+  "status": "ready",
+  "prompt": "Is there enough RAM left on Co1abc for a new component that needs 40 KB? Start with yes or no.",
+  "expect": {
+    "model": "unchanged",
+    "answer": {
+      "first_of": {
+        "candidates": [
+          "yes",
+          "no"
+        ],
+        "expected": "no"
+      }
+    }
+  },
+  "reference": {
+    "Me1abc": {
+      "size": 126976,
+      "threshold": 0.8,
+      "budget": 101580.8,
+      "consumed": 75264,
+      "headroom": 26316.8
+    },
+    "requested": "40 KB (40960 or 40000 bytes), more than the headroom",
+    "computed_by": "swcraft resource-report"
+  },
+  "note": "Co1abc reaches Me1abc alone, enforced strictly at 80 %. The raw free space (51712 bytes) would fit 40 KB, so an answer that ignores the threshold says yes and is wrong."
+}

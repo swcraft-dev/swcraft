@@ -1,0 +1,38 @@
+{
+  "name": "reference-role-value-type-undeclared-base",
+  "description": "A `create` of a value type whose `base` names no declared data type. It is the `broken-reference` half of the reference-role family and the vector that keeps that half witnessed: `data-type.value-type-undeclared-base` answers the code every undeclared-target rule of the data type layer answers — an undeclared data element type, argument type, record field type or array element type — because the repair it asks for is a reference repair, supplying the target or re-pointing the referrer, and not a change of kind. `reference-role-value-type-base-in-another-layer.json` is its sibling: a name declared in `implementation_types` rather than in `base_types`, the one layer a value type's `base` is resolved in, which answers the same code.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, whose `base_types` layer declares twelve base types — `float32_base` among them — and no `float16_base`. The change set creates `VehicleSpeed_kph` with `base: float16_base`.",
+    "existing_elements": [{ "layer": "base_types", "element": "float32_base" }],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [{ "operation": "create", "address": { "layer": "implementation_types", "element": "VehicleSpeed_kph" } }],
+      "notes": "The scope covers the create exactly, so the refusal is the reference rule and not the authorization boundary."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Add the VehicleSpeed_kph value type over a 16-bit float base type.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": { "layer": "implementation_types", "element": "VehicleSpeed_kph" },
+        "value": {
+          "name": "VehicleSpeed_kph",
+          "kind": "value_type",
+          "base": "float16_base",
+          "unit": "kph"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "broken-reference",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [{ "layer": "implementation_types", "element": "VehicleSpeed_kph", "path": [{ "field": "base" }] }],
+    "notes": "One address, the referrer, and never the target, which does not exist to be named. Either repair clears it: declare `float16_base` as a `base_type` in the same change set, or re-point `base` at a base type the model declares. A `base` that names a value type or a reference type answers this refusal too, since contract `8.0.0`: it is resolved in the `base_types` layer alone, where neither is declared."
+  }
+}

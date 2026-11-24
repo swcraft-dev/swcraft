@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="682.24" height="205" viewBox="0 0 682.24 205" font-family="Helvetica, Arial, sans-serif" data-view="ibd-Root">
+<title>Root — internal block diagram</title>
+<style>g.edges use{stroke-width:10px;stroke-dasharray:none}</style>
+<rect class="background" width="100%" height="100%" fill="white"/>
+<g class="frame">
+<g class="frame" data-role="frame" data-name="Root"><title>composition Root
+Root composition
+The top of the hierarchy: every component this project declares stands in it once, and the connector between them is drawn inside it. A connector that names no composition belongs to the root, which is why Example_to_Consumer carries no `composition:` key.</title><rect x="22" y="22" width="638.24" height="161" rx="4" fill="#fafafa" stroke="#333333" stroke-width="1.5"/></g>
+</g>
+<g class="edges">
+<g class="edge connector" data-role="connector" data-name="Example_to_Consumer" data-source="p1" data-target="p2" stroke-width="1"><title>connector Example_to_Consumer: ExampleSWC.pOut -&gt; ExampleConsumerSWC.rIn
+ExampleSWC provides IExample data to ExampleConsumerSWC</title><path id="e1" d="M 334.84 113 L 354.84 113" fill="none" stroke="#555555"/><use href="#e1" opacity="0"/></g>
+</g>
+<g class="members">
+<g class="member component" data-role="member" data-name="ExampleSWC" data-type="ExampleSWC" data-kind="component"><title>ExampleSWC (component)
+Example software component for testing and demonstration</title><rect x="148.84" y="83" width="160" height="60" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="ExampleConsumerSWC" data-type="ExampleConsumerSWC" data-kind="component"><title>ExampleConsumerSWC (component)
+Example software component consuming data from ExampleSWC</title><rect x="378.84" y="83" width="191.4" height="60" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+</g>
+<g class="ports">
+<g id="p1" class="port provide sender-receiver" data-role="port" data-owner="ExampleSWC" data-name="pOut" data-interface="IExample"><title>ExampleSWC.pOut: provide IExample (sender-receiver)
+· value: float32
+Example output port providing data</title><rect class="port-box" x="302.84" y="107" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="314.84" y1="113" x2="318.84" y2="113" stroke="#222222" stroke-width="1.2"/><path d="M 318.84 107 L 328.84 107 L 334.84 113 L 328.84 119 L 318.84 119 Z" fill="white" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="302.84" y="107" width="32" height="12" opacity="0"/></g>
+<g id="p2" class="port require sender-receiver" data-role="port" data-owner="ExampleConsumerSWC" data-name="rIn" data-interface="IExample"><title>ExampleConsumerSWC.rIn: require IExample (sender-receiver)
+· value: float32
+Example input port requiring data</title><rect class="port-box" x="372.84" y="107" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="372.84" y1="113" x2="362.84" y2="113" stroke="#222222" stroke-width="1.2"/><path d="M 362.84 113 L 354.84 107 M 362.84 113 L 354.84 119" fill="none" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="354.84" y="107" width="30" height="12" opacity="0"/></g>
+</g>
+<g class="labels">
+<text class="frame-label" x="29" y="38.6" font-size="12" data-kind="composition" font-weight="bold">Root — Root composition</text>
+<text class="member-label" x="189.96" y="99.6" font-size="12" data-kind="component" font-weight="600">ExampleSWC</text>
+<text class="port-label in-member" x="299.84" y="116" font-size="10" fill="#444444" data-kind="component" text-anchor="end">pOut</text>
+<text class="member-label" x="414.54" y="99.6" font-size="12" data-kind="component" font-weight="600">ExampleConsumerSWC</text>
+<text class="port-label in-member" x="387.84" y="116" font-size="10" fill="#444444" data-kind="component" text-anchor="start">rIn</text>
+</g>
+</svg>

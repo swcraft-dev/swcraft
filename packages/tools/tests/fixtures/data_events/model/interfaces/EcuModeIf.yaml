@@ -1,0 +1,4 @@
+name: EcuModeIf
+kind: external_interface
+external_ref: /Foreign/ModeInterfaces/EcuModeIf
+external_dest: MODE-SWITCH-INTERFACE

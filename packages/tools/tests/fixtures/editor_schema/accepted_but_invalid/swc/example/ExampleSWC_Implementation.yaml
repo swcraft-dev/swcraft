@@ -1,0 +1,6 @@
+name: ExampleSWC_Implementation
+type: application
+description: Collides with the SWC-IMPLEMENTATION name the writer generates for ExampleSWC
+memory:
+  RAM: 16
+handle_termination_and_restart: no_support

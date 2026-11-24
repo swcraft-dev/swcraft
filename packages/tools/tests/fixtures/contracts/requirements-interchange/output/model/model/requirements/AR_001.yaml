@@ -1,0 +1,12 @@
+id: AR_001
+title: Brake request handling
+description: BrakeCtrl shall forward a brake request to the actuator within 10 ms.
+req_type: req
+version: 1
+source: architecture
+derived_from:
+- SYS_001@2
+- SYS_002@2
+- CUST_001@1
+- swc:BrakeCtrl
+asil: B

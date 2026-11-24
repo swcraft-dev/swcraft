@@ -1,0 +1,60 @@
+{
+  "name": "immutable-field-runnable-renamed-by-collection-update",
+  "description": "A member renamed in place through an `update` of the whole collection. The address names only the `runnables` field, so no step of it touches the member's `name`; the rename lives entirely inside the replacement value. The whole-collection `update` has one job — reordering, the one change no address can express — and renaming a member in place is among the changes with NO protocol path at all.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` carries one runnable, `ExampleRun`, with a 10 ms timing event. The replacement is that same runnable, byte for byte, under a different `name`.",
+    "existing_elements": [
+      { "layer": "swc", "element": "ExampleSWC", "path": [{ "field": "runnables" }, { "member": "ExampleRun" }] }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleSWC",
+            "path": [{ "field": "runnables" }]
+          }
+        }
+      ],
+      "notes": "The scope covers the requested address exactly — an approved reordering of this very collection. It is stated that way on purpose: an approved scope can never make an immutable field writable, and gate 2 is not what refuses this. Without the binding rule the projected delta would be `remove runnables[ExampleRun]` plus `create runnables[RenamedRun]`, which this scope does NOT cover — so in a scoped run gate 2 would catch it late and for the wrong reason, and in an unscoped run nothing would."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Rename ExampleRun to RenamedRun.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleSWC",
+          "path": [{ "field": "runnables" }]
+        },
+        "value": [
+          {
+            "name": "RenamedRun",
+            "min_start_interval": 0.01,
+            "events": [{ "type": "timing", "period": 0.01 }]
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "immutable-field",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [{ "field": "runnables" }]
+      }
+    ],
+    "notes": "The member-identity multiset of the replacement must come back unchanged: a pure reorder and a per-member content change are what the primitive is for. An identity both gone and arrived is a rewrite in place and is `immutable-field`, the code decision 5 names for exactly this; an identity only arrived or only gone is a membership change and is `schema-violation` pointing at the `create` or `remove` at the member's own address, which is where the identity-conflict, multiset and same-identity-ban checks are made. A change OF identity remains what `rename-swc-via-remove-create-and-reference-updates` shows for an element: a remove and a create at DIFFERENT identities, plus the reference updates. The address is the collection field, because that is what the client wrote. The model stays byte-identical."
+  }
+}

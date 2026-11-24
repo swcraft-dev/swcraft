@@ -1,0 +1,109 @@
+{
+  "id": "05-remove-component",
+  "task": 5,
+  "group": "model-change",
+  "kind": "change",
+  "status": "ready",
+  "prompt": "Remove Swc076abcdefghij from the model, together with everything that refers to it.",
+  "expect": {
+    "check_model": "no-errors",
+    "assertions": [
+      {
+        "layer": "swc",
+        "name": "Swc076abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn0471abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn0472abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn0473abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn0474abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn0475abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn0476abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn0929abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn0930abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn0931abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn0932abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn0933abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn0934abcdefghij",
+        "absent": true
+      },
+      {
+        "layer": "connectors",
+        "name": "Conn0935abcdefghij",
+        "absent": true
+      },
+      {
+        "unreferenced": "Swc076abcdefghij"
+      },
+      {
+        "layer": "swc",
+        "name": "Swc005abcdefghij",
+        "has": {
+          "ports": [
+            {
+              "name": "P3"
+            }
+          ]
+        }
+      },
+      {
+        "layer": "swc",
+        "name": "Swc001abcdefghij",
+        "has": {
+          "ports": [
+            {
+              "name": "P1"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "note": "What refers to it: the member of Root, the 13 connectors that end at it (Conn0471abcdefghij, Conn0472abcdefghij, Conn0473abcdefghij, Conn0474abcdefghij, Conn0475abcdefghij, Conn0476abcdefghij, Conn0929abcdefghij, Conn0930abcdefghij, Conn0931abcdefghij, Conn0932abcdefghij, Conn0933abcdefghij, Conn0934abcdefghij, Conn0935abcdefghij), its entry in Ts16abcde and its step in Sq16abcdefghi. The ports on the other side of each connector stay."
+}

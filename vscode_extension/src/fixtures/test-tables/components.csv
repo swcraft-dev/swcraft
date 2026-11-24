@@ -1,0 +1,5 @@
+"row_id","component","kind","external","asil_declared","asil_effective","memory","satisfies","occurrences","runnables","description","source_ref","facts_hash","verification_method","comment","accepted","accepted_facts_hash","review_state"
+"component:ExampleConsumerSWC","ExampleConsumerSWC","application","false","","QM","{""RAM0"":1536}","[""REQ_EXAMPLE_001@1""]","1","1","A plain description","swc/example/ExampleConsumerSWC.yaml","3530bb7789909c6c","","Budget too tight","no","3530bb7789909c6c","rejected"
+"component:ExampleSWC","ExampleSWC","application","false","","QM","{""RAM0"":2048}","[""REQ_EXAMPLE_001@1""]","1","1","Publishes, ""quoted"" stateafter a CR
+after an LF
+after a CRLF","swc/example/ExampleSWC.yaml","e1eeadaa49177bc8","","","yes","e1eeadaa49177bc8","accepted"

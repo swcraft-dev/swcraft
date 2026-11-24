@@ -1,0 +1,6 @@
+name: ProbeSpeed
+kind: application_type
+unit_ref: ProbeUnitSpeed
+compu_method_ref: ProbeLinear
+data_constr_ref: ProbeLimits
+description: Every property stated by reference.

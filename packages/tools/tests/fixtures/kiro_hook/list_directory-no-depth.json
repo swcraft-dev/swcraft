@@ -1,0 +1,11 @@
+{
+  "session_id": "sess_4aa21d6a-4cdf-4468-a19a-6555f8c902bd",
+  "hook_event_name": "PreToolUse",
+  "cwd": "/project",
+  "tool_name": "list_directory",
+  "tool_input": {
+    "path": "notes",
+    "explanation": "Step 1: List directory contents of notes folder without depth argument",
+    "depth": null
+  }
+}

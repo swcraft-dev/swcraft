@@ -1,0 +1,10 @@
+name: Root
+title: Root composition
+root: true
+description: The root every project owes; both components stand in it once.
+
+members:
+  - name: SensorSwc
+    type: SensorSwc
+  - name: ActuatorSwc
+    type: ActuatorSwc

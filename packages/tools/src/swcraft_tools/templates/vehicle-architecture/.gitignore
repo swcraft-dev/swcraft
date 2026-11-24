@@ -1,0 +1,14 @@
+# Generated artifacts — never committed. `moon run :build` regenerates them,
+# and a failing build leaves none of an earlier build's behind.
+dist/
+views/
+
+# Moon's local task cache.
+.moon/cache/
+
+# Python
+__pycache__/
+*.pyc
+
+# Local settings and secrets (the Azure keys) — never committed.
+.env

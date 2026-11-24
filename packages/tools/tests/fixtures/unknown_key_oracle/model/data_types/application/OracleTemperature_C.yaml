@@ -1,0 +1,13 @@
+name: OracleTemperature_C
+kind: application_type
+unit: degC
+conversion:
+  factor: 0.1
+  offset: -40
+  limits:
+    lower:
+      value: 0
+      interval: closed
+    upper:
+      value: 14400
+      interval: closed

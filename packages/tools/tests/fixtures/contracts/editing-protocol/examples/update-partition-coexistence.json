@@ -1,0 +1,86 @@
+{
+  "name": "update-partition-coexistence",
+  "description": "The argument for a partition that runs components below its own level — the partition's own memory-mixing argument, beside the task's execution-time one. AUTOSAR advises against sharing an OS-Application across safety integrity levels, and ISO 26262-9's coexistence clause permits the argument; the model takes free text and grades none of it, so SWCraft can report that mixing exists and never that it is handled.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with `PARTITION0` rated B on the unrated `CORE0` and no argument. `Task_10ms` runs `ExampleConsumerSWC`, which derives `QM`, so the baseline already carries one `safety.component-below-partition` finding. The change set writes the argument.",
+    "existing_elements": [
+      {
+        "layer": "hardware",
+        "element": "PARTITION0"
+      },
+      {
+        "layer": "tasks",
+        "element": "Task_10ms"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "hardware",
+            "element": "PARTITION0",
+            "path": [
+              {
+                "field": "coexistence"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly. The direction lives in the VALUE — `\"\"` to a text is the weakening, a text back to `\"\"` makes the check refuse again — and the guard decides it by comparing two models. `declare_partition_coexistence` is the safety act, answered once for the whole change set, which is why the status is `committed`."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:8fZwjrfasT_eQJOEw7pTfg",
+    "intent": "Record the memory-mixing argument for PARTITION0.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "hardware",
+          "element": "PARTITION0",
+          "path": [
+            {
+              "field": "coexistence"
+            }
+          ]
+        },
+        "value": "The partition's components are placed in separate memory regions under memory protection; the argument is recorded in the item's safety case."
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:dh3rv69TrGK-ExSQadEXRQ",
+      "delta": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "hardware",
+            "element": "PARTITION0",
+            "path": [
+              {
+                "field": "coexistence"
+              }
+            ]
+          },
+          "before": "",
+          "after": "The partition's components are placed in separate memory regions under memory protection; the argument is recorded in the item's safety case.",
+          "summary": "hardware/PARTITION0: ~ coexistence  -> The partition's components are placed in separate memory re…"
+        }
+      ],
+      "audit_ref": "cs-20261009T115138Z-bef17c"
+    },
+    "notes": "`committed`, for the reason `update-task-coexistence.json` is: writing the argument makes `safety.component-below-partition` stop refusing, so the host answered a second, independent question, and the question names the PARTITION — a kind of its own, so a task's prompt did not move. What the accepted result records is that an argument EXISTS, never that interference is prevented."
+  }
+}

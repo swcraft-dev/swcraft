@@ -1,0 +1,33 @@
+name: SpeedControl
+type: application
+description: relation `swc.swc.memory` -> RAM0; reference `swc.port.interface` -> ISpeed and IDiagnostics.
+
+ports:
+  - name: rIn
+    direction: require
+    interface: ISpeed
+  - name: rDiag
+    direction: require
+    interface: IDiagnostics
+
+variables:
+  - name: FilteredSpeed
+    access: implicit
+    application_type: SpeedPhys
+  - name: SpeedFrameCache
+    access: explicit
+    implementation_type: SpeedFrame
+
+runnables:
+  - name: SpeedControl_Run
+    min_start_interval: 0.01
+    events:
+      - type: timing
+        period: 0.01
+    satisfies:
+      - REQ_SPEED_001@1
+
+memory:
+  RAM0: 1024
+
+handle_termination_and_restart: no_support

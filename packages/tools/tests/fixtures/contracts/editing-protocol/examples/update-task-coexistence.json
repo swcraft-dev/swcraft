@@ -1,0 +1,86 @@
+{
+  "name": "update-task-coexistence",
+  "description": "The same shape one layer across: the argument for scheduling components of different safety integrity levels in one task. AUTOSAR states the check outright — components with different ASIL ratings should not share an OS-Application — and ISO 26262-9's coexistence clause permits the argument to be made by process as well as by technical separation, which is why the model takes free text and grades none of it. SWCraft can report that mixed criticality exists and can never report that it is handled.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with `ExampleSWC` declaring ASIL D, `ExampleConsumerSWC` declaring nothing under a requirement that allocates nothing — so it derives QM — and `Task_10ms` running a runnable of each. The baseline therefore already carries one `safety.task-mixed-asil` finding: two distinct effective levels, D and QM, and no argument. The change set writes one.",
+    "existing_elements": [
+      {
+        "layer": "tasks",
+        "element": "Task_10ms"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "tasks",
+            "element": "Task_10ms",
+            "path": [
+              {
+                "field": "coexistence"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the address exactly. Its direction lives in the VALUE rather than in the operation — `\"\"` to a text is the weakening, a text back to `\"\"` withdraws the argument and makes the check refuse again — so the predicate admits every update here and the classifier decides, exactly as it does for a memory's `strict` -> `advisory`. `declare_coexistence` is the safety act, answered once for the whole change set, which is why the status is `committed`."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:GseHnPPA5-5AlnRBzZN0DA",
+    "intent": "Record the partitioning argument for the mixed-criticality task.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "tasks",
+          "element": "Task_10ms",
+          "path": [
+            {
+              "field": "coexistence"
+            }
+          ]
+        },
+        "value": "The two components run in separate memory partitions with timing protection; the argument is recorded in the item's safety case."
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:jgQSjos28TcYM7qRaPLqBg",
+      "delta": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "tasks",
+            "element": "Task_10ms",
+            "path": [
+              {
+                "field": "coexistence"
+              }
+            ]
+          },
+          "before": "",
+          "after": "The two components run in separate memory partitions with timing protection; the argument is recorded in the item's safety case.",
+          "summary": "tasks/Task_10ms: ~ coexistence  -> The two components run in separate memory partitions with t…"
+        }
+      ],
+      "audit_ref": "cs-20260909T200918Z-caf2fa"
+    },
+    "notes": "`committed`, for the same reason `create-port-measure.json` is: writing the argument makes `safety.task-mixed-asil` stop refusing, so the host answered a second, independent question. The direction lives in the VALUE here rather than in the operation — `\"\"` to a text — which is the shape a memory's `strict` -> `advisory` already had, and withdrawing the argument later is not a safety act because it makes the check refuse again. The model expresses no partition, so what the accepted result records is that an argument EXISTS and never that interference is prevented."
+  }
+}

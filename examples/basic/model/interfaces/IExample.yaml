@@ -1,0 +1,5 @@
+name: IExample
+kind: sender_receiver
+data_elements:
+  - name: value
+    implementation_type: float32

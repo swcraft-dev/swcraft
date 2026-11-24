@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shape fixture: a connector endpoint on a port of an external stub.
+
+  Root places RemotePart, typed /Vendor/Components/RemoteSwc, which nothing
+  declares: the external stub of prototype_of_an_absent_type.arxml. On top of
+  that, Assembly_Remote_to_Local names /Vendor/Components/RemoteSwc/pLevel as
+  its provider port.
+
+  The writer emits an endpoint as a path it BUILDS from the member and the
+  port it resolves to, so the stub mints the port the end names — the path
+  sits under the stub's own TYPE-TREF and the end's DEST states the
+  direction — and the connector is kept; the writer builds the same path
+  back.
+
+  Also present: DEL_Local, a delegation onto the resolvable member, which a
+  test asserts beside the connector, so both kinds of composition link are
+  read from one file.
+
+  Invented names only; no content copied from any real export.
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-2-2.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>Acme</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Chassis</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE>
+              <SHORT-NAME>Types</SHORT-NAME>
+              <ELEMENTS>
+                <SW-BASE-TYPE>
+                  <SHORT-NAME>Octet</SHORT-NAME>
+                  <CATEGORY>FIXED_LENGTH</CATEGORY>
+                  <BASE-TYPE-SIZE>8</BASE-TYPE-SIZE>
+                  <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+                  <NATIVE-DECLARATION>uint8</NATIVE-DECLARATION>
+                </SW-BASE-TYPE>
+                <IMPLEMENTATION-DATA-TYPE>
+                  <SHORT-NAME>Level</SHORT-NAME>
+                  <CATEGORY>VALUE</CATEGORY>
+                  <SW-DATA-DEF-PROPS>
+                    <SW-DATA-DEF-PROPS-VARIANTS>
+                      <SW-DATA-DEF-PROPS-CONDITIONAL>
+                        <BASE-TYPE-REF DEST="SW-BASE-TYPE">/Acme/Chassis/Types/Octet</BASE-TYPE-REF>
+                      </SW-DATA-DEF-PROPS-CONDITIONAL>
+                    </SW-DATA-DEF-PROPS-VARIANTS>
+                  </SW-DATA-DEF-PROPS>
+                </IMPLEMENTATION-DATA-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Interfaces</SHORT-NAME>
+              <ELEMENTS>
+                <SENDER-RECEIVER-INTERFACE>
+                  <SHORT-NAME>ILevel</SHORT-NAME>
+                  <IS-SERVICE>false</IS-SERVICE>
+                  <DATA-ELEMENTS>
+                    <VARIABLE-DATA-PROTOTYPE>
+                      <SHORT-NAME>level</SHORT-NAME>
+                      <TYPE-TREF DEST="IMPLEMENTATION-DATA-TYPE">/Acme/Chassis/Types/Level</TYPE-TREF>
+                    </VARIABLE-DATA-PROTOTYPE>
+                  </DATA-ELEMENTS>
+                </SENDER-RECEIVER-INTERFACE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Components</SHORT-NAME>
+              <ELEMENTS>
+                <APPLICATION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>LocalSwc</SHORT-NAME>
+                  <PORTS>
+                    <R-PORT-PROTOTYPE>
+                      <SHORT-NAME>rLevel</SHORT-NAME>
+                      <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/ILevel</REQUIRED-INTERFACE-TREF>
+                    </R-PORT-PROTOTYPE>
+                  </PORTS>
+                </APPLICATION-SW-COMPONENT-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+            <AR-PACKAGE>
+              <SHORT-NAME>Compositions</SHORT-NAME>
+              <ELEMENTS>
+                <COMPOSITION-SW-COMPONENT-TYPE>
+                  <SHORT-NAME>Root</SHORT-NAME>
+                  <PORTS>
+                    <R-PORT-PROTOTYPE>
+                      <SHORT-NAME>rOuterLevel</SHORT-NAME>
+                      <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Acme/Chassis/Interfaces/ILevel</REQUIRED-INTERFACE-TREF>
+                    </R-PORT-PROTOTYPE>
+                  </PORTS>
+                  <COMPONENTS>
+                    <SW-COMPONENT-PROTOTYPE>
+                      <SHORT-NAME>LocalPart</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Acme/Chassis/Components/LocalSwc</TYPE-TREF>
+                    </SW-COMPONENT-PROTOTYPE>
+                    <SW-COMPONENT-PROTOTYPE>
+                      <SHORT-NAME>RemotePart</SHORT-NAME>
+                      <TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/Vendor/Components/RemoteSwc</TYPE-TREF>
+                    </SW-COMPONENT-PROTOTYPE>
+                  </COMPONENTS>
+                  <CONNECTORS>
+                    <ASSEMBLY-SW-CONNECTOR>
+                      <SHORT-NAME>Assembly_Remote_to_Local</SHORT-NAME>
+                      <PROVIDER-IREF>
+                        <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Acme/Chassis/Compositions/Root/RemotePart</CONTEXT-COMPONENT-REF>
+                        <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/Vendor/Components/RemoteSwc/pLevel</TARGET-P-PORT-REF>
+                      </PROVIDER-IREF>
+                      <REQUESTER-IREF>
+                        <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Acme/Chassis/Compositions/Root/LocalPart</CONTEXT-COMPONENT-REF>
+                        <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/Acme/Chassis/Components/LocalSwc/rLevel</TARGET-R-PORT-REF>
+                      </REQUESTER-IREF>
+                    </ASSEMBLY-SW-CONNECTOR>
+                    <DELEGATION-SW-CONNECTOR>
+                      <SHORT-NAME>DEL_Local</SHORT-NAME>
+                      <INNER-PORT-IREF>
+                        <R-PORT-IN-COMPOSITION-INSTANCE-REF>
+                          <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/Acme/Chassis/Compositions/Root/LocalPart</CONTEXT-COMPONENT-REF>
+                          <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/Acme/Chassis/Components/LocalSwc/rLevel</TARGET-R-PORT-REF>
+                        </R-PORT-IN-COMPOSITION-INSTANCE-REF>
+                      </INNER-PORT-IREF>
+                      <OUTER-PORT-REF DEST="R-PORT-PROTOTYPE">/Acme/Chassis/Compositions/Root/rOuterLevel</OUTER-PORT-REF>
+                    </DELEGATION-SW-CONNECTOR>
+                  </CONNECTORS>
+                </COMPOSITION-SW-COMPONENT-TYPE>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

@@ -1,0 +1,53 @@
+{
+  "name": "schema-violation-with-dependents-on-an-interface",
+  "description": "`with_dependents: true` applies to the removal of a whole component and to nothing else: on the remove of an interface it is refused `schema-violation`, before the model is staged, with the address the client wrote.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, which declares `IDiagnosticService`; the refusal does not depend on what refers to it.",
+    "existing_elements": [
+      {
+        "layer": "interfaces",
+        "element": "IDiagnosticService"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "remove",
+          "address": {
+            "layer": "interfaces",
+            "element": "IDiagnosticService"
+          }
+        }
+      ]
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Remove IDiagnosticService with its dependents.",
+    "operations": [
+      {
+        "operation": "remove",
+        "address": {
+          "layer": "interfaces",
+          "element": "IDiagnosticService"
+        },
+        "with_dependents": true
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "interfaces",
+        "element": "IDiagnosticService"
+      }
+    ],
+    "notes": "A member address with the flag (a port of a component) is refused the same way. The referrers of anything but a component are removed by the client's own operations."
+  }
+}

@@ -1,0 +1,13 @@
+name: Task_10ms
+period: 0.01
+priority: 5
+partition: PARTITION0
+wcet: 1200us
+description: reference `tasks.task_runnable_ref.swc` -> two SWCs; reference `tasks.task.partition` -> PARTITION0.
+runnables:
+  - swc: SpeedSensor
+    runnable: SpeedSensor_Run
+  - swc: SpeedControl
+    runnable: SpeedControl_Run
+satisfies:
+- REQ_SPEED_001@1

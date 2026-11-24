@@ -1,0 +1,4 @@
+name: ProbeGearRef
+kind: reference_type
+base: ProbeGearValue
+compu_method_ref: ProbeGearTable

@@ -1,0 +1,12 @@
+name: command_link
+from:
+  swc: Actuator
+  port: pCommand
+to:
+  swc: Controller
+  port: rCommand
+description: >-
+  The client-server pair: `ICommandBasic`'s two operations are a subset by name
+  of `ICommandFull`'s three, and `Reset`'s one argument agrees in direction and
+  resolved type while differing in name (`[constr_1079]` 1(a) over
+  `[constr_1076]`).

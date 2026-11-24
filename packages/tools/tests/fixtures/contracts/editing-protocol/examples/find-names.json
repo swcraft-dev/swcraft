@@ -1,0 +1,175 @@
+{
+  "name": "find-names",
+  "description": "A `find` resolves names an agent holds before it has an address: each name answered in order with at most five candidates (for up to three names; fewer each above three, sixteen in all) across every layer's identities and the searched member collections, each carrying the address a `read` or a `change_set` takes back verbatim, the tier it matched at (`exact`, `case`, `word`, `near`, best first) and a one-line identity of at most 72 characters; the rest are counted in `more`, and the baseline token rides along.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleSWC` is a component and a member of `Root`; `consumer` is a word of five names across four layers; `IExampl` is a prefix of `IExample`'s last word.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      }
+    ],
+    "notes": "A `find` reads the model and writes nothing: no scope, no baseline in the request, no audit record. Its size is bounded by the number of names (at most sixteen), never by the model."
+  },
+  "input": {
+    "operation": "find",
+    "names": [
+      "ExampleSWC",
+      "consumer",
+      "IExampl"
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "find",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "results": [
+        {
+          "name": "ExampleSWC",
+          "candidates": [
+            {
+              "address": {
+                "layer": "swc",
+                "element": "ExampleSWC"
+              },
+              "tier": "exact",
+              "identity": "swc ExampleSWC (application, 1 port, 1 runnable) — Example software com…"
+            },
+            {
+              "address": {
+                "layer": "compositions",
+                "element": "Root",
+                "path": [
+                  {
+                    "field": "members"
+                  },
+                  {
+                    "member": "ExampleSWC"
+                  }
+                ]
+              },
+              "tier": "exact",
+              "identity": "member ExampleSWC of compositions Root (ExampleSWC)"
+            },
+            {
+              "address": {
+                "layer": "swc",
+                "element": "ExampleConsumerSWC"
+              },
+              "tier": "word",
+              "identity": "swc ExampleConsumerSWC (application, 1 port, 1 runnable) — Example soft…"
+            },
+            {
+              "address": {
+                "layer": "compositions",
+                "element": "Root",
+                "path": [
+                  {
+                    "field": "members"
+                  },
+                  {
+                    "member": "ExampleConsumerSWC"
+                  }
+                ]
+              },
+              "tier": "word",
+              "identity": "member ExampleConsumerSWC of compositions Root (ExampleConsumerSWC)"
+            },
+            {
+              "address": {
+                "layer": "interfaces",
+                "element": "IExample"
+              },
+              "tier": "near",
+              "identity": "interfaces IExample (sender_receiver, 1 data element)"
+            }
+          ]
+        },
+        {
+          "name": "consumer",
+          "candidates": [
+            {
+              "address": {
+                "layer": "swc",
+                "element": "ExampleConsumerSWC"
+              },
+              "tier": "word",
+              "identity": "swc ExampleConsumerSWC (application, 1 port, 1 runnable) — Example soft…"
+            },
+            {
+              "address": {
+                "layer": "connectors",
+                "element": "Example_to_Consumer"
+              },
+              "tier": "word",
+              "identity": "connectors Example_to_Consumer — ExampleSWC provides IExample data to E…"
+            },
+            {
+              "address": {
+                "layer": "sequences",
+                "element": "task10ms_consumer_cycle"
+              },
+              "tier": "word",
+              "identity": "sequences task10ms_consumer_cycle — Consumer task execution cycle"
+            },
+            {
+              "address": {
+                "layer": "swc",
+                "element": "ExampleConsumerSWC",
+                "path": [
+                  {
+                    "field": "runnables"
+                  },
+                  {
+                    "member": "ExampleConsumerRun"
+                  }
+                ]
+              },
+              "tier": "word",
+              "identity": "runnable ExampleConsumerRun of swc ExampleConsumerSWC"
+            },
+            {
+              "address": {
+                "layer": "compositions",
+                "element": "Root",
+                "path": [
+                  {
+                    "field": "members"
+                  },
+                  {
+                    "member": "ExampleConsumerSWC"
+                  }
+                ]
+              },
+              "tier": "word",
+              "identity": "member ExampleConsumerSWC of compositions Root (ExampleConsumerSWC)"
+            }
+          ]
+        },
+        {
+          "name": "IExampl",
+          "candidates": [
+            {
+              "address": {
+                "layer": "interfaces",
+                "element": "IExample"
+              },
+              "tier": "word",
+              "identity": "interfaces IExample (sender_receiver, 1 data element)"
+            }
+          ]
+        }
+      ]
+    },
+    "notes": "Within a tier an element comes before a member; `ExampleSWC` answers its member of `Root` exactly too, and `IExample` only `near`. A name nothing matches would be answered `\"candidates\": \"none\"`."
+  }
+}

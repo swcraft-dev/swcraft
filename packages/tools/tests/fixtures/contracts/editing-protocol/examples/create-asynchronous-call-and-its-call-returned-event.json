@@ -1,0 +1,285 @@
+{
+  "name": "create-asynchronous-call-and-its-call-returned-event",
+  "description": "Contract `12.7.0`'s asynchronous call and its fifth event kind, authored with no new tool and no new addressing: a require port on a client/server interface, a `calls` entry at its `(port, operation)` member address stating `asynchronous: true`, and a `call_returned` event at its own `whole_value` member address under a runnable's `events`, `{member: {type: call_returned, port, operation}}`, naming the same pair. The event is the call's result point, so the change set is accepted at AUTOSAR 4.2.2, where an asynchronous call point needs exactly one; a stated `result` or `name` joins the event's identity only when set.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model, whose manifest states no `arxml_version` (so 4.2.2). `ExampleConsumerSWC` has one runnable, `ExampleConsumerRun`, started by a 10 ms timing event, and `IDiagnosticService` is a client/server interface declaring `ReadDtc`. The safety rules read neither a call's synchrony nor an event, so the change set asks no safety question.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleConsumerRun"
+          }
+        ]
+      },
+      {
+        "layer": "interfaces",
+        "element": "IDiagnosticService"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rDiag"
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleConsumerRun"
+              },
+              {
+                "field": "calls"
+              },
+              {
+                "member": {
+                  "port": "rDiag",
+                  "operation": "ReadDtc"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleConsumerRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "call_returned",
+                  "port": "rDiag",
+                  "operation": "ReadDtc"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope names the three entries the delta reports."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Call ReadDtc through a new port rDiag without waiting, and start ExampleConsumerRun when it returns.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "ports"
+            },
+            {
+              "member": "rDiag"
+            }
+          ]
+        },
+        "value": {
+          "name": "rDiag",
+          "direction": "require",
+          "interface": "IDiagnosticService"
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleConsumerRun"
+            },
+            {
+              "field": "calls"
+            },
+            {
+              "member": {
+                "port": "rDiag",
+                "operation": "ReadDtc"
+              }
+            }
+          ]
+        },
+        "value": {
+          "port": "rDiag",
+          "operation": "ReadDtc",
+          "asynchronous": true
+        }
+      },
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleConsumerRun"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "call_returned",
+                "port": "rDiag",
+                "operation": "ReadDtc"
+              }
+            }
+          ]
+        },
+        "value": {
+          "type": "call_returned",
+          "port": "rDiag",
+          "operation": "ReadDtc"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "staged",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "delta": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "ports"
+              },
+              {
+                "member": "rDiag"
+              }
+            ]
+          },
+          "after": {
+            "name": "rDiag",
+            "direction": "require",
+            "interface": "IDiagnosticService",
+            "observed_interface": null,
+            "description": "",
+            "measures": {},
+            "com_specs": [],
+            "satisfies": []
+          },
+          "summary": "swc/ExampleConsumerSWC: + ports[rDiag]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleConsumerRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "call_returned",
+                  "port": "rDiag",
+                  "operation": "ReadDtc"
+                }
+              }
+            ]
+          },
+          "after": {
+            "type": "call_returned",
+            "port": "rDiag",
+            "operation": "ReadDtc",
+            "result": null,
+            "name": null
+          },
+          "summary": "swc/ExampleConsumerSWC: + runnables[ExampleConsumerRun].events[{type: call_returned, port: rDiag, operation: ReadDtc}]"
+        },
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleConsumerRun"
+              },
+              {
+                "field": "calls"
+              },
+              {
+                "member": {
+                  "port": "rDiag",
+                  "operation": "ReadDtc"
+                }
+              }
+            ]
+          },
+          "after": {
+            "port": "rDiag",
+            "operation": "ReadDtc",
+            "asynchronous": true,
+            "poll": false,
+            "result": null,
+            "timeout": null,
+            "name": null
+          },
+          "summary": "swc/ExampleConsumerSWC: + runnables[ExampleConsumerRun].calls[{port: rDiag, operation: ReadDtc}]"
+        }
+      ]
+    },
+    "notes": "The delta reports the entries in the runnable's field order, `events` before `calls`, whatever the order of the operations. A call's `asynchronous`, `poll`, `result` and `timeout` are fields of an identified member, so changing one later is an ordinary `update` at the call's address; the event is a whole value, so a member `update` is `immutable-field` and a replacement is a remove and a create. Without the event, or `poll: true` on the call, the same change set is refused at 4.2.2 (`negative/consistency-violation-asynchronous-call-without-result.json`) and accepted at 4.3.0. The file this commits gains the port, the call written as `port`, `operation`, `asynchronous: true`, and the event after the timing event, written as `type`, `port`, `operation`."
+  }
+}

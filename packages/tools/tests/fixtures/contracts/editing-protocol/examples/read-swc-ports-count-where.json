@@ -1,0 +1,65 @@
+{
+  "name": "read-swc-ports-count-where",
+  "description": "A `read` with `form: \"count\"` (accepted and not published in `reads.forms`) answers the number of things the same read without a page would answer, and nothing else: here the provide ports of every component, after the `members` slice and the `where` filter. The echoes are the read's own.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model: `ExampleSWC` provides `pOut`, `ExampleConsumerSWC` requires `rIn`.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleSWC",
+        "path": [
+          {
+            "field": "ports"
+          },
+          {
+            "member": "pOut"
+          }
+        ]
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "ports"
+          },
+          {
+            "member": "rIn"
+          }
+        ]
+      }
+    ],
+    "notes": "A count takes no `limit` and no `after`, and counts the set one `address` names: an element or a single value is refused `schema-violation`, and so is `addresses`."
+  },
+  "input": {
+    "operation": "read",
+    "address": {
+      "layer": "swc"
+    },
+    "form": "count",
+    "members": "ports",
+    "where": [
+      {
+        "field": "direction",
+        "equals": "provide"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "count",
+      "address": {
+        "layer": "swc"
+      },
+      "count": 1,
+      "members": "ports",
+      "where": [
+        {
+          "field": "direction",
+          "equals": "provide"
+        }
+      ]
+    }
+  }
+}

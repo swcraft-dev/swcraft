@@ -1,0 +1,6 @@
+name: CORE0
+kind: core
+threshold: 0.7
+enforcement: strict
+asil_capability: B
+description: The one core all three partitions are on. Rated B, so each of the three partitions rated D is reported once.

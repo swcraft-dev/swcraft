@@ -1,0 +1,9 @@
+name: speed_link
+composition: Chassis
+from:
+  swc: Sensor
+  port: pSpeed
+to:
+  swc: Controller
+  port: rSpeed
+description: The filtered speed into the controller.

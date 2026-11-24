@@ -1,0 +1,80 @@
+{
+  "id": "33-guide-test-tables",
+  "task": 33,
+  "group": "guide-question",
+  "kind": "guide",
+  "status": "ready",
+  "prompt": "How do I hand our component placement and runnable scheduling to the test team, and keep their review when the model changes?",
+  "expect": {
+    "model": "unchanged",
+    "guide": {
+      "sections": [
+        "test-tables#the-round-trip-with-the-test-team"
+      ],
+      "page_parts": {
+        "test-tables": [
+          3
+        ]
+      },
+      "must": [
+        {
+          "id": "command",
+          "any_of": [
+            "generate test-tables"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "annotations",
+          "any_of": [
+            "--annotations"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "stale",
+          "any_of": [
+            "stale"
+          ],
+          "case_sensitive": true
+        }
+      ],
+      "must_not": [
+        {
+          "id": "spreadsheet-format",
+          "any_of": [
+            ".xlsx"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "export-command",
+          "any_of": [
+            "swcraft export"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "format-flag",
+          "any_of": [
+            "--format csv"
+          ],
+          "case_sensitive": true
+        }
+      ]
+    },
+    "calls": {
+      "forbidden": [
+        "change_set",
+        "build",
+        "validate",
+        "export_component",
+        "import_component"
+      ]
+    }
+  },
+  "reference": {
+    "runs": "candidate builds only: a build without the guide tool fails the read and cited criteria by construction, so a guide question is never run on a baseline",
+    "baseline": "none: no released build holds the test-tables page or the generate test-tables command, so none holds the answer"
+  }
+}

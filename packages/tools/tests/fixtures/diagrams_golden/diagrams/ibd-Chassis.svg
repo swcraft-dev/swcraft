@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="906.48" height="314" viewBox="0 0 906.48 314" font-family="Helvetica, Arial, sans-serif" data-view="ibd-Chassis">
+<title>Chassis — internal block diagram</title>
+<style>g.edges use{stroke-width:10px;stroke-dasharray:none}</style>
+<rect class="background" width="100%" height="100%" fill="white"/>
+<g class="frame">
+<g class="frame" data-role="frame" data-name="Chassis" data-parents="Vehicle#Chassis"><title>composition Chassis
+Three members, two boundary ports and a delegation in each direction.</title><rect x="42" y="22" width="816.48" height="270" rx="4" fill="#fafafa" stroke="#333333" stroke-width="1.5"/></g>
+</g>
+<g class="edges">
+<g class="edge connector loop" data-role="connector" data-name="control_loop" data-source="p7" data-target="p8" stroke-width="1"><title>connector control_loop: Controller.pLoop -&gt; Controller.rLoop (self-connector)</title><path id="e1" d="M 695.58 209 L 705.58 209 L 705.58 252 L 428.34 252 L 428.34 225 L 438.34 225" fill="none" stroke="#555555"/><use href="#e1" opacity="0"/></g>
+<g class="edge connector" data-role="connector" data-name="raw_link" data-source="p4" data-target="p6" stroke-width="1"><title>connector raw_link: Sensor.pRaw -&gt; Controller.rRaw</title><path id="e2" d="M 408.34 181.67 L 418.34 181.67 L 418.34 177 L 438.34 177" fill="none" stroke="#555555"/><use href="#e2" opacity="0"/></g>
+<g class="edge connector" data-role="connector" data-name="speed_link" data-source="p3" data-target="p5" stroke-width="1"><title>connector speed_link: Sensor.pSpeed -&gt; Controller.rSpeed
+The filtered speed into the controller.</title><path id="e3" d="M 408.34 206.33 L 418.34 206.33 L 418.34 201 L 438.34 201" fill="none" stroke="#555555"/><use href="#e3" opacity="0"/></g>
+<g class="edge delegation" data-role="delegation" data-name="Chassis_rDiag" data-source="p1" data-target="p10" stroke-width="1"><title>delegation Chassis_rDiag: Chassis.rDiag -&gt; Controller.rDiag</title><path id="e4" d="M 48 153 L 442.34 153" fill="none" stroke="#555555"/><use href="#e4" opacity="0"/></g>
+<g class="edge delegation" data-role="delegation" data-name="Chassis_pSpeedOut" data-source="p9" data-target="p2" stroke-width="1"><title>delegation Chassis_pSpeedOut: Controller.pSpeedOut -&gt; Chassis.pSpeedOut
+The provide-side delegation.</title><path id="e5" d="M 695.58 169 L 852.48 169" fill="none" stroke="#555555"/><use href="#e5" opacity="0"/></g>
+</g>
+<g class="members">
+<g class="member component" data-role="member" data-name="Sensor" data-type="Sensor" data-kind="component"><title>Sensor (component)
+Measures the speed and provides it twice, filtered and raw.</title><rect x="222.34" y="164" width="160" height="60" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="Controller" data-type="Controller" data-kind="component"><title>Controller (component)
+Consumes the speed, feeds its own estimate back to itself and asks the diagnostics.</title><rect x="462.34" y="136" width="207.24" height="106" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g class="member component" data-role="member" data-name="Logger" data-type="Logger" data-kind="component"><title>Logger (component)
+Would log the speed; its one port is connected to nothing.</title><rect x="246.34" y="83" width="160" height="60" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+</g>
+<g class="ports">
+<g id="p1" class="port require client-server" data-role="port" data-owner="" data-name="rDiag" data-interface="IDiag"><title>Chassis.rDiag: require IDiag (client-server)
+· ReadStatus(out status: uint8)</title><rect class="port-box" x="36" y="147" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="36" y1="153" x2="28" y2="153" stroke="#222222" stroke-width="1.2"/><path d="M 22 147 A 6 6 0 0 1 22 159" fill="none" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="22" y="147" width="26" height="12" opacity="0"/></g>
+<g id="p2" class="port provide sender-receiver" data-role="port" data-owner="" data-name="pSpeedOut" data-interface="ISpeed"><title>Chassis.pSpeedOut: provide ISpeed (sender-receiver)
+· speed: uint8
+The speed the chassis publishes.</title><rect class="port-box" x="852.48" y="163" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="864.48" y1="169" x2="868.48" y2="169" stroke="#222222" stroke-width="1.2"/><path d="M 868.48 163 L 878.48 163 L 884.48 169 L 878.48 175 L 868.48 175 Z" fill="white" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="852.48" y="163" width="32" height="12" opacity="0"/></g>
+<g id="p3" class="port provide sender-receiver" data-role="port" data-owner="Sensor" data-name="pSpeed" data-interface="ISpeed"><title>Sensor.pSpeed: provide ISpeed (sender-receiver)
+· speed: uint8
+The filtered speed.</title><rect class="port-box" x="376.34" y="200.33" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="388.34" y1="206.33" x2="392.34" y2="206.33" stroke="#222222" stroke-width="1.2"/><path d="M 392.34 200.33 L 402.34 200.33 L 408.34 206.33 L 402.34 212.33 L 392.34 212.33 Z" fill="white" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="376.34" y="200.33" width="32" height="12" opacity="0"/></g>
+<g id="p4" class="port provide sender-receiver" data-role="port" data-owner="Sensor" data-name="pRaw" data-interface="ISpeed"><title>Sensor.pRaw: provide ISpeed (sender-receiver)
+· speed: uint8</title><rect class="port-box" x="376.34" y="175.67" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="388.34" y1="181.67" x2="392.34" y2="181.67" stroke="#222222" stroke-width="1.2"/><path d="M 392.34 175.67 L 402.34 175.67 L 408.34 181.67 L 402.34 187.67 L 392.34 187.67 Z" fill="white" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="376.34" y="175.67" width="32" height="12" opacity="0"/></g>
+<g id="p5" class="port require sender-receiver" data-role="port" data-owner="Controller" data-name="rSpeed" data-interface="ISpeed"><title>Controller.rSpeed: require ISpeed (sender-receiver)
+· speed: uint8</title><rect class="port-box" x="456.34" y="195" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="456.34" y1="201" x2="446.34" y2="201" stroke="#222222" stroke-width="1.2"/><path d="M 446.34 201 L 438.34 195 M 446.34 201 L 438.34 207" fill="none" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="438.34" y="195" width="30" height="12" opacity="0"/></g>
+<g id="p6" class="port require sender-receiver" data-role="port" data-owner="Controller" data-name="rRaw" data-interface="ISpeed"><title>Controller.rRaw: require ISpeed (sender-receiver)
+· speed: uint8</title><rect class="port-box" x="456.34" y="171" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="456.34" y1="177" x2="446.34" y2="177" stroke="#222222" stroke-width="1.2"/><path d="M 446.34 177 L 438.34 171 M 446.34 177 L 438.34 183" fill="none" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="438.34" y="171" width="30" height="12" opacity="0"/></g>
+<g id="p7" class="port provide sender-receiver" data-role="port" data-owner="Controller" data-name="pLoop" data-interface="ISpeed"><title>Controller.pLoop: provide ISpeed (sender-receiver)
+· speed: uint8</title><rect class="port-box" x="663.58" y="203" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="675.58" y1="209" x2="679.58" y2="209" stroke="#222222" stroke-width="1.2"/><path d="M 679.58 203 L 689.58 203 L 695.58 209 L 689.58 215 L 679.58 215 Z" fill="white" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="663.58" y="203" width="32" height="12" opacity="0"/></g>
+<g id="p8" class="port require sender-receiver" data-role="port" data-owner="Controller" data-name="rLoop" data-interface="ISpeed"><title>Controller.rLoop: require ISpeed (sender-receiver)
+· speed: uint8</title><rect class="port-box" x="456.34" y="219" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="456.34" y1="225" x2="446.34" y2="225" stroke="#222222" stroke-width="1.2"/><path d="M 446.34 225 L 438.34 219 M 446.34 225 L 438.34 231" fill="none" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="438.34" y="219" width="30" height="12" opacity="0"/></g>
+<g id="p9" class="port provide sender-receiver" data-role="port" data-owner="Controller" data-name="pSpeedOut" data-interface="ISpeed"><title>Controller.pSpeedOut: provide ISpeed (sender-receiver)
+· speed: uint8</title><rect class="port-box" x="663.58" y="163" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="675.58" y1="169" x2="679.58" y2="169" stroke="#222222" stroke-width="1.2"/><path d="M 679.58 163 L 689.58 163 L 695.58 169 L 689.58 175 L 679.58 175 Z" fill="white" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="663.58" y="163" width="32" height="12" opacity="0"/></g>
+<g id="p10" class="port require client-server" data-role="port" data-owner="Controller" data-name="rDiag" data-interface="IDiag"><title>Controller.rDiag: require IDiag (client-server)
+· ReadStatus(out status: uint8)</title><rect class="port-box" x="456.34" y="147" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="456.34" y1="153" x2="448.34" y2="153" stroke="#222222" stroke-width="1.2"/><path d="M 442.34 147 A 6 6 0 0 1 442.34 159" fill="none" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="442.34" y="147" width="26" height="12" opacity="0"/></g>
+<g id="p11" class="port require sender-receiver" data-role="port" data-owner="Logger" data-name="rLog" data-interface="ISpeed"><title>Logger.rLog: require ISpeed (sender-receiver)
+· speed: uint8</title><rect class="port-box" x="240.34" y="107" width="12" height="12" fill="white" stroke="#222222" stroke-width="1"/><g class="glyph"><line x1="240.34" y1="113" x2="230.34" y2="113" stroke="#222222" stroke-width="1.2"/><path d="M 230.34 113 L 222.34 107 M 230.34 113 L 222.34 119" fill="none" stroke="#222222" stroke-width="1.2"/></g><rect class="port-hit" x="222.34" y="107" width="30" height="12" opacity="0"/></g>
+</g>
+<g class="labels">
+<g class="frame-up"><title>up to Vehicle</title><text class="frame-label" x="111.9" y="38.6" font-size="12" data-kind="composition" font-weight="bold">↑ Chassis</text></g>
+<text class="port-label" x="51" y="171" font-size="10" fill="#444444" text-anchor="start">rDiag</text>
+<text class="port-label" x="849.48" y="187" font-size="10" fill="#444444" text-anchor="end">pSpeedOut</text>
+<text class="member-label" x="278.82" y="180.6" font-size="12" data-kind="component" font-weight="600">Sensor</text>
+<text class="port-label in-member" x="373.34" y="209.33" font-size="10" fill="#444444" data-kind="component" text-anchor="end">pSpeed</text>
+<text class="port-label in-member" x="373.34" y="184.67" font-size="10" fill="#444444" data-kind="component" text-anchor="end">pRaw</text>
+<text class="member-label" x="532.24" y="152.6" font-size="12" data-kind="component" font-weight="600">Controller</text>
+<text class="port-label in-member" x="471.34" y="204" font-size="10" fill="#444444" data-kind="component" text-anchor="start">rSpeed</text>
+<text class="port-label in-member" x="471.34" y="180" font-size="10" fill="#444444" data-kind="component" text-anchor="start">rRaw</text>
+<text class="port-label in-member" x="660.58" y="212" font-size="10" fill="#444444" data-kind="component" text-anchor="end">pLoop</text>
+<text class="port-label in-member" x="471.34" y="228" font-size="10" fill="#444444" data-kind="component" text-anchor="start">rLoop</text>
+<text class="port-label in-member" x="660.58" y="172" font-size="10" fill="#444444" data-kind="component" text-anchor="end">pSpeedOut</text>
+<text class="port-label in-member" x="471.34" y="156" font-size="10" fill="#444444" data-kind="component" text-anchor="start">rDiag</text>
+<text class="member-label" x="308.82" y="99.6" font-size="12" data-kind="component" font-weight="600">Logger</text>
+<text class="port-label in-member" x="255.34" y="116" font-size="10" fill="#444444" data-kind="component" text-anchor="start">rLog</text>
+</g>
+</svg>

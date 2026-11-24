@@ -1,0 +1,14 @@
+name: Ts09abcde
+period: 0.04
+priority: 10
+partition: Pa2ab
+wcet: 1us
+runnables:
+- swc: Swc041abcdefghij
+  runnable: R1
+- swc: Swc042abcdefghij
+  runnable: R1
+- swc: Swc043abcdefghij
+  runnable: R1
+- swc: Swc045abcdefghij
+  runnable: R1

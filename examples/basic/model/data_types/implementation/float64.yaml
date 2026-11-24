@@ -1,0 +1,3 @@
+name: float64
+kind: value_type
+base: float64_base

@@ -1,0 +1,37 @@
+{
+  "name": "stale-baseline-change-set",
+  "description": "A change set that would be accepted on its merits, carrying a baseline token that no longer describes the real model. The precondition is stated machine-checkably in `context.baseline_state`, not in prose: everything about the request is well formed and the model still moved underneath it.",
+  "kind": "negative",
+  "context": {
+    "summary": "The client read the baseline token `rev1:9f4c2a7be3d18056` from a `discover`, then another writer committed a change before this change set arrived. The model's current token is `rev1:c05fd7318ab24e69`. (The token is content-derived, so this state and the post-commit state of `examples/remove-memory-resource-with-referrers-cleared.json` — two different models — must not share a token.)",
+    "existing_elements": [{ "layer": "tasks", "element": "Task_10ms" }],
+    "baseline_state": "stale",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": { "layer": "tasks", "element": "Task_10ms", "path": [{ "field": "priority" }] }
+        }
+      ]
+    },
+    "notes": "The operation itself is valid: `priority` is mutable and 6 is a legal value. Only the baseline is wrong."
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Raise the priority of Task_10ms.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": { "layer": "tasks", "element": "Task_10ms", "path": [{ "field": "priority" }] },
+        "value": 6
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "stale-baseline",
+    "failure_class": "stale",
+    "violation_layer": "semantic",
+    "notes": "The rejection carries no address: the failure is about the model as a whole, not about any element. The token is opaque and version-prefixed, so the client cannot recompute it and compare — it re-reads a fresh one from `discover`, re-stages against it and has the delta reviewed again. The race boundary is the one `model_fingerprint()` already documents and is inherited rather than re-argued: a change completing before the final fingerprint read is detected, a writer landing between that read and the apply is not. The real model stays byte-identical."
+  }
+}

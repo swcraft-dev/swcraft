@@ -1,0 +1,1780 @@
+{
+  "kinds": {
+    "kind:swc.swc": {
+      "module": "swcraft_tools.schema",
+      "class": "SWComponent"
+    },
+    "kind:swc.port": {
+      "module": "swcraft_tools.schema",
+      "class": "Port"
+    },
+    "kind:swc.port_com_spec": {
+      "module": "swcraft_tools.schema",
+      "class": "PortComSpec"
+    },
+    "kind:swc.runnable": {
+      "module": "swcraft_tools.schema",
+      "class": "Runnable"
+    },
+    "kind:swc.timing_event": {
+      "module": "swcraft_tools.schema",
+      "class": "TimingEvent"
+    },
+    "kind:swc.disabled_mode": {
+      "module": "swcraft_tools.schema",
+      "class": "DisabledMode"
+    },
+    "kind:swc.init_event": {
+      "module": "swcraft_tools.schema",
+      "class": "InitEvent"
+    },
+    "kind:swc.operation_event": {
+      "module": "swcraft_tools.schema",
+      "class": "OperationEvent"
+    },
+    "kind:swc.data_event": {
+      "module": "swcraft_tools.schema",
+      "class": "DataEvent"
+    },
+    "kind:swc.call_returned_event": {
+      "module": "swcraft_tools.schema",
+      "class": "CallReturnedEvent"
+    },
+    "kind:swc.data_read": {
+      "module": "swcraft_tools.schema",
+      "class": "DataReadRef"
+    },
+    "kind:swc.data_write": {
+      "module": "swcraft_tools.schema",
+      "class": "DataWriteRef"
+    },
+    "kind:swc.operation_call": {
+      "module": "swcraft_tools.schema",
+      "class": "OperationCallRef"
+    },
+    "kind:swc.variable": {
+      "module": "swcraft_tools.schema",
+      "class": "Variable"
+    },
+    "kind:swc.variable_read": {
+      "module": "swcraft_tools.schema",
+      "class": "VariableReadRef"
+    },
+    "kind:swc.variable_write": {
+      "module": "swcraft_tools.schema",
+      "class": "VariableWriteRef"
+    },
+    "kind:swc.exclusive_area": {
+      "module": "swcraft_tools.schema",
+      "class": "ExclusiveArea"
+    },
+    "kind:swc.can_enter_area": {
+      "module": "swcraft_tools.schema",
+      "class": "CanEnterArea"
+    },
+    "kind:swc.runs_inside_area": {
+      "module": "swcraft_tools.schema",
+      "class": "RunsInsideArea"
+    },
+    "kind:interfaces.sender_receiver": {
+      "module": "swcraft_tools.schema",
+      "class": "SRInterface"
+    },
+    "kind:interfaces.client_server": {
+      "module": "swcraft_tools.schema",
+      "class": "CSInterface"
+    },
+    "kind:interfaces.external_interface": {
+      "module": "swcraft_tools.schema",
+      "class": "ExternalInterface"
+    },
+    "kind:interfaces.data_element": {
+      "module": "swcraft_tools.schema",
+      "class": "DataElement"
+    },
+    "kind:interfaces.operation": {
+      "module": "swcraft_tools.schema",
+      "class": "CSOperation"
+    },
+    "kind:interfaces.argument": {
+      "module": "swcraft_tools.schema",
+      "class": "CSArgument"
+    },
+    "kind:connectors.connector": {
+      "module": "swcraft_tools.schema",
+      "class": "Connector"
+    },
+    "kind:connectors.connector_endpoint": {
+      "module": "swcraft_tools.schema",
+      "class": "ConnectorEndpoint"
+    },
+    "kind:application_types.enum": {
+      "module": "swcraft_tools.schema",
+      "class": "EnumDataType"
+    },
+    "kind:application_types.record": {
+      "module": "swcraft_tools.schema",
+      "class": "RecordDataType"
+    },
+    "kind:application_types.array": {
+      "module": "swcraft_tools.schema",
+      "class": "ArrayDataType"
+    },
+    "kind:application_types.application_type": {
+      "module": "swcraft_tools.schema",
+      "class": "ApplicationDataType"
+    },
+    "kind:application_types.enum_literal": {
+      "module": "swcraft_tools.schema",
+      "class": "EnumLiteral"
+    },
+    "kind:application_types.record_field": {
+      "module": "swcraft_tools.schema",
+      "class": "RecordField"
+    },
+    "kind:application_types.conversion": {
+      "module": "swcraft_tools.schema",
+      "class": "Conversion"
+    },
+    "kind:application_types.conversion_limits": {
+      "module": "swcraft_tools.schema",
+      "class": "ConversionLimits"
+    },
+    "kind:application_types.conversion_limit_bound": {
+      "module": "swcraft_tools.schema",
+      "class": "ConversionLimitBound"
+    },
+    "kind:application_types.range": {
+      "module": "swcraft_tools.schema",
+      "class": "ValueRange"
+    },
+    "kind:implementation_types.value_type": {
+      "module": "swcraft_tools.schema",
+      "class": "ValueDataType"
+    },
+    "kind:implementation_types.reference_type": {
+      "module": "swcraft_tools.schema",
+      "class": "ReferenceDataType"
+    },
+    "kind:implementation_types.external_type": {
+      "module": "swcraft_tools.schema",
+      "class": "ExternalDataType"
+    },
+    "kind:implementation_types.implementation_record": {
+      "module": "swcraft_tools.schema",
+      "class": "ImplementationRecordDataType"
+    },
+    "kind:implementation_types.implementation_array": {
+      "module": "swcraft_tools.schema",
+      "class": "ImplementationArrayDataType"
+    },
+    "kind:implementation_types.pointer": {
+      "module": "swcraft_tools.schema",
+      "class": "PointerDataType"
+    },
+    "kind:implementation_types.implementation_element": {
+      "module": "swcraft_tools.schema",
+      "class": "ImplementationElement"
+    },
+    "kind:base_types.base_type": {
+      "module": "swcraft_tools.schema",
+      "class": "BaseDataType"
+    },
+    "kind:requirements.requirement": {
+      "module": "swcraft_tools.schema",
+      "class": "Requirement"
+    },
+    "kind:compositions.composition": {
+      "module": "swcraft_tools.schema",
+      "class": "Composition"
+    },
+    "kind:compositions.composition_port": {
+      "module": "swcraft_tools.schema",
+      "class": "CompositionPort"
+    },
+    "kind:compositions.composition_member": {
+      "module": "swcraft_tools.schema",
+      "class": "CompositionMember"
+    },
+    "kind:compositions.delegation": {
+      "module": "swcraft_tools.schema",
+      "class": "Delegation"
+    },
+    "kind:tasks.task": {
+      "module": "swcraft_tools.schema",
+      "class": "Task"
+    },
+    "kind:tasks.task_runnable_ref": {
+      "module": "swcraft_tools.schema",
+      "class": "TaskRunnableRef"
+    },
+    "kind:sequences.sequence": {
+      "module": "swcraft_tools.schema",
+      "class": "Sequence"
+    },
+    "kind:sequences.sequence_step": {
+      "module": "swcraft_tools.schema",
+      "class": "SequenceStep"
+    },
+    "kind:hardware.processor": {
+      "module": "swcraft_tools.schema",
+      "class": "Processor"
+    },
+    "kind:hardware.core": {
+      "module": "swcraft_tools.schema",
+      "class": "Core"
+    },
+    "kind:hardware.memory": {
+      "module": "swcraft_tools.schema",
+      "class": "Memory"
+    },
+    "kind:hardware.partition": {
+      "module": "swcraft_tools.schema",
+      "class": "Partition"
+    },
+    "kind:mapping_sets.mapping_set": {
+      "module": "swcraft_tools.schema",
+      "class": "MappingSet"
+    },
+    "kind:mapping_sets.map": {
+      "module": "swcraft_tools.schema",
+      "class": "DataTypeMap"
+    },
+    "kind:units.unit": {
+      "module": "swcraft_tools.schema",
+      "class": "Unit"
+    },
+    "kind:compu_methods.texttable": {
+      "module": "swcraft_tools.schema",
+      "class": "TextTable"
+    },
+    "kind:compu_methods.linear": {
+      "module": "swcraft_tools.schema",
+      "class": "Linear"
+    },
+    "kind:compu_methods.linear_limits": {
+      "module": "swcraft_tools.schema",
+      "class": "LinearLimits"
+    },
+    "kind:compu_methods.linear_limit_bound": {
+      "module": "swcraft_tools.schema",
+      "class": "LinearLimitBound"
+    },
+    "kind:compu_methods.table_entry": {
+      "module": "swcraft_tools.schema",
+      "class": "TableEntry"
+    },
+    "kind:data_constraints.data_constr": {
+      "module": "swcraft_tools.schema",
+      "class": "DataConstr"
+    }
+  },
+  "rules": {
+    "rule:trace.link-unknown-requirement": {
+      "module": "swcraft_tools.validator.composer",
+      "callable": "_unknown_requirement_link"
+    },
+    "rule:trace.requirement-unallocated": {
+      "module": "swcraft_tools.validator.traceability",
+      "callable": "_allocation_records"
+    },
+    "rule:trace.requirement-stub": {
+      "module": "swcraft_tools.validator.traceability",
+      "callable": "_allocation_records"
+    },
+    "rule:trace.link-version-not-stated": {
+      "module": "swcraft_tools.validator.traceability",
+      "callable": "_version_findings"
+    },
+    "rule:trace.link-needs-confirmation": {
+      "module": "swcraft_tools.validator.traceability",
+      "callable": "_version_findings"
+    },
+    "rule:trace.derived-from-unknown-target": {
+      "module": "swcraft_tools.validator.traceability",
+      "callable": "_derived_from_target_records"
+    },
+    "rule:trace.derived-from-cycle": {
+      "module": "swcraft_tools.validator.traceability",
+      "callable": "_derivation_cycle_records"
+    },
+    "rule:trace.decomposition-context-mismatch": {
+      "module": "swcraft_tools.validator.traceability",
+      "callable": "_decomposition_context_records"
+    },
+    "rule:trace.duplicate-link": {
+      "module": "swcraft_tools.validator.traceability",
+      "callable": "_duplicate_link_finding"
+    },
+    "rule:trace.link-unpublishable-id": {
+      "module": "swcraft_tools.validator.traceability",
+      "callable": "_unpublishable_findings"
+    },
+    "rule:trace.requirement-blank-text": {
+      "module": "swcraft_tools.validator.traceability",
+      "callable": "_blank_text_records"
+    },
+    "rule:connector.duplicate-name": {
+      "module": "swcraft_tools.validator.connectors",
+      "callable": "check_connector_consistency"
+    },
+    "rule:connector.duplicate-link": {
+      "module": "swcraft_tools.validator.connectors",
+      "callable": "check_connector_consistency"
+    },
+    "rule:connector.endpoint-unknown-swc": {
+      "module": "swcraft_tools.validator.connectors",
+      "table": "_UNRESOLVED_ENDPOINT_RULES",
+      "key": "swc"
+    },
+    "rule:connector.endpoint-unknown-port": {
+      "module": "swcraft_tools.validator.connectors",
+      "table": "_UNRESOLVED_ENDPOINT_RULES",
+      "key": "port"
+    },
+    "rule:connector.from-not-provide": {
+      "module": "swcraft_tools.validator.connectors",
+      "callable": "check_connector_compatibility"
+    },
+    "rule:connector.to-not-require": {
+      "module": "swcraft_tools.validator.connectors",
+      "callable": "check_connector_compatibility"
+    },
+    "rule:connector.interface-mismatch": {
+      "module": "swcraft_tools.validator.connectors",
+      "callable": "check_connector_compatibility"
+    },
+    "rule:connector.pointer-between-application-components": {
+      "module": "swcraft_tools.validator.connectors",
+      "callable": "check_connector_consistency"
+    },
+    "rule:port.undeclared-interface": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "check_port_interface_references"
+    },
+    "rule:composition.port-undeclared-interface": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "check_port_interface_references"
+    },
+    "rule:swc.access.unknown-port": {
+      "module": "swcraft_tools.validator.access",
+      "callable": "runnable_access_records"
+    },
+    "rule:swc.access.unknown-element": {
+      "module": "swcraft_tools.validator.access",
+      "callable": "_access_entry_records"
+    },
+    "rule:swc.access.unknown-operation": {
+      "module": "swcraft_tools.validator.access",
+      "callable": "_access_entry_records"
+    },
+    "rule:swc.access.direction-mismatch": {
+      "module": "swcraft_tools.validator.access",
+      "callable": "_access_entry_records"
+    },
+    "rule:swc.access.interface-kind-mismatch": {
+      "module": "swcraft_tools.validator.access",
+      "callable": "_access_entry_records"
+    },
+    "rule:swc.operation-event.unknown-port": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_operation_event_port_records"
+    },
+    "rule:swc.operation-event.direction-mismatch": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_operation_event_walk_records"
+    },
+    "rule:swc.operation-event.interface-kind-mismatch": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_operation_event_walk_records"
+    },
+    "rule:swc.operation-event.unknown-operation": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_operation_event_walk_records"
+    },
+    "rule:swc.operation-event.duplicate-binding": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_operation_event_binding_records"
+    },
+    "rule:swc.operation-event.incompatible-signatures": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_operation_signature_records"
+    },
+    "rule:data-type.duplicate-name": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_duplicate_data_type_records"
+    },
+    "rule:data-type.compu-method-name-collision": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_compu_method_collision_records"
+    },
+    "rule:interface.data-element-undeclared-type": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_interface_type_records"
+    },
+    "rule:interface.argument-undeclared-type": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_interface_type_records"
+    },
+    "rule:interface.init-shape-mismatch": {
+      "module": "swcraft_tools.validator.init_values",
+      "callable": "check_init_conformance"
+    },
+    "rule:interface.init-unknown-enum-literal": {
+      "module": "swcraft_tools.validator.init_values",
+      "callable": "check_init_conformance"
+    },
+    "rule:interface.init-record-field-mismatch": {
+      "module": "swcraft_tools.validator.init_values",
+      "callable": "check_init_conformance"
+    },
+    "rule:interface.init-array-length-mismatch": {
+      "module": "swcraft_tools.validator.init_values",
+      "callable": "check_init_conformance"
+    },
+    "rule:interface.init-out-of-range": {
+      "module": "swcraft_tools.validator.init_values",
+      "callable": "check_init_conformance"
+    },
+    "rule:interface.init-string-scalar": {
+      "module": "swcraft_tools.validator.init_values",
+      "callable": "check_init_conformance"
+    },
+    "rule:interface.init-unwritable-integer": {
+      "module": "swcraft_tools.validator.init_values",
+      "callable": "check_init_conformance"
+    },
+    "rule:interface.init-on-external-type": {
+      "module": "swcraft_tools.validator.init_values",
+      "callable": "check_init_conformance"
+    },
+    "rule:data-type.value-type-undeclared-base": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_value_type_records"
+    },
+    "rule:data-type.reference-type-undeclared-base": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_reference_type_records"
+    },
+    "rule:data-type.record-field-undeclared-type": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_record_type_records"
+    },
+    "rule:data-type.record-duplicate-field-name": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_record_type_records"
+    },
+    "rule:data-type.array-undeclared-element-type": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_array_type_records"
+    },
+    "rule:data-type.enum-duplicate-literal-name": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_enum_type_records"
+    },
+    "rule:data-type.enum-duplicate-literal-value": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_enum_type_records"
+    },
+    "rule:data-type.cycle": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "check_data_type_cycles"
+    },
+    "rule:task.duplicate-name": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "_duplicate_task_records"
+    },
+    "rule:task.mapping-unknown-swc": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "_task_entry_findings"
+    },
+    "rule:task.mapping-unknown-runnable": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "_task_entry_findings"
+    },
+    "rule:task.runnable-period-not-multiple": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "_period_records"
+    },
+    "rule:task.runnable-mapped-to-multiple-tasks": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "_multiple_task_records"
+    },
+    "rule:task.instance-in-multiple-partitions": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "_partition_split_records"
+    },
+    "rule:task.resolved-duplicate-runnable": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "_task_entry_records"
+    },
+    "rule:task.instance-ambiguous": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "_task_entry_findings"
+    },
+    "rule:task.instance-unknown": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "_task_entry_findings"
+    },
+    "rule:task.instance-not-a-component": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "_task_entry_findings"
+    },
+    "rule:sequence.duplicate-name": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "check_sequence_consistency"
+    },
+    "rule:sequence.unknown-task": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "check_sequence_consistency"
+    },
+    "rule:sequence.step-not-mapped": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "check_sequence_consistency"
+    },
+    "rule:sequence.step-unknown-swc": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "check_sequence_consistency"
+    },
+    "rule:sequence.step-unknown-runnable": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "check_sequence_consistency"
+    },
+    "rule:sequence.step-order": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "check_sequence_consistency"
+    },
+    "rule:sequence.resolved-duplicate-step": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "check_sequence_consistency"
+    },
+    "rule:sequence.step-instance-ambiguous": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "check_sequence_consistency"
+    },
+    "rule:sequence.step-instance-unknown": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "check_sequence_consistency"
+    },
+    "rule:sequence.step-instance-not-a-component": {
+      "module": "swcraft_tools.validator.scheduling",
+      "callable": "check_sequence_consistency"
+    },
+    "rule:hardware.layer-absent": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "check_hardware_topology"
+    },
+    "rule:hardware.no-processor": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_hardware_identity_records"
+    },
+    "rule:hardware.multiple-processors": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_hardware_identity_records"
+    },
+    "rule:hardware.duplicate-name": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_hardware_identity_records"
+    },
+    "rule:hardware.undeclared-partition": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_partition_reference_records"
+    },
+    "rule:hardware.partition-not-a-partition": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_partition_reference_records"
+    },
+    "rule:hardware.partition-undeclared-core": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_partition_reference_records"
+    },
+    "rule:hardware.partition-core-not-a-core": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_partition_reference_records"
+    },
+    "rule:hardware.undeclared-memory": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_memory_key_records"
+    },
+    "rule:hardware.memory-not-a-memory": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_memory_key_records"
+    },
+    "rule:hardware.accessible-undeclared-core": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_accessible_records"
+    },
+    "rule:hardware.accessible-not-a-core": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_accessible_records"
+    },
+    "rule:hardware.unreachable-memory": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_unreachable_memory_records"
+    },
+    "rule:hardware.missing-budget": {
+      "module": "swcraft_tools.validator.hardware",
+      "table": "_RESOURCE_FINDING_RULES",
+      "key": "missing_budget"
+    },
+    "rule:hardware.threshold-breach": {
+      "module": "swcraft_tools.validator.hardware",
+      "table": "_RESOURCE_FINDING_RULES",
+      "key": "threshold_breach"
+    },
+    "rule:hardware.rate-monotonic-violation": {
+      "module": "swcraft_tools.validator.hardware",
+      "table": "_RESOURCE_FINDING_RULES",
+      "key": "rate_monotonic_violation"
+    },
+    "rule:task.runnable-cost-exceeds-task": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "check_runnable_costs"
+    },
+    "rule:name.duplicate-swc": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_swc_name_records"
+    },
+    "rule:name.swc-implementation-collision": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_swc_name_records"
+    },
+    "rule:name.swc-timing-collision": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_swc_name_records"
+    },
+    "rule:name.duplicate-port": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_component_member_name_records"
+    },
+    "rule:name.duplicate-runnable": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_component_member_name_records"
+    },
+    "rule:name.runnable-event-collision": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_component_member_name_records"
+    },
+    "rule:name.duplicate-event": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_component_member_name_records"
+    },
+    "rule:name.name-space-collision": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "check_name_space_collisions"
+    },
+    "rule:name.duplicate-interface": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_interface_name_records"
+    },
+    "rule:name.duplicate-data-element": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_interface_name_records"
+    },
+    "rule:name.duplicate-operation": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_interface_name_records"
+    },
+    "rule:name.duplicate-argument": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_interface_name_records"
+    },
+    "rule:name.duplicate-component-type": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_composition_type_name_records"
+    },
+    "rule:name.duplicate-requirement": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_duplicate_requirement_records"
+    },
+    "rule:name.composition-implementation-collision": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_composition_type_name_records"
+    },
+    "rule:name.composition-timing-collision": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_composition_type_name_records"
+    },
+    "rule:interface.init-constant-name-collision": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_init_constant_collision_records"
+    },
+    "rule:swc.access.name-collision": {
+      "module": "swcraft_tools.validator.names",
+      "callable": "_component_member_name_records"
+    },
+    "rule:identifier.declared": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_identifier_reporters"
+    },
+    "rule:identifier.generated": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_identifier_reporters"
+    },
+    "rule:safety.component-below-requirements": {
+      "module": "swcraft_tools.validator.asil",
+      "callable": "component_asil_records"
+    },
+    "rule:safety.provider-below-element": {
+      "module": "swcraft_tools.validator.asil",
+      "callable": "_provider_below_element_records"
+    },
+    "rule:safety.consumer-above-element": {
+      "module": "swcraft_tools.validator.asil",
+      "callable": "_consumer_above_element_records"
+    },
+    "rule:safety.measure-unknown-element": {
+      "module": "swcraft_tools.validator.asil",
+      "callable": "_measure_unknown_element_records"
+    },
+    "rule:safety.measure-on-provide-port": {
+      "module": "swcraft_tools.validator.asil",
+      "callable": "_measure_on_provide_port_records"
+    },
+    "rule:safety.task-mixed-asil": {
+      "module": "swcraft_tools.validator.asil",
+      "callable": "_task_mixed_asil_records"
+    },
+    "rule:safety.measure-blank": {
+      "module": "swcraft_tools.validator.asil",
+      "callable": "_measure_blank_records"
+    },
+    "rule:safety.partition-on-unqualified-core": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_partition_core_capability_records"
+    },
+    "rule:safety.memory-below-component": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_memory_below_component_records"
+    },
+    "rule:safety.component-above-partition": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_component_above_partition_records"
+    },
+    "rule:safety.component-below-partition": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_component_below_partition_records"
+    },
+    "rule:safety.partition-memory-below-level": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_partition_memory_records"
+    },
+    "rule:safety.trusted-partition-below-processor-level": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_trusted_partition_records"
+    },
+    "rule:safety.trusted-partition-unrated": {
+      "module": "swcraft_tools.validator.hardware",
+      "callable": "_trusted_partition_records"
+    },
+    "rule:storage.filename-case-collision": {
+      "module": "swcraft_tools.validator.storage",
+      "callable": "storage_portability_records"
+    },
+    "rule:storage.reserved-device-name": {
+      "module": "swcraft_tools.validator.storage",
+      "callable": "storage_portability_records"
+    },
+    "rule:model.unknown-key": {
+      "module": "swcraft_tools.validator.storage",
+      "callable": "unknown_key_records"
+    },
+    "rule:data-type.base-type-native-declaration-missing": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "check_base_type_native_declarations"
+    },
+    "rule:swc.timing_event.period.positive": {
+      "kind": "kind:swc.timing_event",
+      "method": "period_must_be_positive"
+    },
+    "rule:swc.runnable.min_start_interval.non-negative": {
+      "kind": "kind:swc.runnable",
+      "method": "min_start_interval_non_negative"
+    },
+    "rule:swc.runnable.reads.no-duplicate-entry": {
+      "kind": "kind:swc.runnable",
+      "method": "reads_must_not_have_duplicates"
+    },
+    "rule:swc.runnable.writes.no-duplicate-entry": {
+      "kind": "kind:swc.runnable",
+      "method": "writes_must_not_have_duplicates"
+    },
+    "rule:swc.runnable.calls.no-duplicate-entry": {
+      "kind": "kind:swc.runnable",
+      "method": "calls_must_not_have_duplicates"
+    },
+    "rule:swc.runnable.wcet.format": {
+      "kind": "kind:swc.runnable",
+      "method": "wcet_is_written_as_a_budget"
+    },
+    "rule:swc.runnable.wcet.positive": {
+      "kind": "kind:swc.runnable",
+      "method": "wcet_must_be_positive"
+    },
+    "rule:swc.runnable.wcet.retired-spelling": {
+      "kind": "kind:swc.runnable",
+      "method": "wcet_us_is_retired"
+    },
+    "rule:swc.runnable.wcet_type.paired": {
+      "kind": "kind:swc.runnable",
+      "method": "wcet_type_is_paired"
+    },
+    "rule:swc.data_read.reference-not-blank": {
+      "kind": "kind:swc.data_read",
+      "method": "ref_fields_must_not_be_empty"
+    },
+    "rule:swc.data_write.reference-not-blank": {
+      "kind": "kind:swc.data_write",
+      "method": "ref_fields_must_not_be_empty"
+    },
+    "rule:swc.operation_call.reference-not-blank": {
+      "kind": "kind:swc.operation_call",
+      "method": "ref_fields_must_not_be_empty"
+    },
+    "rule:swc.operation_event.reference-not-blank": {
+      "kind": "kind:swc.operation_event",
+      "method": "ref_fields_must_not_be_empty"
+    },
+    "rule:swc.swc.variables.no-duplicate-entry": {
+      "kind": "kind:swc.swc",
+      "method": "variables_must_not_have_duplicates"
+    },
+    "rule:swc.runnable.reads_variables.no-duplicate-entry": {
+      "kind": "kind:swc.runnable",
+      "method": "reads_variables_must_not_have_duplicates"
+    },
+    "rule:swc.runnable.writes_variables.no-duplicate-entry": {
+      "kind": "kind:swc.runnable",
+      "method": "writes_variables_must_not_have_duplicates"
+    },
+    "rule:swc.variable.type-form": {
+      "kind": "kind:swc.variable",
+      "method": "exactly_one_type_field"
+    },
+    "rule:swc.variable.application_type.not-blank": {
+      "kind": "kind:swc.variable",
+      "method": "application_type_must_not_be_blank"
+    },
+    "rule:swc.variable.implementation_type.not-blank": {
+      "kind": "kind:swc.variable",
+      "method": "implementation_type_must_not_be_blank"
+    },
+    "rule:swc.variable_read.reference-not-blank": {
+      "kind": "kind:swc.variable_read",
+      "method": "variable_must_not_be_blank"
+    },
+    "rule:swc.variable_write.reference-not-blank": {
+      "kind": "kind:swc.variable_write",
+      "method": "variable_must_not_be_blank"
+    },
+    "rule:swc.swc.exclusive_areas.no-duplicate-entry": {
+      "kind": "kind:swc.swc",
+      "method": "exclusive_areas_must_not_have_duplicates"
+    },
+    "rule:swc.runnable.can_enter.no-duplicate-entry": {
+      "kind": "kind:swc.runnable",
+      "method": "can_enter_must_not_have_duplicates"
+    },
+    "rule:swc.runnable.runs_inside.no-duplicate-entry": {
+      "kind": "kind:swc.runnable",
+      "method": "runs_inside_must_not_have_duplicates"
+    },
+    "rule:swc.exclusive_area.name.not-blank": {
+      "kind": "kind:swc.exclusive_area",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:swc.can_enter_area.reference-not-blank": {
+      "kind": "kind:swc.can_enter_area",
+      "method": "area_must_not_be_blank"
+    },
+    "rule:swc.runs_inside_area.reference-not-blank": {
+      "kind": "kind:swc.runs_inside_area",
+      "method": "area_must_not_be_blank"
+    },
+    "rule:swc.data_event.reference-not-blank": {
+      "kind": "kind:swc.data_event",
+      "method": "ref_fields_must_not_be_empty"
+    },
+    "rule:swc.operation_call.asynchronous-fields": {
+      "kind": "kind:swc.operation_call",
+      "method": "asynchronous_fields"
+    },
+    "rule:swc.operation_call.timeout.non-negative": {
+      "kind": "kind:swc.operation_call",
+      "method": "timeout_non_negative"
+    },
+    "rule:swc.call_returned_event.reference-not-blank": {
+      "kind": "kind:swc.call_returned_event",
+      "method": "ref_fields_must_not_be_empty"
+    },
+    "rule:connectors.connector_endpoint.endpoint-not-blank": {
+      "kind": "kind:connectors.connector_endpoint",
+      "method": "endpoint_fields_must_not_be_empty"
+    },
+    "rule:connectors.connector.name.not-blank": {
+      "kind": "kind:connectors.connector",
+      "method": "name_must_not_be_empty"
+    },
+    "rule:swc.swc.name.not-blank": {
+      "kind": "kind:swc.swc",
+      "method": "name_must_not_be_empty"
+    },
+    "rule:swc.swc.memory.named-and-non-negative": {
+      "kind": "kind:swc.swc",
+      "method": "memory_budgets_must_be_named_and_non_negative"
+    },
+    "rule:interfaces.sender_receiver.name.not-blank": {
+      "kind": "kind:interfaces.sender_receiver",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:interfaces.sender_receiver.data_elements.not-empty": {
+      "kind": "kind:interfaces.sender_receiver",
+      "method": "data_elements_must_not_be_empty"
+    },
+    "rule:interfaces.argument.name.not-blank": {
+      "kind": "kind:interfaces.argument",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:interfaces.argument.implementation_type.not-blank": {
+      "kind": "kind:interfaces.argument",
+      "method": "implementation_type_must_not_be_blank"
+    },
+    "rule:interfaces.data_element.type-form": {
+      "kind": "kind:interfaces.data_element",
+      "method": "exactly_one_type_field"
+    },
+    "rule:interfaces.data_element.application_type.not-blank": {
+      "kind": "kind:interfaces.data_element",
+      "method": "application_type_must_not_be_blank"
+    },
+    "rule:interfaces.data_element.implementation_type.not-blank": {
+      "kind": "kind:interfaces.data_element",
+      "method": "implementation_type_must_not_be_blank"
+    },
+    "rule:interfaces.argument.type-form": {
+      "kind": "kind:interfaces.argument",
+      "method": "exactly_one_type_field"
+    },
+    "rule:interfaces.argument.application_type.not-blank": {
+      "kind": "kind:interfaces.argument",
+      "method": "application_type_must_not_be_blank"
+    },
+    "rule:interfaces.operation.name.not-blank": {
+      "kind": "kind:interfaces.operation",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:interfaces.client_server.name.not-blank": {
+      "kind": "kind:interfaces.client_server",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:interfaces.client_server.operations.not-empty": {
+      "kind": "kind:interfaces.client_server",
+      "method": "operations_must_not_be_empty"
+    },
+    "rule:interfaces.external_interface.name.not-blank": {
+      "kind": "kind:interfaces.external_interface",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:interfaces.external_interface.operations.no-duplicate-entry": {
+      "kind": "kind:interfaces.external_interface",
+      "method": "operations_must_not_repeat"
+    },
+    "rule:interfaces.external_interface.data_elements.no-duplicate-entry": {
+      "kind": "kind:interfaces.external_interface",
+      "method": "data_elements_must_not_repeat"
+    },
+    "rule:interfaces.external_interface.member-kind": {
+      "kind": "kind:interfaces.external_interface",
+      "method": "members_must_match_the_dest"
+    },
+    "rule:requirements.requirement.id.not-blank": {
+      "kind": "kind:requirements.requirement",
+      "method": "id_must_not_be_empty"
+    },
+    "rule:requirements.requirement.version.positive": {
+      "kind": "kind:requirements.requirement",
+      "method": "version_must_be_positive"
+    },
+    "rule:requirements.requirement.retired-links": {
+      "kind": "kind:requirements.requirement",
+      "method": "links_is_retired"
+    },
+    "rule:requirements.requirement.retired-status": {
+      "kind": "kind:requirements.requirement",
+      "method": "status_is_retired"
+    },
+    "rule:base_types.base_type.name.not-blank": {
+      "kind": "kind:base_types.base_type",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:base_types.base_type.size.positive": {
+      "kind": "kind:base_types.base_type",
+      "method": "size_must_be_positive"
+    },
+    "rule:base_types.base_type.encoding.not-blank": {
+      "kind": "kind:base_types.base_type",
+      "method": "encoding_must_not_be_blank"
+    },
+    "rule:implementation_types.value_type.name.not-blank": {
+      "kind": "kind:implementation_types.value_type",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:implementation_types.value_type.base-and-range-coherent": {
+      "kind": "kind:implementation_types.value_type",
+      "method": "validate_value_type"
+    },
+    "rule:implementation_types.reference_type.name.not-blank": {
+      "kind": "kind:implementation_types.reference_type",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:implementation_types.reference_type.base-not-blank": {
+      "kind": "kind:implementation_types.reference_type",
+      "method": "validate_reference_type"
+    },
+    "rule:application_types.enum_literal.name.not-blank": {
+      "kind": "kind:application_types.enum_literal",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:application_types.enum.name.not-blank": {
+      "kind": "kind:application_types.enum",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:application_types.enum.literals.not-empty": {
+      "kind": "kind:application_types.enum",
+      "method": "literals_must_not_be_empty"
+    },
+    "rule:application_types.record_field.name.not-blank": {
+      "kind": "kind:application_types.record_field",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:application_types.record_field.type.not-blank": {
+      "kind": "kind:application_types.record_field",
+      "method": "type_must_not_be_blank"
+    },
+    "rule:application_types.record.name.not-blank": {
+      "kind": "kind:application_types.record",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:application_types.record.fields.not-empty": {
+      "kind": "kind:application_types.record",
+      "method": "fields_must_not_be_empty"
+    },
+    "rule:application_types.array.name.not-blank": {
+      "kind": "kind:application_types.array",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:application_types.array.element_type.not-blank": {
+      "kind": "kind:application_types.array",
+      "method": "element_type_must_not_be_blank"
+    },
+    "rule:application_types.array.length.positive": {
+      "kind": "kind:application_types.array",
+      "method": "length_must_be_positive"
+    },
+    "rule:implementation_types.implementation_record.name.not-blank": {
+      "kind": "kind:implementation_types.implementation_record",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:implementation_types.implementation_record.elements.not-empty": {
+      "kind": "kind:implementation_types.implementation_record",
+      "method": "elements_must_not_be_empty"
+    },
+    "rule:implementation_types.implementation_element.name.not-blank": {
+      "kind": "kind:implementation_types.implementation_element",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:implementation_types.implementation_element.type.not-blank": {
+      "kind": "kind:implementation_types.implementation_element",
+      "method": "type_must_not_be_blank"
+    },
+    "rule:implementation_types.implementation_array.name.not-blank": {
+      "kind": "kind:implementation_types.implementation_array",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:implementation_types.implementation_array.element_type.not-blank": {
+      "kind": "kind:implementation_types.implementation_array",
+      "method": "element_type_must_not_be_blank"
+    },
+    "rule:implementation_types.implementation_array.element_name.not-blank": {
+      "kind": "kind:implementation_types.implementation_array",
+      "method": "element_name_must_not_be_blank"
+    },
+    "rule:implementation_types.implementation_array.length.positive": {
+      "kind": "kind:implementation_types.implementation_array",
+      "method": "length_must_be_positive"
+    },
+    "rule:implementation_types.pointer.name.not-blank": {
+      "kind": "kind:implementation_types.pointer",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:implementation_types.pointer.target-not-blank": {
+      "kind": "kind:implementation_types.pointer",
+      "method": "validate_pointer"
+    },
+    "rule:tasks.task_runnable_ref.reference-not-blank": {
+      "kind": "kind:tasks.task_runnable_ref",
+      "method": "ref_fields_must_not_be_empty"
+    },
+    "rule:tasks.task_runnable_ref.selector-exactly-one": {
+      "kind": "kind:tasks.task_runnable_ref",
+      "method": "exactly_one_selector"
+    },
+    "rule:tasks.task.name.not-blank": {
+      "kind": "kind:tasks.task",
+      "method": "name_must_not_be_empty"
+    },
+    "rule:tasks.task.period.positive": {
+      "kind": "kind:tasks.task",
+      "method": "period_must_be_positive"
+    },
+    "rule:tasks.task.priority.non-negative": {
+      "kind": "kind:tasks.task",
+      "method": "priority_must_be_non_negative"
+    },
+    "rule:tasks.task.partition.not-blank": {
+      "kind": "kind:tasks.task",
+      "method": "partition_must_not_be_blank"
+    },
+    "rule:tasks.task.wcet.format": {
+      "kind": "kind:tasks.task",
+      "method": "wcet_is_written_as_a_budget"
+    },
+    "rule:tasks.task.wcet.positive": {
+      "kind": "kind:tasks.task",
+      "method": "wcet_must_be_positive"
+    },
+    "rule:tasks.task.wcet.retired-spelling": {
+      "kind": "kind:tasks.task",
+      "method": "wcet_us_is_retired"
+    },
+    "rule:tasks.task.runnables.no-duplicate-pair": {
+      "kind": "kind:tasks.task",
+      "method": "runnables_must_not_have_duplicates"
+    },
+    "rule:hardware.processor.name.not-blank": {
+      "kind": "kind:hardware.processor",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:hardware.core.name.not-blank": {
+      "kind": "kind:hardware.core",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:hardware.core.threshold.fraction": {
+      "kind": "kind:hardware.core",
+      "method": "threshold_must_be_a_fraction"
+    },
+    "rule:hardware.memory.name.not-blank": {
+      "kind": "kind:hardware.memory",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:hardware.memory.size.positive": {
+      "kind": "kind:hardware.memory",
+      "method": "size_must_be_positive"
+    },
+    "rule:hardware.memory.threshold.fraction": {
+      "kind": "kind:hardware.memory",
+      "method": "threshold_must_be_a_fraction"
+    },
+    "rule:hardware.memory.accessible.non-empty-unique": {
+      "kind": "kind:hardware.memory",
+      "method": "accessible_must_name_distinct_cores"
+    },
+    "rule:hardware.partition.name.not-blank": {
+      "kind": "kind:hardware.partition",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:hardware.partition.core.not-blank": {
+      "kind": "kind:hardware.partition",
+      "method": "core_must_not_be_blank"
+    },
+    "rule:sequences.sequence_step.reference-not-blank": {
+      "kind": "kind:sequences.sequence_step",
+      "method": "ref_fields_must_not_be_empty"
+    },
+    "rule:sequences.sequence_step.selector-exactly-one": {
+      "kind": "kind:sequences.sequence_step",
+      "method": "exactly_one_selector"
+    },
+    "rule:sequences.sequence.name.identifier": {
+      "kind": "kind:sequences.sequence",
+      "method": "name_must_not_be_empty_and_must_be_identifier"
+    },
+    "rule:sequences.sequence.task.not-blank": {
+      "kind": "kind:sequences.sequence",
+      "method": "task_must_not_be_empty"
+    },
+    "rule:sequences.sequence.steps.not-empty-and-unique": {
+      "kind": "kind:sequences.sequence",
+      "method": "steps_must_not_be_empty_or_have_duplicate_pairs"
+    },
+    "rule:model.float-finite": {
+      "module": "swcraft_tools.schema",
+      "class": "ModelElement",
+      "configKey": "allow_inf_nan"
+    },
+    "rule:composition.no-root": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_composition_identity_records"
+    },
+    "rule:composition.multiple-roots": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_composition_identity_records"
+    },
+    "rule:composition.duplicate-name": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_composition_identity_records"
+    },
+    "rule:composition.duplicate-port": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_sibling_duplicate_records"
+    },
+    "rule:composition.duplicate-member": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_sibling_duplicate_records"
+    },
+    "rule:composition.duplicate-delegation": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_sibling_duplicate_records"
+    },
+    "rule:composition.duplicate-delegation-link": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_delegation_link_records"
+    },
+    "rule:composition.cycle": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_composition_cycle_records"
+    },
+    "rule:composition.member-unknown-type": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_member_type_records"
+    },
+    "rule:composition.member-unknown-composition": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_member_type_records"
+    },
+    "rule:composition.member-type-repeated": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_member_type_records"
+    },
+    "rule:composition.delegation-unknown-member": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_delegation_records"
+    },
+    "rule:composition.delegation-unknown-port": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_delegation_records"
+    },
+    "rule:composition.delegation-port-direction-mismatch": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_delegation_records"
+    },
+    "rule:composition.delegation-interface-mismatch": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_delegation_records"
+    },
+    "rule:composition.connector-endpoint-not-a-member": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_connector_endpoint_records"
+    },
+    "rule:composition.delegation-connector-name-collision": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_delegation_connector_collision_records"
+    },
+    "rule:connector.endpoint-unknown-composition": {
+      "module": "swcraft_tools.validator.connectors",
+      "table": "_UNRESOLVED_ENDPOINT_RULES",
+      "key": "composition"
+    },
+    "rule:connector.unknown-composition": {
+      "module": "swcraft_tools.validator.connectors",
+      "callable": "check_connector_consistency"
+    },
+    "rule:swc.external-with-ports": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_stub_declaration_records"
+    },
+    "rule:swc.external-incomplete-reference": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_stub_reference_records"
+    },
+    "rule:swc.external-reference-without-stub": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_stray_reference_records"
+    },
+    "rule:swc.external-reference-inside-generated-package": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "_stub_reference_records"
+    },
+    "rule:swc.undeclared-termination-and-restart": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "check_termination_and_restart"
+    },
+    "rule:swc.port.com-spec-unknown-element": {
+      "module": "swcraft_tools.validator.init_values",
+      "callable": "_com_spec_entry_records"
+    },
+    "rule:swc.port.com-spec-inapplicable": {
+      "module": "swcraft_tools.validator.init_values",
+      "callable": "_com_spec_entry_records"
+    },
+    "rule:swc.port.com-spec-on-stub": {
+      "module": "swcraft_tools.validator.init_values",
+      "callable": "_com_spec_entry_records"
+    },
+    "rule:swc.port.queued-receiver-without-queue-length": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "queued_receiver_records"
+    },
+    "rule:swc.timing_event.disabled-mode-port": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "disabled_mode_records"
+    },
+    "rule:swc.access.queued-read-by-value": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "queued_read_records"
+    },
+    "rule:swc.variable.undeclared-type": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "inter_runnable_variable_records"
+    },
+    "rule:swc.variable-access.unknown-variable": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "inter_runnable_variable_records"
+    },
+    "rule:swc.variable.pointer-type": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "inter_runnable_variable_records"
+    },
+    "rule:swc.variable.read-without-init": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "inter_runnable_variable_records"
+    },
+    "rule:swc.exclusive-area.unknown-area": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "exclusive_area_records"
+    },
+    "rule:swc.data-event.unknown-port": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "data_event_records"
+    },
+    "rule:swc.data-event.direction-mismatch": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "data_event_records"
+    },
+    "rule:swc.data-event.interface-kind-mismatch": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "data_event_records"
+    },
+    "rule:swc.data-event.unknown-element": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "data_event_records"
+    },
+    "rule:swc.access.queued-implicit-read": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "implicit_read_records"
+    },
+    "rule:swc.access.implicit-read-enable-update": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "implicit_read_records"
+    },
+    "rule:swc.call.mixed-synchrony": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_call_pair_records"
+    },
+    "rule:swc.call.timeout-mismatch": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_call_pair_records"
+    },
+    "rule:swc.call.async-without-result": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_call_pair_records"
+    },
+    "rule:swc.call.several-results": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_call_pair_records"
+    },
+    "rule:swc.call-returned-event.unknown-call": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_call_returned_event_records"
+    },
+    "rule:swc.call-returned-event.ambiguous-call": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_call_returned_event_records"
+    },
+    "rule:swc.call.init-runnable-result": {
+      "module": "swcraft_tools.validator.events",
+      "callable": "_init_runnable_result_records"
+    },
+    "rule:composition.port-service-interface": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "service_composition_port_records"
+    },
+    "rule:data-type.conversion-without-unit": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "conversion_unit_records"
+    },
+    "rule:text.xml-unrepresentable-character": {
+      "module": "swcraft_tools.validator.representable_text",
+      "callable": "_judge_text"
+    },
+    "rule:swc.runnable.symbol-not-c-identifier": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "runnable_symbol_records"
+    },
+    "rule:name.duplicate-runnable-symbol": {
+      "module": "swcraft_tools.validator.behaviour",
+      "callable": "runnable_symbol_records"
+    },
+    "rule:interface.external-incomplete-reference": {
+      "module": "swcraft_tools.validator.compositions",
+      "callable": "check_port_interface_references"
+    },
+    "rule:data-type.external-incomplete-reference": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_external_type_records"
+    },
+    "rule:compositions.composition.name.not-blank": {
+      "kind": "kind:compositions.composition",
+      "method": "name_must_not_be_empty"
+    },
+    "rule:compositions.composition_port.reference-not-blank": {
+      "kind": "kind:compositions.composition_port",
+      "method": "boundary_port_fields_must_not_be_empty"
+    },
+    "rule:compositions.composition_member.reference-not-blank": {
+      "kind": "kind:compositions.composition_member",
+      "method": "member_fields_must_not_be_empty"
+    },
+    "rule:compositions.composition_member.type-form": {
+      "kind": "kind:compositions.composition_member",
+      "method": "exactly_one_type_field"
+    },
+    "rule:compositions.delegation.reference-not-blank": {
+      "kind": "kind:compositions.delegation",
+      "method": "delegation_fields_must_not_be_empty"
+    },
+    "rule:connectors.connector_endpoint.type-form": {
+      "kind": "kind:connectors.connector_endpoint",
+      "method": "exactly_one_endpoint_type_field"
+    },
+    "rule:data-type.application-type-unmapped": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "check_application_type_mapping"
+    },
+    "rule:data-type.application-type-double-mapped": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "check_application_type_double_mapping"
+    },
+    "rule:mapping-set.unknown-application": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "check_mapping_set_references"
+    },
+    "rule:mapping-set.unknown-implementation": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "check_mapping_set_references"
+    },
+    "rule:mapping-set.incompatible-composite-map": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "check_mapping_set_references"
+    },
+    "rule:mapping-set.pointer-mapped": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "check_mapping_set_references"
+    },
+    "rule:swc.unknown-mapping-set": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "check_mapping_set_references"
+    },
+    "rule:mapping-set.duplicate-name": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "check_mapping_set_references"
+    },
+    "rule:data-type.implementation-element-undeclared-type": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_implementation_record_records"
+    },
+    "rule:data-type.implementation-record-duplicate-element-name": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_implementation_record_records"
+    },
+    "rule:data-type.implementation-array-undeclared-element-type": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_implementation_array_records"
+    },
+    "rule:data-type.pointer-undeclared-target": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_pointer_type_records"
+    },
+    "rule:data-type.unit-name-collision": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_generated_form_collision_records"
+    },
+    "rule:data-type.compu-name-collision": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_generated_form_collision_records"
+    },
+    "rule:data-type.range-name-collision": {
+      "module": "swcraft_tools.validator.data_types",
+      "callable": "_generated_form_collision_records"
+    },
+    "rule:application_types.application_type.name.not-blank": {
+      "kind": "kind:application_types.application_type",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:implementation_types.external_type.name.not-blank": {
+      "kind": "kind:implementation_types.external_type",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:application_types.range.bounds-coherent": {
+      "kind": "kind:application_types.range",
+      "method": "bounds_must_be_coherent"
+    },
+    "rule:mapping_sets.mapping_set.name.not-blank": {
+      "kind": "kind:mapping_sets.mapping_set",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:mapping_sets.mapping_set.maps.unique-application": {
+      "kind": "kind:mapping_sets.mapping_set",
+      "method": "applications_must_not_repeat"
+    },
+    "rule:mapping_sets.map.reference-not-blank": {
+      "kind": "kind:mapping_sets.map",
+      "method": "reference_fields_must_not_be_blank"
+    },
+    "rule:swc.swc.data_type_mappings.no-duplicate-entry": {
+      "kind": "kind:swc.swc",
+      "method": "mapping_sets_must_not_repeat"
+    },
+    "rule:swc.port.com_specs.no-duplicate-entry": {
+      "kind": "kind:swc.port",
+      "method": "com_specs_must_not_have_duplicates"
+    },
+    "rule:swc.port_com_spec.alive_timeout.non-negative": {
+      "kind": "kind:swc.port_com_spec",
+      "method": "alive_timeout_non_negative"
+    },
+    "rule:swc.port_com_spec.queue_length.positive": {
+      "kind": "kind:swc.port_com_spec",
+      "method": "queue_length_positive"
+    },
+    "rule:swc.disabled_mode.reference-form": {
+      "kind": "kind:swc.disabled_mode",
+      "method": "references_must_be_absolute_paths"
+    },
+    "rule:interfaces.data_element.calibration-access-supported": {
+      "kind": "kind:interfaces.data_element",
+      "method": "calibration_access_must_be_supported"
+    },
+    "rule:application_types.application_type.unit-form": {
+      "kind": "kind:application_types.application_type",
+      "method": "unit_forms_must_be_exclusive"
+    },
+    "rule:application_types.application_type.conversion-form": {
+      "kind": "kind:application_types.application_type",
+      "method": "conversion_forms_must_be_exclusive"
+    },
+    "rule:application_types.application_type.range-form": {
+      "kind": "kind:application_types.application_type",
+      "method": "range_forms_must_be_exclusive"
+    },
+    "rule:application_types.enum.literals-form": {
+      "kind": "kind:application_types.enum",
+      "method": "literal_forms_must_be_exactly_one"
+    },
+    "rule:application_types.application_type.unit_ref.not-blank": {
+      "kind": "kind:application_types.application_type",
+      "method": "unit_ref_must_not_be_blank"
+    },
+    "rule:application_types.application_type.compu_method_ref.not-blank": {
+      "kind": "kind:application_types.application_type",
+      "method": "compu_method_ref_must_not_be_blank"
+    },
+    "rule:application_types.application_type.data_constr_ref.not-blank": {
+      "kind": "kind:application_types.application_type",
+      "method": "data_constr_ref_must_not_be_blank"
+    },
+    "rule:application_types.enum.compu_method_ref.not-blank": {
+      "kind": "kind:application_types.enum",
+      "method": "compu_method_ref_must_not_be_blank"
+    },
+    "rule:implementation_types.value_type.compu_method_ref.not-blank": {
+      "kind": "kind:implementation_types.value_type",
+      "method": "compu_method_ref_must_not_be_blank"
+    },
+    "rule:implementation_types.reference_type.compu_method_ref.not-blank": {
+      "kind": "kind:implementation_types.reference_type",
+      "method": "compu_method_ref_must_not_be_blank"
+    },
+    "rule:units.unit.name.not-blank": {
+      "kind": "kind:units.unit",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:compu_methods.texttable.name.not-blank": {
+      "kind": "kind:compu_methods.texttable",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:compu_methods.texttable.entries.not-empty": {
+      "kind": "kind:compu_methods.texttable",
+      "method": "entries_must_not_be_empty"
+    },
+    "rule:compu_methods.table_entry.name.not-blank": {
+      "kind": "kind:compu_methods.table_entry",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:compu_methods.linear.name.not-blank": {
+      "kind": "kind:compu_methods.linear",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:compu_methods.linear.unit.not-blank": {
+      "kind": "kind:compu_methods.linear",
+      "method": "unit_must_not_be_blank"
+    },
+    "rule:data_constraints.data_constr.name.not-blank": {
+      "kind": "kind:data_constraints.data_constr",
+      "method": "name_must_not_be_blank"
+    },
+    "rule:data_constraints.data_constr.bounds-coherent": {
+      "kind": "kind:data_constraints.data_constr",
+      "method": "bounds_must_be_coherent"
+    },
+    "rule:unit.duplicate-name": {
+      "module": "swcraft_tools.validator.description_elements",
+      "callable": "_duplicate_form_name_records"
+    },
+    "rule:compu-method.duplicate-name": {
+      "module": "swcraft_tools.validator.description_elements",
+      "callable": "_duplicate_form_name_records"
+    },
+    "rule:data-constr.duplicate-name": {
+      "module": "swcraft_tools.validator.description_elements",
+      "callable": "_duplicate_form_name_records"
+    },
+    "rule:data-type.unknown-unit": {
+      "module": "swcraft_tools.validator.description_elements",
+      "callable": "_application_reference_records"
+    },
+    "rule:data-type.unknown-compu-method": {
+      "module": "swcraft_tools.validator.description_elements",
+      "callable": "_compu_method_reference_records"
+    },
+    "rule:data-type.unknown-data-constr": {
+      "module": "swcraft_tools.validator.description_elements",
+      "callable": "_application_reference_records"
+    },
+    "rule:compu-method.unknown-unit": {
+      "module": "swcraft_tools.validator.description_elements",
+      "callable": "_compu_method_records"
+    },
+    "rule:data-type.compu-method-wrong-category": {
+      "module": "swcraft_tools.validator.description_elements",
+      "callable": "_compu_method_reference_records"
+    },
+    "rule:data-type.compu-method-on-unresolved-reference-type": {
+      "module": "swcraft_tools.validator.description_elements",
+      "callable": "_compu_method_reference_records"
+    },
+    "rule:compu-method.table-entry-repeated": {
+      "module": "swcraft_tools.validator.description_elements",
+      "callable": "_compu_method_records"
+    },
+    "rule:application_types.conversion.limits-coherent": {
+      "kind": "kind:application_types.conversion",
+      "method": "limits_must_be_coherent"
+    },
+    "rule:compu_methods.linear.limits-coherent": {
+      "kind": "kind:compu_methods.linear",
+      "method": "limits_must_be_coherent"
+    }
+  },
+  "relations": {
+    "field:swc.swc.memory": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_map_keys"
+    },
+    "field:hardware.memory.accessible": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_list_values"
+    },
+    "field:swc.swc.data_type_mappings": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_list_values"
+    },
+    "field:swc.swc.satisfies": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_versioned_list_values"
+    },
+    "field:swc.port.satisfies": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_versioned_list_values"
+    },
+    "field:swc.runnable.satisfies": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_versioned_list_values"
+    },
+    "field:compositions.composition.satisfies": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_versioned_list_values"
+    },
+    "field:interfaces.sender_receiver.satisfies": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_versioned_list_values"
+    },
+    "field:interfaces.client_server.satisfies": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_versioned_list_values"
+    },
+    "field:interfaces.external_interface.satisfies": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_versioned_list_values"
+    },
+    "field:tasks.task.satisfies": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_versioned_list_values"
+    },
+    "field:hardware.processor.satisfies": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_versioned_list_values"
+    },
+    "field:hardware.core.satisfies": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_versioned_list_values"
+    },
+    "field:hardware.memory.satisfies": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_versioned_list_values"
+    },
+    "field:hardware.partition.satisfies": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_versioned_list_values"
+    },
+    "field:requirements.requirement.derived_from": {
+      "module": "swcraft_tools.relations",
+      "callable": "resolve_versioned_list_values"
+    }
+  },
+  "fieldNames": {
+    "field:connectors.connector.from": "from_"
+  },
+  "snapshotAttributes": {
+    "layer:compositions": "compositions",
+    "layer:swc": "swcs",
+    "layer:interfaces": "interfaces",
+    "layer:connectors": "connectors",
+    "layer:requirements": "requirements",
+    "layer:tasks": "tasks",
+    "layer:sequences": "sequences",
+    "layer:hardware": "hardware",
+    "layer:mapping_sets": "mapping_sets",
+    "layer:application_types": "application_types",
+    "layer:implementation_types": "implementation_types",
+    "layer:base_types": "base_types",
+    "layer:units": "units",
+    "layer:compu_methods": "compu_methods",
+    "layer:data_constraints": "data_constraints"
+  },
+  "deprecations": {
+    "snapshotAttributes": {
+      "reason": "A vocabulary bridge, not a model fact: it maps each layer to the attribute `ModelSnapshot` and `ModelDiff` hold its elements under (only `swc` -> `swcs` differs from the layer's name), and it is deleted with those two adapters once their last consumer reads `ModelState` directly."
+    }
+  }
+}

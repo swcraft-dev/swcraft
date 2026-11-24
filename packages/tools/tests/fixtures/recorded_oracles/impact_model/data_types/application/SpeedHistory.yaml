@@ -1,0 +1,5 @@
+name: SpeedHistory
+kind: array
+element_type: SpeedPhys
+length: 4
+description: reference `data_types.array.element_type` -> SpeedPhys.

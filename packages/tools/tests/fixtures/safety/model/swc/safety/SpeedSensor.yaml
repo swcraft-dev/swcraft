@@ -1,0 +1,17 @@
+name: SpeedSensor
+type: application
+description: Declares no level and DERIVES ASIL B from the requirement allocated to it; produces an element rated above that.
+ports:
+- name: pSafety
+  direction: provide
+  interface: ISafetySignals
+runnables:
+- name: SampleSpeed
+  events:
+  - type: timing
+    period: 0.02
+memory:
+  RAM0: 0
+handle_termination_and_restart: no_support
+satisfies:
+- REQ-SAFETY-002@1

@@ -1,0 +1,59 @@
+{
+  "name": "schema-violation-application-type-unit-and-unit-ref",
+  "description": "An application type that states its unit BOTH inline (`unit`) and by reference (`unit_ref`). Since contract `8.0.0` each reference field of an application type is exclusive with its inline form (`rule:application_types.application_type.unit-form`; `conversion-form` and `range-form` are its two siblings), and the unit named here is declared — so what refuses is the shape of the payload, not a reference.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model plus the unit `ProbeNewtonMetre`. The change set creates an application type stating a unit both ways.",
+    "existing_elements": [
+      {
+        "layer": "units",
+        "element": "ProbeNewtonMetre"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "application_types",
+            "element": "ProbeTorque"
+          }
+        }
+      ],
+      "notes": "The scope covers every operation exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Declare the probe torque with its unit.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "application_types",
+          "element": "ProbeTorque"
+        },
+        "value": {
+          "name": "ProbeTorque",
+          "kind": "application_type",
+          "unit": "Nm",
+          "unit_ref": "ProbeNewtonMetre"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "application_types",
+        "element": "ProbeTorque"
+      }
+    ],
+    "notes": "Refused when the payload is bound, at the element the payload creates. Either field alone is legal; at most one of each pair is set."
+  }
+}

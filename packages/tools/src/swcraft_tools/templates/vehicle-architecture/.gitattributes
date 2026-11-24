@@ -1,0 +1,27 @@
+# The working tree is LF-only on every platform, not just in the object store.
+#
+# Git for Windows installs with ``core.autocrlf=true`` by default, which checks
+# the tree out with CRLF while ``git status`` stays clean -- invisible on
+# macOS/Linux. SWCraft itself writes LF everywhere (every model element, every
+# generated artifact and everything ``swcraft init`` scaffolds names
+# ``newline="\n"``), so without this file a Windows checkout would hand those
+# same files back to the architect with CRLF and every SWCraft write would then
+# show up as a whole-file diff. A mixed-platform team gets that diff on every
+# element the other operating system touches, for no semantic change.
+#
+# The rule is the one the SWCraft repository took for itself, and for a
+# measured reason: Biome's formatter defaults to ``lineEnding: "lf"``, so a CRLF
+# checkout produced one format diagnostic per checked file -- 30 errors that
+# existed on that machine only.
+#
+# ``eol=lf`` overrides ``core.autocrlf`` per checkout, so no contributor has to
+# reconfigure Git. ``text=auto`` still leaves binary detection in place, which
+# matters here: an architecture project accumulates ``.arxml`` (text) beside
+# screenshots and exported diagrams (not).
+#
+# If this project's model files were written by an older SWCraft on Windows,
+# expect the FIRST commit after adding this file to be large: those files are
+# CRLF on disk today and are being normalized. Nothing rewrites them
+# retroactively -- SWCraft writes LF from now on, and a file it does not touch
+# keeps the bytes it has until the next edit to that element.
+* text=auto eol=lf

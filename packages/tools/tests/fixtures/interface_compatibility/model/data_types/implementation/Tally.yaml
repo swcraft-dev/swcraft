@@ -1,0 +1,7 @@
+name: Tally
+kind: value_type
+base: u8_base
+description: >-
+  `Count`'s second spelling: the same base type, so a member written in one and
+  its counterpart written in the other agree after resolution and differ by
+  name alone.

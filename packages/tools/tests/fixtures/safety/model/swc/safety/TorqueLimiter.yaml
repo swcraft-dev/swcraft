@@ -1,0 +1,40 @@
+name: TorqueLimiter
+type: application
+description: Declares ASIL D. Produces at its level and above nothing; consumes below it twice, once unmeasured and once measured.
+asil: D
+ports:
+- name: pSafety
+  direction: provide
+  interface: ISafetySignals
+- name: rPlain
+  direction: require
+  interface: IPlainSignals
+  measures:
+    debug: Watchdog on the debug channel — a measure declared ahead of need.
+- name: rPlainMeasured
+  direction: require
+  interface: IPlainSignals
+  measures:
+    status: End-to-end protection profile 4 on the status signal.
+runnables:
+- name: LimitTorque
+  events:
+  - type: timing
+    period: 0.01
+- name: PublishSafety
+  events:
+  - type: timing
+    period: 0.02
+- name: Calibrate
+  events:
+  - type: timing
+    period: 0.05
+- name: SelfTest
+  events:
+  - type: timing
+    period: 0.05
+memory:
+  RAM0: 512
+handle_termination_and_restart: no_support
+satisfies:
+- REQ-SAFETY-001@1

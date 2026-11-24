@@ -1,0 +1,6 @@
+name: unmapped_step
+task: Task_10ms
+title: A step that is not one of the task's runnables
+steps:
+  - swc: ExampleSWC
+    runnable: ExampleRun

@@ -1,0 +1,19 @@
+{
+  "name": "envelope-storage-path-as-address",
+  "description": "A read whose `address` is a storage path string. This is the security invariant expressed as a schema fact: an address is a structured `{layer, element, path}` object, so no directory, file name, extension or path separator can reach the file system as client input — the envelope has nowhere to put one.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model, where `ExampleSWC` really is stored at `model/swc/example/ExampleSWC.yaml`. That the path is correct changes nothing: the protocol has no address form that accepts it.",
+    "baseline_state": "current"
+  },
+  "input": {
+    "operation": "read",
+    "address": "model/swc/example/ExampleSWC.yaml"
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "protocol-schema",
+    "notes": "Storage mapping is registry-internal and never externally writable or addressable. This vector covers only the *string* address form: there is no branch of the envelope that accepts one, so the shape of a storage path is never parsed. A traversal expressed as an element IDENTITY inside a well-formed structured address is a different refusal with its own rule — `$defs/identity`'s single-path-segment pattern — and its own vectors, `traversal-identity-read-address.json` and `traversal-identity-create-address.json`."
+  }
+}

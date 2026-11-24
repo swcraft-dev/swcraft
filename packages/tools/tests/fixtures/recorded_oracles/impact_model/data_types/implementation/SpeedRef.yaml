@@ -1,0 +1,4 @@
+name: SpeedRef
+kind: reference_type
+base: Speed
+description: reference `data_types.reference_type.base` -> Speed.

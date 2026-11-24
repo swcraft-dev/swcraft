@@ -1,0 +1,5 @@
+name: Core0
+kind: core
+threshold: 0.7
+enforcement: strict
+description: Illustrative showcase budget for CPU core 0.

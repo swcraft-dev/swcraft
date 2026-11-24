@@ -1,0 +1,108 @@
+{
+  "id": "32-review-modes",
+  "task": 32,
+  "group": "guide-question",
+  "kind": "guide",
+  "status": "ready",
+  "prompt": "What review modes does the SWCraft assistant server have, and what does each one mean?",
+  "expect": {
+    "model": "unchanged",
+    "guide": {
+      "sections": [
+        "vscode#another-chat-client"
+      ],
+      "must": [
+        {
+          "id": "variable",
+          "any_of": [
+            "SWCRAFT_REVIEW"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "panel",
+          "any_of": [
+            "panel"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "elicit",
+          "any_of": [
+            "elicit"
+          ],
+          "case_sensitive": false
+        }
+      ],
+      "must_not": [
+        {
+          "id": "auto-approve",
+          "any_of": [
+            "auto-approve",
+            "auto approve",
+            "automatically approve",
+            "automatically applies",
+            "applied without review",
+            "applies changes without review"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "no-modes",
+          "any_of": [
+            "no review modes",
+            "there is no review mode",
+            "has no review mode",
+            "does not have review modes",
+            "no switchable mode",
+            "no configurable review mode",
+            "doesn't have a configurable review mode",
+            "doesn’t have a configurable review mode",
+            "does not have a configurable review mode"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "no-switch",
+          "any_of": [
+            "no switch for review modes",
+            "no switch for the review mode",
+            "no review-mode switch",
+            "no review mode switch",
+            "no switchable review mode",
+            "doesn't have a switchable review mode",
+            "doesn’t have a switchable review mode",
+            "does not have a switchable review mode",
+            "cannot switch the review mode",
+            "no setting called \"review mode",
+            "no setting called “review mode",
+            "expose a setting called \"review mode",
+            "expose a setting called “review mode",
+            "no mode setting you can pick",
+            "no mode setting you can choose",
+            "no mode setting you can set",
+            "no mode you can pick",
+            "no mode you can choose",
+            "no review mode you can pick",
+            "no review mode you can choose",
+            "no review mode you can set"
+          ],
+          "case_sensitive": false
+        }
+      ]
+    },
+    "calls": {
+      "forbidden": [
+        "change_set",
+        "build",
+        "validate",
+        "export_component",
+        "import_component"
+      ]
+    }
+  },
+  "reference": {
+    "runs": "candidate builds only: a build without the guide tool fails the read and cited criteria by construction, so a guide question is never run on a baseline",
+    "baseline": "76a5f6532's vscode.md (Another chat client: panel, elicit, the variable left out and the server fail-closed) and assistant.md (the review tab; If the assistant reports changes you never see) say the same."
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://swcraft.dev/schemas/compositions.schema.json",
+  "title": "Compositions",
+  "$comment": "Composition types, one file each: the structural hierarchy of the architecture. A composition declares boundary ports of its own, holds named members that instantiate declared component and composition types, and delegates its ports to its members'. The hierarchy is by reference exactly as AUTOSAR spells it — a member names a type rather than nesting it — so the directory stays flat however deep the instantiation goes.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "description": "The composition's identity; the file is named from it (`compositions/{name}.yaml`, or a suffixed name when another file collides case-insensitively) and is never what identifies it. Unique across the layer, must not be empty, and immutable — renaming is a remove and a create. It is emitted as the `COMPOSITION-SW-COMPONENT-TYPE`'s `SHORT-NAME`, so it must be a legal AUTOSAR Identifier.",
+      "type": "string"
+    },
+    "title": {
+      "description": "The human-readable title shown on the composition's frame in the diagrams and, when it differs from `name`, written into the generated ARXML as the composition's `LONG-NAME`, exactly as held. A title equal to the name writes none: the `SHORT-NAME` already carries it.",
+      "type": "string"
+    },
+    "description": {
+      "description": "Free text about the composition, shown when the pointer rests on its frame in the diagrams, when non-empty, and written into the generated ARXML as the composition type's `DESC`, exactly as held; the empty default writes none.",
+      "type": "string",
+      "default": ""
+    },
+    "root": {
+      "description": "Whether this composition is the top of the hierarchy. Exactly one composition in a project declares `true`: it is the one the ARXML writer emits at the top, and the one an assembly connector belongs to when it names none. Left out of the file while it is `false`, so only the root carries the key.",
+      "type": "boolean",
+      "default": false
+    },
+    "ports": {
+      "description": "The composition's boundary ports, addressed by `name`, which must be unique inside the composition. Each is typed by a declared interface and is reached from outside like any component's port; a delegation is what carries it through to a member.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/composition_port"
+      },
+      "default": []
+    },
+    "members": {
+      "description": "The components and compositions this one contains, addressed by `name`, which must be unique inside the composition. One member is one AUTOSAR `SW-COMPONENT-PROTOTYPE`: a name of its own and the type it instantiates. A type may stand in several compositions, but never twice in one — a connector endpoint names the type, and it must resolve to a single member.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/composition_member"
+      },
+      "default": []
+    },
+    "delegations": {
+      "description": "The wiring from this composition's own boundary ports to its members' ports, addressed by `name`, which must be unique inside the composition. Each becomes one AUTOSAR `DELEGATION-SW-CONNECTOR`.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/delegation"
+      },
+      "default": []
+    },
+    "package": {
+      "description": "The one sub-package of `/ComponentTypes` this composition is emitted in, a single SHORT-NAME segment: the composition and every reference to it take `/ComponentTypes/{package}/`. Absent means `/ComponentTypes` itself. SWCraft's importers record it for an element whose source path is exactly `/ComponentTypes/{package}/{name}`, SWCraft's own layout, so a project's export imports back placed; and for an element that would otherwise share `/ComponentTypes` with a name differing from its own only in case. An author may set it to place an element or to resolve such a collision. It is held to the AUTOSAR Identifier rule.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "satisfies": {
+      "description": "The requirements this composition satisfies, each as the requirement's `id` and, after `@`, the version the link was confirmed for (`REQ-12@3`); a bare `id` is reported as a version not stated, and a version other than the requirement's as a link needing confirmation. A link is added or removed, never edited in place. It allocates no ASIL to anything.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "required": [
+    "name",
+    "title"
+  ],
+  "definitions": {
+    "composition_port": {
+      "description": "One boundary port of a composition: a named, directed endpoint typed by an interface. A `provide` port offers the interface to whatever contains the composition, a `require` port consumes it, and a delegation carries either through to a member's port of the same direction. It declares the same four fields as `kind:swc.port` and the duplication is deliberate: a bare kind name is unique across the whole contract and `memberOf` is derived per layer, so one kind cannot be a member of two layers' elements.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The port's identity inside its composition; unique among the composition's ports and immutable.",
+          "type": "string"
+        },
+        "direction": {
+          "description": "Whether the port offers the interface (`provide`) or consumes it (`require`). A delegation joins a boundary port to a member's port of the same direction — it carries the port outward rather than connecting two ends.",
+          "type": "string",
+          "enum": [
+            "provide",
+            "require"
+          ]
+        },
+        "interface": {
+          "description": "The name of the declared interface this port is typed by. The member port it delegates to need not name the same interface, as long as the two are compatible.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text about the boundary port. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "required": [
+        "name",
+        "direction",
+        "interface"
+      ]
+    },
+    "composition_member": {
+      "description": "One member of a composition: an AUTOSAR `SW-COMPONENT-PROTOTYPE`. It carries a name of its own — the address the composition's delegations use — and exactly one of `type`, naming a declared software component, or `composition`, naming another declared composition. The two fields are the model's spelling of the `TYPE-TREF`'s `DEST`, and each resolves into its own layer; a member declaring neither, or both, is refused.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The member's identity inside its composition; unique among the composition's members and immutable. It is written even when it equals the type it instantiates, and it is emitted as the `SW-COMPONENT-PROTOTYPE`'s `SHORT-NAME`, so it must be a legal AUTOSAR Identifier.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The name of the declared software component this member instantiates. Exactly one of `type` and `composition` is set, and this one is emitted with `DEST` `APPLICATION-SW-COMPONENT-TYPE`. A component may be placed in several compositions but never twice in one.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "composition": {
+          "description": "The name of the declared composition this member instantiates. Exactly one of `type` and `composition` is set, and this one is emitted with `DEST` `COMPOSITION-SW-COMPONENT-TYPE`. It is the edge that makes the hierarchy: a composition that transitively contains itself is refused.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "description": "Free text about the member. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "delegation": {
+      "description": "One delegation of a composition: an AUTOSAR `DELEGATION-SW-CONNECTOR`. It joins one of the composition's own boundary ports to a port of one of its members, so that what the composition offers or requires at its boundary is served by a component inside it.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The delegation's identity inside its composition; unique among the composition's delegations and immutable. It is emitted as the `DELEGATION-SW-CONNECTOR`'s `SHORT-NAME`, so it must be a legal AUTOSAR Identifier.",
+          "type": "string"
+        },
+        "port": {
+          "description": "The name of one of this composition's own boundary ports — the outer end of the delegation.",
+          "type": "string"
+        },
+        "member": {
+          "description": "The name of one of this composition's members — the instance the delegation reaches into. A member name and never a type name: a delegation addresses the instance, which is what makes one type placeable more than once.",
+          "type": "string"
+        },
+        "member_port": {
+          "description": "The name of a port of that member's type — the inner end of the delegation. Its direction must match the outer port's.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Free text about the delegation. Written into the generated ARXML as the element's `DESC`, exactly as held; the empty default writes none.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "required": [
+        "name",
+        "port",
+        "member",
+        "member_port"
+      ]
+    }
+  }
+}

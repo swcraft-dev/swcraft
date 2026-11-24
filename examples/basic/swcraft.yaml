@@ -1,0 +1,8 @@
+name: swcraft-basic-example
+schema_version: "1.0"
+model_root: model
+dist_root: dist
+views_root: views
+outputs:
+  arxml: dist/model.arxml
+  needs: dist/needs.json

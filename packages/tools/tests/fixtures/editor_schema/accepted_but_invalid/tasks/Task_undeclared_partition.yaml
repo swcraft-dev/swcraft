@@ -1,0 +1,6 @@
+name: Task_undeclared_partition
+period: 0.05
+priority: 3
+partition: PARTITION9
+wcet: 100us
+description: A partition name is a plain string to the schema and a dangling reference to check-model

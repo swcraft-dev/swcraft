@@ -1,0 +1,5 @@
+name: int16_base
+kind: base_type
+size: 16
+encoding: 2C
+native_declaration: int16_t

@@ -1,0 +1,123 @@
+{
+  "name": "broken-reference-data-event-unknown-element",
+  "description": "A data-received event naming a data element its port's interface does not declare (contract `12.3.0`, `rule:swc.data-event.unknown-element`): the event is admissible on its own -- its `port` and `element` are non-blank names and the member address is well formed -- and the assembled result breaks the reference, so pass D refuses it as a `broken-reference` at the event's `element` field.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. `ExampleConsumerSWC` requires `IExample` through `rIn`, and `IExample` declares one data element, `value`; the event below names `speed`, which it does not declare. The port resolves, so the refusal is the element's alone: the event's resolution stops at its first unresolved reference, port before element.",
+    "existing_elements": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleConsumerRun"
+          }
+        ]
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "swc",
+            "element": "ExampleConsumerSWC",
+            "path": [
+              {
+                "field": "runnables"
+              },
+              {
+                "member": "ExampleConsumerRun"
+              },
+              {
+                "field": "events"
+              },
+              {
+                "member": {
+                  "type": "data",
+                  "port": "rIn",
+                  "element": "speed"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the requested address exactly, so the refusal is pass D's and not the scope gate's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Start ExampleConsumerRun whenever a new speed arrives on rIn.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "swc",
+          "element": "ExampleConsumerSWC",
+          "path": [
+            {
+              "field": "runnables"
+            },
+            {
+              "member": "ExampleConsumerRun"
+            },
+            {
+              "field": "events"
+            },
+            {
+              "member": {
+                "type": "data",
+                "port": "rIn",
+                "element": "speed"
+              }
+            }
+          ]
+        },
+        "value": {
+          "type": "data",
+          "port": "rIn",
+          "element": "speed"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "broken-reference",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC",
+        "path": [
+          {
+            "field": "runnables"
+          },
+          {
+            "member": "ExampleConsumerRun"
+          },
+          {
+            "field": "events"
+          },
+          {
+            "member": {
+              "type": "data",
+              "port": "rIn",
+              "element": "speed"
+            }
+          },
+          {
+            "field": "element"
+          }
+        ]
+      }
+    ],
+    "notes": "The address is the referrer, the event's `element`, not the element that is missing: the repair is to supply the element on the interface in the same change set, or to name one it declares. An event naming a port its component does not declare is refused the same way at its `port`; a provide port or a client/server port is a `consistency-violation` instead. The model stays byte-identical."
+  }
+}

@@ -1,0 +1,11 @@
+name: SensorB
+type: application
+description: Declares a runnable named Init as SensorA does.
+runnables:
+  - name: Init
+    events:
+      - type: timing
+        period: 0.01
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_COLLISIONS_001@1

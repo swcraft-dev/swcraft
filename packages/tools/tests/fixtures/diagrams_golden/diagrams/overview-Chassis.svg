@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="670.14" height="245" viewBox="0 0 670.14 245" font-family="Helvetica, Arial, sans-serif" data-view="overview-Chassis">
+<title>Chassis — overview</title>
+<style>g.edges use{stroke-width:10px;stroke-dasharray:none}</style>
+<defs><marker id="swcraft-arrow" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 8 4 L 0 8 z" fill="#555555"/></marker><marker id="swcraft-arrow-lit" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M 0 0 L 8 4 L 0 8 z" fill="#1a5fb4"/></marker></defs>
+<rect class="background" width="100%" height="100%" fill="white"/>
+<g class="frame">
+<g class="frame" data-role="frame" data-name="Chassis" data-parents="Vehicle#Chassis"><title>composition Chassis
+Three members, two boundary ports and a delegation in each direction.</title><rect x="12" y="12" width="646.14" height="221" rx="4" fill="#fafafa" stroke="#333333" stroke-width="1.5"/></g>
+</g>
+<g class="edges">
+<g class="edge bundle" data-role="bundle" data-name="Controller -&gt; Controller" data-source="m2" data-target="m2" stroke-width="1"><title>1 connector Controller -&gt; Controller</title><path id="e1" d="M 448.14 143 L 448.14 133 L 508.14 133 L 508.14 139" fill="none" stroke="#555555" marker-end="url(#swcraft-arrow)"/><use href="#e1" opacity="0"/></g>
+<g class="edge bundle" data-role="bundle" data-name="Sensor -&gt; Controller" data-source="m1" data-target="m2" stroke-width="1"><title>2 connectors Sensor -&gt; Controller</title><path id="e2" d="M 338.64 168 L 384.14 168" fill="none" stroke="#555555" marker-end="url(#swcraft-arrow)"/><use href="#e2" opacity="0"/></g>
+</g>
+<g class="members">
+<g id="m1" class="member component" data-role="member" data-name="Sensor" data-type="Sensor" data-kind="component"><title>Sensor (component)
+Measures the speed and provides it twice, filtered and raw.</title><rect x="158.64" y="143" width="180" height="50" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g id="m2" class="member component" data-role="member" data-name="Controller" data-type="Controller" data-kind="component"><title>Controller (component)
+Consumes the speed, feeds its own estimate back to itself and asks the diagnostics.</title><rect x="388.14" y="143" width="180" height="50" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+<g id="m3" class="member component" data-role="member" data-name="Logger" data-type="Logger" data-kind="component"><title>Logger (component)
+Would log the speed; its one port is connected to nothing.</title><rect x="158.64" y="73" width="180" height="50" rx="3" fill="#eef3fb" stroke="#333333" stroke-width="1"/></g>
+</g>
+<g class="labels">
+<g class="frame-up"><title>up to Vehicle</title><text class="frame-label" x="19" y="28.6" font-size="12" data-kind="composition" font-weight="bold">↑ Chassis</text></g>
+<g class="edge-count" data-name="Controller -&gt; Controller"><title>1 connector Controller -&gt; Controller</title><desc class="connector-list">control_loop: Controller.pLoop -&gt; Controller.rLoop (self-connector) — ISpeed</desc><rect class="edge-label" x="471.39" y="116" width="13.5" height="16" rx="2" fill="white" stroke="#999999"/><text class="edge-label-text" x="478.14" y="127" font-size="10" text-anchor="middle" font-weight="600">1</text></g>
+<g class="edge-count" data-name="Sensor -&gt; Controller"><title>2 connectors Sensor -&gt; Controller</title><desc class="connector-list">raw_link: Sensor.pRaw -&gt; Controller.rRaw — ISpeed
+speed_link: Sensor.pSpeed -&gt; Controller.rSpeed — ISpeed	The filtered speed into the controller.</desc><rect class="edge-label" x="356.64" y="170" width="13.5" height="16" rx="2" fill="white" stroke="#999999"/><text class="edge-label-text" x="363.39" y="181" font-size="10" text-anchor="middle" font-weight="600">2</text></g>
+<text class="member-label" x="228.12" y="171.6" font-size="12" data-kind="component" font-weight="600">Sensor</text>
+<text class="member-label" x="444.42" y="171.6" font-size="12" data-kind="component" font-weight="600">Controller</text>
+<text class="member-label" x="228.12" y="101.6" font-size="12" data-kind="component" font-weight="600">Logger</text>
+</g>
+</svg>

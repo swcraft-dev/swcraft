@@ -1,0 +1,120 @@
+{
+  "id": "30-pin-mismatch",
+  "task": 30,
+  "group": "guide-question",
+  "kind": "guide",
+  "status": "ready",
+  "prompt": "My swcraft.yaml pins toolchain_version to another release than the one I have installed. What happens when I run swcraft?",
+  "expect": {
+    "model": "unchanged",
+    "guide": {
+      "sections": [
+        "getting-started#create-a-project",
+        "upgrading#the-procedure",
+        "upgrading"
+      ],
+      "must": [
+        {
+          "id": "pin",
+          "any_of": [
+            "toolchain_version"
+          ],
+          "case_sensitive": true
+        },
+        {
+          "id": "refuse",
+          "any_of": [
+            "refuse"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "read-only-answer",
+          "any_of": [
+            "answer"
+          ],
+          "case_sensitive": false
+        }
+      ],
+      "must_not": [
+        {
+          "id": "range",
+          "any_of": [
+            "minimum version",
+            "or a newer release",
+            "or any newer release",
+            "or later",
+            "version range",
+            "at least version"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "auto-install",
+          "any_of": [
+            "automatically installs",
+            "automatically downloads",
+            "automatically switches",
+            "will automatically install",
+            "will automatically download",
+            "will automatically switch",
+            "is automatically installed",
+            "is automatically downloaded",
+            "installs it automatically",
+            "downloads it automatically",
+            "installs the pinned release automatically",
+            "downloads the pinned release automatically",
+            "switches automatically",
+            "switches releases automatically",
+            "will switch to the pinned release"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "all-refuse",
+          "any_of": [
+            "every command refuses",
+            "all commands refuse",
+            "every swcraft command refuses"
+          ],
+          "case_sensitive": false
+        },
+        {
+          "id": "check-model-answers",
+          "any_of": [
+            "read-only commands (such as swcraft check-model",
+            "read-only commands (such as check-model",
+            "read-only commands such as swcraft check-model",
+            "read-only commands such as check-model",
+            "read-only commands, such as swcraft check-model",
+            "read-only commands, such as check-model",
+            "check-model still answers",
+            "check-model still runs",
+            "check-model still reports",
+            "check-model only warns",
+            "commands like check-model answer",
+            "commands like swcraft check-model answer",
+            "like check-model answer",
+            "like swcraft check-model answer",
+            "such as check-model answer",
+            "such as swcraft check-model answer"
+          ],
+          "case_sensitive": false
+        }
+      ]
+    },
+    "calls": {
+      "forbidden": [
+        "change_set",
+        "build",
+        "validate",
+        "export_component",
+        "import_component"
+      ]
+    }
+  },
+  "reference": {
+    "runs": "candidate builds only: a build without the guide tool fails the read and cited criteria by construction, so a guide question is never run on a baseline",
+    "baseline": "76a5f6532's getting-started.md (the toolchain_version paragraph: ten commands refuse naming both versions, the read-only six print the sentence and answer anyway, no field pins nothing) and upgrading.md (The procedure, step 3) say the same."
+  }
+}

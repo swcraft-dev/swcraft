@@ -1,0 +1,234 @@
+{
+  "name": "find-for-requirement",
+  "description": "A `find` for a requirement answers the trace search's ranking for that one requirement, built as `swcraft experiment trace` builds it — the default configuration, the project's rejected decisions and its name words — and projected one to one, never re-ordered: `candidates` places best first, each a target group with its score and evidence and its rows, each row the protocol `address` of the element or member whose `satisfies` list would carry the link beside the search's own `target`, with its score in millionths, its band and its evidence (a `text` record's `terms` are the terms the requirement shares with the target); then the links the requirement already has, which the ranking leaves out of its rows. The baseline token rides along.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model with `REQ_EXAMPLE_002` added, whose text names the consumer, its input port and the data value, and which `IExample` already satisfies at its current version 1. `REQ_EXAMPLE_001` is linked from both components and is not asked about.",
+    "existing_elements": [
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_001"
+      },
+      {
+        "layer": "requirements",
+        "element": "REQ_EXAMPLE_002"
+      },
+      {
+        "layer": "interfaces",
+        "element": "IExample"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleConsumerSWC"
+      },
+      {
+        "layer": "swc",
+        "element": "ExampleSWC"
+      }
+    ],
+    "notes": "A `find` reads the model and writes nothing: no scope, no baseline in the request, no audit record, no report file. The server ranks; the agent explains the evidence, and a link is confirmed by a person through an ordinary change set. Two places are asked for; the ranking of `ExampleConsumerSWC` before `ExampleSWC`, and of the port `rIn` before the component and its runnable, is the search's own."
+  },
+  "input": {
+    "operation": "find",
+    "for_requirement": "REQ_EXAMPLE_002",
+    "candidates": 2
+  },
+  "expected": {
+    "response": {
+      "response": "find",
+      "baseline": "rev1:9f4c2a7be3d18056",
+      "for_requirement": "REQ_EXAMPLE_002",
+      "neighbours": 0,
+      "places": [
+        {
+          "group": {
+            "kind": "swc",
+            "name": "ExampleConsumerSWC"
+          },
+          "score": {
+            "n": 1000000,
+            "d": 1000000
+          },
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "consumer",
+                "data",
+                "input",
+                "port",
+                "value"
+              ]
+            }
+          ],
+          "rows": [
+            {
+              "address": {
+                "layer": "swc",
+                "element": "ExampleConsumerSWC",
+                "path": [
+                  {
+                    "field": "ports"
+                  },
+                  {
+                    "member": "rIn"
+                  }
+                ]
+              },
+              "target": {
+                "kind": "port",
+                "owner": "ExampleConsumerSWC",
+                "name": "rIn"
+              },
+              "score": {
+                "n": 1000000,
+                "d": 1000000
+              },
+              "band": "medium",
+              "evidence": [
+                {
+                  "kind": "text",
+                  "terms": [
+                    "input",
+                    "port",
+                    "data",
+                    "value"
+                  ]
+                }
+              ]
+            },
+            {
+              "address": {
+                "layer": "swc",
+                "element": "ExampleConsumerSWC"
+              },
+              "target": {
+                "kind": "swc",
+                "owner": null,
+                "name": "ExampleConsumerSWC"
+              },
+              "score": {
+                "n": 357398,
+                "d": 1000000
+              },
+              "band": "weak",
+              "evidence": [
+                {
+                  "kind": "text",
+                  "terms": [
+                    "consumer",
+                    "data"
+                  ]
+                }
+              ]
+            },
+            {
+              "address": {
+                "layer": "swc",
+                "element": "ExampleConsumerSWC",
+                "path": [
+                  {
+                    "field": "runnables"
+                  },
+                  {
+                    "member": "ExampleConsumerRun"
+                  }
+                ]
+              },
+              "target": {
+                "kind": "runnable",
+                "owner": "ExampleConsumerSWC",
+                "name": "ExampleConsumerRun"
+              },
+              "score": {
+                "n": 265252,
+                "d": 1000000
+              },
+              "band": "weak",
+              "evidence": [
+                {
+                  "kind": "text",
+                  "terms": [
+                    "consumer"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "group": {
+            "kind": "swc",
+            "name": "ExampleSWC"
+          },
+          "score": {
+            "n": 496045,
+            "d": 1000000
+          },
+          "evidence": [
+            {
+              "kind": "text",
+              "terms": [
+                "data",
+                "port",
+                "value"
+              ]
+            }
+          ],
+          "rows": [
+            {
+              "address": {
+                "layer": "swc",
+                "element": "ExampleSWC",
+                "path": [
+                  {
+                    "field": "ports"
+                  },
+                  {
+                    "member": "pOut"
+                  }
+                ]
+              },
+              "target": {
+                "kind": "port",
+                "owner": "ExampleSWC",
+                "name": "pOut"
+              },
+              "score": {
+                "n": 636781,
+                "d": 1000000
+              },
+              "band": "weak",
+              "evidence": [
+                {
+                  "kind": "text",
+                  "terms": [
+                    "port",
+                    "data",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "existing_links": [
+        {
+          "address": {
+            "layer": "interfaces",
+            "element": "IExample"
+          },
+          "target": {
+            "kind": "interface",
+            "owner": null,
+            "name": "IExample"
+          },
+          "member": "REQ_EXAMPLE_002@1",
+          "version": 1,
+          "confirmed": true
+        }
+      ]
+    }
+  }
+}

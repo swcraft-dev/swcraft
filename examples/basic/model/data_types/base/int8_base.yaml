@@ -1,0 +1,5 @@
+name: int8_base
+kind: base_type
+size: 8
+encoding: 2C
+native_declaration: int8_t

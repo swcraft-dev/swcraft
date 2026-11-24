@@ -1,0 +1,58 @@
+{
+  "name": "schema-violation-data-element-no-type-field",
+  "description": "A data element that states NEITHER `application_type` nor `implementation_type` — which is also how a data element written before contract `8.0.0`, still saying `type`, reads. Exactly one of the two is required (`rule:interfaces.data_element.type-form`), so the payload is refused when it is bound.",
+  "kind": "negative",
+  "context": {
+    "summary": "The `examples/basic` model. The change set creates an interface whose one data element names no type.",
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "create",
+          "address": {
+            "layer": "interfaces",
+            "element": "ISyntheticTorque"
+          }
+        }
+      ],
+      "notes": "The scope covers every create exactly, so the answer is the engine's and not the authorization boundary's."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Carry the synthetic torque on the bus.",
+    "operations": [
+      {
+        "operation": "create",
+        "address": {
+          "layer": "interfaces",
+          "element": "ISyntheticTorque"
+        },
+        "value": {
+          "name": "ISyntheticTorque",
+          "kind": "sender_receiver",
+          "data_elements": [
+            {
+              "name": "torque",
+              "description": "No side stated"
+            }
+          ],
+          "description": "The synthetic torque on the bus"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "expected_error": "schema-violation",
+    "failure_class": "invalid",
+    "violation_layer": "semantic",
+    "addresses": [
+      {
+        "layer": "interfaces",
+        "element": "ISyntheticTorque"
+      }
+    ],
+    "notes": "The same refusal as `schema-violation-data-element-both-type-fields`, from the other side: one rule, two halves, one address — the element the payload creates."
+  }
+}

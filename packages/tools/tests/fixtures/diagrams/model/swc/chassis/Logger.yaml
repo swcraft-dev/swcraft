@@ -1,0 +1,15 @@
+name: Logger
+type: application
+description: Would log the speed; its one port is connected to nothing.
+ports:
+  - name: rLog
+    direction: require
+    interface: ISpeed
+runnables:
+  - name: LogRun
+    events:
+      - type: timing
+        period: 0.01
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_DIAGRAMS_001@1

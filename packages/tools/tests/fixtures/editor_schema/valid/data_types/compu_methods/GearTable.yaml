@@ -1,0 +1,8 @@
+name: GearTable
+kind: texttable
+entries:
+  - name: PARK
+    value: 0
+  - name: DRIVE
+    value: 1
+description: Hand-built texttable fixture — the corpus declares no compu method element

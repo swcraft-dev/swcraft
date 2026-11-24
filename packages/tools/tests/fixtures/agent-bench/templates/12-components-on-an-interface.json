@@ -1,0 +1,10 @@
+{
+  "id": "12-components-on-an-interface",
+  "task": 12,
+  "group": "search-and-statistics",
+  "kind": "question",
+  "binding": "components_on_the_heaviest_interface",
+  "oracle": "structural",
+  "prompt": "Which components have a port of interface {{interface}}?",
+  "note": "The interface the most component ports name: every component with a port of it, in row order, and up to four components with no such port that the reply must not name."
+}

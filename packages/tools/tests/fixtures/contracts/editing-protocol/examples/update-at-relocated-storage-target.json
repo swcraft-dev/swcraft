@@ -1,0 +1,84 @@
+{
+  "name": "update-at-relocated-storage-target",
+  "description": "An `update` of an element the model stores under a file name that is not its identity. The store finds an element by what it declares, never by a path recomputed from its name, so the update is written into the file that declares the element and nowhere else — no second file is created and no other element's file is touched. `create-at-occupied-storage-target` is the same store seen from the verb that allocates a file; this is the verb that finds one: a file whose name is not its element's leaves the element editable through the protocol.",
+  "kind": "example",
+  "context": {
+    "summary": "The `examples/basic` model plus one hand-authored file, `data_types/implementation/Speed_kph.yaml`, whose declared name is `VehicleSpeed_kph`. The element is addressable by its identity — `read {implementation_types, VehicleSpeed_kph}` answers — and the file it lives in is named otherwise. The commit rewrites `data_types/implementation/Speed_kph.yaml` and creates no `data_types/implementation/VehicleSpeed_kph.yaml`.",
+    "existing_elements": [
+      {
+        "layer": "implementation_types",
+        "element": "VehicleSpeed_kph"
+      }
+    ],
+    "occupied_targets": [
+      {
+        "layer": "implementation_types",
+        "element": "Speed_kph"
+      }
+    ],
+    "baseline_state": "current",
+    "authorization": {
+      "approved_scope": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "implementation_types",
+            "element": "VehicleSpeed_kph",
+            "path": [
+              {
+                "field": "unit"
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "The scope covers the requested address exactly, and an address never names a file — so where the element is stored is not something an approval could have covered or refused."
+    }
+  },
+  "input": {
+    "operation": "change_set",
+    "baseline": "rev1:9f4c2a7be3d18056",
+    "intent": "Record vehicle speed in metres per second.",
+    "operations": [
+      {
+        "operation": "update",
+        "address": {
+          "layer": "implementation_types",
+          "element": "VehicleSpeed_kph",
+          "path": [
+            {
+              "field": "unit"
+            }
+          ]
+        },
+        "value": "mps"
+      }
+    ]
+  },
+  "expected": {
+    "response": {
+      "response": "change_set",
+      "status": "committed",
+      "baseline": "rev1:Xb5nL9dQ2rT6vY1zK8pM3w",
+      "delta": [
+        {
+          "operation": "update",
+          "address": {
+            "layer": "implementation_types",
+            "element": "VehicleSpeed_kph",
+            "path": [
+              {
+                "field": "unit"
+              }
+            ]
+          },
+          "before": "kph",
+          "after": "mps",
+          "summary": "implementation_types/VehicleSpeed_kph: ~ unit kph -> mps"
+        }
+      ],
+      "audit_ref": "cs-20260911T120000Z-5a1f01"
+    },
+    "notes": "`committed`, and not a safety act. The file is located by content through one identity-to-file index per layer, built once per change set, so a change set touching fifty elements of one layer parses that layer once. The one refusal left on this verb is an element NO file of its layer declares, which a snapshot read from the same tree cannot produce from a well-formed request; it stays `consistency-violation` at the element. No storage path appears in the response, and the file name the element happens to live under is neither reported nor changed — renaming it is a user's act outside the protocol, and changes no generated artifact."
+  }
+}

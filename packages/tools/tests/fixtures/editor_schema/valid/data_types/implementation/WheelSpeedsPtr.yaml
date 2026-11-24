@@ -1,0 +1,4 @@
+name: WheelSpeedsPtr
+kind: pointer
+target: WheelSpeeds_impl
+description: Hand-built pointer fixture — the corpus declares no pointer

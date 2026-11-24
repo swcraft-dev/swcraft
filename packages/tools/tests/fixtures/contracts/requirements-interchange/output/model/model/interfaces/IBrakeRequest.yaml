@@ -1,0 +1,8 @@
+name: IBrakeRequest
+kind: sender_receiver
+description: The brake request, sent every 10 ms.
+data_elements:
+- name: request
+  implementation_type: uint8
+satisfies:
+- SYS_003

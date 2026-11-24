@@ -1,0 +1,10 @@
+name: Actuator
+type: application
+description: The provide side of the client-server assembly connector.
+ports:
+  - name: pCommand
+    direction: provide
+    interface: ICommandFull
+handle_termination_and_restart: no_support
+satisfies:
+- REQ_COMPATIBLE_001@1
